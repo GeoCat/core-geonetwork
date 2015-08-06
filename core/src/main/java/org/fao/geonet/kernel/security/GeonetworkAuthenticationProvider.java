@@ -39,6 +39,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.sql.SQLException;
+
 public class GeonetworkAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider 
 	implements UserDetailsService {
 
@@ -102,8 +104,21 @@ public class GeonetworkAuthenticationProvider extends AbstractUserDetailsAuthent
 
 				return user;
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			Log.error(Log.JEEVES, "Unexpected error while loading user", e);
+			//Log the next exception if available:
+			for(Throwable e2 : e.getSuppressed())
+			{
+				if(e2 instanceof SQLException) {
+					SQLException sqlException = (SQLException) e2;
+					SQLException nextException = sqlException.getNextException();
+					while(nextException != null) {
+						Log.error(Log.JEEVES, "Next exception:", e2);
+						nextException = nextException.getNextException();
+					}
+				}
+			}
 			throw new AuthenticationServiceException("Unexpected error while loading user",e);
 		}
 		throw new UsernameNotFoundException(username+" is not a valid username");
