@@ -2300,11 +2300,23 @@ public class DataManager implements ApplicationEventPublisherAware {
 
         String host    = getSettingManager().getValue(Geonet.Settings.SERVER_HOST);
         String port    = getSettingManager().getValue(Geonet.Settings.SERVER_PORT);
+        String protocol = getSettingManager().getValue(Geonet.Settings.SERVER_PROTOCOL);
         String baseUrl = context.getBaseUrl();
+        if (StringUtils.equalsIgnoreCase("https", protocol)) {
+            port = getSettingManager().getValue(Geonet.Settings.SERVER_SECURE_PORT);
+        }
+        String cleanUrl = protocol + "://" + host;
+        if ((StringUtils.equalsIgnoreCase("http", protocol) && !StringUtils.equals(port, "80"))
+            || (StringUtils.equalsIgnoreCase("https", protocol) && !StringUtils.equals(port, "443"))) {
+            cleanUrl += ":" + port;
+        }
+        cleanUrl += baseUrl;
+
 
         env.addContent(new Element("host").setText(host));
         env.addContent(new Element("port").setText(port));
         env.addContent(new Element("baseUrl").setText(baseUrl));
+        env.addContent(new Element("cleanUrl").setText(cleanUrl));
         // TODO: Remove host, port, baseUrl and simplify the
         // URL created in the XSLT. Keeping it for the time
         // as many profiles depend on it.

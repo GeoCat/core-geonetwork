@@ -130,9 +130,7 @@
 					<xsl:variable name="metadataId"   select="/root/*/gmd:fileIdentifier/gco:CharacterString/text()" />
 					<gco:CharacterString>
 					  <xsl:value-of select="concat(
-					    /root/env/url, '/resources.get?',
-					    'uuid=', $metadataId, 
-					    '&amp;fname=', /root/env/file)"/>
+					    /root/env/cleanUrl, '/id/thumbnail/', $metadataId)"/>
 					</gco:CharacterString>
 				</gmd:fileName>
 
