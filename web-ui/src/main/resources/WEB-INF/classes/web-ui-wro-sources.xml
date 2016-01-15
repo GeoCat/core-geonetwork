@@ -17,6 +17,7 @@
     <jsSource webappPath="/catalog/lib/jquery-2.0.3.min.js"/>
     <jsSource webappPath="/catalog/lib/moment+langs.min.js"/>
     <jsSource webappPath="/catalog/lib/angular/angular.min.js"/>
+    <jsSource webappPath="/catalog/lib/angular/angular-animate.min.js"/>
     <jsSource webappPath="/catalog/lib/angular-filter.min.js" minimize="false"/>
     <jsSource webappPath="/catalog/lib/angular/angular-resource.min.js"/>
     <jsSource webappPath="/catalog/lib/angular/angular-route.min.js"/>
@@ -35,6 +36,7 @@
     <jsSource webappPath="/catalog/lib/angular.ext/typeahead.js"/>
     <jsSource webappPath="/catalog/lib/angular.ext/colorpicker/angularjs-color-picker.min.js" minimize="false"/>
     <jsSource webappPath="/catalog/lib/tinycolor.js"/>
+    <jsSource webappPath="/catalog/lib/angular.ui/ui-bootstrap-custom-tpls-0.13.1.js"/>
 
     <jsSource webappPath="/catalog/lib/style/bootstrap/dist/js/bootstrap.min.js"/>
     <jsSource webappPath="/catalog/lib/proj4js-compressed.js" minimize="false"/>
@@ -44,10 +46,14 @@
 
     <jsSource webappPath="/catalog/lib/jsonix/jsonix/Jsonix-min.js" minimize="false" />
 
-    <jsSource webappPath="/catalog/lib/jquery.ext/jquery.ui.widget.js"/>
+    <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+    <jsSource webappPath="/catalog/lib/jquery.ext/load-image.all.min.js" />
     <jsSource webappPath="/catalog/lib/jquery.ext/jquery.iframe-transport.js"/>
     <jsSource webappPath="/catalog/lib/jquery.ext/jquery.fileupload.js"/>
     <jsSource webappPath="/catalog/lib/jquery.ext/jquery.fileupload-process.js"/>
+    <!-- The File Upload image preview & resize plugin -->
+    <jsSource webappPath="/catalog/lib/jquery.ext/jquery.fileupload-image.js"/>
+    <jsSource webappPath="/catalog/lib/jquery.ext/jquery.fileupload-validate.js"/>
     <jsSource webappPath="/catalog/lib/jquery.ext/jquery.fileupload-angular.js"/>
     <jsSource webappPath="/catalog/lib/jquery.ext/jquery-ui-slider.min.js"/>
     <jsSource webappPath="/catalog/lib/bootstrap.ext/typeahead.js/typeahead.bundle.js"/>
@@ -59,5 +65,6 @@
     <jsSource webappPath="/catalog/lib/zip/zip.js"/>
     <jsSource webappPath="/catalog/lib/zip/include.js"/>
     <jsSource webappPath="/catalog/lib/base64.js"/>
+    <jsSource webappPath="/catalog/lib/ngShowErrors/showErrors.js" />
   </declarative>
 </sources>

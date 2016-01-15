@@ -304,11 +304,11 @@
               <!--              <deployable>
                 <location>${project.build.directory}/../intermap/target/intermap.war</location>
                 <type>war</type>
-              </deployable> -->
+              </deployable> 
               <deployable>
                 <location>${project.build.directory}/../geoserver/target/geoserver.war</location>
                 <type>war</type>
-              </deployable>
+              </deployable>-->
             </deployables>
           </configuration>
         </configuration>
@@ -1164,11 +1164,11 @@
       <modules>
         <module>schemas-test</module>
         <module>web-ui</module>
-        <module>web-ui-docs</module>
-        <module>web-client</module>
+        <!--<module>web-ui-docs</module>-->
+        <!--<module>web-client</module>-->
         <module>web</module>
         <module>e2e-tests</module>
-        <module>geoserver</module>
+        <!--<module>geoserver</module>-->
       </modules>
     </profile>
     <!-- Python and Latex are required to build the documentation. -->

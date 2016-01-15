@@ -1,0 +1,77 @@
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<div id="upload">
+    <div  class="container">
+        <nav class="verytop" data-ng-include="'../../catalog/views/geodatastore/templates/verytop.html'"></nav>
+        <div class="page">
+			<header data-ng-include="'../../catalog/views/geodatastore/templates/header.html'"></header>
+            <nav class="tabs"></nav>
+        <div data-ng-controller="GdsLoginController" style="padding:15px">
+            <div class="row top-buffer">
+                <div class="col-md-2 col-md-offset-5 text-center login-logo">
+                    <i class="fa fa-cloud-upload fa-10x"></i>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 text-center lead">
+                    <span data-translate>login-description-first</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 bottom-buffer">
+                      <form novalidate id="gnSigningForm" name="gnSigningForm"  method="post"
+                          role="form" data-ng-submit="login()">
+                        <!--<input type="hidden" name="redirectUrl" value="{{redirectUrl}}"/>-->
+                          <div class="row" data-ng-show="gdsLoginService.isSessionExpired()">
+                              <p class="alert alert-danger">
+                                  <span class="fa fa-exclamation-triangle fa-fw"></span>
+                                  <span data-translate="">server.session.timeout</span></p>
+                          </div>
+                          <div class="row">
+							<div class="col-md-6">
+                                <div class="form-group" data-show-errors>
+                                    <label class="control-label"
+                                           for="inputUsername">Gebruikersnaam</label>
+                                    <input type="text" class="form-control" id="inputUsername" name="j_username"
+                                           data-ng-model="loginForm.j_username" autofocus="" required/>
+                                </div>
+                            </div>
+							
+                            <div class="col-md-6">
+                                <div class="form-group" data-show-errors>
+
+                                    <label class="control-label"
+                                           for="inputPassword">Wachtwoord</label>
+
+                                    <input type="password" class="form-control" id="inputPassword" name="j_password"
+                                            data-ng-model="loginForm.j_password" required/>
+                                </div>
+			                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <button type="submit" class="btn btn-primary pull-right no-animate" data-ng-disabled="loginWorking">
+                                        <i class="fa fa-spinner fa-spin" data-ng-hide="!loginWorking"></i>
+                                        <i class="fa fa-sign-in"></i>
+                                        <span>Inloggen</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+                                <div class="col-xs-12">
+                                    <p class="alert alert-danger" data-ng-show="signinFailure">
+                                        <strong data-translate="">signinFailure</strong>
+                                    </p>
+                                </div>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer data-ng-include="'../../catalog/views/geodatastore/templates/footer.html'">
+
+    </footer>
+</div>
+</div>
+</html>

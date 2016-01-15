@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+    <!-- INSPIRE metadata rules translation / START -->
+    
+    <!-- List of pattern title -->
+
+  <identification>Identificatie</identification>
+
+  <dataIdentification>Data Identificatie</dataIdentification>
+
+  <serviceIdentification>Dienst Identificatie</serviceIdentification>
+
+  <theme>Trefwoord and INSPIRE thema's</theme>
+
+  <serviceTaxonomy>INSPIRE dienst taxonomie</serviceTaxonomy>
+
+  <geo>Geografische locatie</geo>
+
+  <temporal>Temporale referentie</temporal>
+
+  <quality>Kwaliteit en geldigheid</quality>
+
+  <conformity>Overeenstemming</conformity>
+
+  <constraints>Beperkingen met betrekking tot toegang en gebruik</constraints>
+
+  <org>Verantwoordelijke organisatie</org>
+
+  <metadata>Metadata op metadata</metadata>
+
+  <alert.M35>
+    <div>
+      <h2>Brontitel ontbreekt.</h2>
+    </div>
+  </alert.M35>
+
+  <report.M35>
+    <div>
+      <h2>Brontitel gevonden:</h2>
+    </div>
+  </report.M35>
+
+  <alert.M36>
+    <div><h2>Bron abstract ontbreekt.</h2> <br/> <b>Voorbeeld:</b><br/>
+    Dataset bevat topografie op grote schal (1:1.000) die het hele land
+    bedekt. </div>
+  </alert.M36>
+
+  <report.M36>
+    <div>
+      <h2>Bron abstract is :</h2>
+    </div>
+  </report.M36>
+
+  <alert.M37>
+    <div><h2>Brontype ontbreekt of heeft een verkeerde waarde.</h2> <br/>
+    <b>Instructies implementeren:</b><br/> De waarden van MD_ScopeCode in het
+    toepassingsgebied van de richtlijn (See SC4 in 1.2) zijn: <ul>
+        <li>dataset voor ruimtelijke datasets;</li>
+
+        <li>series voor ruimtelijke dataset series;</li>
+
+        <li>diensten voor ruimtelijke dataset diensten.</li>
+      </ul> De HierarchyLevel Property is niet in opdracht van ISO 19115, maar
+    is verplicht voor conformiteit aan de INSPIRE Metadata
+    Uitvoeringsbepalingen (Zie SC2 in 1.2).</div>
+  </alert.M37>
+
+  <report.M37>
+    <div>
+      <h2>Brontype is: </h2>
+    </div>
+  </report.M37>
+
+  <alert.M38>
+    <div><h2>Unieke bron identificatie ontbreekt</h2> <br/> <b>Implementie
+    instructies</b><br/> Verplicht voor dataset en dataset series.<br/>
+    <b>Voorbeeld:</b> 527c4cac-070c-4bca-9aaf-92bece7be902 </div>
+  </alert.M38>
+
+  <report.M38>
+    <div>Unieke bronidentificatie is:</div>
+  </report.M38>
+
+  <report.M38.codespace>
+    <div>Unieke bronidentificatie codespace is:</div>
+  </report.M38.codespace>
+
+  <alert.M39>
+    <div><h2>INSPIRE - ISO onderwerp categorie is verplicht</h2><br/>Het
+    onderwerp categorieën, gedefinieerd in deel D 2 van de INSPIRE
+    uitvoeringsbepalingen van metadata, worden rechtstreeks afgeleid van het
+    onderwerp categorieën gedefinieerd in B.5.27 van ISO 19115. INSPIRE
+    Uitvoeringsregels voor metadata bepalen de INSPIRE-data thema's waarop bij
+    elke onderwerp categorie de implementatie instructies van toepassing zijn,
+    dat wil zeggen, administratieve eenheden (I.4) en statistische eenheden
+    (III.1) zijn INSPIRE thema's waarop de grenzen onderwerp categorie van
+    toepassing is. De waarde van de ISO 19115/ISO 19119 metadataelement is de
+    waarde die in de kolom "naam" van de tabel in B.5.27 van ISO 19115 staat.
+    </div>
+  </alert.M39>
+
+  <report.M39>
+    <div>ISO onderwerp categorie is verplicht</div>
+  </report.M39>
+
+  <alert.M40>
+    <div>
+      <h2>INSPIRE thema is verplicht</h2>
+    </div>
+  </alert.M40>
+
+  <report.M40>
+    <div> INSPIRE thema(s) gevonden.</div>
+  </report.M40>
+
+  <alert.M41>
+    <div>
+      <h2>INSPIRE - Geografische selectiekader is verplicht</h2>
+
+        <br/>
+
+        <ul>
+        <li> verplicht voor ruimtelijke dataset en dataset series. </li>
+
+        <li> Voorwaardelijke voor ruimtelijke diensten: Verplicht voor
+        diensten met een expliciete geografische omvang </li>
+        </ul>
+        
+      <b>Implementatie instructies</b>
+
+        <ul>
+        <li> Er zijn net zoveel selectiekaders bij het definiëren van de
+        geografische locatie van de bron als voorbeelden van
+        identificationInfo [1] / * / hoogte / * / geographicElement met de
+        westBoundLongitude, eastBoundLongitude, southBoundLatitude en
+        northBoundLatitude eigenschappen. De vier coördinaten van het
+        selectiekader zijn afkomstig zijn dezelfde instantie.</li>
+        
+        <li> Het omsluitende kader dient zo klein mogelijk te houden.</li>
+    
+        <li>Als het selectiekader de 180 meridiaan kruist, zal de waarde van
+        de westBoundLongitude groter zijn dan de waarde eastBoundLongitude.
+        </li>
+    
+        <li>De coördinaten van het selectiekader worden uitgedrukt in elke
+        geografische coördinaten referentiesysteem met een Greenwich Meridiaan
+        (Zie SC13 in 1.2). </li>
+        </ul>
+    </div>
+  </alert.M41>
+    
+  <alert.M41.N>
+    <div>NorthBoundLongitude ontbreekt of heeft een verkeerde waarde</div>
+  </alert.M41.N>
+
+  <alert.M41.S>
+    <div>SouthBoundLongitude ontbreekt of heeft een verkeerde waarde</div>
+  </alert.M41.S>
+
+  <alert.M41.E>
+    <div>EastBoundLongitude ontbreekt of heeft een verkeerde waarde</div>
+  </alert.M41.E>
+
+  <alert.M41.W>
+    <div>WestBoundLongitude ontbreekt of heeft een verkeerde waarde</div>
+  </alert.M41.W>
+
+  <report.M41.N>
+    <div>NorthBoundLongitude gevonden:</div>
+  </report.M41.N>
+
+  <report.M41.S>
+    <div>SouthBoundLongitude gevonden:</div>
+  </report.M41.S>
+
+  <report.M41.E>
+    <div>EastBoundLongitude gevonden:</div>
+  </report.M41.E>
+
+  <report.M41.W>
+    <div>WestBoundLongitude gevonden:</div>
+  </report.M41.W>
+
+  <alert.M42>
+    <div><h2>INSPIRE - Temporale referentie is verplicht</h2> Geen geval van
+    temporele referentie is gevonden. <b>Implementatie instructies</b><br/>Elk
+    exemplaar van de temporele mate kan een interval van data of een
+    individuele datum zijn. De totale tijdsperiode waarop de inhoud van de
+    bron kan bestaan ​​uit een of meerdere exemplaren.<br/> Of een peildatum
+    van de geciteerde bron (publicatie, laatste herziening of creatie). <br/>
+    <b>Voorbeeld:</b> Van 1977-03-10T11:45:30 tot 2005-01-15T09:10:00 </div>
+  </alert.M42>
+    
+  <alert.M42.creation>
+    <div>Er mag niet meer dan een exemplaar van
+    MD_Metadata.identificationInfo[1].MD_Identification.citation.CI_Citation.date
+    gedeclareerd worden als aanmaakdatum (d.w.z. CI_Date.dateType de
+    creatiewaarde bevattend)</div>
+  </alert.M42.creation>
+
+  <report.M42.begin>
+    <div>Tijdelijke extent (begin) gevonden: </div>
+  </report.M42.begin>
+
+  <report.M42.end>
+    <div>Tijdelijke extent (einde) gevonden: </div>
+  </report.M42.end>
+
+  <report.M42.publication>
+    <div>Publicatiedatum voor de bron gevonden:</div>
+  </report.M42.publication>
+
+  <report.M42.creation>
+    <div>Creatiedatum voor de bron gevonden:</div>
+  </report.M42.creation>
+
+  <report.M42.revision>
+    <div>Datum van revisie van de bron gevonden:</div>
+  </report.M42.revision>
+
+  <alert.M43>
+    <div><h2>INSPIRE - Lineage is verplicht</h2><br/> <ul>
+        <li>Verplicht voor ruimtelijke dataset en ruimtelijke dataset
+        serie.</li>
+
+        <li>Niet van toepassing op diensten.</li>
+      </ul> Als toevoeging op de algemene uitleg van de kennis van de gegevens
+    van de producent over de afstamming van een dataset is het mogelijk om
+    hier informatie over de datakwaliteit te plaatsen.<br/> Een enkele ISO
+    19115 metadata set kan bestaan ​​uit meer dan een set implementatie
+    instructies kwaliteitsinformatie, waarbij elk van hen een één of nul lijn
+    verklaring bevat. Er is slechts één set van kwaliteitsinformatie binnen
+    het bereik van de volledige bron en het bevat een linage verklaring (zie
+    SC6 in 1.2).<br/> <b>Example:</b> Dataset is gedigitaliseerd vanuit de
+    standaard 1:5.000 kaart</div>
+  </alert.M43>
+
+  <report.M43>
+    <div>
+      <h2>Lineage is ingesteld.</h2>
+    </div>
+  </report.M43>
+
+  <alert.M44>
+    <div><h2>INSPIRE - Conformiteit is verplicht (in
+    DQ_DomainConsistency.result.DQ_ConformanceResult)</h2><br/>
+    <b>Implementatie instructies</b> <br/>The last value corresponds to the
+    case where no conformance statement is expressed in the metadata for the
+    related specification. De eerste twee graden van overeenstemming
+    gedefinieerd in deel D 5 van de INSPIRE-uitvoeringsbepalingen voor
+    metadata kaarten voor twee waarden van de Booleaanse domein van ISO 19115.
+    De laatste waarde komt overeen met de situatie waarin geen
+    conformiteitsverklaring wordt uitgedrukt in de metadata voor de
+    gerelateerde specificatie.<br/> <b>Voorbeeld:</b> titel “INSPIRE
+    implementatie afspraken met de technische voorschriften voor de
+    interoperabiliteit en de harmonisatie van de administratieve grenzen”.
+    </div>
+  </alert.M44>
+
+  <report.M44.nonev>
+    <div>De mate van overeenstemming van de bron is nog niet
+    geëvalueerd.</div>
+  </report.M44.nonev>
+
+  <report.M44.degree>
+    <div>Mate van overeenstemming gevonden:</div>
+  </report.M44.degree>
+
+  <report.M44.spec>
+    <div>Specificatie:</div>
+  </report.M44.spec>
+
+  <alert.M45.rc>
+    <div>
+      <h2>Er moet ten minste een exemplaar zijn van
+      MD_Metadata.identificationInfo[1].MD_Identification.resourceConstraints</h2>
+    </div>
+  </alert.M45.rc>
+
+  <report.M45.ac>
+    <div>Beperking van openbare toegang (accessConstraints) gevonden:</div>
+  </report.M45.ac>
+
+  <report.M45.class>
+    <div>Beperking van openbare toegang (classificatie) gevonden:</div>
+  </report.M45.class>
+
+  <alert.M45.or>
+    <div>De waarde 'accessConstraints' moet 'otherRestrictions' zijn, Wanneer
+    er gevallen van 'otherConstraints' expressie beperkingen op de openbare
+    toegang zijn. Controleer dan de lijst van toegangsbeperkingen en andere
+    beperkingen in het tekstveld.</div>
+  </alert.M45.or>
+
+  <report.M45.or>
+    <div>Beperking van openbare toegang (otherConstraints) gevonden:</div>
+  </report.M45.or>
+
+  <alert.M45.us>
+    <div>Voorwaarden voor toegang en gebruik ontbreken</div>
+  </alert.M45.us>
+
+  <report.M45.us>
+    <div>Voorwaarden voor toegang en gebruik gevonden:</div>
+  </report.M45.us>
+
+  <alert.M45>
+    <div>
+      <h2>INSPIRE - Voorwaarden voor toegang en gebruik zijn verplicht</h2>
+
+      <br/>
+    </div>
+  </alert.M45>
+
+  <alert.M46>
+    <div>
+      <h2>INSPIRE - Beperkingen op openbare toegang is verplicht</h2>
+    </div>
+  </alert.M46>
+
+  <alert.M47>
+    <div><h2>INSPIRE - Verantwoordelijke organisatie voor de bron is
+    verplicht</h2><br/> Ten opzichte van een verantwoordelijke organisatie,
+    maar er kunnen vele verantwoordelijke organisaties voor een enkele bron.
+    Naam organisatie en e-mail zijn verplicht. <br/> Zie rubriek identificatie
+    / Aanspreekpunt.</div>
+  </alert.M47>
+
+  <report.M47>
+    <div>Verantwoordelijke organisatie voor de bron gevonden.</div>
+  </report.M47>
+
+  <alert.M47.info>
+    <div>Naam en e-mail organisatie niet gevonden voor verantwoordelijke
+    organisatie.</div>
+  </alert.M47.info>
+
+  <report.M47.info>
+    <div>Organisatie naam en e-mail gevonden voor :</div>
+  </report.M47.info>
+
+  <alert.M48>
+    <div><h2>INSPIRE - Metadata contactpunt is verplicht</h2><br/>
+    <b>Implementatie instructries:</b><br/>De rol van de verantwoordelijke
+    partij, die als metadata aanspreekpunt fungeert, is buiten het
+    toepassingsgebied van de INSPIRE-Uitvoeringsvoorschriften, maar deze
+    eigenschap is voorgeschreven door de ISO 19115. De waarde kan
+    gestandaardiseerd op pointOfContact.<br/> Zie metadata section. </div>
+  </alert.M48>
+
+  <alert.M48.role>
+    <div>Contact rol is leeg.</div>
+  </alert.M48.role>
+
+  <report.M48>
+    <div>Metadata contact gevonden.</div>
+  </report.M48>
+
+  <alert.M48.info>
+    <div>Organisatie naam en e-mail niet gevonden voor metadata contact.</div>
+  </alert.M48.info>
+
+  <report.M48.info>
+    <div>Organisatie naam en e-mail gevonden voor:</div>
+  </report.M48.info>
+
+  <alert.M49>
+    <div><h2>INSPIRE - Metadata taal is verplicht</h2><br/> De taal eigenschap
+    is niet in opdracht van ISO 19115, maar is verplicht voor conformiteit aan
+    de INSPIRE Metadata uitvoeringsvoorschriften</div>
+  </alert.M49>
+
+  <report.M49>
+    <div>Metadata taal is :</div>
+  </report.M49>
+
+  <alert.M50>
+    <div>
+      <h2>Metadata datumstempel ontbreekt</h2>
+    </div>
+  </alert.M50>
+
+  <report.M50>
+    <div>
+      <h2>Metadata datumstempel is :</h2>
+    </div>
+  </report.M50>
+
+  <alert.M51>
+    <div><h2>Gekoppeld bron is verplicht wanneer er een link beschikbaar is
+    naar datasets waarop de service actief is</h2> <br/> <b>Implementatie
+    instructies</b><br/>Niet van toepassing op dataset en dataset series<br/>
+    Onder voorbehoud van diensten: Verplicht wanneer er een link beschikbaar
+    is naar datasets waarop de service actief is.<br/> <ul>
+        <li>De eigenschappen worden uitgevoerd door middel van verwijzing (Zie
+        SC11 in 1.2) en de MD_DataIdentification object referentie waarde is
+        de code van het Coupled resource metadata element.</li>
+
+        <li>Voor de consistentie moet de code van het Couple Resource metadata
+        element ook de code zijn van één van de Unique Resource Identifiers
+        van de overeenkomstige gekoppelde bron.</li>
+      </ul> </div>
+  </alert.M51>
+
+  <report.M51>
+    <div>Gekoppelde bronnen gevonden: </div>
+  </report.M51>
+
+  <alert.M52>
+    <div><h2>INSPIRE - Resource locator is verplicht als er een link
+    beschikbaar is</h2><br/> Zie Geavanceerde weergave / distributie sectie /
+    enige bronelement.<br/> <b>Implementatie instructies:</b><br/> <ul>
+        <li>Geef een geldige URL naar de bron. Als er geen directe link naar
+        een bron beschikbaar is, geef dan de link naar een contactpunt waar
+        meer informatie over de bron beschikbaar is.</li>
+    
+        <li>Als dienst, kan de Resource Locator één van de volgende zijn:</li>
+    
+        <ul>
+          <li>Een link naar het service capabilities document;</li>
+    
+          <li>Een link naar het service WSDL document (SOAP Binding);</li>
+    
+          <li>Een link naar een webpagina met verdere instructies</li>
+        
+          <li>Een link naar een client-applicatie die direct toegang heeft tot
+          de dienst</li>
+            </ul>
+      </ul> </div>
+  </alert.M52>
+
+  <report.M52>
+    <div>Resource locator gevonden:</div>
+  </report.M52>
+
+  <alert.M53>
+    <div><h2>INSPIRE - Er kunnen nul of een voorwaarde van toepassing zijn op
+    toegang en gebruik</h2><br/> Access constraints applied to assure the
+    protection of privacy or intellectual property, and any special
+    restrictions or limitations on obtaining the resource. Toegangsbeperkingen
+    zijn van toepassing om de privacy of intellectueel eigendom, en eventuele
+    restricties of beperkingen op het verkrijgen van de bron te
+    verzekeren.<br/> <b>Voorbeeld:</b> intellectualPropertyRights (rechten op
+    financieel voordeel van en het toezicht op de distributie van
+    niet-lichamelijke zaken die het resultaat zijn van
+    creativiteit).<br/>Classificatie: <b>Voorbeeld:</b>beperkt(niet voor
+    algemene openbaarmaking)<br/> Beperkt gebruik:<b>Voorbeeld:</b> niet te
+    gebruiken voor navigatue<br/> </div>
+  </alert.M53>
+
+  <alert.M54>
+    <div>
+      <h2>INSPIRE - De waarde van accessConstraints is otherRestrictions,
+      alleen als ze voorbeelden zijn gevallen van otherConstraints die
+      beperkingen uitdrukken van openbare toegang</h2>
+    </div>
+  </alert.M54>
+
+  <alert.M55>
+    <div><h2>INSPIRE (datasets en series) - Resource taal is verplicht als de
+    bron tekstuele informatie bevat </h2><br/> Een voorbeeld van de
+    taaleigenschap wordt voorgeschreven door ISO 19115 ; het kan als standaard
+    worden ingesteld op de waarde van de Metadata implementatie instructies
+    Taal wanneer de dataset of de dataset serie geen tekstuele informatie
+    bevat.<br/> <b>Implementatie instructies:</b><br/> Codelijst (Zie ISO/TS
+    19139) gebaseerd op alpha-3 codes of ISO 639-2. </div>
+  </alert.M55>
+
+  <report.M55>
+    <div>Brontaal is:</div>
+  </report.M55>
+
+  <alert.M56>
+    <div><h2>INSPIRE - Ruimtelijke resolutie is verplicht als een
+    gelijkwaardige schaal of een afstandsbesluit kan worden
+    opgegeven</h2><br/> <b>Implementatie instructies:</b> <ul>
+        <li> Elke ruimtelijke resolutie is ofwel een gelijkwaardige schaal of
+        de grondmonsterafstand.</li>
+
+        <li> Wanneer twee verschillende schalen of twee grondmonsterafstanden
+        zijn bepaald, dan is de ruimtelijke resolutie begrensd door deze twee
+        waarden</li>
+      </ul> <b>Voorbeeld:</b> 5000 (d.w.z. 1:5000 geschaalde kaart) </div>
+  </alert.M56>
+
+  <report.M56>
+    <div>Ruimtelijke resolutie is ingesteld.</div>
+  </report.M56>
+
+  <alert.M57>
+    <div>
+      <h2>[ISO19119 voor diensten] - OperationName is verplicht</h2>
+    </div>
+  </alert.M57>
+
+  <alert.M58>
+    <div>Ontbrekende dienst taxonomie informatie (selecteer op of meer
+    zoekwoorden uit "inspire-service-taxonomy.rdf" thesaurus)</div>
+  </alert.M58>
+
+  <report.M58>
+    <div> dienst taxonomie classificatie gedefinieerd</div>
+  </report.M58>
+
+  <alert.M59>
+    <div>
+      <h2>[ISO19119 for services] - ConnectPoint is verplicht</h2>
+    </div>
+  </alert.M59>
+
+  <alert.M60>
+    <div><h2>[ISO19119 for services] - ServiceType is verplicht</h2><br/>
+    Verplicht voor diensten<br/> Niet van toepassing op dataset en dataset
+    series<br/> <b>Voorbeeld:</b> 'view', 'discovery', 'download',
+    'transformation', 'invoke', 'other' </div>
+  </alert.M60>
+
+  <report.M60>
+    <div>Service type is:</div>
+  </report.M60>
+            
+    <!-- INSPIRE metadata rules translation / END -->
+</strings>

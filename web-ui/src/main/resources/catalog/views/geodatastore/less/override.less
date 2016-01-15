@@ -1,0 +1,132 @@
+/* Bootstrap overrides */
+nav.tabs {
+  background-color: #99BF66;
+  min-height: 56px;
+  padding-top: 20px;
+}
+.pagination {
+  margin: 0px;
+}
+.progress-bar {
+  background-color: #154273;
+}
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+  background-color: #99BF66;
+  border-color: #99BF66;
+}
+.pagination>li>a, .pagination>li>span {
+  color: #154273 ;
+}
+.pagination>li>a:focus, .pagination>li>a:hover, .pagination>li>span:focus, .pagination>li>span:hover {
+  color: #99BF66;
+  background-color: #f3f5f6;
+}
+.tooltip.in {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+.tooltip.top .tooltip-arrow{
+    border-top:5px solid #154273;
+}
+.tooltip.left .tooltip-arrow{
+    border-left:5px solid #154273;
+}
+.tooltip.bottom .tooltip-arrow{
+    border-bottom:5px solid #154273;
+}
+.tooltip.right .tooltip-arrow{
+    border-right:5px solid #154273;
+}
+.tooltip-inner{
+    background-color:#154273;
+}
+.page {
+  background-color: white;
+  box-shadow: 0px 0px 10px darkgray ;
+}
+label {
+  font-weight: normal;
+}
+.nav-tabs .badge {
+  font-weight: normal;
+  background-color: #154273;
+}
+
+.bootstrap-tagsinput {
+  width: 100%;
+  padding: 4px;
+  .tag {
+    background-color: #c7e0a4;
+    border-radius: 4px;
+    padding: 2px 0.5em 4px 1em;
+    float: left;
+    margin: 2px;
+    color: #000;
+  }
+  .tag [data-role="remove"]:after {
+    color: #fff;
+  }
+  .tag-content {
+    display: inline-block;
+    max-width: 10em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  .tagsinput-clear,
+  .tagsinput-trigger {
+    position: absolute;
+    top: 4px;
+    right: 26px;
+  }
+  .tagsinput-trigger {
+    top: .575em;
+    right: 20px;
+    font-size: 16px;
+    font-weight: normal;
+  }
+}
+
+// angular-ui.bootstrap CSS
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+#metadata i.fa.fa-question-circle {
+  opacity: 0.4;
+}
+#metadata a.btn {
+  color: #000;
+  text-decoration: none;
+  margin-bottom: .5em;
+}
+.bootstrap-tagsinput input {
+  width: 100%;
+}
+.form-control {
+  color: #000;
+}
+.btn-default {
+  color: #000;
+  background-color: #f3f3f3;
+}
+.btn-primary {
+    background-color: #154273;
+    border-color: #154273;
+    color: #fff;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open .dropdown-toggle.btn-primary {
+    background-color: #0C2C4E;
+    border-color: #0C2C4E;
+}
+
+.gn-stack {
+ display:none; 
+}
+
+.btn.disabled,.btn[disabled],fieldset[disabled].btn{cursor:not-allowed;pointer-events:none;background-color: #fff;border-color: #ccc;color:#ccc;-webkit-box-shadow:none;box-shadow:none;}
+
+.modal-content { border-radius: 0px; }

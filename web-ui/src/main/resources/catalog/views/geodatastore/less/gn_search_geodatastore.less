@@ -1,0 +1,38 @@
+// GN Styles
+@import (less) "../../../lib/jquery.ext/jquery.fileupload-ui.css";
+@import "../../../lib/style/font-awesome/less/font-awesome.less";
+@import "../../../style/gn_bootstrap.less";
+@fa-font-path: '../catalog/lib/style/font-awesome/fonts';
+@import "../../../lib/bootstrap.ext/tagsinput/bootstrap-tagsinput";
+
+// Striped bars
+//
+// `.progress-striped .progress-bar` is deprecated as of v3.2.0 in favor of the
+// `.progress-bar-striped` class, which you just add to an existing
+// `.progress-bar`.
+.progress-striped .progress-bar,
+.progress-bar-striped {
+  #gradient > .striped();
+  background-size: 40px 40px;
+}
+
+// Call animation for the active one
+//
+// `.progress.active .progress-bar` is deprecated as of v3.2.0 in favor of the
+// `.progress-bar.active` approach.
+.progress.active .progress-bar,
+.progress-bar.active {
+  .animation(progress-bar-stripes 2s linear infinite);
+}
+
+.file-icon {
+  vertical-align: 12%;
+}
+
+@import "gn_view_geodatastore.less";
+
+
+/* gn_search_geodatastore.less */
+@import "override.less";
+@import "style.less";
+

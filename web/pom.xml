@@ -467,6 +467,16 @@
       <artifactId>schema-dublin-core</artifactId>
       <version>${project.version}</version>
     </dependency>
+	<dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>schema-iso19139.nl.geografie.1.3.1</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>schema-iso19139.nl.services.1.2.1</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
   </dependencies>
 
@@ -777,6 +787,16 @@
       <properties>
         <env>inspire</env>
       </properties>
+    </profile>
+	<profile>
+      <id>geodatastore</id>
+      <dependencies>
+        <dependency>
+          <groupId>nl.kadaster.pdok</groupId>
+          <artifactId>pdok-geodatastore</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+      </dependencies>
     </profile>
   </profiles>
 

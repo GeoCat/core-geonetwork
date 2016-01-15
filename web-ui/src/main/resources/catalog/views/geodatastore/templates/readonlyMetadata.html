@@ -1,0 +1,82 @@
+<div data-ng-controller="GdsReadonlyMetadataController">
+    <div class="row">
+        <div class="col-md-5 form-group hidden-xs hidden-sm">
+            <label><i class="fa fa-cloud-upload fa-fw" style="font-size:1em; margin-right: 4px"></i>Publicatiedatum</label>
+            <div class="value"  style="padding-left:23px">{{mdSelected.publishDate | date:'dd-MM-yyyy' }}</div>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-md-5 form-group hidden-xs hidden-sm">
+            <label><i class="fa fa-pencil fa-fw" style="font-size:1em; margin-right: 4px"></i>Wijzigingsdatum</label>
+            <div class="value"  style="padding-left:23px">{{mdSelected.changeDate | date:'dd-MM-yyyy' }}</div>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-md-2 form-group">
+            <div class="floatright"><button type="button" id="editUpperButton" class="btn btn-default btn-sm"
+                    data-ng-click="toggleEditMode()" data-ng-hide="editState.isEditing">
+                <i class="fa fa-pencil fa-fw hidden-md"></i>{{'edit' | translate}}</button></div>
+        </div><!-- /.col-lg-2 -->
+    </div><!-- /.row -->
+    <div class="form-group">
+        <label for="title">{{'title'|translate}}</label></br>
+        <h4 id="title" class="value">{{mdSelected.title}}</h4>
+    </div>
+    <div class="form-group">
+        <label for="abstract">{{'abstract'|translate}}</label></br>
+        <span id="abstract" class="value">{{mdSelected.summary}}</span>
+    </div>
+    <div class="form-group">
+        <label for="topic">{{'topic'|translate}}</label>
+        <div id="topic" class="value">
+            <span data-ng-repeat="topicCategory in mdSelected.topicCategories track by $index">{{'topic.' + topicCategory | translate}}<span>{{$last ? '' : ', '}}</span></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="keywords">{{'keywords'|translate}}</label>
+        <div id="keywords" class="value" >
+            <span data-ng-repeat="keyword in mdSelected.keywords track by $index"><span class="tag">{{keyword}}</span>{{$last ? '' : ', '}}</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="lineage">{{'lineage'|translate}}</label>
+        <div id="lineage" class="value">{{mdSelected.lineage}}</div>
+    </div>
+    <div class="form-group">
+        <label for="location">{{'location'|translate}}</label>
+        <div id="location" class="value">{{mdSelected.location}}</div>
+    </div>
+    <div class="form-group">
+        <label for="license">{{'license'|translate}}</label>
+        <div id="license" class="value"><a href="{{mdSelected.license}}" target="_blank">{{mdSelected.license}}</a></div>
+    </div>
+
+    <div class="form-group">
+        <label for="resolution">{{'scale'|translate}}</label>
+        <div id="resolution" class="value">{{'scale.' + mdSelected.resolution | translate}}</div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label for="thumbnail">Afbeelding</label>
+                <div id="thumbnail" class="thumbcont">
+                    <img data-ng-src="{{mdSelected.thumbnailUri}}" alt="Thumbnail" id="published-thumbnail"/>
+                </div>
+
+            </div>
+        </div><!-- /.col-lg-6 -->
+        <div class="col-lg-6 ">
+            <div class="form-group">
+                <a class="btn btn-default btn-sm" style="width: 100%" target="_blank" data-ng-href="{{ngr_url}}/resource/{{mdSelected.identifier}}">
+	                <i class="fa fa-link fa-fw"></i>{{"Metadata-link"|translate}}
+                </a>
+            </div>
+            <div class="form-group">
+                <a class="btn btn-default btn-sm" style="width: 100%" targt="_blank" data-ng-href="{{mdSelected.url}}">
+	                <i class="fa fa-file-o fa-fw"></i>{{"Download-link"|translate}}
+                </a>
+            </div>
+        </div><!-- /.col-lg-6 -->
+    </div><!-- /.row -->
+    <div class="form-group" style="border-top: solid 1px; padding-top: 15px;">
+
+		 
+
+    </div>
+</div>

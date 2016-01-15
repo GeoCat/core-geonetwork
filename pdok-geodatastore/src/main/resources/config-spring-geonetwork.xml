@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:sec="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+       <!-- WARNING: RequestMappingHandlerMapping will not detect @Controller annotations of classes outside
+       org.fao.geonet package and descentants -->
+       <context:component-scan base-package="nl.kadaster.pdok" />
+       <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >
+              <property name="maxUploadSize" value="524300000"/> <!-- 500 MiB -->
+       </bean>
+       <util:properties id="geodatastoreProperties" location="classpath:/geodatastore.properties"/>
+       <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+       <bean class="nl.kadaster.pdok.bussiness.GdsRegistryServiceLocator">
+         <constructor-arg name="registryServiceMap">
+           <map>
+             <description>A map linking keys and RegistryService implementations</description>
+             <entry key="denominator" value="nl.kadaster.pdok.bussiness.registryservices.DenominatorRegistryService" />
+             <entry key="license"  value="nl.kadaster.pdok.bussiness.registryservices.LicenseRegistryService" />
+             <entry key="topic" value="nl.kadaster.pdok.bussiness.registryservices.TopicRegistryService" />
+           </map>
+         </constructor-arg>
+       </bean>
+</beans>

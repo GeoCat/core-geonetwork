@@ -1,0 +1,13 @@
+@import "gn_login_geodatastore";
+
+// Fix for ng-show-errors. Radio buutons need a .form-control to get ngShowErrors working. This selectors makes radio with
+// .form-control look like regular radios
+.radio-form-control .form-control {
+  display: initial;
+  width: initial;
+  height: initial;
+}
+
+.spacer {
+  margin-top: 40px;
+}

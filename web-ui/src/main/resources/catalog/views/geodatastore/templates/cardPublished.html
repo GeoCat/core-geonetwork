@@ -1,0 +1,26 @@
+<!--
+template for card to be used after being published
+-->
+
+<div class="row">
+    <div class="col-md-3 col-lg-2 hidden-sm hidden-xs card-thumbnail">
+        <img data-ng-src="{{md.thumbnailUri}}" />
+    </div>
+    <div class="col-md-9 col-lg-10 col-sm-12">
+        <div class="title">
+            <div class="floatright"> 
+		        <a class="delete" data-tooltip="{{'tooltip.remove' | translate}}"  title="{{'tooltip.remove' | translate}}" 
+				data-ng-click="showDeleteConfirm(md, $event)"><i class="fa fa-trash-o fa-lg"></i></a> 
+            </div> 
+            <span>{{md.title | words:12}}</span>
+        </div>
+        <p>{{md.summary | words:18 }}</p>
+        <div class="filename">
+            <i class="fa fa-lg fa-fw" data-ng-class="getFileType(md)" style="vertical-align: 12%"></i>
+            <span>{{getFileName(md)}}</span>
+            <span class="floatright hidden-xs">{{md.changeDate | date:'dd-MM-yyyy' }}</span>
+
+        </div>
+
+    </div>
+</div>

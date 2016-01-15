@@ -1,0 +1,239 @@
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<div id="upload">
+    <div  class="container">
+		<div style="width:100%;margin-bottom:0px;display:none;border-radius:0px;left:0px;position:fixed;top:0px;z-index:100;" id="msg-warning" class="alert alert-warning"><i class="fa fa-warning fa-fw"/><span/></div>
+		<div style="width:100%;margin-bottom:0px;display:none;border-radius:0px;left:0px;position:fixed;top:0px;z-index:100;" id="msg-success" class="alert alert-success"><i class="fa fa-thumbs-o-up fa-fw"/><span/></div>
+                
+        <nav class="verytop" data-ng-include="'../../catalog/views/geodatastore/templates/verytop.html'"></nav>
+        <div class="page">
+			<header data-ng-include="'../../catalog/views/geodatastore/templates/header.html'"></header>
+	
+            
+            <nav class="tabs">
+                <div class="floatright userlog hidden-xs">
+                    <div class="user floatright">{{user.name}} {{user.surname}}</div><br/>
+                    <div class="log floatright"><a href="../../j_spring_security_logout" title="Afmelden"><i class="fa fa-power-off"></i>Uitloggen</a></div>
+                </div>
+                <ul class="nav nav-tabs">
+                    <li role="presentation" data-ng-class="{active: tab === 'upload'}" class="first">
+						<a href data-ng-click="setTab('upload')" ><span class="hidden-xs">Mijn</span> publiceerbare <span class="hidden-xs">datasets</span> <span class="badge">
+                        <span data-ng-show="filterActive && tab === 'upload'">{{filterCount}} / </span>{{totalNotPublished + GdsUploadFactory.list.length}}</span></a>
+                    </li>
+                    <li role="presentation" data-ng-class="{active: tab == 'published'}" >
+                        <a href data-ng-click="setTab('published')"><span class="hidden-xs">Mijn</span> gepubliceerde <span class="hidden-xs">datasets</span> <span class="badge">
+                            <span data-ng-show="filterActive && tab === 'published'">{{filterCount}} / </span>{{totalPublished}}</span></a>
+                    </li>
+                </ul>
+            </nav>
+            <section class="ng-cloack">
+                <div class="row" data-ng-if="tab == 'published'">
+                    <div class="col-lg-6">
+                        <div class="form-group has-feedback">
+
+                            <div class="input-group">
+                                <input type="text" id="queryPublished" class="form-control" placeholder="{{'placeholderSearchField' | translate}}"
+                                        data-ng-model="searchParams.searchQuery" data-ng-keydown="searchFromKeypress($event)">
+                                <span class="input-group-btn">
+                                  <button id="searchButtonPublished" class="btn btn-default" type="button" data-ng-click="search()">{{'go' | translate}}</button>
+                                </span>
+                            </div><!-- /input-group -->
+                            <span class="fa fa-times form-control-feedback"
+                                  data-ng-show="filterActive"
+                                  data-ng-click="clearSearch()"
+                                  style="right: 44px; top: 0px; z-index: 2; cursor:pointer"
+                                  aria-label="Verwijder zoekopdracht"
+                                  data-tooltip="Verwijder zoekopdracht" data-tooltip-placement="bottom" data-tooltip-append-to-body="true"></span>
+                        </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6 ">
+                        <div>
+                            <button id="sortPublished" type="button" class="btn btn-default sort-btn floatright"
+                                    aria-label="Sort direction" data-ng-click="toggleSortOrder()">
+                                <i class="fa" data-ng-class="{'fa-sort-amount-asc': searchParams.sortDirection === 'asc', 'fa-sort-amount-desc': searchParams.sortDirection ==='desc'}"></i>
+                            </button>
+                            <select id="orderPublished" class="form-control search-field" data-ng-options="sortBy.fieldName as sortBy.labelKey | translate for sortBy in orderList"
+                                    data-ng-model="searchParams.selectedOrder" data-ng-change="sortResults()"></select>
+
+                        </div>
+                    </div><!-- /.col-lg-6 -->
+                </div>
+                <form action="../../geodatastore/api/dataset" method="POST" enctype="multipart/form-data" data-file-upload="datasetUploadOptions"
+                        data-ng-class="{'fileupload-processing': processing() || loadingFiles}" data-ng-controller="GdsFileUploadController" data-ng-cloak>
+                    <!-- Select file button  and dropzone -->
+                    <div id="dropzone" class="fade" data-gds-drop-zone data-ng-show="tab=='upload'">
+                        <div class="floatright hidden-xs">
+                            <i class="fa fa-cloud-upload fa-4x floatright"></i>
+                        </div>
+                        <div><span class="hidden-xs">Sleep de bestanden hier op of<br/></span>
+                                <span class="btn btn-default btn-sm fileinput-button" style="margin-top:.5em;" data-ng-class="{disabled: disabled}">
+                                    <i class="fa fa-folder-open-o fa-fw"></i>
+                                    <span>selecteer <span class="hidden-xs">bestanden</span></span>
+                                    <input type="file" name="dataset" multiple data-ng-disabled="disabled">
+                                </span>
+                        </div>
+                    </div>
+                    <div class="row" data-ng-if="tab == 'upload'">
+                        <div class="col-lg-6">
+                            <div class="form-group has-feedback">
+                                <div class="input-group">
+                                    <input type="text" id="queryUpload" class="form-control" placeholder="{{'placeholderSearchField' | translate}}"
+                                           data-ng-model="searchParams.searchQuery" data-ng-keydown="searchFromKeypress($event)">
+                                <span class="input-group-btn">
+                                  <button id="searchButtonUpload" class="btn btn-default" type="button" data-ng-click="search()">{{'go' | translate}}</button>
+                                </span>
+                                </div><!-- /input-group -->
+                                <span class="fa fa-times form-control-feedback"
+                                      data-ng-show="filterActive"
+                                      data-ng-click="clearSearch()"
+                                      style="right: 44px; top: 0px; z-index: 2; cursor:pointer"
+                                      aria-label="Verwijder zoekopdrachth"
+                                      data-tooltip="Verwijder zoekopdracht" data-tooltip-append-to-body="true"></span>
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 ">
+                            <div>
+                                <button id="sortUpload" type="button" class="btn btn-default sort-btn floatright hidden-xs"
+                                        aria-label="Sort direction" data-ng-click="toggleSortOrder()">
+                                    <i class="fa" data-ng-class="{'fa-sort-amount-asc': searchParams.sortDirection === 'asc', 'fa-sort-amount-desc': searchParams.sortDirection ==='desc'}"></i>
+                                </button>
+                                <select id="orderUpload" class="form-control search-field" data-ng-options="sortBy.fieldName as sortBy.labelKey | translate for sortBy in orderListUpload"
+                                        data-ng-model="searchParams.selectedOrder" data-ng-change="sortResults()"></select>
+
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                    </div>
+                    <div>
+                        <div class="overlay" data-ng-show="searching"><i class="fa fa-spinner fa-pulse fa-fw fa-3x"></i></br>{{'loading' | translate}}</div>
+                        <ol id="selectable" data-ng-hide="searching">
+                           <!-- List of files in queue -->
+                           <li data-ng-repeat="file in queue" data-ng-class="{'processing': file.$processing()}" data-ng-cloak data-ng-show="tab === 'upload'">
+
+                               <div class="title">
+                                   <div class="floatright" >
+                                       <a class="delete" href="#" data-tooltip="{{'tooltip.interrupt' | translate}}"
+                                          title="onderbreken" data-ng-click="file.$cancel()" data-ng-hide="!file.$cancel">
+                                           <i class="fa fa-times fa-lg"></i>
+                                       </a>
+                                   </div>
+                                   <i class="file-icon fa fa-lg fa-fw" data-ng-class="GdsUploadFactory.getFileIcon(file.type)"></i>
+                                   <span class="name">{{file.name}}</span>
+                                   <span class="size">({{file.size | formatFileBinarySize:true}})</span>
+                                   <div data-ng-show="file.error"  class="message alert-danger">
+                                       <i class="fa fa-exclamation-triangle fa-fw" style="margin-right: 4px"></i>
+                                       <span data-translate="datasetUploadError" data-translate-values="{errorText: '{{file.error}}'}"></span>
+                                   </div>
+                               </div>
+                               <div class="progress progress-bar-striped progress-bar-inqueue active fade" data-ng-class="{'pending': 'in'}[file.$state()]"
+                                    data-file-upload-progress="file.$progress()" style="width: 100%">
+                                   <div class="progress-bar progress-bar-striped progress-bar-success"
+                                        data-ng-style="{width: num + '%'}">
+                                   </div>
+                               </div>
+                           </li>
+                           <!-- Files uploaded since page reload -->
+                           <li data-ng-repeat="md in GdsUploadFactory.list" data-ng-click="setMD(md)" data-ng-class="setBackground(md)"
+                               data-ng-controller="gdsCardController" class="card" data-ng-cloak data-ng-show="tab === 'upload'">
+                               <div class="arrow-left" data-ng-show="md.identifier == getMdSelected().identifier"></div>
+                               <div class="title">
+                                   <div class="floatright">
+                                       <a class="delete" data-tooltip="{{'tooltip.remove' | translate}}"
+                                          data-ng-click="showDeleteConfirm(md, $event)"
+                                          title="Verwijderen"><i class="fa fa-trash-o fa-lg"></i></a>
+                                   </div>
+                                   <i class="fa fa-lg fa-fw" data-ng-class="GdsUploadFactory.getFileIcon(md)" style="vertical-align: 12%"></i>
+                                   <span>{{getFileName(md)}}</span>
+                               </div>
+                               <div class="message alert-success" data-ng-show="md.$publishable">
+                                   <button type="button" class="btn btn-default btn-sm floatright" data-gn-click-and-spin="startPublish($event)"
+                                           data-ng-disabled="!md.$publishable"><i class="fa fa-share fa-fw"></i>Publiceren</button>
+                                   <i class="fa fa-check fa-fw" style="font-size:1em; margin-right: 4px"></i>
+                                   <span data-translate="">dataReadyForSharing</span>
+                               </div>
+                               <div class="message alert-info" data-ng-hide="md.$publishable || getStatus(md) == 'error'">
+                                   <i class="fa fa-pencil fa-fw" style="font-size:1em; margin-right: 4px"></i>
+                                   <span data-translate="">completeToPublish</span>
+                               </div>
+                               <div class="message alert-danger" data-ng-show="getStatus(md) == 'error'">
+                                   <i class="fa fa-exclamation-triangle fa-fw" style="font-size:1em; margin-right: 4px"></i>
+                                   <span data-translate="">datasetUploadServerError</span>
+                               </div>
+                           </li>
+
+                           <!--  Files recovered from search service -->
+                           <li data-ng-repeat="md in searchResults.metadata" data-ng-click="setMD(md)" data-ng-class="setBackground(md)"
+                               data-ng-controller="gdsCardController" class="card animated" data-ng-cloak>
+                                <div class="arrow-left" data-ng-show="md.identifier == getMdSelected().identifier"></div>
+                                <div data-ng-include="'../../catalog/views/geodatastore/templates/cardPublished.html'"  data-ng-show="tab == 'published'"></div>
+                                <div data-ng-include="'../../catalog/views/geodatastore/templates/cardUpload.html'" data-ng-show="tab == 'upload'"></div>
+                            </li>
+                        </ol>
+                    </div>
+                </form>
+                <div>
+                    <nav class="floatright" data-ng-cloak>
+                        <ul class="pagination" data-ng-show="pages.length > 1">
+                            <li data-ng-class="{'disabled': page==1}">
+                                <a href="#" aria-label="Previous" data-ng-click="updateResultsAndPreserveSearch(page-1)">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+							
+				<li data-ng-repeat="i in pages track by $index" data-ng-class="{'active': page==$index+1}"><a href="#" data-ng-click="updateResultsAndPreserveSearch($index+1)">{{$index+1}}</a></li>
+							
+                            <li data-ng-class="{'disabled':page==pages.length}">
+                                <a href="#" aria-label="Next" data-ng-click="updateResultsAndPreserveSearch(page+1)">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <span style="margin-top:6px; display: inline-block;">
+					<span data-ng-show="tab=='upload'">{{totalNotPublished}} datasets.</span>
+					<span data-ng-show="tab=='published'">{{totalPublished}} datasets.</span>
+		    </span>
+                </div>
+            </section>
+            <aside data-ng-switch data-on="hasSelected">
+				<div id="metadata" class="fade" data-ng-switch-when="true" data-ng-class="{'in': hasSelected }">
+					<div ng-show="getMdSelected().error != ''">
+						<br/><br/><br/><br/>
+						<h3><i class="fa fa-exclamation-triangle fa-fw"></i> <span data-translate="">uploadError</span></h3>
+						
+						<p>{{getMdSelected().message | translate}}</p>
+						<br/><br/><br/><br/>
+					</div>
+                    <div data-ng-include="'../../catalog/views/geodatastore/templates/readonlyMetadata.html'"
+                         data-ng-cloak data-ng-if="tab === 'published' && !editState.isEditing"></div>
+					<div data-ng-include="'../../catalog/views/geodatastore/templates/form.html'"
+                         data-ng-if="editState.isEditing && !(getMdSelected().error || getMdSelected().$processing())" data-ng-cloak></div>
+                </div>
+                <div data-ng-switch-default class="padding-25 padding-top-10em">
+					
+						<p class="h3 text-center" data-ng-show="tab == 'upload' && totalNotPublished > 0">
+                            <span data-translate="">enterInfoAboutDataset</span><br/>
+							<small><span data-translate="">selectFileFromLeft</span></small></p>
+						<p class="h3 text-center" data-ng-show="tab == 'published' && totalPublished > 0">
+							<span data-translate="">changeInfoAfterPublishing</span><br/>
+							<small><span data-translate="">selectFileFromLeft</span></small></p>
+						<p class="h3 text-center" data-ng-show="tab == 'upload' && totalNotPublished == 0">
+							<span data-translate="">uploadDatasetByDraggingFile</span></p>
+						<p class="h3 text-center" data-ng-show="tab =='published' && totalPublished == 0">
+                            <span data-translate="">previouslyPublishedDatasets</span>
+                        </p>
+						
+                    <p class="text-center" aria-label="Left arrow"><i class="fa fa-arrow-left fa-4x"></i></i></p>
+                </div>
+            </aside>
+            <div class="clearfix"></div>
+        </div>
+        <footer data-ng-include="'../../catalog/views/geodatastore/templates/footer.html'">
+
+        </footer>
+    </div>
+</div>
+
+</html>
+
+
+

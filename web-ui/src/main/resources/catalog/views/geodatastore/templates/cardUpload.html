@@ -1,0 +1,22 @@
+<!--
+template for card to be used before being published
+-->
+
+<div class="title">
+	<div class="floatright">
+		<a class="delete" data-tooltip="{{'tooltip.remove' | translate}}"  title="Verwijderen"
+				data-ng-click="showDeleteConfirm(md, $event)"><i class="fa fa-trash-o fa-lg"></i></a>
+	</div>
+	<i class="fa fa-lg fa-fw hidden-xs" data-ng-class="getFileType(md)" style="vertical-align: 12%"></i>
+	<span>{{getFileName(md)}}</span>
+</div>
+<div class="message alert-success" data-ng-show="md.$publishable">
+	<button type="button" class="btn btn-default btn-sm floatright" data-gn-click-and-spin="startPublish($event)"
+            data-ng-disabled="!md.$publishable"><i class="fa fa-share fa-fw"></i>Publiceren</button>
+	<i class="fa fa-check fa-fw" style="font-size:1em; margin-right: 4px"></i>Data is klaar om te worden gedeeld.
+</div>
+<div class="message alert-info" data-ng-hide="md.$publishable">
+	Voltooi de dataset informatie om te kunnen publiceren.
+</div>
+<div class="message alert-danger" data-ng-show="getStatus(md)=='error'">
+	<i class="fa fa-exclamation-triangle fa-fw" style="font-size:1em; margin-right: 4px"></i> Er is iets fout gegaan tijdens het uploaden.</div>

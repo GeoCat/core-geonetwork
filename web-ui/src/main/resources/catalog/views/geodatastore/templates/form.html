@@ -1,0 +1,165 @@
+<!--
+template for metadata form
+-->
+
+<form id="metadataForm" method="POST" enctype="multipart/form-data" data-file-upload="datasetEditOptions"
+	  data-ng-controller="GdsEditMetadataController" name="editMdForm">
+	
+    	<div class="row" data-ng-show="tab === 'published'">
+
+           <div class="col-lg-4 form-group">
+           	<label><i class="fa fa-cloud-upload fa-fw" style="font-size:1em; margin-right: 4px"></i>Publicatiedatum</label>
+            	<div class="value"  style="padding-left:23px">{{mdToEdit.publishDate | date:'dd-MM-yyyy' }}</div>
+            </div><!-- /.col-lg-4 -->
+            <div class="col-lg-4 form-group">
+            	<label><i class="fa fa-pencil fa-fw" style="font-size:1em; margin-right: 4px"></i>Wijzigingsdatum</label>
+            	<div class="value"  style="padding-left:23px">{{mdToEdit.changeDate | date:'dd-MM-yyyy' }}</div>
+            </div><!-- /.col-lg-4 -->
+            <div class="col-lg-4 form-group">
+			<button type="button" id="saveFormButton1" class="btn btn-default btn-sm" data-gn-click-and-spin="processSubmit(tab==='published')"
+					data-ng-disabled="editMdForm.$pristine && editMdForm.$valid"><i class="fa fa-share fa-fw"></i> {{'publishAgain'|translate}}</button>
+            </div><!-- /.col-lg-4 -->
+
+    	</div>
+
+	<div ng-show="mdToEdit.saved">
+		<br/><br/><br/><br/>
+		<h2><i class="fa fa-check fa-fw"></i> {{'Data-succesfully-updated'|translate}}</h2>
+		<br/><br/><br/><br/>
+	</div>
+
+	<div class="form-group">
+		<i class="fa fa-question-circle fa-fw floatright" style="margin-top: 6px" data-tooltip="{{'helpTitleField'|translate}}"></i>
+		<label for="titleField">{{'title'|translate}}</label>
+		<input class="form-control" id="titleField" tabindex="1" data-ng-model="mdToEdit.title" placeholder="{{'placeholderTitleField'|translate}}" />
+	</div>
+	<div class="form-group">
+		<i class="fa fa-question-circle fa-fw floatright" style="margin-top: 6px" data-tooltip="{{'helpAbstractField'|translate}}"></i>
+		<label for="abstractField">{{'summary'|translate}}</label>
+		<textarea rows="5" class="form-control" id="abstractField" data-ng-model="mdToEdit.summary" tabindex="2" placeholder="{{'placeholderAbstractField'|translate}}"></textarea>
+	</div>
+	<div class="form-group">
+		<i class="fa fa-question-circle fa-fw floatright" style="margin-top: 6px" data-tooltip="{{'helpTopicField'|translate}}"></i>
+		<label for="topicField">{{'topicCategories'|translate}}</label>
+		<select class="form-control" id="topicField" tabindex=3 data-ng-model="mdToEdit.topicCategory">
+			<option value="">{{'placeholderTopicField'|translate}}</option>
+			<option value="imageryBaseMapsEarthCover">Luchtfoto / Dekking van de Aarde</option>
+			<option value="inlandWaters">Binnenwateren</option>
+			<option value="biota">Biota (flora, fauna, habitat)</option>
+			<option value="economy">Economie</option>
+			<option value="geoscientificInformation">Geo-wetenschappelijke informatie</option>
+			<option value="health">Gezondheid</option>
+			<option value="boundaries">Grenzen</option>
+			<option value="intelligenceMilitary">Inlichtingen / Defensie</option>
+			<option value="climatologyMeteorologyAtmosphere">Klimatologie / Meteorologie</option>
+			<option value="farming">Landbouw</option>
+			<option value="location">Locatie</option>
+			<option value="society">Maatschappij</option>
+			<option value="environment">Milieu</option>
+			<option value="oceans">Oceanen</option>
+			<option value="planningCadastre">Planning / Kadaster</option>
+			<option value="structure">Structuur</option>
+			<option value="utilitiesCommunication">Nuts diensten / Communicatie</option>
+			<option value="elevation">Hoogte</option>
+			<option value="transportation">Vervoer</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<i class="fa fa-question-circle fa-fw floatright" style="margin-top: 6px" data-tooltip="{{'helpKeywordsField'|translate}}"></i>
+		<label for="tw">{{'keywords'|translate}}</label>
+		<bootstrap-tagsinput-form id="tw" data-ng-tabindex="4" placeholder="{{'placeholderKeywordsField'|translate}}"
+			   data-ng-model="mdToEdit.keywords"></bootstrap-tagsinput-form>
+	</div>
+	<div class="form-group">
+		<i class="fa fa-question-circle fa-fw floatright" style="margin-top: 6px" data-tooltip="{{'helpLineageField'|translate}}"></i>
+		<label for="lineageField">{{'lineage'|translate}}</label>
+		<textarea rows="4" class="form-control" id="lineageField" data-ng-model="mdToEdit.lineage" tabindex="5" placeholder="{{'placeholderLineageField'|translate}}"></textarea>
+	</div>
+	<div class="form-group">
+		<i class="fa fa-question-circle fa-fw floatright" style="margin-top: 6px" data-tooltip="{{'helpLocationField'|translate}}"></i>
+		<label for="locationField">{{'location'|translate}}</label>
+        	<input id="locationField" tabindex="6" data-ng-model="mdToEdit.location" placeholder="{{'placeholderLocationField'|translate}}"
+               data-uri-model="mdToEdit.locationUri"
+               class="form-control" data-gds-keyword-picker data-thesaurus-key="external.place.administrativeAreas"/>
+	</div>
+	<div class="form-group">
+		<i class="fa fa-question-circle fa-fw floatright" style="margin-top: 6px" data-tooltip="{{'helpLicenseField'|translate}}"></i>
+		<label for="licenseField">{{'license'|translate}}</label>
+		<select class="form-control" id="licenseField" tabindex=7 data-ng-model="mdToEdit.license"
+                data-ng-options="item.value as item.label for item in licenseList">
+			<!--<option value="">{{'placeholderLicenseField'|translate}}</option>-->
+		</select>
+	</div>
+	<div class="form-group">
+		<i class="fa fa-question-circle fa-fw floatright" style="margin-top: 6px" data-tooltip="{{'helpScaleField'|translate}}"></i>
+		<label for="resolutionField">{{'resolution'|translate}}</label>
+		<select class="form-control" id="resolutionField" tabindex=8 data-ng-model="mdToEdit.resolution"
+                data-ng-options="item.value as item.label for item in resolutionList">
+			<option value="">{{'placeholderScaleField'|translate}}</option>
+		</select>
+	</div>
+	<div class="row">
+		<div class="col-lg-6">
+			<div class="form-group">
+				<i class="fa fa-question-circle fa-fw floatright" style="margin-top: 6px" data-tooltip="{{'helpThumbnailField'|translate}}"></i>
+				<label for="thumbnailUploadButton">{{'thumbnail'|translate}}</label>
+				<span class="btn btn-default btn-sm fileinput-button" style="width: 100%" data-ng-class="{disabled: disabled}">
+					<i class="fa fa-folder-open-o fa-fw"></i>
+					<span>Selecteer een bestand</span>
+					<input type="file" id="thumbnailUploadButton" tabindex=9 name="thumbnail" data-ng-disabled="disabled"
+						   accept="image/*">
+				</span>
+				<div data-ng-show="mdToEdit.thumbnailUri && (!queue || queue.length == 0)">
+					<div class="thumbcont">
+						<img data-ng-src="{{mdToEdit.thumbnailUri}}" alt="Afbeelding/Thumbnail" data-ng-if="mdToEdit.thumbnailUri">
+					</div>
+					<!--<div class="thumbact">
+						<button type="button" id="Vervangen" class="btn btn-default btn-sm floatright"><i class="fa fa-exchange fa-fw"></i>{{'replace'|translate}}</button>
+						<button type="button" id="Verwijder" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i>{{'remove'|translate}}</button>
+					</div>-->
+				</div>
+				<div data-ng-repeat="file in queue" data-ng-class="{'processing': file.$processing()}">
+					<div class="thumbcont text-center" data-file-upload-preview="file"></div>
+
+					<div class="thumbact">
+						<!--<button type="button" id="VervangenPreview" class="btn btn-default btn-sm floatright" data-ng-click="file.$cancel()"><i class="fa fa-exchange fa-fw"></i>{{'replace'|translate}}</button>
+						<button type="button" id="VerwijderPreview" class="btn btn-default btn-sm"  data-ng-click="file.$cancel()"><i class="fa fa-trash-o fa-fw"></i>{{'remove'|translate}}</button>-->
+					</div>
+				</div>
+		  	</div>
+		</div><!-- /.col-lg-6 -->
+		<div class="col-lg-6 ">
+			<div data-ng-show="tab === 'published'">
+				<div class="form-group">
+					<label>&nbsp;</label>
+					<a id="metadataLink" class="btn btn-default btn-sm" style="width: 100%" target="_blank" data-ng-href="{{ngr_url}}/resource/{{mdToEdit.identifier}}">
+					<i class="fa fa-link fa-fw"></i>{{"Metadata-link"|translate}}</a>
+				</div>
+				<div class="form-group">
+					<a id="downloadLink" class="btn btn-default btn-sm" style="width: 100%" target="_blank" data-ng-href="{{mdToEdit.url}}">
+						<i class="fa fa-file-o fa-fw"></i>{{"Download-link"|translate}}</a>
+				</div>
+			</div>
+		</div><!-- /.col-lg-6 -->
+  	</div><!-- /.row -->
+
+	<div class="form-group metadataFormButtons">
+		<div class="floatright">
+			<button type="button" id="saveFormButton" tabindex=11 class="btn btn-default btn-sm" data-gn-click-and-spin="processSubmit(tab==='published')"
+					data-ng-disabled="editMdForm.$pristine && editMdForm.$valid">
+				<i class="fa fa-fw" data-ng-class="{'fa-floppy-o': tab === 'upload', 'fa fa-share': tab === 'published'}"></i>
+				<span data-ng-show="tab === 'upload'">{{'save'|translate}}</span>
+				<span data-ng-show="tab === 'published'">{{'publishAgain'|translate}}</span>
+
+			</button>
+			<button type="button" id="publishFormButton" tabindex=12 data-ng-disabled="editMdForm.$dirty || !mdToEdit.$publishable"
+					class="btn btn-default btn-sm btn-primary" ng-show="tab=='upload'" data-gn-click-and-spin="publishMetadata(mdToEdit)">
+				<i class="fa fa-share fa-fw"></i> {{'publish'|translate}}
+			</button>
+		</div>
+		<button type="button" id="removeFormButton" tabindex=10 class="btn btn-default btn-sm" data-ng-click="showDeleteConfirm(mdToEdit, $event)">
+			<i class="fa fa-trash-o fa-fw"></i> {{'remove'|translate}}
+		</button>
+			
+	</div>
+</form>

@@ -1,0 +1,12 @@
+<div data-ng-controller="geoDataStoreMainController"
+     xmlns="http://www.w3.org/1999/html">
+    <div data-ng-if="authenticated">
+        <div data-ng-include="'../../catalog/views/geodatastore/templates/upload.html'"></div>
+
+    </div>
+    <div data-ng-if="!authenticated">
+        <div data-ng-include="'../../catalog/views/geodatastore/templates/signin_geodatastore.html'"></div>
+
+    </div>
+</div>
+

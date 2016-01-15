@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    List of elements and attributes than are inserted, if not already present, by the service "insert.missing.elements".
+
+    If an element's ancestors, as specified in the XPATH, are absent, they are created also.
+
+    To insert an attribute without value, use ancestors/parent/@attributeName.
+    To insert an attribute with a value, use ancestors/parent[@attributeName='value'].
+
+    If a gco:Boolean value is inserted it receives text value 'false'.
+    If a gml:id attribute is inserted it receives a random UUID value.
+
+    Position filters (like [2]) are used to created a sibling element at the end of any existing siblings with the same name, regardless of the actual position value.
+
+    Not adapted for use with other xpath functions (like [count(.) > 3]).
+    Not tested with wildcards or //.
+    All elements and attributes must have proper namespace prefixes as defined in the target document.
+
+    Do not start the xpath with / and leave out the root element (strange behaviour from Jaxen xpath).
+
+    If the target document is not valid w.r.t. its XSD, the result is undefined.
+-->
+<required_elements>
+	<xpath>gmd:language/gmd:LanguageCode[@codeList='http://www.loc.gov/standards/iso639-2/']</xpath>
+	<xpath>gmd:language/gmd:LanguageCode[@codeListValue='dut']</xpath>
+	<xpath>gmd:identificationInfo[X]/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString</xpath>
+	<xpath>gmd:identificationInfo[X]/srv:SV_ServiceIdentification/gmd:abstract/gco:CharacterString</xpath>
+	<xpath>gmd:hierarchyLevel/gmd:MD_ScopeCode[@codeList='http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_ScopeCode']</xpath>	
+	<xpath>gmd:hierarchyLevel/gmd:MD_ScopeCode[@codeListValue='service']</xpath>
+	<xpath>gmd:contact/gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString</xpath>
+	<xpath>gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString</xpath>
+	<xpath>gmd:contact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeList='http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode']</xpath>
+	<xpath>gmd:contact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='']</xpath>
+	<xpath>gmd:dateStamp</xpath>
+	<xpath>gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL</xpath>
+    <xpath>gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:protocol/gco:CharacterString</xpath>
+	<xpath>gmd:identificationInfo[X]/srv:SV_OperationMetadata/srv:connectPoint/gmd:CI_OnlineResource/gmd:linkage/gmd:URL</xpath>
+	<xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/srv:operatesOn/@uuidref</xpath>
+    <xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/srv:operatesOn/@xlink:href</xpath>
+	<xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/srv:couplingType/srv:SV_CouplingType[@codeList='http://www.isotc211.org/2005/iso19119/resources/Codelist/gmxCodelists.xml#SV_CouplingType']</xpath>
+	<xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/srv:couplingType/srv:SV_CouplingType/@codeListValue</xpath>
+	<xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceType/gco:LocalName</xpath>
+	<xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/srv:coupledResource/srv:SV_CoupledResource/srv:operationName/gco:CharacterString</xpath>
+	<xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/srv:containsOperations/srv:SV_OperationMetadata/srv:DCP/srv:DCPList[@codeList='http://www.isotc211.org/2005/iso19119/resources/Codelist/gmxCodelists.xml#DCPList']</xpath>
+	<xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/srv:containsOperations/srv:SV_OperationMetadata/srv:DCP/srv:DCPList/@codeListValue</xpath>
+	<xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword[X]/gco:CharacterString</xpath>
+    <xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString</xpath>
+    <xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date/gco:Date</xpath>
+    <xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:dateType/gmd:CI_DateTypeCode[@codeList='http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_DateTypeCode']</xpath>
+    <xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:dateType/gmd:CI_DateTypeCode/@codeListValue</xpath>
+
+	<xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:westBoundLongitude/gco:Decimal</xpath>
+    <xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:eastBoundLongitude/gco:Decimal</xpath>
+    <xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:southBoundLatitude/gco:Decimal</xpath>
+    <xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:northBoundLatitude/gco:Decimal</xpath>
+	
+	<xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/@gml:id</xpath>
+    <xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:begin/gml:TimeInstant/@gml:id</xpath>
+    <xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:begin/gml:TimeInstant/gml:timePosition</xpath>
+    <xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:end/gml:TimeInstant/@gml:id</xpath>
+    <xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:end/gml:TimeInstant/gml:timePosition</xpath>
+	
+	<xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date/gco:Date</xpath>
+    <xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:dateType/gmd:CI_DateTypeCode[@codeList='http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_DateTypeCode']</xpath>
+	<xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:dateType/gmd:CI_DateTypeCode/@codeListValue</xpath>	
+	<xpath>gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:scope/gmd:DQ_Scope/gmd:level/gmd:MD_ScopeCode[@codeList='http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_ScopeCode']</xpath>
+	<xpath>gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:scope/gmd:DQ_Scope/gmd:level/gmd:MD_ScopeCode[@codeListValue='service']</xpath>
+	<xpath>gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report[X]/gmd:DQ_DomainConsistency/gmd:result[X]/gmd:DQ_ConformanceResult/gmd:pass/gco:Boolean</xpath>	
+	<xpath>gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report[X]/gmd:DQ_DomainConsistency/gmd:result[X]/gmd:DQ_ConformanceResult/gmd:explanation/gco:CharacterString</xpath>
+	<xpath>gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report[X]/gmd:DQ_DomainConsistency/gmd:result[X]/gmd:DQ_ConformanceResult/gmd:specification/gmd:CI_Citation/gmd:title/gco:CharacterString</xpath>
+    <xpath>gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report[X]/gmd:DQ_DomainConsistency/gmd:result[X]/gmd:DQ_ConformanceResult/gmd:specification/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date/gco:Date</xpath>
+    <xpath>gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report[X]/gmd:DQ_DomainConsistency/gmd:result[X]/gmd:DQ_ConformanceResult/gmd:specification/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:dateType/gmd:CI_DateTypeCode[@codeList='http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_DateTypeCode']</xpath>
+    <xpath>gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report[X]/gmd:DQ_DomainConsistency/gmd:result[X]/gmd:DQ_ConformanceResult/gmd:specification/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:dateType/gmd:CI_DateTypeCode/@codeListValue</xpath>
+	<xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints[X]/gmd:MD_LegalConstraints/gmd:accessConstraints/gmd:MD_RestrictionCode[@codeList='http://www.isotc211.org/2005/resources/codeList.xml#MD_RestrictionCode']</xpath>
+    <xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints[X]/gmd:MD_LegalConstraints/gmd:accessConstraints/gmd:MD_RestrictionCode[@codeListValue='']</xpath>
+    <xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints[X]/gmd:MD_LegalConstraints/gmd:otherConstraints/gco:CharacterString</xpath>
+    <xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints[X]/gmd:MD_SecurityConstraints/gmd:classification/gmd:MD_ClassificationCode[@codeList='http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_ClassificationCode']</xpath>
+    <xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints[X]/gmd:MD_SecurityConstraints/gmd:classification/gmd:MD_ClassificationCode[@codeListValue='']</xpath>
+	<xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints[X]/gmd:MD_Constraints/gmd:useLimitation/gco:CharacterString</xpath>
+	<xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString</xpath>
+	<xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString</xpath>
+	<xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString</xpath>
+	<xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeList='http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode']</xpath>
+	<xpath>gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='']</xpath>
+
+</required_elements>

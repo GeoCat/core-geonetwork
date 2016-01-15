@@ -1,0 +1,788 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<labels xmlns:gmd="http://www.isotc211.org/2005/gmd" 
+		  xmlns:gts="http://www.isotc211.org/2005/gts" 
+		  xmlns:gco="http://www.isotc211.org/2005/gco"
+		  xmlns:gml="http://www.opengis.net/gml"
+          xmlns:srv="http://www.isotc211.org/2005/srv"
+          xmlns:xlink="http://www.w3.org/1999/xlink">
+	
+	<!-- ==================================================== -->	
+	<element name="gmd:CI_OnlineResource" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:containsOperations/srv:SV_OperationMetadata/srv:connectPoint/gmd:CI_OnlineResource">
+		<label>Online resource</label>
+		<description>Informatie over online bronnen waarmee de gegevens kunnen worden verkregen.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:CI_OnlineResource" context="gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource">
+		<label>Online resource</label>
+		<description>Informatie over online bronnen waarmee de gegevens kunnen worden verkregen.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:URL" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:containsOperations/srv:SV_OperationMetadata/srv:connectPoint/gmd:CI_OnlineResource/gmd:linkage/gmd:URL">
+		<label>Connect Point Linkage *</label>
+		<description>Dit element beschrijft het netwerkadres van de service instance via het verplichte element linkage, uit de klasse CI_OnlineResource. Dit element heeft hetzelfde doel als Resource Locator </description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.5_Connect_Point_Linkage</help_link>
+	    <condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:URL" context="gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL">
+		<label>Resource locator (URL) "</label>
+		<description>Dit element is conditioneel in INSPIRE. Als er een link naar de service beschikbaar is, is het een verplicht element. Voor bijvoorbeeld services waar een restrictieve toegang voor geldt kan dit element niet ingevuld worden. Het bevat de valide URL voor on-line toegang tot de service.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.4_Resource_locator</help_link>
+	    <condition>C</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:abstract" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:abstract">
+		<label>Resource abstract *</label>
+		<description>Beschrijving van de inhoud van de service.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.2_Resource_abstract</help_link>
+	    <condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:address" context="gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address">
+		<label>Adres</label>
+		<description>Adres van de organisatie.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:address" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address">
+		<label>Adres</label>
+		<description>Adres van de organisatie.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:CI_Address" context="gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address">
+		<label>Adres</label>
+		<description>Adres van de verantwoordelijke organisatie.</description>
+	</element>
+	<!-- ==================================================== -->	
+	<element name="gmd:CI_Address" context="gmd:MD_Metadata/gmd:identificationInfo/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address">
+		<label>Adres</label>
+		<description>adres van de verantwoordelijke  organisatie.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:CI_Citation" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation">
+		<label>Citatie</label>
+		<description>Beschrijving van de bron.</description>
+	</element>
+	<!-- ==================================================== -->	
+	<element name="gmd:CI_Citation" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation">
+		<label>Citatie</label>
+		<description>Beschrijving van de bron.</description>
+	</element>
+	<!-- ==================================================== -->	
+	<element name="gmd:CI_Citation" context="gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:specification/gmd:CI_Citation">
+		<label>Citatie</label>
+		<description>Beschrijving van de bron.</description>
+	</element>	
+	<!-- ==================================================== -->
+	<element name="gmd:CI_Contact" context="gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact">
+		<label>Contact</label>
+		<description>Informatie die nodig is om contact op te nemen met de verantwoordelijke persoon of organisatie. </description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:CI_Contact" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact">
+		<label>Contact</label>
+		<description>Informatie die nodig is om contact op te nemen met de verantwoordelijke persoon of organisatie. </description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:CI_Date" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date">
+		<label>Datum</label>
+		<description>Referentie datum en gebeurtenis waarmee deze wordt omschreven (YYYY-MM-DD).</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:CI_Date" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:Date/gm:CI_Date">
+		<label>Datum</label>
+		<description>Referentie datum en gebeurtenis waarmee deze wordt omschreven (YYYY-MM-DD).</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:CI_Date" context="gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:specification/gmd:CI_Citation/gmd:date/gm:CI_Date">
+		<label>Datum</label>
+		<description>Referentie datum en gebeurtenis waarmee deze wordt omschreven (YYYY-MM-DD).</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:CI_DateTypeCode" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:dateType/gmd:CI_DateTypeCode">
+		<label>Datum type</label>
+		<description/>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:CI_DateTypeCode" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:Date/gm:CI_Date/gmd:dateType/gmd:CI_DateTypeCode">
+		<label>Datum type</label>
+		<description/>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:CI_DateTypeCode" context="gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:specification/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:dateType/gmd:CI_DateTypeCode">
+		<label>Datum type</label>
+		<description/>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:CI_ResponsibleParty" context="gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty">
+		<label>Metadata point of contact</label>
+		<description>Identificatie en wijze van communicatie met verantwoordelijke partij.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:CI_ResponsibleParty" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty">
+		<label>Responsible party (bron)</label>
+		<description>Identificatie en wijze van communicatie met verantwoordelijke partij.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:CI_RoleCode" context="gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode">
+		<label>Rol code</label>
+		<description/>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:CI_RoleCode" context="gmd:MD_Metadata/gmd:identificationInfo/SV_ServiceIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode">
+		<label>Rol code</label>
+		<description/>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:citation" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation">
+		<label>Citatie</label>
+		<description>Beschrijvingen van de bron.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:classification" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints/gmd:MD_SecurityConstraints/gmd:classification">
+	<label>Classification</label>
+		<description>De soort restrictie op de service.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.20_Constraints</help_link>
+		<condition>C</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:contact" context="gmd:MD_Metadata/gmd:contact">
+		<label>Metadata point of contact</label>
+		<description>Organisatie(s) die verantwoordelijk zijn voor de metadata.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:contactInfo" context="gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo">
+		<label>Contact informatie</label>
+		<description>Informatie die nodig is om contact op te nemen met de verantwoordelijke persoon of organisatie.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:contactInfo" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo">
+		<label>Contact informatie</label>
+		<description>Informatie die nodig is om contact op te nemen met de verantwoordelijke persoon of organisatie.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:dataQualityInfo" context="gmd:MD_Metadata/gmd:dataQualityInfo">
+		<label>Kwaliteitsbeschrijving</label>
+		<description>Informatie over de kwaliteit van de gegevens.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:date" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:date">
+		<label>Datum</label>
+		<description>Datum van creatie, publicatie of wijziging. Het formaat van de datum is JJJJ-MM-DD(met streepjes).</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:date" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date">
+		<label>Date of publication, creation or revision *</label>
+		<description>Datum van creatie, publicatie of wijziging. Het formaat van de datum is JJJJ-MM-DD(met streepjes).</description>
+	<condition>C</condition>
+	</element>
+	<!-- ==================================================== -->	
+	<element name="gmd:date" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:date">
+		<label>Datum</label>
+		<description>Datum van creatie, publicatie of wijziging. Het formaat van de datum is JJJJ-MM-DD(met streepjes).</description>
+	</element>
+	<!-- ==================================================== -->	
+	<element name="gmd:date" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date">
+		<label>Originating controlled vocabulary date "</label>
+		<description>Datum van creatie, publicatie of wijziging. Het formaat van de datum is JJJJ-MM-DD(met streepjes).</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.14_Originating_controlled_vocabulary</help_link>
+		<condition>C</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:date" context="gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:specification/gmd:CI_Citation/gmd:date">
+		<label>Datum</label>
+		<description>Datum van creatie, publicatie of wijziging. Het formaat van de datum is JJJJ-MM-DD(met streepjes).</description>
+	</element>
+	<!-- ==================================================== -->	
+	<element name="gmd:date" context="gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:specification/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date">
+		<label>Specification date "</label>
+		<description>Datum van creatie, publicatie of wijziging. Het type gebeurtenis waar de datum op slaat is weergegeven in datum type. Het formaat van de datum is JJJJ-MM-DD(met streepjes).Dit element is conditioneel in dit profiel. Het is alleen verplicht als de service een INSPIRE bron is.   </description>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:dateStamp" context="gmd:MD_Metadata/gmd:dateStamp">
+		<label>Metadata date *</label>
+		<description>Datum waarop de metadata is gecre&#235;erd of gewijzigd.(YYYY-MM-DD)</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.26_Metadata_date</help_link>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:dateType" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:dateType">
+		<label>Date type *</label>
+		<description>Dit element bevat het type gebeurtenis waar de datum betrekking op heeft.</description>
+		<condition>C</condition>
+	</element>
+	<!-- ==================================================== -->	
+	<element name="gmd:dateType" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:dateType">
+		<label>Originating controlled vocabulary date type "</label>
+		<description>Dit element bevat het type gebeurtenis waar de datum betrekking op heeft.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.14_Originating_controlled_vocabulary</help_link>
+		<condition>C</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:dateType" context="gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:specification/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:dateType">
+		<label>Specification date type "</label>
+		<description>Dit element bevat het type gebeurtenis waar de datum betrekking op heeft. Dit element is conditioneel in dit profiel. Het is alleen verplicht als de service een INSPIRE bron is. </description>
+		<condition>*</condition>
+	</element>	
+	<!-- ==================================================== -->
+	<element name="gmd:descriptiveKeywords" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords">
+		<label>Trefwoorden</label>
+		<description>In het algemeen gebruikte woorden of geformaliseerde zinnen om een onderwerp te beschrijven.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:distributionInfo" context="gmd:MD_Metadata/gmd:distributionInfo">
+		<label>Distributie info</label>
+		<description>Geeft informatie over de distributeur van de informatie of de wijze waarop dit wordt gerealiseerd.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:DQ_ConformanceResult" context="gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult">
+		<label>Conformiteitindicatie</label>
+		<description>Conformiteit met de specificatie.</description>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:DQ_DomainConsistency" context="gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/DQ_DomainConsistency">
+		<label>Domein consistentie</label>
+		<description>Informatie over de specificatie (INSPIRE) of het informatiemodel van de gegevens.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:DQ_DataQuality" context="gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality">
+		<label>Data kwaliteit</label>
+		<description>informatie over de kwaliteit van de data op het niveau waar de kwaliteitsbeschrijving betrekking op heeft.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:DQ_Scope" context="gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:scope/gmd:DQ_Scope">
+		<label>Niveau </label>
+		<description>Niveau waar de kwaliteitsbeschrijving betrekking op heeft.</description>
+	<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:eastBoundLongitude" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:eastBoundLongitude">
+		<label>Maximum x-coordinaat "</label>
+		<description>Meest oostelijke coordinaat uit de horizontale dekking van het object weergegeven in longitude en lattitude in decimale graden (noord en oost als positieve waarden).</description>
+	<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:electronicMailAddress" context="gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress">
+		<label>Metadata point of contact e-mail *</label>
+		<description>E-mail adres van de verantwoordelijke organisatie</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.24_Metadata_point_of_contact</help_link>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:electronicMailAddress" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress">
+		<label>Responsible party e-mail *</label>
+		<description>E-mail adres van de verantwoordelijke organisatie of persoon.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.22_Responsible_party</help_link>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:EX_Extent" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent">
+		<label>Dekking</label>
+		<description>informatie over de ruimtelijke, verticale of temporele dekking.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:EX_GeographicBoundingBox" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox">
+		<label>Geographic location "</label>
+		<description>Meest westelijke, oostelijke, zuidelijke en noordelijke coordinaat uit de horizontale dekking van het object weergegeven in longitude en lattitude en decimale graden (noord en oost als positieve waarden). Gebruik WGS84 als refsysteem.Dit element is conditioneel. Het is verplicht als er data aan de service is gekoppeld. (service is dan tight of mixed coupled service). </description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.15_Geographic_location</help_link>
+		<condition>C</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:EX_TemporalExtent" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent">
+		<label>Temporal extent</label>
+		<description>Informatie over de temporele dekking.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.16_Temporal_Reference</help_link>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:explanation" context="gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:explanation">
+		<label>Verklaring "</label>
+		<description>Verklaar in hoeverre de gegevens al dan niet conform zijn met de specificatie.Dit element is conditioneel in dit profiel. Het is alleen verplicht als de service een INSPIRE bron is. In explanation dient de uitleg van de conformiteit opgenomen te worden .</description>
+	<condition>C</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:extent" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent">
+		<label>Temporal extent</label>
+		<description>Inhoudelijke geldigheid van de data, gespecificeerd naar begin- en einddatum.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.16_Temporal_Reference</help_link>
+	</element>
+		<!-- ==================================================== -->
+	<element name="gmd:fileIdentifier" context="gmd:MD_Metadata/gmd:fileIdentifier">
+		<label>Metadata unieke identifier *</label>
+		<description>Unieke identifier voor de metadata file.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.4.40_Metadata_unieke_identifier</help_link>
+		<condition>*</condition>
+	</element>
+
+	<!-- ==================================================== -->
+	<element name="gmd:geographicElement" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:geographicElement">
+		<label>Geografisch object</label>
+		<description>Beschrijft de geografische component van de dekking van het beschreven object.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:hierarchyLevel" context="gmd:MD_Metadata/gmd:hierarchyLevel">
+		<label>Resource type *</label>
+		<description>Hiërarchisch niveau waar de metadata betrekking op heeft. Voor services is de code: service.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.3_Resource_type</help_link>
+	<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:identificationInfo" context="gmd:MD_Metadata/gmd:identificationInfo">
+		<label>Identificatie informatie</label>
+		<description>De basisinformatie over de bronnen waarvoor de metadata op van toepassing is.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:keyword" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword">
+		<label>Keyword value (trefwoord) *</label>
+		<description>Het element bevat in het algemeen gebruikte woorden of geformaliseerde zinnen om een service te beschrijven. Voor INSPIRE services dient er op z’n minst één keyword de categorie of subcategorie te bevatten uit deel D.4 van de commissie regulation 1205/2008, zie bijlage 1. Daarnaast kunnen er andere keywords met bijvoorbeeld het thema worden opgenomen</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.13_Keyword_value</help_link>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:language" context="gmd:MD_Metadata/gmd:language">
+		<label>Metadata language *</label>
+		<description>Taal waarin de metadata is beschreven.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.25_Metadata_language</help_link>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:metadataStandardName" context="gmd:MD_Metadata/gmd:metadataStandardName">
+		<label>Metadata standaard naam. *</label>
+		<description>Naam van de gebruikte metadata-standaard. (Voor NL profiel 1.2.1 is dat: ISO 19119)</description>
+		<help_link>http://wiki.geonovum.nl/index.php/Metadata_standaard_naam</help_link>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:metadataStandardVersion" context="gmd:MD_Metadata/gmd:metadataStandardVersion">
+		<label>Metadata standaard versie *</label>
+		<description>Versie (profiel) van de metadata-standaard die wordt gebruikt.(bijv. Nederlands metadata profiel op ISO 19119 voor services 1.2.1)</description>
+		<help_link>http://wiki.geonovum.nl/index.php/Metadata_standaard_versie</help_link>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<!-- ==================================================== -->
+	<element name="gmd:level" context="gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:scope/gmd:DQ_Scope/gmd:level">
+		<label>Niveau kwaliteitsbeschrijving *</label>
+		<description>Niveau waar de kwaliteitsbeschrijving betrekking op heeft.</description>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:linkage" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:containsOperations/srv:SV_OperationMetadata/srv:connectPoint/gmd:CI_OnlineResource/gmd:linkage">
+		<label>Connect Point Linkage *</label>
+		<description>Dit is een verplicht element uit ISO 19119. Dit element beschrijft het netwerkadres van de service instance via het verplichte element linkage, uit de klasse CI_OnlineResource. Dit element heeft hetzelfde doel als Resource Locator</description>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->	
+	<element name="gmd:linkage" context="gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage">
+		<label>Online Bronnen URL</label>
+		<description>Valide URL voor online toegang tot (informatie over)de bron (bijvoorbeeld de link naar een WMS service of download).</description>
+		<condition>C</condition>
+	</element>	
+	<!-- ==================================================== -->
+	<element name="gmd:MD_ClassificationCode" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints/gmd:MD_SecurityConstraints/gmd:classification/gmd:MD_ClassificationCode">
+		<label>Classificatie</label>
+		<description>Classificatie van de veiligheidsrestricties.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:MD_DigitalTransferOptions" context="gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions">
+		<label>Digitale leverings opties</label>
+		<description>Wijze waarop de data digitaal kan worden verkregen van de distribuerende organisatie.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:MD_Distribution" context="gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution">
+		<label>Distributie</label>
+		<description>Informatie over de distribuerende organisatie en de wijze waarop de informatie kan worden verkregen.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:MD_Keywords" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords">
+		<label>Trefwoorden</label>
+		<description>In het algemeen gebruikte woorden of geformaliseerde zinnen om het onderwerp te beschrijven.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:MD_LegalConstraints" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints">
+		<label>Legale beperkingen</label>
+		<description>Restricties en juridische voorwaarden die van toepassing zijn op zowel het gebruik van als de toegang tot de data of service.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:MD_Metadata" context="gmd:MD_Metadata">
+		<label>Metadata</label>
+		<description>Rootentiteit van de metadata over een data of service.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:MD_RestrictionCode" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints/gmd:MD_RestrictionCode">
+		<label>Restrictie code</label>
+		<description>Restricties die van toepassing zijn op de toegang of het gebruik van de data of service.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:MD_ScopeCode" context="gmd:hierarchyLevel/gmd:MD_ScopeCode">
+		<label>Toepassingsgebied (Scope) code</label>
+		<description>Code toepassingsgebied.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:MD_ScopeCode" context="gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:scope/gmd:DQ_Scope/gmd:level/gmd:MD_ScopeCode">
+		<label>Toepassingsgebied (Scope) code</label>
+		<description>Code toepassingsgebied.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:MD_SecurityConstraints" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints/gmd:MD_SecurityConstraints">
+		<label>Veiligheidsrestricties </label>
+		<description>Restricties op de data of service met betrekking tot het onderwerp (nationale) veiligheid.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:name" context="gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:name">
+		<label>Naam</label>
+		<description>Naam van de kaartlaag uit de WMS of WCS service of de featureType name van een WFS service.</description>
+		<condition>C</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:northBoundLatitude" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:northBoundLatitude">
+		<label>Maximum y-coordinaat "</label>
+		<description>Meest noordelijke coordinaat uit de horizontale dekking van het object weergegeven in longitude en lattitude in decimale graden (noord en oost als positieve waarden).</description>
+	<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:onLine" context="gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine">
+		<label>OnLine bronnen</label>
+		<description>Informatie over online bronnen waarmee de gegevens kunnen worden verkregen.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:organisationName" context="gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:organisationName">
+		<label>Metadata point of contact *</label>
+		<description>Volledige naam van de voor metadata verantwoordelijke organisatie.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.24_Metadata_point_of_contact</help_link>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:organisationName" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:organisationName">
+		<label>Responsible party *</label>
+		<description>Naam van de verantwoordelijke organisatie.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.22_Responsible_party</help_link>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:otherConstraints" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints">
+		<label>OtherConstraints *</label>
+		<description>Andere restricties of beperkingen. Dit veld is te gebruiken om de URL naar de licentie van Public domain, Creative Commons Publieke Domein Verklaring (CC0) of Geo Gedeeld in te vullen. </description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.20_Constraints</help_link>
+		<condition>C</condition>
+	</element>
+
+    <!-- ==================================================== -->
+    <element name="gmd:accessConstraints" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints">
+        <label>AccessConstraints *</label>
+        <description>Toegangseisen die er zorg voor dragen dat privacy of intellectueel eigendom gewaarborgd zijn en elke andere speciale beperkingen voor het verkrijgen van de metadata of data.Kies hier de waarde anders</description>
+        <help_link>http://wiki.geonovum.nl/index.php/2.5.20_Constraints</help_link>
+        <condition>C</condition>
+    </element>
+
+	<!-- ==================================================== -->
+	<element name="gmd:pass" context="gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:pass">
+		<label>Degree (Conformiteitindicatie) "</label>
+		<description>Indicatie van conformiteit met de specificatie. Dit element is conditioneel in dit profiel. Het is alleen verplicht als de service een INSPIRE bron is. dit element kan dan worden weergegeven of de service conform de specificatie is.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.18_Degree</help_link>
+	<condition>C</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:pointOfContact"  context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact">
+		<label>Responsible party (contact details)</label>
+		<description>Gegevens van de voor de bron verantwoordelijke organisatie.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:protocol" context="gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:protocol">
+		<label>Protocol "</label>
+		<description>Dit element is conditioneel. Het is verplicht als er een URL is opgegeven. Bijvoorbeeld naar een WMS of WFS.Het bevat het protocol voor het afhandelen van de URL. Door het hanteren van INSPIRE servicetypes bij het element service type is de relatie met de OGC types verloren, tenzij dit element wordt aangegeven. De namen uit codelijst SV_ServiceType (bijlage 1) wordt hier gehanteerd.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/Protocol</help_link>
+		<condition>C</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:report" context="gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report">
+		<label>Rapport</label>
+		<description>Rapportage met informatie over de kwaliteit van de data of service.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:resourceConstraints" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints">
+		<label>Beperkingen van de omschreven bron</label>
+		<description>geeft informatie over de beperkingen van de beschreven bron.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:result" context="gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result">
+		<label>Resultaat</label>
+		<description>Waarden ten aanzien van de datakwaliteit die verkregen zijn uit de toepassing van de opgegeven specificatie.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:role" context="gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:role">
+		<label>Metadata point of contact role *</label>
+		<description>Beschrijving op welke manier de organisatie betrokken is bij de metadata.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.24_Metadata_point_of_contact</help_link>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:role" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:role">
+		<label>Responsible party role *</label>
+		<description>Functie die wordt uitgevoerd door de verantwoordelijke organisatie.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.23_Responsible_party_role</help_link>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:scope" context="gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:scope">
+		<label>Niveau *</label>
+		<description>Niveau waar de kwaliteitsbeschrijving betrekking op heeft.</description>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:southBoundLatitude" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:southBoundLatitude">
+		<label>Minimum y-coordinaat "</label>
+		<description>Meest zuidelijke en noordelijke coordinaat uit de horizontale dekking van het object weergegeven in longitude en lattitude in decimale graden (noord en oost als positieve waarden).
+		</description>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:specification" context="gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:specification">
+		<label>Specificatie</label>
+		<description>Naam van de subset, profiel of productspecificatie.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:temporalElement" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:temporalElement">
+		<label>Temporal element</label>
+		<description>Informatie over de temporele dekking van de gegevens.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:thesaurusName" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName">
+		<label>Originating controlled vocabulary</label>
+		<description>Gegevens van de formele thesaurus of een andere officiele instantie/wijze waarop trefwoorden zijn gegroepeerd.</description>
+	</element>
+	<!-- ==================================================== -->
+    <element name="gmd:title" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title">
+		<label>Originating controlled vocabulary title "</label>
+		<description>Dit is een conditioneel element. Het is verplicht als een keyword uit een thesaurus afkomstig is. Het bevat de naam en publicatie datum van de thesaurus waar het keyword uit afkomstig is. Ook het type gebeurtenis waar de datum betrekking op heeft wordt vastgelegd. </description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.14_Originating_controlled_vocabulary</help_link>
+		<condition>C</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:title" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:title">
+		<label>Resource Title *</label>
+		<description>Titel van de service</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.1_Resource_Title</help_link>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:title" context="gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:specification/gmd:CI_Citation/gmd:title">
+		<label>Titel</label>
+		<description>Dit element is conditioneel in dit profiel. Het is alleen verplicht als de service een INSPIRE bron is. Dit element bevat de titel en publicatie datum van de specificatie of richtlijnen waar de service conform aan dient te zijn. </description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.19_Specification</help_link>
+		<condition>C</condition>
+		<helper>
+			<option value="VERORDENING (EU) Nr. 1089/2010 VAN DE COMMISSIE van 23 november 2010 ter uitvoering van Richtlijn 2007/2/EG van het Europees Parlement en de Raad betreffende de interoperabiliteit van verzamelingen ruimtelijke gegevens en van diensten met betrekking tot ruimtelijke gegevens">VERORDENING (EU) betreffende de interoperabiliteit van verzamelingen ruimtelijke gegevens en van diensten met betrekking tot ruimtelijke gegevens</option>
+			<option value="VERORDENING (EG) Nr. 976/2009 VAN DE COMMISSIE van 19 oktober 2009 tot uitvoering van Richtlijn 2007/2/EG van het Europees Parlement en de Raad wat betreft de netwerkdiensten">VERORDENING (EG) wat betreft de netwerkdiensten</option>
+			<option value="Technical Guidance for the implementation of INSPIRE Download Services">Download Services</option>
+			<option value="Technical Guidance for the implementation of INSPIRE View Services">View Services</option>
+		</helper>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:transferOptions" context="gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions">
+		<label>Leverings opties</label>
+		<description>Informatie over de wijze waarop de gegevens kunnen worden verkregen van de distributeur.</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:useLimitation" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints/gmd:MD_Constraints/gmd:useLimitation">
+		<label>UseLimitations *</label>
+		<description>Gebruiksbeperkingen. Toepassingen waarvoor de data of service niet geschikt is.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.21_Conditions_applying_to_access_and_use</help_link>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gmd:westBoundLongitude"  context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:westBoundLongitude">
+		<label>Minimum x-coordinaat "</label>
+		<description>Meest westelijke coordinaat uit de horizontale dekking van het object weergegeven in longitude en lattitude in decimale graden (noord en oost als positieve waarden).</description>
+	<condition>*</condition>
+	</element>
+	
+	<!-- ==================================================== -->
+	<!-- === GCO namespace                                    -->
+	<!-- ==================================================== -->
+	
+	<element name="gco:Date" context="gmd:MD_Metadata/gmd:dateStamp/gco:Date">
+		<label>Datum</label>
+		<description>Als in 2007-09-12 (YYYY-MM-DD)</description>
+	</element>	
+	
+	<element name="gco:Date" context="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date/gco:Date">
+		<label>Datum</label>
+		<description>Als in 2007-09-12 (YYYY-MM-DD)</description>
+	</element>	
+
+	<element name="gco:Date" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:Date/gm:CI_Date/gmd:date/gco:Date">
+		<label>Datum</label>
+		<description>Als in 2007-09-12 (YYYY-MM-DD)</description>
+	</element>	
+	
+	<!-- ==================================================== -->
+	<!-- === GML namespace -->
+	<!-- ==================================================== -->
+	<!-- ==================================================== -->
+    <element name="gml:id" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/@gml:id">
+		<label>Identificatie</label>
+		<description>Identificatie</description>
+	</element>
+	<element name="gml:TimeInstant" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:TimePeriodTypeCHOICE_ELEMENT2/gml:begin/gml:TimeInstant">
+		<label>Temporele dekking begindatum</label>
+		<description>Periode waarop de data betrekking heeft. Dit kan een tijdsinterval zijn maar ook een datum. De overall tijdsperiode gedekt door de inhoud van de service kan een samenstelling zijn van een of meer waarden. Het formaat van de datum is +/-JJJJ-MM-DDTUU:MM:SS (met streepjes T van time en dubbele punt). Het jaar 1 BC wordt als -0000, 2 BC -0001, etc. weergegeven. Maand dag en tijd zijn optioneel. </description>
+	</element>
+	<element name="gml:TimeInstant" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:TimePeriodTypeCHOICE_ELEMENT3/gml:end/gml:TimeInstant">
+		<label>Temporele dekking einddatum</label>
+		<description>Periode waarop de data betrekking heeft. Dit kan een tijdsinterval zijn maar ook een datum. De overall tijdsperiode gedekt door de inhoud van de service kan een samenstelling zijn van een of meer waarden. Het formaat van de datum is +/-JJJJ-MM-DDTUU:MM:SS (met streepjes T van time en dubbele punt). Het jaar 1 BC wordt als -0000, 2 BC -0001, etc. weergegeven. Maand dag en tijd zijn optioneel. </description>
+	</element>
+    <element name="gml:id" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:begin/gml:TimeInstant/@gml:id">
+		<label>Temporele dekking begin</label>
+		<description>Identificatie</description>
+	</element>
+	<element name="gml:id" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:end/gml:TimeInstant/@gml:id">
+		<label>Temporele dekking eind</label>
+		<description>Identificatie</description>
+	</element>
+
+	<!-- ==================================================== -->
+	<!-- === SRV namespace for 19119 service metadata -->
+	<!-- ==================================================== -->
+	<!-- ==================================================== -->
+	<!-- ==================================================== -->
+
+	 <element name="srv:connectPoint" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:containsOperations/srv:SV_OperationMetadata/srv:connectPoint">
+		<label>Connect Point Linkage *</label>
+		<description>Dit is een verplicht element uit ISO 19119. Dit element beschrijft het netwerkadres van de service instance via het verplichte element linkage, uit de klasse CI_OnlineResource. Dit element heeft hetzelfde doel als Resource Locator</description>
+		<condition>*</condition>
+	</element>     
+	<!-- ==================================================== -->	
+    <element name="srv:containsOperations" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:containsOperations">
+		<label>Contains operations</label>
+		<description>De operaties die door een service worden aangeboden.</description>
+	</element>    
+	<!-- ==================================================== -->
+	<element name="srv:coupledResource" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:coupledResource">
+		<label>Coupled resource</label>
+		<description>Beschrijft de precieze link tussen een operatie (geidentificeerd door zijn naam), een dataset instance (geidentificeerd door zijn resource identifier) en de ScopedName (WMS, WFS, WCS).</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.7_Scoped_Name</help_link>
+	</element>  
+	<!-- ==================================================== -->
+	<element name="srv:couplingType" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:couplingType">
+		<label>Coupling Type *</label>
+		<description>Coupling Type definieert het type koppeling tussen een service instance en een dataset.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.8_Coupling_Type</help_link>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->	
+    <element name="srv:DCP" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:containsOperations/srv:SV_OperationMetadata/srv:DCP">
+		<label>DCP *</label>
+		<description>DCP staat voor Distributed Computing Platforms waarop de operatie is geimplementeerd.INSPIRE gaat van de default waarde WebServices uit. </description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.12_DCP</help_link>
+		<condition>*</condition>
+	</element>        
+	<!-- ==================================================== -->	
+	<element name="srv:DCPList" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:containsOperations/srv:SV_OperationMetadata/srv:DCP/srv:DCPList">
+		<label>Distributed Computing Platforms List</label>
+		<description>DCP staat voor Distributed Computing Platforms waarop de operatie is geimplementeerd.</description>
+	</element>
+	<!-- ==================================================== -->	
+	<element name="srv:extent" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent">
+		<label>Extent</label>
+		<description>Geographic/Temporal Extent of Service</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="srv:identifier" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:coupledResource/srv:SV_CoupledResource/srv:identifier">
+		<label>Identifier</label>
+		<description>Unieke code voor het object.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.7_Scoped_Name</help_link>
+	</element>
+	<!-- ==================================================== -->
+    <element name="srv:operatesOn" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:operatesOn">
+		<label>Coupled resource "</label>
+		<description>Dit element is conditioneel in INSPIRE. Het is verplicht als er links naar de datasets waarop de service opereert
+beschikbaar zijn. Voor dataservices is het dus verplicht. Dit element geeft informatie (metadata) over de data die in de service beschikbaar wordt gesteld.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.6_Coupled_resource</help_link>
+		<condition>C</condition>
+	</element>   
+	
+	<!-- ==================================================== -->
+    <element name="srv:operatesOn" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:operatesOn/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title">
+		<label>Operates on titel</label>
+		</element>   
+	<!-- ==================================================== -->
+	    <element name="srv:operatesOn" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:operatesOn/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date">
+		<label>Operates on datum</label>
+		</element>   
+	<!-- ==================================================== -->
+	    <element name="srv:operatesOn" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:operatesOn/gmd:MD_DataIdentification/gmd:abstract">
+		<label>Operates on samenvatting</label>
+		</element>   
+		<!-- ==================================================== -->
+	    <element name="srv:operatesOn" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:operatesOn/gmd:MD_DataIdentification/gmd:language">
+		<label>Operates on taal</label>
+		</element>   
+	<!-- ==================================================== -->
+	
+    <element name="srv:operationName" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:coupledResource/srv:SV_CoupledResource/srv:operationName">
+		<label>Operation Name</label>
+		<description>De naam van de operatie.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.7_Scoped_Name</help_link>
+	</element>
+
+    <element name="srv:operationName" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:containsOperations/srv:SV_OperationMetadata/srv:operationName">
+		<label>Operation Name *</label>
+		<description>De naam van de operaties die met deze service mogelijk zijn. </description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.11_Operation_Name</help_link>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+ 	<element name="srv:SV_CoupledResource" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:coupledResource/srv:SV_CoupledResource">
+		<label>Coupled Resource</label>
+		<description>Details of services coupled with this one</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="srv:SV_CouplingType" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:couplingType/srv:SV_CouplingType">
+		<label>Coupling Type *</label>
+		<description>CouplingType definieert het type koppeling tussen een service instance en een dataset.</description>
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->
+	<element name="srv:SV_OperationMetadata" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:containsOperations/srv:SV_OperationMetadata">
+		<label>Operation</label>
+		<description>Operation Metadata</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="srv:SV_ServiceIdentification" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification">
+		<label>Service Identification (19119)</label>
+		<description>ISO 19119-2005 Service Identification</description>
+	</element>
+	<!-- ==================================================== -->
+	<element name="gco:LocalName" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceType/gco:LocalName">
+		<label>Spatial data service type *</label>
+		<description>Het type service, view, download  etc.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.9_Spatial_data_service_type</help_link>		
+		<condition>*</condition>
+	</element>
+	<!-- ==================================================== -->	
+	<element name="srv:serviceTypeVersion" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:serviceTypeVersion">
+		<label>Service Type Version</label>
+		<description>De versie die hier gehanteerd dient te worden is de versie van de specificatie van de service instance. Niet een implementatie versie van de software die geimplementeerd. Als scheidingsteken tussen de cijfers dient een punt gebruikt te worden.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.10_Service_Type_Version</help_link>		
+	</element>
+	<!-- ==================================================== -->
+	<element name="gco:ScopedName" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:coupledResource/srv:SV_CoupledResource/gco:ScopedName">
+		<label>ScopedName</label>
+		<description>Naam van de kaartlaag. Verplicht voor WMS, WFS en WCS.</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.7_Scoped_Name</help_link>
+	</element>  
+	<!-- ==================================================== -->
+	<element name="gml:beginPosition" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition">
+		<label>Begindatum</label>
+		<description>Begindatum (YYYY-MM-DD).</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.16_Temporal_Reference</help_link>
+	</element>
+	<element name="gml:endPosition" context="gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition">
+		<label>Einddatum</label>
+		<description>Einddatum (YYYY-MM-DD).</description>
+		<help_link>http://wiki.geonovum.nl/index.php/2.5.16_Temporal_Reference</help_link>
+		
+	</element>
+</labels>

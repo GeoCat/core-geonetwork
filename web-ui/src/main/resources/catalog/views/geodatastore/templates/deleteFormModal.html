@@ -1,0 +1,21 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" data-ng-click="$dismiss()"><span aria-hidden="true">×</span></button>
+    <h4 class="modal-title" data-translate="">modal.delete.title</h4>
+</div>
+<div class="modal-body">
+    <div data-ng-hide="deleteError">
+        <p><i class="fa fa-exclamation-triangle fa-2x fa-fw"></i><span data-translate="">modal.delete.question</span></p>
+    </div>
+    <div data-ng-show="deleteError" class="alert alert-danger">
+        <p><i class="fa fa-exclamation-triangle fa-2x fa-fw"></i><span data-translate="">modal.delete.error.body</span></p>
+        <ul>
+            <li data-ng-repeat="message in deleteErrorMessages">{{message | translate}}</li>
+        </ul>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-ng-disabled="deleteWorking" data-ng-click="$dismiss()" data-ng-hide="deleteError" data-translate="">modal.delete.button.cancel</button>
+    <button type="button" class="btn btn-primary" data-gn-click-and-spin="acceptDelete()" data-ng-hide="deleteError" data-translate="">modal.delete.button.delete</button>
+    <button type="button" class="btn btn-primary" data-ng-click="$dismiss()" data-ng-show="deleteError" data-translate="">modal.delete.button.accept</button>
+</div>
+
