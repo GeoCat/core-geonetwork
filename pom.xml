@@ -1171,6 +1171,12 @@
         <!--<module>geoserver</module>-->
       </modules>
     </profile>
+    <profile>
+       <id>geodatastore</id>
+       <modules>
+         <module>pdok-geodatastore</module>
+       </modules>
+    </profile>
     <!-- Python and Latex are required to build the documentation. -->
     <profile>
       <id>with-doc</id>
