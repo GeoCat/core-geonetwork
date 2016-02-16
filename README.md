@@ -2,6 +2,10 @@
 
 [![Build Status](https://travis-ci.org/geonetwork/core-geonetwork.svg?branch=3.0.x)](https://travis-ci.org/geonetwork/core-geonetwork)
 
+# GeoDataStore
+
+This branch contains code developed in the scope of [pdok geodatastore](https://geodatastore.pdok.nl) project. A project to implement an easy to use iso19139 editor. Build the code as an average GeoNetwork, but include -Pgeodatastore on the maven build. Then when running the application on the admin > settings panel set the skin to "geodatastore".
+
 # Features
 
 * Immediate search access to local and distributed geospatial catalogues
