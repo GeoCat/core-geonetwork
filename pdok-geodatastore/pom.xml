@@ -4,11 +4,11 @@
   	<parent>
 		<groupId>org.geonetwork-opensource</groupId>
 		<artifactId>geonetwork</artifactId>
-		<version>3.0.4-SNAPSHOT</version>
+		<version>3.0.4</version>
 	</parent>
   <groupId>nl.kadaster.pdok</groupId>
   <artifactId>pdok-geodatastore</artifactId>
-  <version>3.0.4-SNAPSHOT</version>
+  <version>3.0.4</version>
   <packaging>jar</packaging>
   <properties>
     <spring.version>3.2.5.RELEASE</spring.version>
