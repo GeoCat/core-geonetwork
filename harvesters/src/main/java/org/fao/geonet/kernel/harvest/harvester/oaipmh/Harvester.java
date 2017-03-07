@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.common.command.AbortExecutionException;
 import org.fao.geonet.GeonetContext;
 import org.fao.geonet.Logger;
@@ -331,7 +332,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult>
         
         
         // Apply the xsl filter choosed by UI
-        if (!params.xslfilter.equals("")) {
+        if (StringUtils.isNotEmpty(params.xslfilter)) {
             md = HarvesterUtil.processMetadata(dataMan.getSchema(schema),
                     md, processName, processParams, log);
         }
@@ -493,7 +494,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult>
 			String schema = dataMan.autodetectSchema(md, null);
 
 			// Apply the xsl filter choosed by UI
-			if (!params.xslfilter.equals("")) {
+			if (StringUtils.isNotEmpty(params.xslfilter)) {
 			    md = HarvesterUtil.processMetadata(dataMan.getSchema(schema),
 			            md, processName, processParams, log);
 			}
