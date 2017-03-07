@@ -48,6 +48,7 @@
 
     <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
     <jsSource webappPath="/catalog/lib/jquery.ext/load-image.all.min.js" />
+    <jsSource webappPath="/catalog/lib/jquery.ext/jquery.ui.widget.js" />
     <jsSource webappPath="/catalog/lib/jquery.ext/jquery.iframe-transport.js"/>
     <jsSource webappPath="/catalog/lib/jquery.ext/jquery.fileupload.js"/>
     <jsSource webappPath="/catalog/lib/jquery.ext/jquery.fileupload-process.js"/>
