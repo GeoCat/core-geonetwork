@@ -1,6 +1,6 @@
 <ul class="row gn-info-list">
   <li
-      data-ng-repeat="md in searchResults.records || filter:{ category: {category: '!PDC'}}"
+      data-ng-repeat="md in searchResults.records | PDCFilter:true"
       data-ng-click="openRecord($index, md, searchResults.records)"
       data-ng-mouseenter="showMore(true)"
       data-ng-mouseleave="showMore(false)"
@@ -38,7 +38,7 @@
     </section>
   </li>
    <li
-      data-ng-repeat="md in searchResults.records | filter:{ category: {category: 'PDC'}}"
+      data-ng-repeat="md in searchResults.records | PDCFilter:false"
       data-ng-click="openRecord($index, md, searchResults.records)"
       data-ng-mouseenter="showMore(true)"
       data-ng-mouseleave="showMore(false)"
