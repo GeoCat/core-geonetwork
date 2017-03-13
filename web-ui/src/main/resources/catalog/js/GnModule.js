@@ -14,7 +14,6 @@
   goog.require('gn_search_form_controller');
   goog.require('gn_search_manager');
   goog.require('gn_utility');
-  goog.require('gn_client_customs');
 
   /**
    * GnModule just manage angular injection with
@@ -37,8 +36,7 @@
     'gn_map',
     'gn_search_form_controller',
     'gn_needhelp',
-    'gn_alert',
-    'gn_client_customs'
+    'gn_alert'
   ]);
 
 })();
