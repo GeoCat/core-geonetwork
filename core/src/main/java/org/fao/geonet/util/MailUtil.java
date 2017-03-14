@@ -13,6 +13,7 @@ import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import org.apache.commons.mail.SimpleEmail;
 import org.fao.geonet.kernel.setting.SettingManager;
+import org.fao.geonet.utils.Log;
 
 /**
  * Utility class to send mails. Supports both html and plain text. It usually
@@ -173,6 +174,7 @@ public class MailUtil {
             email.setHtmlMsg(htmlMessage);
         } catch (EmailException e1) {
             e1.printStackTrace();
+            Log.error(Log.JEEVES, "Error sending email", e1);
             return false;
         }
         email.setSSL(true);
@@ -242,6 +244,44 @@ public class MailUtil {
         return send(email);
     }
 
+    public static Boolean sendHtmlMailWithAttachment(List<String> toAddress, SettingManager settings,
+                                                      String subject, String htmlMessage,
+                                                     List<EmailAttachment> attachment) {
+        // Create data information to compose the mail
+        HtmlEmail email = new HtmlEmail();
+
+        configureBasics(settings, email);
+
+        for (EmailAttachment attach : attachment) {
+            try {
+                email.attach(attach);
+            } catch (EmailException e) {
+                e.printStackTrace();
+            }
+        }
+
+        email.setSubject(subject);
+        email.setCharset(org.apache.commons.mail.EmailConstants.UTF_8);
+        try {
+            email.setHtmlMsg(htmlMessage);
+        } catch (EmailException e1) {
+            e1.printStackTrace();
+            return false;
+        }
+
+        // send to all mails extracted from settings
+        for (String add : toAddress) {
+            try {
+                email.addBcc(add);
+            } catch (EmailException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        return sendSameThread(email);
+    }
+
     private static Boolean send(final Email email) {
         try {
         	Thread t = new Thread() {
@@ -252,15 +292,31 @@ public class MailUtil {
 						email.send();
 					} catch (EmailException e) {
 						e.printStackTrace();
-					}
+                        Log.error("MailUtil", "Error sending email using " + email.getHostName() + ":"  + email.getSmtpPort(), e);
+
+                    }
         		}
         	};
         	
         	t.start();
         } catch (Exception e) {
             e.printStackTrace();
+            Log.error("MailUtil", "Error sending email using " + email.getHostName() + ":"  + email.getSmtpPort(), e);
+
             return false;
         }
+        return true;
+    }
+
+    private static Boolean sendSameThread(final Email email) {
+        try {
+            email.send();
+        } catch (EmailException e) {
+            e.printStackTrace();
+            Log.error("MailUtil", "Error sending email using " + email.getHostName() + ":"  + email.getSmtpPort(), e);
+            return false;
+        }
+
         return true;
     }
 
@@ -289,6 +345,7 @@ public class MailUtil {
             email.setMsg(message);
         } catch (EmailException e1) {
             e1.printStackTrace();
+            Log.error("MailUtil", "Error setting the email content ", e1);
             return false;
         }
         email.setSSL(true);
@@ -299,6 +356,8 @@ public class MailUtil {
                 email.addBcc(add);
             } catch (EmailException e) {
                 e.printStackTrace();
+                Log.error("MailUtil", "Error adding email address " + add + " to BCC", e);
+
                 return false;
             }
         }
@@ -331,7 +390,7 @@ public class MailUtil {
             throw new IllegalArgumentException(
                     "Missing settings in System Configuration (see Administration menu) - cannot send mail");
         }
-        if (username != null) {
+        if (username != null && !"".equals(username)) {
             email.setAuthenticator(new DefaultAuthenticator(username, password));
         }
         
@@ -343,6 +402,8 @@ public class MailUtil {
                 email.setFrom(from);
             } catch (EmailException e) {
                 e.printStackTrace();
+                Log.error("MailUtil", "Error setting email from header (" + from + ")", e);
+
             }
         } else {
             throw new IllegalArgumentException(
