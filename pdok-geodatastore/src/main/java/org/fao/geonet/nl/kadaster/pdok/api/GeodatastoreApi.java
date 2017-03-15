@@ -249,7 +249,8 @@ public class GeodatastoreApi {
                         uuid.toString(), creationDate, "http://creativecommons.org/publicdomain/mark/1.0/deed.nl", "");*/
             }
             metadataParametersBean.setIdentifier(uuid.toString());
-            templateParameters = prepareTemplateParameters(metadataParametersBean, organisation, organisationEmail, creationDate.getDateAsString(), true);
+            templateParameters = prepareTemplateParameters(metadataParametersBean, organisation, organisationEmail, creationDate.getDateAsString(), publish,
+                    true);
             Map<String, Object> filePropertiesMaps = getParametersFromDataset(dataset);
             templateParameters.putAll(filePropertiesMaps);
             Element metadata = metadataUtil.fillXmlTemplate(templateParameters);
@@ -356,7 +357,9 @@ public class GeodatastoreApi {
         return getSiteURL(pathFinder) + "/id/dataset/" + uuid.toString();
     }
 
-    private Map<String, Object> prepareTemplateParameters(MetadataParametersBean metadataParameter, String organisation, String organisationEmail, String changeDate, boolean updatePublicationDate) {
+    private Map<String, Object> prepareTemplateParameters(MetadataParametersBean metadataParameter, String organisation,
+                                                          String organisationEmail, String changeDate, boolean publish,
+                                                          boolean updatePublicationDate) {
         Map<String, Object> parametersMap = new HashMap<>();
         parametersMap.put(ORGANISATION_NAME_KEY, organisation);
         parametersMap.put(ORGANISATION_EMAIL_KEY, organisationEmail);
@@ -365,7 +368,13 @@ public class GeodatastoreApi {
             parametersMap.put(UUID_KEY, metadataParameter.getIdentifier());
         }
         if (updatePublicationDate) {
+            // only update publication date the first time metadata is published
             parametersMap.put(PUBLICATION_DATE_KEY, changeDate);
+        }
+
+        if (publish) {
+            // every time metadata is published set the revision date.
+            parametersMap.put(REVISION_DATE_KEY, changeDate);
         }
 
         if (StringUtils.isNotEmpty(metadataParameter.getTitle())) {
@@ -568,7 +577,7 @@ public class GeodatastoreApi {
                 ISODate changeDate = new ISODate();
                 if (metadataParameter != null) {
                     templateParameters = prepareTemplateParameters(metadataParameter, organisation, organisationEmail,
-                            changeDate.getDateAsString(), updatePublicationDate);
+                            changeDate.getDateAsString(), publish, updatePublicationDate);
                 }
 
                 //if metadata is published, the metadata can only be updated with valid metadata
