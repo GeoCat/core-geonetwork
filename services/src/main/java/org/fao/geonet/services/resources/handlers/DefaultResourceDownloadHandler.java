@@ -10,6 +10,7 @@ import org.fao.geonet.domain.MetadataFileDownload;
 import org.fao.geonet.domain.MetadataFileUpload;
 import org.fao.geonet.repository.MetadataFileDownloadRepository;
 import org.fao.geonet.repository.MetadataFileUploadRepository;
+import org.fao.geonet.util.MimeTypeFinder;
 import org.fao.geonet.util.ThreadPool;
 import org.fao.geonet.utils.Log;
 import org.jdom.Element;
@@ -22,6 +23,9 @@ import org.springframework.web.context.request.NativeWebRequest;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class DefaultResourceDownloadHandler implements IResourceDownloadHandler {
 
@@ -50,10 +54,12 @@ public class DefaultResourceDownloadHandler implements IResourceDownloadHandler 
             MultiValueMap<String, String> headers = new HttpHeaders();
             headers.add("Content-Disposition", "inline; filename=\"" + fileName + "\"");
             headers.add("Cache-Control", "no-cache");
-            String contentType = Files.probeContentType(file);
+            //String contentType = MimeTypeFinder.detectMimeTypeFile(file.getParent().toString(), file.getFileName().toString());
+            String contentType = null;
             if (contentType == null) {
-                String ext = com.google.common.io.Files.getFileExtension(file.getFileName().toString()).toLowerCase();
-                switch (ext) {
+                //String ext = com.google.common.io.Files.getFileExtension(file.getFileName().toString()).toLowerCase();
+				contentType = URLConnection.guessContentTypeFromName(file.getFileName().toString());
+                /*switch (ext) {
                     case "png":
                     case "gif":
                     case "bmp":
@@ -61,15 +67,17 @@ public class DefaultResourceDownloadHandler implements IResourceDownloadHandler 
                     case "tiff":
                     case "jpg":
                     case "jpeg":
+                    case "svg":
                         contentType = "image/" + ext;
                         break;
-                    case "txt":
+                    case "csv":
+					case "txt":
                     case "html":
                         contentType = "text/" + ext;
                         break;
                     default:
                         contentType = "application/" + ext;
-                }
+                }*/
             }
 
             headers.add("Content-Type", contentType);

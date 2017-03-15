@@ -1,9 +1,14 @@
 package nl.kadaster.pdok.bussiness.registryservices.bean;
 
+import nl.kadaster.pdok.bussiness.registryservices.CodelistElement;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Created by juanluisrp on 14/01/2016.
  */
-public class Denominator implements Comparable<Denominator>{
+@XmlRootElement
+public class Denominator implements Comparable<Denominator>, CodelistElement{
     private String key;
     private String label;
 

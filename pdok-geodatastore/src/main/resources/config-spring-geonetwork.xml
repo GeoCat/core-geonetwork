@@ -23,7 +23,8 @@
              <description>A map linking keys and RegistryService implementations</description>
              <entry key="denominator" value="nl.kadaster.pdok.bussiness.registryservices.DenominatorRegistryService" />
              <entry key="license"  value="nl.kadaster.pdok.bussiness.registryservices.LicenseRegistryService" />
-             <entry key="topic" value="nl.kadaster.pdok.bussiness.registryservices.TopicRegistryService" />
+             <entry key="location" value="nl.kadaster.pdok.bussiness.registryservices.LocationRegistryService" />
+             <entry key="topicCategory" value="nl.kadaster.pdok.bussiness.registryservices.TopicRegistryService" />
            </map>
          </constructor-arg>
        </bean>

@@ -10,3 +10,9 @@
     </div>
 </div>
 
+<script type="text/javascript" language="JavaScript">
+   var browserSupported = Modernizr && Modernizr.filereader && Modernizr.blobconstructor;
+    if (!browserSupported) {
+        window.location.replace('../../catalog/views/geodatastore/templates/nonSupportedBrowser.html');
+    }
+</script>

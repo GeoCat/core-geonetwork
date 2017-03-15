@@ -59,7 +59,7 @@ public class GeonetHttpRequestFactory {
     /**
      * Create a default XmlRequest.
      *
-     * @return
+     * @return the XmlRequest.
      */
     public final XmlRequest createXmlRequest() {
         return createXmlRequest(null, 80, "http");
@@ -67,7 +67,7 @@ public class GeonetHttpRequestFactory {
     /**
      * Create a default XmlRequest.
      *
-     * @return
+     * @return the XmlRequest.
      */
     public XmlRequest createXmlRequest(String host, int port, String protocol) {
         return new XmlRequest(host, port, protocol, this);
@@ -76,7 +76,7 @@ public class GeonetHttpRequestFactory {
     /**
      * Create a default XmlRequest.
      *
-     * @return
+     * @return the XmlRequest.
      */
     public final XmlRequest createXmlRequest(String host) {
         return createXmlRequest(host, 80, "http");
@@ -84,7 +84,7 @@ public class GeonetHttpRequestFactory {
     /**
      * Create a default XmlRequest.
      *
-     * @return
+     * @return the XmlRequest.
      */
     public final XmlRequest createXmlRequest(String host, int port) {
         String protocol = "http";

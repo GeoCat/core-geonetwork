@@ -84,8 +84,8 @@
             '    <div class="modal-header">' +
             '      <button type="button" class="close" data-dismiss="modal">' +
             '        &times;</button>' +
-            '      <h5 class="modal-title" translate>' +
-            '        <span>' + options.title + '</span></h5>' +
+            '      <h5 class="modal-title">' +
+            '        <span data-translate>' + options.title + '</span></h5>' +
             '      </div>' +
             '    <div class="modal-body">' + options.content + '</div>' +
             '  </div>' +
@@ -93,13 +93,20 @@
             '</div>');
 
         var newScope = scope || $rootScope.$new();
+        var isNewScope = newScope !== scope;
         element = $compile(element)(newScope);
 
         $(document.body).append(element);
         element.modal();
         element.on('hidden.bs.modal', function() {
+          var onCloseCallback = options.onCloseCallback;
+          if (angular.isFunction(onCloseCallback)) {
+            onCloseCallback(this);
+          }
           element.remove();
-          newScope.$destroy();
+          if (isNewScope) {
+            newScope.$destroy();
+          }
         });
       };
       return {

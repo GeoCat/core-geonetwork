@@ -8,7 +8,11 @@
       .constant('DELETE_DATASET_URL', '../../api/v1/dataset/')
       .constant('QUERY_DATASETS_URL', '../../api/v1/datasets')
       .constant('NEW_ACCOUNT_URL', '../../web/dut/gdsRegister')
-      .constant('GDS_AJAX_LOGIN_URL', '../dut/ajaxLogin');
+      .constant('GDS_AJAX_LOGIN_URL', '../dut/ajaxLogin')
+      .constant('GDS_REGISTRY_URL', '../../registry')
+      .constant('GDS_REGISTRY_LOCATION_URL',  '../../registry/location')
+
+  ;
 
 
 

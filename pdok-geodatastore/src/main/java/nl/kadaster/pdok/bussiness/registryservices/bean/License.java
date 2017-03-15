@@ -1,11 +1,16 @@
 package nl.kadaster.pdok.bussiness.registryservices.bean;
 
+import nl.kadaster.pdok.bussiness.registryservices.CodelistElement;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Created by juanluisrp on 13/01/2016.
  */
-public class License implements Comparable<License> {
+@XmlRootElement
+public class License implements Comparable<License>, CodelistElement {
     private String key;
-    private String translation;
+    private String label;
 
     public String getKey() {
         return key;
@@ -15,17 +20,17 @@ public class License implements Comparable<License> {
         this.key = key;
     }
 
-    public String getTranslation() {
-        return translation;
+    public String getLabel() {
+        return label;
     }
 
-    public void setTranslation(String translation) {
-        this.translation = translation;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     @Override
     public int compareTo(License otherLicense) {
-        int result = this.translation.compareTo(otherLicense.getTranslation());
+        int result = this.label.compareTo(otherLicense.getLabel());
         return result;
     }
 
@@ -36,12 +41,12 @@ public class License implements Comparable<License> {
 
         License license = (License) o;
 
-        return translation.equals(license.translation);
+        return label.equals(license.label);
 
     }
 
     @Override
     public int hashCode() {
-        return translation.hashCode();
+        return label.hashCode();
     }
 }

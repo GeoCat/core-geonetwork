@@ -2,17 +2,40 @@ swagger: '2.0'
 info:
   version: 1.0.0
   title: 'Geodatastore API v1 Documentation'
-  description: Geodatastore is a project of PDOK that facilitates governments to publish geospatial open datasets. A user is facilitated in uploading a dataset and provide some metadata, the metadata is then decorated serverside to meet national profile requirements. Typical api workflow; authentication using basic auth, retrieve datasets, to see which datasets are already uploaded by user. Upload dataset (and update dataset). If all properties are provided the dataset can be published. Remove dataset. After publication, it can take upto 24 hours before the dataset will be available in http://www.nationaalgeoregister.nl and http://data.overheid.nl. Visit the PDOK forum at https://www.pdok.nl/forum for additional information about Geodatastore API development.
+  description: |
+    Geodatastore is a project of PDOK that facilitates governments to publish geospatial open datasets. 
+    A user is facilitated in uploading a dataset and provide some metadata, the metadata is then decorated 
+    serverside to meet national profile requirements. Typical api workflow; authentication using basic auth, 
+    retrieve datasets, to see which datasets are already uploaded by user. Upload dataset (and update dataset). 
+    If all properties are provided the dataset can be published. Remove dataset. After publication, it can take 
+    up to 24 hours before the dataset will be available in http://www.nationaalgeoregister.nl and up to 48 hours 
+    in http://data.overheid.nl. Visit the PDOK forum at https://www.pdok.nl/forum for additional information 
+    about Geodatastore API development.
+  contact:
+    name: Publieke Dienstverlening Op de Kaart (PDOK)
+    url: http://pdok.nl
+    email: beheerpdok@kadaster.nl
 schemes:
   - https
+securityDefinitions:
+  basicAuth:
+    type: basic
+    description: Users can login with basic authentication using their nationaalgeoregister account
+consumes: 
+  - application/json
+produces:
+  - application/json
 paths:
   /api/v1/datasets:
     get:
       description: |
-        Gets `dataset` objects.
+        Gets `dataset` objects of the user organization.
         Optional query params of **q**, **pageSize**, **sortOrder**, **sortBy** determines filter,
         size and order of returned array
-        The status parameter indicates if datasets that are publised or draft are returned.
+        The status parameter indicates if datasets that are published or draft are returned.
+      security:
+       - basicAuth: []
+      operationId: queryDatasets
       parameters:
         - name: q
           in: query
@@ -21,40 +44,66 @@ paths:
           type: string
         - name: sortBy
           in: query
-          description: an attribute to use as sort order
+          description: | 
+            an attribute to use as sort order (changeDate, _title). 
+            Default to changeDate.
           required: false
           type: string
-          default: lastModified
-          enum: ["title","lastModified"]
+          default: changeDate
+          enum: 
+            - _title
+            - changeDate
         - name: sortOrder
           in: query
-          description: order of sort
+          description: order of sort (asc or desc). Default to "desc".
           required: false
           type: string
-          default: Asc
-          enum: ["Asc","Desc"]
+          default: desc
+          enum: 
+            - asc
+            - desc
+        - name: from
+          in: query
+          description: first record to be returned. Defaults to 1.
+          required: false
+          type: integer
         - name: pageSize
           in: query
-          description: Size of array
+          description: Max number of returned records. Defaults to 20 elements.
           required: false
           type: integer
         - name: status
           in: query
-          description: Indicate to filter aither published of non published
+          description: |
+            Indicate to filter either published of non published (published or draft).
+            Defaults to "published".
           required: false
           default: published
           type: string
-          enum: ["published","draft"]
+          enum: 
+            - published
+            - draft
+        - name: summaryOnly
+          in: query
+          description: 
+            Indicates if the response should contains only the info about the 
+            number of records found but do not return the actual records. 
+            Default to `false`.
+          default: false
+          type: boolean
       responses:
-        '200':
-          description: Successful response
+        200:
+          description: 
+            "The response contains a summary with the number of records 
+            found, starting record, last record of the range and an array with 
+            the actual records if the param summaryOnly was `false` or not provided.
+            <br/>NOTE: if the user doesn't belong to any group an error field would 
+            be set to `true` with a message indicating this fact."
           schema:
-            title: ArrayOfDatasets
-            type: array
-            items:
-                $ref: "#/definitions/dataset"
-        '405':
-          description: Invalid input  
+            $ref: "#/definitions/QueryResponse"
+        400:
+          description: Invalid input. You get this response if for example you pass
+            a `String` instead an `integer` for `pageSize` parameter.
           schema: 
             title: Message
             type: string
@@ -62,139 +111,135 @@ paths:
     post:
       description: |
         Create a new dataset
-      operationId: addDataset
+      security:
+        - basicAuth: []
+      operationId: newDataset
+      consumes: 
+        - multipart/form-data
       produces:
         - application/json
       parameters:  
         - in: formData
-          name: title
-          description: Title of the dataset
-          type: string
+          name: metadata
+          description: 
+            A JSON string representation of an object of type Metadata.
+          required: false
+          type: "string"
         - in: formData
-          name: summary
-          description: Summary describing the dataset
-          type: string
+          name: dataset
+          description: The dataset file.
+          type: file
+          required: false
         - in: formData
-          name: keywords
-          description: Keywords describing the dataset
-          type: array
-          items: 
-            type: string
-        - in: formData
-          name: lineage
-          description: Lineage information on how the dataset has been created/collected
-          type: string
-        - in: formData
-          name: license
-          description: License under which te dataset is made available. Should be a URI of one of /api/v1/registry/licenses.
-          type: string
-        - in: formData
-          name: resolution
-          description: The resolution (scale) in which this dataset is best used. Should be a URI of one of /api/v1/registry/resolutions.
-          type: string
-        - in: formData
-          name: locationUri
-          description: The location of the dataset. Should be a URI of one of /api/v1/registry/locations.
-          type: string
+          name: thumbnail
+          description: A thumbnail file, usually an image.
+          type: file
+          required: false
         - in: formData
           name: publish
           type: boolean
-          description: This flag indicates if the dataset should be instantly published or saved as draft.
-        - in: formData
-          name: topicCategory
-          description: The topic of the dataset. Should be a URI of one of /api/v1/registry/topicCategories.
-          type: array
-          items: 
-            type: string
-        - in: formData
-          name: dataset
-          description: The dataset file
-          type: file
-        - in: formData
-          name: thumbnail
-          description: A thumbnail file
-          type: file
+          description: 
+            Indicate if the metadata should be instantly published. Defaults to 
+            `false`. The metadata only will be published if it is valid (all 
+            metadata fields are filled with valid values and it has a dataset 
+            file). If `true` is indicated but the dataset cannot be published, 
+            it will be saved as draft but not published.
+          required: false
+          default: false
       responses:
-        '200':
-          description: Successful response
+        200:
+          description: 
+            Successful response. A new dataset has been created and 
+            published if the `publish` parameter was `true`, metadata was valid and
+            it has a dataset file. Returns a Dataset object with the ID of the
+            created object set.
           schema:
-            $ref: "#/definitions/dataset"
-        '405':
-          description: Invalid input    
+            $ref: "#/definitions/Dataset"
+        400:
+          description: | 
+            Invalid input. For example: 
+            * None of the `dataset`, `thumbnail` or `metadata` has been provided.
+            * `metadata` parameter is not a valid JSON string or it doesn't have 
+            the right properties.
+            * 
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        403:
+          description: "Forbidden. There are some causes for this error for example: \
+            \ * The user is not a Reviewer in the group. Contact with support to \
+            \  check this case. \
+            \ * The email for the user's group is not set. Contact with support to \
+            \  check this case. \
+            \ * The description for the user's group is not set. Contact with support \
+            \  to check this case."
+        500:
+          description: error response caused by an internal server error.
   /api/v1/dataset/{id}:
     post:
       description: |
-        Update a dataset
+        Update an existing dataset.
+      security:
+        - basicAuth: []
       operationId: updateDataset
+      consumes: 
+        - multipart/form-data
       produces:
         - application/json
-      parameters: 
-        - name: id
-          in: path
-          description: Identifier of the dataset
+      parameters:
+        - in: path
+          name: id
+          description: |
+            Param indicates which object to update
           required: true
           type: string
         - in: formData
-          name: title
-          description: Title of the dataset
-          type: string
-        - in: formData
-          name: summary
-          description: Summary describing the dataset
-          type: string
-        - in: formData
-          name: keywords
-          description: Keywords describing the dataset
-          type: array
-          items: 
-            type: string
-        - in: formData
-          name: lineage
-          description: Lineage information on how the dataset has been created/collected
-          type: string
-        - in: formData
-          name: license
-          description: License under which te dataset is made available. Should be a URI of one of /api/v1/registry/licenses.
-          type: string
-        - in: formData
-          name: resolution
-          description: The resolution (scale) in which this dataset is best used. Should be a URI of one of /api/v1/registry/resolutions.
-          type: string
-        - in: formData
-          name: locationUri
-          description: The location of the dataset. Should be a URI of one of /api/v1/registry/locations.
+          name: metadata
+          description: |
+            A JSON string representation of an object of type Metadata.
           type: string
         - in: formData
           name: publish
           type: boolean
-          description: This flag indicates if the dataset should be instantly published or saved as draft.
-        - in: formData
-          name: topicCategory
-          description: The topic of the dataset. Should be a URI of one of /api/v1/registry/topicCategories.
-          type: array
-          items: 
-            type: string
+          required: false
+          description: |
+            Indicate if the metadata should be instantly published. Defaults to 
+            `false`. The metadata only will be published if it is valid (all 
+            metadata fields are filled with valid values and it has a dataset 
+            file). If `true` is indicated but the dataset cannot be published, 
+            it will be saved as draft but not published.
         - in: formData
           name: dataset
           description: The dataset file
           type: file
+          required: false
         - in: formData
           name: thumbnail
           description: A thumbnail file
           type: file
+          required: false
       responses:
-        '200':
-          description: Successful response
+        200:
+          description: Successful response. The dataset has been updated and/or 
+            published.
           schema:
-            $ref: "#/definitions/dataset"
-        '405':
-          description: Invalid input 
-          schema: 
-            title: Message
-            type: string
-  /api/v1/dataset/{id}:
+            $ref: "#/definitions/Dataset"
+        400:
+          description: There are error in the parameters sent to the server. Please
+            check that metadata is a valid JSON String if sent.
+        403:
+          description: Forbidden. The user has not enough permissions to edit the
+            dataset or the user's group has not email or description. See the
+            error message in the response and contact with support if it says 
+            something related with the email or description.
+        404:
+          description: Dataset not found. Check the identifier.
+        500:
+          description: Internal server error.
     delete:
-      description: delete a dataset
+      description: delete a dataset. The metadata, dataset and thumbnail are removed
+        from the system.
+      security:
+       - basicAuth: []
       operationId: deleteDataset
       parameters:  
         - name: id
@@ -203,65 +248,46 @@ paths:
           required: true
           type: string
       responses:
-        '200':
-          description: Successful response      
-        '404':
-          description: Dataset not found 
-  /api/v1/dataset/{id}:
-    get:
-      description: |
-        Get `dataset` object.
-      parameters:
-        - name: id
-          in: path
-          description: the id of the Dataset
-          required: true
-          type: string
-      responses:
-        '200':
-          description: Successful response
-          schema:
-            $ref: "#/definitions/dataset"
-        '404':
-          description: Dataset does not exist or no privileges
-          schema: 
-            title: Message
-            type: string
-        '405':
-          description: Invalid input  
-          schema: 
-            title: Message
-            type: string
+        200:
+          description: Successful response. The dataset has been deleted.  
+        403:
+          description: The user cannot delete the dataset, probably because it 
+            doesn't belong to its organization.
+        404:
+          description: Dataset not found. 
+        500: 
+          description: Internal server error.
   /api/v1/registries:
     get:
       description: |
-        Gets `registry` objects.
+        Gets the avaliable `registry` objects. 
+      produces:
+        - text/xml
+        - application/json
       responses:
         '200':
           description: Successful response
           schema:
-            title: ArrayOfRegistry
+            title: registries
             type: array
             items:
-              title: Registry
+              title: registry
               type: object
               properties:
                 name:
                   type: string
                 url:
                   type: string            
-  /api/v1/registry/{name}:
+  /api/v1/registry/location:
     get:
       description: |
-        Gets `registry` objects.
-        Optional query param of **pageSize** determines
+        Gets `location` objects.
+        Optional query param of **pageSize** and **q** determines
         size of returned array
+      produces:
+        - text/xml
+        - application/json
       parameters:
-        - name: name
-          in: path
-          description: The name of the Registry
-          required: true
-          type: string
         - name: q
           in: query
           description: A filter used in query
@@ -269,109 +295,212 @@ paths:
           type: string
         - name: pageSize
           in: query
-          description: Size of array
+          description: Max number or records returned
           required: false
           type: integer
+          default: 200
       responses:
         '200':
           description: Successful response
           schema:
-            title: Array of keywords
+            title: response
+            type: array
+            items:
+              title: location
+              type: object
+              properties:
+                key:
+                  type: string
+                label:
+                  type: string
+                coordEast:
+                  type: number
+                coordWest:
+                  type: number
+                coordNorth:
+                  type: number
+                coordSouth:
+                  type: number
+        '404':
+          description: Registry does not exist
+          schema: 
+            title: Message
+            type: string
+  /api/v1/registry/{name}:
+    get:
+      description: |
+        Gets `keyword` objects.
+      produces:
+        - text/xml
+        - application/json
+      parameters:
+        - name: name
+          in: path
+          description: The name of the Registry
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: response
             type: array
             items:
               title: Keyword
               type: object
               properties:
-                uri:
+                key:
                   type: string
                 label:
                   type: string
-                bounds:
-                  type: array
-                  items: 
-                    type: number
-                  maxItems: 4
-                  minItems: 4
         '404':
           description: Registry does not exist
           schema: 
             title: Message
             type: string
 definitions:
-  dataset:
+  QueryResponse:
     type: object
     properties:
-      identifier:
-        type: string
-        description: Identifier of dataset
+      from:
+        type: integer
+        description: first record returned from the total result list.
+      to:
+        type: integer
+        description: lasr record returned from the total result list.
+      count: 
+        type: integer
+        description: total number of matching records found.
+      metadata:
+        type: array
+        items:
+          $ref: "#/definitions/Dataset"
+          
+  ErrorResponse:
+    type: object
+    properties:
+      error:
+        type: boolean
+        description: true if there is any error.
+      messages:
+        type: array
+        description: error messages.
+        items:
+          description: a message
+          type: string
+          
+  Metadata:
+    type: object
+    properties:
       title:
         type: string
-        description: title of the dataset
+        description: | 
+          Name by which the cited resource is known.
       summary:
         type: string
-        description: summary of te dataset
+        description: |
+         Brief narrative summary of the content of the resource(s).
       keywords:
         type: array
-        description: keywords that describe the dataset
+        description: |
+          Commonly used word(s) or formalised word(s) or phrase(s) used to describe the
+          subject.
         items: 
           type: string
       lineage:
         type: string
-        description: Information about dataset creation/collection
+        description: | 
+          Information about the events or source data used in constructing the data
+          specified by the scope or lack of knowledge about lineage.
       license:
         type: string
-        description: License under which the dataset is made available
+        description: |
+          License under which the dataset is made available. Is must be one of
+          the key values returned by /api/v1/registry/license service. If not, 
+          the passed value will be ignored.
       resolution:
         type: string
-        description: Resolution for which the dataset is optimal
+        description: | 
+          Denominator of the representative fraction on a source map. It must be one
+          of the key values returned by /api/v1/registry/denominator service. 
+          If it is not one of those, the passed value will be ignored.
       locationUri:
         type: string
-        description: URI of a location of the dataset
-      extent:
-        type: array
-        description: The geographical extent (box) of the location of the dataset
-        items: 
-          type: number
-        maxItems: 4
-        minItems: 4
-      location:
-        description: The label of the location
-        type: string
-      publish:
-        type: boolean
-        description: indicates if user tried to publish, and if publish succeeded
+        description: | 
+          URI of the geographical location that the dataset refers to. It must be
+          one of the key values returned by the service /api/v1/registry/location.
+          If not, the passed value will be ignored.
+        
       topicCategories:
-        type: array
-        description: the topic of the dataset
-        items: 
-          type: string
-      valid: 
-        type: boolean
-        description: indication if all required properties are filled and the dataset can be published
-      status:
-        type: string
-        enum: ["published","draft"]
-        description: true if this file has been previously published
-      error:
-        type: boolean
-        description: true if an error occured while processing the request
-      messages:
-        type: array
-        items:
-          type: string
-        description: if an error occured, this property has additional info about the error
-      fileName:
-        type: string
-        description: the fileName of the uploaded dataset
-      thumbnailUri:
-        type: string
-        description: url of the thumbnail
-      changeDate:
-        type: string
-        format: date
-        description: date of latest change of the metadata
-      publishDate:
-        type: string
-        format: date-time
-        description: date of publication of the metadata
+          type: array
+          description: |
+            Main theme(s) of the datset. It must be one of the key values returned
+            by the /api/v1/registry/topicCategory service.
+            High-level geographic data thematic classification to assist in the 
+            grouping and search of available geographic data sets. Can be used 
+            to group keywords as well. 
+            NOTE It is understood there are overlaps 
+            between general categories and the user is encouraged to select the 
+            one most appropriate.
+          items: 
+            type: string
+  Dataset:
+    allOf: 
+      - $ref: '#/definitions/Metadata'
+      - type: object
+        properties:
+          identifier:
+            type: string
+            format: uuid
+            description: Unique identifier of dataset.
+          extent:
+            type: string
+            description: | 
+              The geographical extent (box) of the location of the dataset. It 
+              is expressed as a Well Known Text (WKT) string.
+          location:
+            description: The label of the location.
+            type: string
+          valid: 
+            type: boolean
+            description: |
+              indication if all required properties are filled and the dataset 
+              can be published.
+          status:
+            type: string
+            enum: 
+              - draft
+              - published
+            description: |
+              "published" if the dataset has been previously published.
+              "draft" if the dataset hasn't been published yet.
+          error:
+            type: boolean
+            description: |
+              true if an error occured while processing the request. 
+              If true check the messages property for more info.
+          messages:
+            type: array
+            items:
+              type: string
+            description: if an error occured, this property has additional info about the error.
+          fileName:
+            type: string
+            description: the fileName of the uploaded dataset.
+          fileType:
+            type: string
+            description: the detected MIME type of the dataset.
+          thumbnailUri:
+            type: string
+            description: URL of the thumbnail.
+          changeDate:
+            type: string
+            format: date-time
+            description: date of latest change of the metadata.
+          publishDate:
+            type: string
+            format: date
+            description: date of publication of the metadata.
+  
+
     

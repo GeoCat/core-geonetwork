@@ -50,8 +50,8 @@ public class MockXmlRequest extends XmlRequest {
 
     /**
      * Begin mapping a request to a response.
-     * @param path
-     * @return
+     * @param path Path to XML
+     * @return The Mock XmlRequest With When.
      */
     public MockXmlRequestWithWhen when(String path) {
         return new MockXmlRequestWithWhen(path);
@@ -59,8 +59,8 @@ public class MockXmlRequest extends XmlRequest {
 
     /**
      * Begin mapping a request to a response.
-     * @param predicate
-     * @return
+     * @param predicate The predicate.
+     * @return The Mock XML Request With When.
      */
     public MockXmlRequestWithWhen when(Predicate<HttpRequestBase> predicate) {
         return new MockXmlRequestWithWhen(predicate);

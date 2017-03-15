@@ -36,7 +36,9 @@ public class ExpiredSessionFilter extends GenericFilterBean {
         try {
             chain.doFilter(request, response);
         } catch (Exception e) {
-            System.out.println("Access denied");
+            System.out.println("Expired session filter");
+            e.printStackTrace(System.err);
+            throw e;
         }
     }
 }

@@ -10,25 +10,29 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <property name="accessDecisionManager" ref="accessDecisionManager"></property>
         <property name="securityMetadataSource">
             <sec:filter-security-metadata-source use-expressions="true" request-matcher="regex">
-              <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/test.service/.+" access="permitAll"></sec:intercept-url>
-              <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/test.service" access="permitAll"></sec:intercept-url>
 
-              <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/ajaxLogin" access="permitAll"></sec:intercept-url>
-              <sec:intercept-url pattern="/api/v[0-9]+/datasets" access="hasRole('Reviewer')" />
+              <!--<sec:intercept-url pattern="/api/v[0-9]+/datasets" access="hasRole('Reviewer')" />
               <sec:intercept-url pattern="/api/v[0-9]+/dataset" access="hasRole('Reviewer')" />
+              <sec:intercept-url pattern="/api/v[0-9]+/docs*.*" access="permitAll" />
               <sec:intercept-url pattern="/api/v[0-9]+/registry/*.*" access="permitAll"></sec:intercept-url>
-              <sec:intercept-url pattern="/api/v[0-9]+/.*" access="permitAll"></sec:intercept-url>
+              <sec:intercept-url pattern="/api/v[0-9]+/.*" access="permitAll"></sec:intercept-url>-->
 
-			        <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/index!?.*" access="permitAll"></sec:intercept-url>
+              <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/index!?.*" access="permitAll"></sec:intercept-url>
               <sec:intercept-url pattern="/id/thumbnail/*.*" access="permitAll"></sec:intercept-url>
               <sec:intercept-url pattern="/id/dataset/*.*" access="permitAll"></sec:intercept-url>
               <sec:intercept-url pattern="/doc/dataset/*.*" access="permitAll"></sec:intercept-url>
               <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/id/dataset/*.*" access="permitAll"></sec:intercept-url>
               <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/id/thumbnail/*.*" access="permitAll"></sec:intercept-url>
               <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/gdsRegister!?.*" access="permitAll"></sec:intercept-url>
+              <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/ajaxLogin!?.*" access="permitAll"/>
 
 
-                <sec:intercept-url pattern="/metadata/.*" access="permitAll"/>
+              <sec:intercept-url pattern="/registries!?.*" access="permitAll"/>
+
+
+
+
+              <sec:intercept-url pattern="/metadata/.*" access="permitAll"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+" access="permitAll"/>
                 <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/metadata/.*" access="permitAll"/>
                 <sec:intercept-url pattern="/static/.*" access="permitAll"/>
@@ -504,9 +508,33 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 <sec:intercept-url pattern="/home\?.*" access="permitAll"/>
                 <sec:intercept-url pattern="/home" access="permitAll"/>
                 <sec:intercept-url pattern="/rewritestatus" access="permitAll"/>
-
+                
+                <sec:intercept-url pattern="/registry/[a-zA-Z0-9_\-]+!?.*" access="permitAll" />
+                <sec:intercept-url pattern="/registries!?.*" access="permitAll"/>
+                
                 <sec:intercept-url pattern="/.*" access="denyAll"/>
+                
             </sec:filter-security-metadata-source>
         </property>
     </bean>
+  <bean class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor" id="gdsFilterSecurityInterceptor">
+    <property name="authenticationManager" ref="authenticationManager" />
+    <property name="accessDecisionManager" ref="accessDecisionManager"/>
+    <property name="securityMetadataSource">
+      <sec:filter-security-metadata-source use-expressions="true" request-matcher="regex">
+        
+        <sec:intercept-url pattern="/api/v[0-9]+/datasets" access="hasRole('Reviewer')" />
+        <sec:intercept-url pattern="/api/v[0-9]+/dataset" access="hasRole('Reviewer')" />
+        <sec:intercept-url pattern="/api/v[0-9]+/docs*.*" access="permitAll" />
+        <sec:intercept-url pattern="/api/v[0-9]+/registry/*.*" access="permitAll" />
+        <sec:intercept-url pattern="/api/v[0-9]+/registry/[a-zA-Z0-9_\-]+!?.*" access="permitAll"/>
+        <sec:intercept-url pattern="/api/v[0-9]+/registries!?.*" access="permitAll"/>
+        <sec:intercept-url pattern="/api/v[0-9]+/.*" access="permitAll" />
+
+
+      </sec:filter-security-metadata-source>
+    </property>
+
+
+  </bean>
 </beans>

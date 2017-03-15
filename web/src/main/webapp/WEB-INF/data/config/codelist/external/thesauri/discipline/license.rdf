@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:fn="http://www.w3.org/2005/02/xpath-functions" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:gml="http://www.opengis.net/gml#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:xdt="http://www.w3.org/2005/02/xpath-datatypes" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <!-- Scheme -->
+    <skos:ConceptScheme rdf:about="http://geodatastore.pdok.nl/registry/license">
+        <dc:title>Data licenties</dc:title>
+        <dc:description>De data licenties die door data.overheid.nl beschouwd worden als open data licenties</dc:description>
+        <dc:creator>
+            <foaf:Organization>
+                <foaf:name>Creative Commons</foaf:name>
+            </foaf:Organization>
+        </dc:creator>
+        <dc:rights>Free to all for non commercial use.</dc:rights>
+        <dcterms:issued>2006-09-22 07:57:15</dcterms:issued>
+        <dcterms:modified>2006-09-22 07:57:15</dcterms:modified>
+    </skos:ConceptScheme>
+	<skos:Concept rdf:about="http://creativecommons.org/publicdomain/mark/1.0/deed.nl">
+		<skos:inScheme rdf:resource="http://geodatastore.pdok.nl/registry/license"/>
+		<skos:prefLabel xml:lang="nl">Public domain</skos:prefLabel>
+	</skos:Concept>
+	<skos:Concept rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+		<skos:inScheme rdf:resource="http://geodatastore.pdok.nl/registry/license"/>
+		<skos:prefLabel xml:lang="nl">CC0 (Creative Commons)</skos:prefLabel>
+	</skos:Concept>
+	<skos:Concept rdf:about="http://creativecommons.org/licenses/by/3.0/nl/">
+		<skos:inScheme rdf:resource="http://geodatastore.pdok.nl/registry/license"/>
+		<skos:prefLabel xml:lang="nl">CC-BY (Creative Commons Naamsvermelding)</skos:prefLabel>
+	</skos:Concept>
+</rdf:RDF>

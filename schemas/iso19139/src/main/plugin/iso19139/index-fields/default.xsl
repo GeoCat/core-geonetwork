@@ -219,12 +219,14 @@
                     <Field name="extentDesc" string="{string(.)}" store="true" index="true"/>
                 </xsl:for-each>
 
-                <xsl:for-each select="gmd:geographicElement/gmd:EX_GeographicDescription/gmd:geographicIdentifier/gmd:MD_Identifier/gmd:code/gco:CharacterString">
+
+                <xsl:for-each select="gmd:geographicElement/gmd:EX_GeographicDescription/gmd:geographicIdentifier/gmd:MD_Identifier/gmd:code/gco:CharacterString|
+				 			gmd:geographicElement/gmd:EX_GeographicDescription/gmd:geographicIdentifier/gmd:RS_Identifier/gmd:code/gco:CharacterString">
                     <Field name="geoDescCode" string="{string(.)}" store="true" index="true"/>
                 </xsl:for-each>
 
                 <xsl:for-each select="gmd:temporalElement/
-                                  (gmd:EX_TemporalExtent|gmd:EX_SpatialTemporalExtent)/gmd:extent">
+				  (gmd:EX_TemporalExtent|gmd:EX_SpatialTemporalExtent)/gmd:extent">
                     <xsl:for-each select="gml:TimePeriod">
 
                         <xsl:variable name="times">
@@ -391,14 +393,22 @@
                 </xsl:if>
             </xsl:if>
 
-            <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+			<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	
+			<xsl:for-each select="gmd:topicCategory/gmd:MD_TopicCategoryCode">
+				<Field name="topicCat" string="{string(.)}" store="true" index="true"/>
+        <!-- Don't add the topic category as a keyword -->
+				<!--<Field name="keyword"
+               string="{util:getCodelistTranslation('gmd:MD_TopicCategoryCode', string(.), string($isoLangId))}"
+               store="true"
+               index="true"/>-->
+			</xsl:for-each>
 
-            <xsl:for-each select="gmd:topicCategory/gmd:MD_TopicCategoryCode">
-                <Field name="topicCat" string="{string(.)}" store="true" index="true"/>
-                <Field name="keyword"
-                        string="{util:getCodelistTranslation('gmd:MD_TopicCategoryCode', string(.), string($isoLangId))}"
-                        store="true" index="true"/>
-            </xsl:for-each>
+			<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->		
+	
+			<xsl:for-each select="gmd:language/gco:CharacterString|gmd:language/gmd:LanguageCode/@codeListValue">
+				<Field name="datasetLang" string="{string(.)}" store="true" index="true"/>
+			</xsl:for-each>
 
             <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 

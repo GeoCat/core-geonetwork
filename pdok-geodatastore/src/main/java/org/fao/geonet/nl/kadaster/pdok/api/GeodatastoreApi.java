@@ -11,7 +11,11 @@ import jeeves.server.dispatchers.ServiceManager;
 import jeeves.server.sources.http.ServletPathFinder;
 import jeeves.services.ReadWriteController;
 import nl.kadaster.pdok.bussiness.*;
+import nl.kadaster.pdok.bussiness.registryservices.CodelistElement;
+import nl.kadaster.pdok.bussiness.registryservices.ErrorResponse;
 import nl.kadaster.pdok.bussiness.registryservices.Registry;
+import nl.kadaster.pdok.bussiness.registryservices.RegistryService;
+import nl.kadaster.pdok.bussiness.registryservices.bean.TopicCategory;
 import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.ApplicationContextHolder;
@@ -39,11 +43,9 @@ import org.fao.geonet.services.metadata.Publish;
 import org.fao.geonet.services.metadata.XslProcessing;
 import org.fao.geonet.services.metadata.XslProcessingReport;
 import org.fao.geonet.services.resources.handlers.IResourceUploadHandler;
-import org.fao.geonet.services.schema.Info;
 import org.fao.geonet.services.util.SearchDefaults;
 import org.fao.geonet.utils.IO;
 import org.fao.geonet.utils.Log;
-import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -82,7 +84,7 @@ public class GeodatastoreApi {
     public static final String RESOLUTION_KEY = "resolution";
     public static final String ABSTRACT_KEY = "abstract";
     public static final String FORMAT_KEY = "format";
-    public static final String UUID_KEY_ = "uuid";
+    public static final String UUID_KEY = "uuid";
     public static final String PUBLICATION_DATE_KEY = "publicationDate";
     public static final String METADATA_MODIFIED_DATE_KEY = "metadataModifiedDate";
     public static final String REVISION_DATE_KEY = "revisionDate";
@@ -155,10 +157,15 @@ public class GeodatastoreApi {
 
     /**
      * Create a new dataset with the received file, some default data and some calculated data from the received file.
+     * At least one of <code>dataset</code>, <code>thumbnail</code> or <code>metadata</code> parameters is required.
+     * Otherwise an error is returned.
      *
-     * @param dataset the file
-     * @param lang    dataset language
-     * @param request the HttpServletRequest
+     * @param dataset       the file.
+     * @param thumbnail     a thumbnail image of the dataset contents.
+     * @param metadataParam a JSON with key/value pairs containing the metadata.
+     * @param publish       true to try to publish the dataset.
+     * @param lang          dataset language
+     * @param request       the HttpServletRequest
      * @return a {@link ResponseEntity} with {@link MetadataParametersBean} with the dataset properties and a 200 status
      * if the data was created. It has an error property. If it is <code>true</code> then there was an error when trying
      * to create the dataset and the message property should contain the cause.
@@ -167,79 +174,111 @@ public class GeodatastoreApi {
     @RequestMapping(value = "/dataset", method = RequestMethod.POST)
     public
     @ResponseBody
-    ResponseEntity<MetadataParametersBean> uploadDataset(@RequestParam("dataset") MultipartFile dataset,
-                                                         @PathVariable("lang") String lang, HttpServletRequest request) {
-        if (!dataset.isEmpty()) {
-            MetadataParametersBean response = new MetadataParametersBean();
-            HttpStatus status = HttpStatus.OK;
+    ResponseEntity<Object> uploadDataset(@RequestParam(value = "dataset", required = false) MultipartFile dataset,
+                                         @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail,
+                                         @RequestParam(value = "metadata", required = false) String metadataParam,
+                                         @RequestParam(value = "publish", defaultValue = "false") Boolean publish,
+                                         @PathVariable("lang") String lang, HttpServletRequest request) {
 
-            try {
-                ServiceContext context = serviceManager.createServiceContext("geodatastore.api.dataset", lang, request);
-                UserSession session = context.getUserSession();
-                final String username = session.getUsername();
-                assert username != null;
-                User user = userRepository.findOneByUsername(username);
-                List<Integer> groupsIds = userGroupRepository.findGroupIds(Specifications.where(
-                        hasProfile(Profile.Reviewer)).and(hasUserId(user.getId())));
-                Group group;
-                if (groupsIds.size() != 0) {
-                    Collections.sort(groupsIds);
-                    group = groupRepository.findOne(groupsIds.get(0));
-                } else {
-                    String message = "No Reviewer group found for user " + username + ". Groups: [" + StringUtils.join(groupsIds, ",") + "]";
-                    Log.info(GDS_LOG, "ServiceNotAllowedEx - " + message);
-                    throw new ServiceNotAllowedEx(message);
-                }
 
-                if (StringUtils.isBlank(group.getEmail())) {
-                    String message = "The group " + group.getName() + " must have an email set";
-                    Log.info(GDS_LOG, message);
-                    throw new ServiceNotAllowedEx(message);
-                }
-                String organisationEmail = group.getEmail();
+        ServiceContext context = serviceManager.createServiceContext("geodatastore.api.dataset", lang, request);
 
-                //metadata uses group description as organisation title, can not be empty
-                String organisation = group.getDescription();
-                if (StringUtils.isEmpty(organisation)) {
-                    Log.warning(GDS_LOG, "organisationdescription-cannot-be-empty: " + username);
-                    throw new ServiceNotAllowedEx("organisationdescription-cannot-be-empty");
-                }
+        // At least one of these three parameters is required.
+        if (dataset == null && thumbnail == null && metadataParam == null) {
+            ErrorResponse response = new ErrorResponse();
+            response.setError(true);
+            response.setMessages(Lists.newArrayList("required-param-not-present"));
+            return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
+        }
 
-                UUID uuid = UUID.randomUUID();
-                ISODate creationDate = new ISODate();
-                String defaultLocation = "http://geodatastore.pdok.nl/registry/location#Nederland_country";
+        MetadataParametersBean response = new MetadataParametersBean();
+        HttpStatus status = HttpStatus.OK;
 
-                Map<String, Object> templateParameters = prepareTemplateParameters(organisation, organisationEmail,
+        try {
+            MetadataParametersBean metadataParametersBean = null;
+            if (metadataParam != null) {
+                metadataParametersBean = metadataConverter.convert(metadataParam);
+            }
+            UserSession session = context.getUserSession();
+            final String username = session.getUsername();
+            assert username != null;
+            User user = userRepository.findOneByUsername(username);
+            List<Integer> groupsIds = userGroupRepository.findGroupIds(Specifications.where(
+                    hasProfile(Profile.Reviewer)).and(hasUserId(user.getId())));
+            Group group;
+            if (groupsIds.size() != 0) {
+                Collections.sort(groupsIds);
+                group = groupRepository.findOne(groupsIds.get(0));
+            } else {
+                String message = "No Reviewer group found for user " + username + ". Groups: [" + StringUtils.join(groupsIds, ",") + "]";
+                Log.info(GDS_LOG, "ServiceNotAllowedEx - " + message);
+                throw new ServiceNotAllowedEx(message);
+            }
+
+            if (StringUtils.isBlank(group.getEmail())) {
+                String message = "The group " + group.getName() + " must have an email set";
+                Log.info(GDS_LOG, message);
+                throw new ServiceNotAllowedEx(message);
+            }
+            String organisationEmail = group.getEmail();
+
+            //metadata uses group description as organisation title, can not be empty
+            String organisation = group.getDescription();
+            if (StringUtils.isEmpty(organisation)) {
+                Log.warning(GDS_LOG, "organisationdescription-cannot-be-empty: " + username);
+                throw new ServiceNotAllowedEx("organisationdescription-cannot-be-empty");
+            }
+
+            UUID uuid = UUID.randomUUID();
+            ISODate creationDate = new ISODate();
+            String defaultLocation = "";
+            String downloadUrl = buildDownloadUrl(uuid.toString(), servletContext);
+
+            Map<String, Object> templateParameters;
+            if (metadataParametersBean == null) {
+                metadataParametersBean = new MetadataParametersBean();
+                metadataParametersBean.setLocation(defaultLocation);
+                metadataParametersBean.setLocationUri(null);
+                metadataParametersBean.setLicense("http://creativecommons.org/publicdomain/mark/1.0/deed.nl");
+
+
+
+                /*templateParameters = prepareTemplateParameters(organisation, organisationEmail,
                         new ArrayList<String>(), new ArrayList<String>(), defaultLocation, "2", "5", "50", "54",
                         dataset.getContentType(), "http://example.com/geonetwork/id/dataset/" + uuid.toString(), dataset.getOriginalFilename(),
-                        uuid.toString(), creationDate, "http://creativecommons.org/publicdomain/mark/1.0/deed.nl", "");
+                        uuid.toString(), creationDate, "http://creativecommons.org/publicdomain/mark/1.0/deed.nl", "");*/
+            }
+            metadataParametersBean.setIdentifier(uuid.toString());
+            templateParameters = prepareTemplateParameters(metadataParametersBean, organisation, organisationEmail, creationDate.getDateAsString(), true);
+            Map<String, Object> filePropertiesMaps = getParametersFromDataset(dataset);
+            templateParameters.putAll(filePropertiesMaps);
+            Element metadata = metadataUtil.fillXmlTemplate(templateParameters);
 
-                Element metadata = metadataUtil.fillXmlTemplate(templateParameters);
-
-                int userId = context.getUserSession().getUserIdAsInt();
-                String docType = null, category = "geodatastore";
-                boolean updateFixedInfo = true, indexImmediate = true;
-                String createdId = metadataManager.insertMetadata(context, ISO19139SchemaPlugin.IDENTIFIER, metadata, uuid.toString(),
-                        userId, Integer.toString(group.getId()), settingManager.getSiteId(), MetadataType.METADATA.codeString,
-                        docType, category, creationDate.getDateAsString(), creationDate.getDateAsString(), updateFixedInfo, indexImmediate);
+            int userId = context.getUserSession().getUserIdAsInt();
+            String docType = null, category = "geodatastore";
+            boolean updateFixedInfo = true, indexImmediate = false;
+            String metadataId = metadataManager.insertMetadata(context, ISO19139SchemaPlugin.IDENTIFIER, metadata, uuid.toString(),
+                    userId, Integer.toString(group.getId()), settingManager.getSiteId(), MetadataType.METADATA.codeString,
+                    docType, category, creationDate.getDateAsString(), creationDate.getDateAsString(), updateFixedInfo, indexImmediate);
 
 
-                metadataManager.setStatus(context, Integer.parseInt(createdId), Integer.parseInt(Params.Status.DRAFT), creationDate,
-                        "Initial creation");
+            metadataManager.setStatus(context, Integer.parseInt(metadataId), Integer.parseInt(Params.Status.DRAFT), creationDate,
+                    "Initial creation");
+            insertOrUpdateThumbnail(thumbnail, metadataId, context);
 
+
+            if (dataset != null && !dataset.isEmpty()) {
                 String fileName = dataset.getOriginalFilename();
                 String fsize = Long.toString(dataset.getSize());
                 String access = "private";
                 String overwrite = "no";
 
                 IResourceUploadHandler uploadHook = (IResourceUploadHandler) context.getApplicationContext().getBean("resourceUploadHandler");
-                uploadHook.onUpload(dataset.getInputStream(), context, access, overwrite, Integer.parseInt(createdId), fileName, Double.parseDouble(fsize));
+                uploadHook.onUpload(dataset.getInputStream(), context, access, overwrite, Integer.parseInt(metadataId), fileName, Double.parseDouble(fsize));
 
 
-                Log.info(GDS_LOG, "UPLOADED:" + fileName + "," + createdId + "," + context.getIpAddress() + "," + username);
+                Log.info(GDS_LOG, "UPLOADED:" + fileName + "," + metadataId + "," + context.getIpAddress() + "," + username);
 
-                ServletPathFinder pathFinder = new ServletPathFinder(servletContext);
-                String downloadUrl = getSiteURL(pathFinder) + "/id/dataset/" + uuid.toString();
                 Map<String, String[]> allParams = Maps.newHashMap(request.getParameterMap());
                 // Set parameter and process metadata to reference the uploaded file
                 allParams.put("url", new String[]{downloadUrl});
@@ -255,7 +294,7 @@ public class GeodatastoreApi {
                 Element processedMetadata;
                 try {
                     final String siteURL = context.getBean(SettingManager.class).getSiteURL(context);
-                    processedMetadata = xslProcessing.process(context, createdId, process,
+                    processedMetadata = xslProcessing.process(context, metadataId, process,
                             true, report, siteURL, allParams);
                     if (processedMetadata == null) {
                         String message = "Not found: "
@@ -268,63 +307,139 @@ public class GeodatastoreApi {
                     Log.warning(GDS_LOG, "Error processing the new metadata template. " + e);
                     throw e;
                 }
-
-                // Build response
-                response.setIdentifier(uuid.toString());
-                response.setError(false);
-                //response.setExtent();
-                response.setSummary((String) templateParameters.get(ABSTRACT_KEY));
-                response.setLineage((String) templateParameters.get(LINEAGE_KEY));
-                response.setLicense((String) templateParameters.get(LICENSE_KEY));
-                // TODO set the right location
-                if (StringUtils.isNotBlank((String) templateParameters.get(GEOGRAPHIC_IDENTIFIER_KEY))) {
-                    KeywordBean locationResult = locationManager.getKeywordById(locationThesaurus, defaultLocation);
-                    if (locationResult != null && locationResult.getDefaultValue() != null) {
-                        response.setLocation(locationResult.getDefaultValue());
-                    }
-                    response.setLocationUri(defaultLocation);
-                }
-                response.setResolution((String) templateParameters.get(RESOLUTION_KEY));
-                response.setStatus("draft");
-                response.setTitle((String) templateParameters.get(TITLE_KEY));
-                response.setUrl(downloadUrl);
-                response.setFileType((String) templateParameters.get(FORMAT_KEY));
-                response.setFileName((String) templateParameters.get(FILE_NAME_KEY));
-            } catch (UnAuthorizedException e) {
-                Log.info(GDS_LOG, "Unauthorized access", e);
-                response.setError(true);
-                response.addMessage(e.getMessage() + " - " + e.getObject());
-                status = HttpStatus.FORBIDDEN;
-            } catch (ServiceNotAllowedEx e) {
-                Log.info(GDS_LOG, "Service not allowed", e);
-                response.setError(true);
-                response.addMessage(e.getMessage() + " - " + e.getObject());
-                status = HttpStatus.FORBIDDEN;
-            } catch (BadParameterEx e) {
-                Log.info(GDS_LOG, "Bad parameter", e);
-                response.setError(true);
-                response.addMessage(e.getMessage() + ". " + e.getObject());
-                status = HttpStatus.BAD_REQUEST;
-            } catch (Exception e) {
-                Log.warning(GDS_LOG, "General exception", e);
-                response.setError(true);
-                response.addMessage(e.getMessage());
-                status = HttpStatus.INTERNAL_SERVER_ERROR;
             }
-            return new ResponseEntity<>(response, status);
-        } else {
-            MetadataParametersBean response = new MetadataParametersBean();
+
+            if (publish) {
+                metadataManager.indexMetadata(metadataId, true);
+                response = getMetadataFromIndex(uuid.toString(), context);
+                response = publishDataset(lang, request, response, context, metadataId, user, group, response);
+            }
+            // Build response
+            metadataManager.indexMetadata(metadataId, true);
+            response = getMetadataFromIndex(uuid.toString(), context);
+            response.setError(false);
+
+        } catch (IllegalArgumentException iae) {
+            Log.info(GDS_LOG, "Bad or not present parameter in the request", iae);
+            ErrorResponse exResponse = new ErrorResponse();
+            exResponse.setError(true);
+            exResponse.addMessage("update.bad.metadata.json.parameter");
+            status = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<Object>(exResponse, status);
+        } catch (UnAuthorizedException e) {
+            Log.info(GDS_LOG, "Unauthorized access", e);
             response.setError(true);
-            response.addMessage("empty.file");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            response.addMessage(e.getMessage() + " - " + e.getObject());
+            status = HttpStatus.FORBIDDEN;
+        } catch (ServiceNotAllowedEx e) {
+            Log.info(GDS_LOG, "Service not allowed", e);
+            response.setError(true);
+            response.addMessage(e.getMessage() + " - " + e.getObject());
+            status = HttpStatus.FORBIDDEN;
+        } catch (BadParameterEx e) {
+            Log.info(GDS_LOG, "Bad parameter", e);
+            response.setError(true);
+            response.addMessage(e.getMessage() + ". " + e.getObject());
+            status = HttpStatus.BAD_REQUEST;
+        } catch (Exception e) {
+            Log.warning(GDS_LOG, "General exception", e);
+            response.setError(true);
+            response.addMessage(e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
+        return new ResponseEntity<Object>(response, status);
+
+    }
+
+    private String buildDownloadUrl(String uuid, ServletContext context) {
+        ServletPathFinder pathFinder = new ServletPathFinder(context);
+        return getSiteURL(pathFinder) + "/id/dataset/" + uuid.toString();
+    }
+
+    private Map<String, Object> prepareTemplateParameters(MetadataParametersBean metadataParameter, String organisation, String organisationEmail, String changeDate, boolean updatePublicationDate) {
+        Map<String, Object> parametersMap = new HashMap<>();
+        parametersMap.put(ORGANISATION_NAME_KEY, organisation);
+        parametersMap.put(ORGANISATION_EMAIL_KEY, organisationEmail);
+        parametersMap.put(METADATA_MODIFIED_DATE_KEY, changeDate);
+        if (StringUtils.isNotBlank(metadataParameter.getIdentifier())) {
+            parametersMap.put(UUID_KEY, metadataParameter.getIdentifier());
+        }
+        if (updatePublicationDate) {
+            parametersMap.put(PUBLICATION_DATE_KEY, changeDate);
+        }
+
+        if (StringUtils.isNotEmpty(metadataParameter.getTitle())) {
+            parametersMap.put(TITLE_KEY, metadataParameter.getTitle());
+        }
+        if (StringUtils.isNotEmpty(metadataParameter.getSummary())) {
+            parametersMap.put(ABSTRACT_KEY, metadataParameter.getSummary());
+        }
+        if (metadataParameter.getKeywords() != null && metadataParameter.getKeywords().size() > 0) {
+            String keywordSeparator = "#";
+            String keywordList = Joiner.on(keywordSeparator).join(metadataParameter.getKeywords());
+            parametersMap.put(KEYWORD_SEPARATOR_KEY, keywordSeparator);
+            parametersMap.put(KEYWORDS_KEY, keywordList);
+        }
+        if (metadataParameter.getTopicCategories() != null && metadataParameter.getTopicCategories().size() > 0) {
+            String topicSeparator = "#";
+            List<String> purgedTopicCatList = new ArrayList<>(metadataParameter.getTopicCategories());
+            List<? extends CodelistElement> availableCategories = registryServiceLocator.getService("topicCategory").query(null, 1000);
+            List<String> availableCategoriesCodes = new ArrayList<>(availableCategories.size());
+            for(CodelistElement cat : availableCategories) {
+                if (cat instanceof TopicCategory) {
+                    availableCategoriesCodes.add(((TopicCategory) cat).getKey());
+                }
+            }
+            purgedTopicCatList.retainAll(availableCategoriesCodes);
+
+            String topicList = Joiner.on(topicSeparator).join(purgedTopicCatList);
+            parametersMap.put(TOPIC_SEPARATOR_KEY, topicSeparator);
+            parametersMap.put(TOPICS_KEY, topicList);
+        }
+        // Location
+        if (StringUtils.isNotBlank(metadataParameter.getLocationUri())) {
+            // TODO recover coordinates from the service and pass them to the template
+            String[] splitLocationUri = StringUtils.split(metadataParameter.getLocationUri(), "#");
+            if (splitLocationUri.length == 2) {
+                String location = splitLocationUri[1];
+                KeywordBean locationKeyword = locationManager.getKeywordById(locationThesaurus, metadataParameter.getLocationUri());
+                if (locationKeyword != null) {
+                    parametersMap.put(GEOGRAPHIC_URI_KEY, metadataParameter.getLocationUri());
+                    parametersMap.put(GEOGRAPHIC_IDENTIFIER_KEY, location);
+                    parametersMap.put(BBOX_WEST_LONGITUDE_KEY, locationKeyword.getCoordWest());
+                    parametersMap.put(BBOX_EAST_LONGITUDE_KEY, locationKeyword.getCoordEast());
+                    parametersMap.put(BBOX_SOUTH_LATITUDE_KEY, locationKeyword.getCoordSouth());
+                    parametersMap.put(BBOX_NORTH_LATITUDE_KEY, locationKeyword.getCoordNorth());
+                } else {
+                    // reset the location URI
+                    Log.info(GDS_LOG, "Location id " + location + " not found in thesaurus " + locationThesaurus
+                            + " and language " + locationManager.getDefaultLanguage());
+                    parametersMap.remove(GEOGRAPHIC_IDENTIFIER_KEY);
+                    parametersMap.remove(GEOGRAPHIC_URI_KEY);
+                }
+            } else {
+                Log.info(GDS_LOG, "Location URI isn't compounded by firstpart#secondpart. Ignoring the value.");
+            }
+
+        }
+        if (StringUtils.isNotBlank(metadataParameter.getLineage())) {
+            parametersMap.put(LINEAGE_KEY, metadataParameter.getLineage());
+        }
+        if (StringUtils.isNotBlank(metadataParameter.getLicense())) {
+            parametersMap.put(LICENSE_KEY, metadataParameter.getLicense());
+        }
+        if (StringUtils.isNotBlank(metadataParameter.getResolution())) {
+            parametersMap.put(RESOLUTION_KEY, metadataParameter.getResolution());
+        }
+
+        return parametersMap;
     }
 
     private Map<String, Object> prepareTemplateParameters(String organisation, String organisationEmail, List<String> keywords,
                                                           List<String> topics, String geographicIdentifier, String bboxWestLongitude,
                                                           String bboxEastLongitude, String bboxSouthLatitude, String bboxNorthLatitude,
                                                           String format, String downloadUri, String fileName, String uuid, ISODate creationDate, String license, String title) {
-        Map<String, Object> parameters = Maps.newHashMap();
+        Map<String, Object> parameters = new HashMap<>();
         parameters.put(ORGANISATION_NAME_KEY, organisation);
         parameters.put(ORGANISATION_EMAIL_KEY, organisationEmail);
 
@@ -333,15 +448,13 @@ public class GeodatastoreApi {
         parameters.put(TITLE_KEY, title);
         parameters.put(REVISION_DATE_KEY, creationDate.getDateAsString());
 
-        parameters.put(UUID_KEY_, uuid);
+        parameters.put(UUID_KEY, uuid);
         parameters.put(ABSTRACT_KEY, "");
         parameters.put(THUMBNAIL_URI_KEY, "");
 
         String keywordList = Joiner.on("#").join(keywords);
         parameters.put(KEYWORDS_KEY, keywordList);
         parameters.put(KEYWORD_SEPARATOR_KEY, "#");
-        //parameters.put(USE_LIMITATION_KEY, "None");
-        //parameters.put(RESOLUTION_KEY, "10000");
 
         String topicList = Joiner.on("#").join(topics);
         parameters.put(TOPICS_KEY, topicList);
@@ -379,7 +492,7 @@ public class GeodatastoreApi {
                                          @PathVariable("identifier") String identifier,
                                          @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail,
                                          @RequestParam(value = "metadata", required = false) String metadata,
-                                         @RequestParam(value = "publish", defaultValue = "true", required = false) Boolean publish,
+                                         @RequestParam(value = "publish", defaultValue = "false", required = false) Boolean publish,
                                          HttpServletRequest request) {
         MetadataParametersBean response = new MetadataParametersBean();
         HttpStatus status;
@@ -469,92 +582,13 @@ public class GeodatastoreApi {
                 Log.debug(GDS_LOG, "Metadata " + createdMd.getId() + " updated");
             }
 
-            if (thumbnail != null && !thumbnail.isEmpty()) {
-                Log.debug(GDS_LOG, "Adding thumbnail to metadata " + metadataId);
-                //--- create destination directory
-                Path metadataPublicDatadir = Lib.resource.getDir(context, Params.Access.PUBLIC, metadataId);
-                Files.createDirectories(metadataPublicDatadir);
-
-                removeOldThumbnail(context, metadataId, "small", false);
-                removeOldThumbnail(context, metadataId, "large", false);
-
-                //--- move uploaded file to destination directory
-                Files.copy(thumbnail.getInputStream(), metadataPublicDatadir.resolve(thumbnail.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
-                boolean small = true, indexAfterChange = false;
-                metadataManager.setThumbnail(context, metadataId, small, thumbnail.getOriginalFilename(), indexAfterChange);
-                Log.debug(GDS_LOG, "Thumbnail to metadata " + metadataId + " successfully added");
-            }
+            insertOrUpdateThumbnail(thumbnail, metadataId, context);
 
             metadataManager.indexMetadata(metadataId, true);
-            LuceneSearcher searcher = (LuceneSearcher) searchManager.newSearcher(SearcherType.LUCENE, Geonet.File.SEARCH_LUCENE);
-            Element queryParameters = new Element(Jeeves.Elem.REQUEST);
-            queryParameters.addContent(new Element(Geonet.SearchResult.FAST).setText("index"));
-            queryParameters.addContent(new Element(Geonet.IndexFieldNames.UUID).setText(identifier));
-            queryParameters = SearchDefaults.getDefaultSearch(context, queryParameters);
-            searcher.search(context, queryParameters, serviceConfig);
-            Element results = searcher.present(context, queryParameters, serviceConfig);
-            SearchResponse searchResponse = new SearchResponse(locationManager, locationThesaurus);
-            searchResponse.initFromXml(results);
+            MetadataParametersBean result = getMetadataFromIndex(identifier, context);
 
-            MetadataParametersBean result = new MetadataParametersBean();
-            if (searchResponse.getCount() > 0 && searchResponse.getMetadata().size() > 0) {
-                result = searchResponse.getMetadata().get(0);
-                /*if (StringUtils.isNotBlank(result.getLocationUri())) {
-                    KeywordBean locationBean = locationManager.getKeywordById(locationThesaurus, result.getLocationUri());
-                    if (locationBean != null) {
-                        result.setLocation(locationBean.getDefaultValue());
-                    }
-                }*/
-            }
-
-            if (publish && result.isValid()) {
-                Log.debug(GDS_LOG, "Publishing metadata " + metadataId);
-                Publish.PublishReport report = publishController.publish(lang, request, metadataId, false);
-                if (report.getPublished() > 0 || report.getUnmodified() > 0) {
-                    metadataManager.setStatus(context, Integer.parseInt(metadataId),
-                            Integer.parseInt(Params.Status.APPROVED), new ISODate(),
-                            "Publish dataset");
-                    metadataManager.indexMetadata(metadataId, true);
-                    result.setStatus("published");
-                    Log.debug(GDS_LOG, "Metadata " + metadataId + " successfully published");
-                    String userEmail = user.getEmail();
-
-                    try {
-                        if (StringUtils.isBlank(userEmail)) {
-                            Log.warning(GDS_LOG, "Cannot send published email to user " + user.getUsername()
-                                    + " because there is not associated email address");
-                        } else {
-                            Map<String, String> mailTemplateParameters = new HashMap<>();
-                            mailTemplateParameters.put("site", settingManager.getSiteName());
-                            mailTemplateParameters.put("siteURL", settingManager.getSiteURL("dut"));
-                            mailTemplateParameters.put("userName", user.getName());
-                            mailTemplateParameters.put("datasetTile", result.getTitle());
-                            List<String> emailToList = Lists.newArrayList();
-                            if (StringUtils.isNotBlank(userEmail)) {
-                                emailToList.add(userEmail);
-                            }
-                            if (StringUtils.isNotBlank(group.getEmail())) {
-                                emailToList.add(group.getEmail());
-                            }
-
-
-                            boolean sent = geodatastoreMailUtils.sendHtmlEmail(emailToList, new ArrayList<String>(0), mailTemplateParameters, PUBLISH_EMAIL_XSLT);
-                            if (!sent) {
-                                Log.error(GDS_LOG, "The publish email cannot be sent. Please review the mail server settings in the database");
-                            }
-                        }
-                    } catch (Exception e) {
-                        Log.error(GDS_LOG, "Error sending publish email to " + userEmail, e);
-                    }
-                } else if (report.getDisallowed() > 0) {
-                    response = result;
-                    String message = "You cannot publish data. You must be at least Reviewer in the group {id="
-                            + group.getId() + ", name=" + group.getName() + "}";
-                    Log.warning(GDS_LOG, message);
-                    throw new ServiceNotAllowedEx(message);
-                }
-
-
+            if (publish) {
+                response = publishDataset(lang, request, response, context, metadataId, user, group, result);
             }
 
             return new ResponseEntity<Object>(result, HttpStatus.OK);
@@ -595,73 +629,115 @@ public class GeodatastoreApi {
         return new ResponseEntity<Object>(response, status);
     }
 
-    private Map<String, Object> prepareTemplateParameters(MetadataParametersBean metadataParameter, String organisation, String organisationEmail, String changeDate, boolean updatePublicationDate) {
-        Map<String, Object> parametersMap = new HashMap<>();
-        parametersMap.put(ORGANISATION_NAME_KEY, organisation);
-        parametersMap.put(ORGANISATION_EMAIL_KEY, organisationEmail);
-        parametersMap.put(METADATA_MODIFIED_DATE_KEY, changeDate);
-        if (updatePublicationDate) {
-            parametersMap.put(PUBLICATION_DATE_KEY, changeDate);
-        }
+    /**
+     * Publish the dataset if it is valid.
+     * @param lang
+     * @param request
+     * @param response
+     * @param context
+     * @param metadataId
+     * @param user
+     * @param group
+     * @param result
+     * @return
+     * @throws Exception
+     */
+    private MetadataParametersBean publishDataset(String lang, HttpServletRequest request, MetadataParametersBean response,
+                                                  ServiceContext context, String metadataId, User user, Group group,
+                                                  MetadataParametersBean result) throws Exception {
+        if (result.isValid()) {
+            Log.debug(GDS_LOG, "Publishing metadata " + metadataId);
+            Publish.PublishReport report = publishController.publish(lang, request, metadataId, false);
+            if (report.getPublished() > 0 || report.getUnmodified() > 0) {
+                metadataManager.setStatus(context, Integer.parseInt(metadataId),
+                        Integer.parseInt(Params.Status.APPROVED), new ISODate(),
+                        "Publish dataset");
+                metadataManager.indexMetadata(metadataId, true);
+                result.setStatus("published");
+                Log.debug(GDS_LOG, "Metadata " + metadataId + " successfully published");
+                String userEmail = user.getEmail();
 
-        if (StringUtils.isNotEmpty(metadataParameter.getTitle())) {
-            parametersMap.put(TITLE_KEY, metadataParameter.getTitle());
-        }
-        if (StringUtils.isNotEmpty(metadataParameter.getSummary())) {
-            parametersMap.put(ABSTRACT_KEY, metadataParameter.getSummary());
-        }
-        if (metadataParameter.getKeywords() != null && metadataParameter.getKeywords().size() > 0) {
-            String keywordSeparator = "#";
-            String keywordList = Joiner.on(keywordSeparator).join(metadataParameter.getKeywords());
-            parametersMap.put(KEYWORD_SEPARATOR_KEY, keywordSeparator);
-            parametersMap.put(KEYWORDS_KEY, keywordList);
-        }
-        if (metadataParameter.getTopicCategories() != null && metadataParameter.getTopicCategories().size() > 0) {
-            String topicSeparator = "#";
-            List<String> purgedTopicCatList = new ArrayList<>(metadataParameter.getTopicCategories());
-            purgedTopicCatList.removeAll(Collections.singleton(null));
-            String topicList = Joiner.on(topicSeparator).join(purgedTopicCatList);
-            parametersMap.put(TOPIC_SEPARATOR_KEY, topicSeparator);
-            parametersMap.put(TOPICS_KEY, topicList);
-        }
-        // Location
-        if (StringUtils.isNotBlank(metadataParameter.getLocationUri())) {
-            // TODO recover coordinates from the service and pass them to the template
-            String[] splitLocationUri = StringUtils.split(metadataParameter.getLocationUri(), "#");
-            if (splitLocationUri.length == 2) {
-                String location = splitLocationUri[1];
-                KeywordBean locationKeyword = locationManager.getKeywordById(locationThesaurus, metadataParameter.getLocationUri());
-                if (locationKeyword != null) {
-                    parametersMap.put(GEOGRAPHIC_URI_KEY, metadataParameter.getLocationUri());
-                    parametersMap.put(GEOGRAPHIC_IDENTIFIER_KEY, location);
-                    parametersMap.put(BBOX_WEST_LONGITUDE_KEY, locationKeyword.getCoordWest());
-                    parametersMap.put(BBOX_EAST_LONGITUDE_KEY, locationKeyword.getCoordEast());
-                    parametersMap.put(BBOX_SOUTH_LATITUDE_KEY, locationKeyword.getCoordSouth());
-                    parametersMap.put(BBOX_NORTH_LATITUDE_KEY, locationKeyword.getCoordNorth());
-                } else {
-                    // reset the location URI
-                    Log.info(GDS_LOG, "Location id " + location + " not found in thesaurus " + locationThesaurus
-                            + " and language " + locationManager.getDefaultLanguage());
-                    parametersMap.remove(GEOGRAPHIC_IDENTIFIER_KEY);
-                    parametersMap.remove(GEOGRAPHIC_URI_KEY);
+                try {
+                    if (StringUtils.isBlank(userEmail)) {
+                        Log.warning(GDS_LOG, "Cannot send published email to user " + user.getUsername()
+                                + " because there is not associated email address");
+                    } else {
+                        Map<String, String> mailTemplateParameters = new HashMap<>();
+                        mailTemplateParameters.put("site", settingManager.getSiteName());
+                        mailTemplateParameters.put("siteURL", settingManager.getSiteURL("dut"));
+                        mailTemplateParameters.put("userName", user.getName());
+                        mailTemplateParameters.put("datasetTile", result.getTitle());
+                        List<String> emailToList = Lists.newArrayList();
+                        if (StringUtils.isNotBlank(userEmail)) {
+                            emailToList.add(userEmail);
+                        }
+                        if (StringUtils.isNotBlank(group.getEmail())) {
+                            emailToList.add(group.getEmail());
+                        }
+
+
+                        boolean sent = geodatastoreMailUtils.sendHtmlEmail(emailToList, new ArrayList<String>(0), mailTemplateParameters, PUBLISH_EMAIL_XSLT);
+                        if (!sent) {
+                            Log.error(GDS_LOG, "The publish email cannot be sent. Please review the mail server settings in the database");
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.error(GDS_LOG, "Error sending publish email to " + userEmail, e);
                 }
-            } else {
-                Log.info(GDS_LOG, "Location URI isn't compounded by firstpart#secondpart. Ignoring the value.");
+            } else if (report.getDisallowed() > 0) {
+                String message = "You cannot publish data. You must be at least Reviewer in the group {id="
+                        + group.getId() + ", name=" + group.getName() + "}";
+                Log.warning(GDS_LOG, message);
+                throw new ServiceNotAllowedEx(message);
             }
-
+        } else {
+            // Dataset not valid for publishing
         }
-        if (StringUtils.isNotBlank(metadataParameter.getLineage())) {
-            parametersMap.put(LINEAGE_KEY, metadataParameter.getLineage());
-        }
-        if (StringUtils.isNotBlank(metadataParameter.getLicense())) {
-            parametersMap.put(LICENSE_KEY, metadataParameter.getLicense());
-        }
-        if (StringUtils.isNotBlank(metadataParameter.getResolution())) {
-            parametersMap.put(RESOLUTION_KEY, metadataParameter.getResolution());
-        }
-
-        return parametersMap;
+            return response;
     }
+
+    private void insertOrUpdateThumbnail(@RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail, String metadataId, ServiceContext context) throws Exception {
+        if (thumbnail != null && !thumbnail.isEmpty()) {
+            Log.debug(GDS_LOG, "Adding thumbnail to metadata " + metadataId);
+            //--- create destination directory
+            Path metadataPublicDatadir = Lib.resource.getDir(context, Params.Access.PUBLIC, metadataId);
+            Files.createDirectories(metadataPublicDatadir);
+
+            removeOldThumbnail(context, metadataId, "small", false);
+            removeOldThumbnail(context, metadataId, "large", false);
+
+            //--- move uploaded file to destination directory
+            Files.copy(thumbnail.getInputStream(), metadataPublicDatadir.resolve(thumbnail.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
+            boolean small = true, indexAfterChange = false;
+            metadataManager.setThumbnail(context, metadataId, small, thumbnail.getOriginalFilename(), indexAfterChange);
+            Log.debug(GDS_LOG, "Thumbnail to metadata " + metadataId + " successfully added");
+        }
+    }
+
+    private MetadataParametersBean getMetadataFromIndex(@PathVariable("identifier") String identifier, ServiceContext context) throws Exception {
+        LuceneSearcher searcher = (LuceneSearcher) searchManager.newSearcher(SearcherType.LUCENE, Geonet.File.SEARCH_LUCENE);
+        Element queryParameters = new Element(Jeeves.Elem.REQUEST);
+        queryParameters.addContent(new Element(Geonet.SearchResult.FAST).setText("index"));
+        queryParameters.addContent(new Element(Geonet.IndexFieldNames.UUID).setText(identifier));
+        queryParameters = SearchDefaults.getDefaultSearch(context, queryParameters);
+        searcher.search(context, queryParameters, serviceConfig);
+        Element results = searcher.present(context, queryParameters, serviceConfig);
+        SearchResponse searchResponse = new SearchResponse(locationManager, locationThesaurus);
+        searchResponse.initFromXml(results);
+
+        MetadataParametersBean result = new MetadataParametersBean();
+        if (searchResponse.getCount() > 0 && searchResponse.getMetadata().size() > 0) {
+            result = searchResponse.getMetadata().get(0);
+            /*if (StringUtils.isNotBlank(result.getLocationUri())) {
+                KeywordBean locationBean = locationManager.getKeywordById(locationThesaurus, result.getLocationUri());
+                if (locationBean != null) {
+                    result.setLocation(locationBean.getDefaultValue());
+                }
+            }*/
+        }
+        return result;
+    }
+
 
     @RequestMapping(value = "/dataset/{identifier}", method = RequestMethod.DELETE)
     public
@@ -733,8 +809,9 @@ public class GeodatastoreApi {
     }
 
     @RequestMapping(value = "/registries", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public @ResponseBody
-    List<Registry> getAvailableCodelists() {
+    public
+    @ResponseBody
+    RegistryResponse getAvailableCodelists() {
         ServletPathFinder pathFinder = new ServletPathFinder(servletContext);
         String siteUrl = getSiteURL(pathFinder) + "/api/" + API_VERSION;
         List<String> result = registryServiceLocator.getAvailableCodelists();
@@ -745,41 +822,42 @@ public class GeodatastoreApi {
             registry.setUrl(new StringBuilder(100).append(siteUrl).append("/registry/").append(registryName).toString());
             registryList.add(registry);
         }
-/*
-        result.add("gmd:MD_TopicCategoryCode");
-        result.add("gmd:otherConstraints");*/
-        return registryList;
+
+        return new RegistryResponse(registryList);
 
     }
 
-    @RequestMapping(value = "/registry/{codeList}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<String> getCodelistEntries(@PathVariable("lang") String lang, @PathVariable("codeList") String codeList,
-                                                     HttpServletRequest request, @RequestHeader(org.apache.http.HttpHeaders.ACCEPT) String accept) throws Exception {
+    @RequestMapping(value = "/registry/{name}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<Object> getCodelistEntries(
+            @PathVariable("lang") String lang, @PathVariable("name") String name,
+            @RequestParam(value = "q", required = false) String q,
+            @RequestParam(value = "pageSize", defaultValue = "200", required = false) Integer pageSize,
+            HttpServletRequest request,
+            @RequestHeader(org.apache.http.HttpHeaders.ACCEPT) String accept) throws Exception {
         ConfigurableApplicationContext appContext = ApplicationContextHolder.get();
         ServiceManager serviceManager = appContext.getBean(ServiceManager.class);
         HttpHeaders responseHeaders = new HttpHeaders();
-
         final ServiceContext context = serviceManager.createServiceContext("geodatastore.registry", lang, request);
-        Info info = new Info();
-        Element parameters = new Element("request");
-        Element codelist = new Element("codelist");
-        codelist.setAttribute("schema", ISO_19139);
-        codelist.setAttribute("name", codeList);
-        parameters.addContent(codelist.detach());
-        Element responseXML = info.exec(parameters, context);
-        if (accept != null) {
+        if (accept == null) {
+            accept = MediaType.APPLICATION_JSON_VALUE;
+        }
+
+        // Check if requested codelist exists. In other case return a 404 Not Found response.
+        RegistryService registryService = registryServiceLocator.getService(name);
+        if (registryService == null) {
+            String response;
             if (accept.toLowerCase().contains(MediaType.APPLICATION_XML_VALUE)) {
                 responseHeaders.setContentType(new MediaType("application", "xml", Charset.forName("UTF-8")));
-
-                return new ResponseEntity<>(Xml.getString(responseXML), responseHeaders, HttpStatus.OK);
+                response = "<response><error>true</error><message>non_existent_codelist</message></response>";
             } else {
                 responseHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-                return new ResponseEntity<>(Xml.getJSON(responseXML), responseHeaders, HttpStatus.OK);
+                response = "{\"error\": true, \"message\": \"non_existent_codelist\"}";
             }
-        } else {
-            responseHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-            return new ResponseEntity<>(Xml.getJSON(responseXML), responseHeaders, HttpStatus.OK);
+            return new ResponseEntity<Object>(response, responseHeaders, HttpStatus.NOT_FOUND);
         }
+
+        List<? extends CodelistElement> result = registryService.query(q, pageSize);
+        return new ResponseEntity<Object>(new GenericArrayResponse(result), HttpStatus.OK);
     }
 
     /**
@@ -948,6 +1026,21 @@ public class GeodatastoreApi {
         }*/
     }
 
+    /**
+     * Extract some properties from the file and return them in a Map
+     * @param file the file to check
+     * @return a map with some properties extracted from the file.
+     */
+    private Map<String, Object> getParametersFromDataset(MultipartFile file) {
+        Map<String, Object> result = Maps.newHashMap();
+        if (file != null) {
+            result.put(FORMAT_KEY, file.getContentType());
+            result.put(FILE_NAME_KEY, file.getOriginalFilename());
+        }
+
+        return result;
+    }
+
     @ExceptionHandler(FileUploadBase.SizeLimitExceededException.class)
     private
     @ResponseBody
@@ -961,5 +1054,15 @@ public class GeodatastoreApi {
         ResponseEntity<MetadataParametersBean> response = new ResponseEntity<MetadataParametersBean>(pb, HttpStatus.REQUEST_ENTITY_TOO_LARGE);
 
         return response;
+    }
+
+    @ExceptionHandler(org.springframework.web.multipart.MultipartException.class)
+    private
+    @ResponseBody
+    ResponseEntity<ErrorResponse> handleMultipartFormDataException() {
+        ErrorResponse response = new ErrorResponse();
+        response.setError(true);
+        response.setMessages(Lists.newArrayList("multipart-form-data-required"));
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

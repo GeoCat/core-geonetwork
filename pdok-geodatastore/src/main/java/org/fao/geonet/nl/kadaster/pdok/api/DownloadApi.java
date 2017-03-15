@@ -39,6 +39,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
+ * Downloads of datasets and thumbnails.
  * Created by juanluisrp on 05/11/2015.
  */
 @Controller
@@ -164,7 +165,29 @@ public class DownloadApi {
             // get MIME type of the file
             String mimeType = context.getMimeType(file.toString());
             if (mimeType == null) {
-                mimeType = MimeTypeFinder.detectMimeTypeFile(file.getParent().toString(), file.getFileName().toString());
+                //mimeType = MimeTypeFinder.detectMimeTypeFile(file.getParent().toString(), file.getFileName().toString());
+                String contentType = null;
+                if (contentType == null) {
+                    String ext = com.google.common.io.Files.getFileExtension(file.getFileName().toString()).toLowerCase();
+                    switch (ext) {
+                        case "png":
+                        case "gif":
+                        case "bmp":
+                        case "tif":
+                        case "tiff":
+                        case "jpg":
+                        case "jpeg":
+                        case "svg":
+                            contentType = "image/" + ext;
+                            break;
+                        case "txt":
+                        case "html":
+                            contentType = "text/" + ext;
+                            break;
+                        default:
+                            contentType = "application/" + ext;
+                    }
+                }
             }
             Log.debug(GDS_LOG, "MIME type: " + mimeType);
             response.setContentType(mimeType);

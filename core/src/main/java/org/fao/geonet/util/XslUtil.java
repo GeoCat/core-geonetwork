@@ -503,4 +503,21 @@ public final class XslUtil
 
 		return ret;
 	}
+
+    public static String getBaseUrl() {
+        String baseUrl = "";
+        if (ServiceContext.get() != null) {
+            String protocol = getSettingValue(Geonet.Settings.SERVER_PROTOCOL);
+            String host    = getSettingValue(Geonet.Settings.SERVER_HOST);
+            String port    = getSettingValue(Geonet.Settings.SERVER_PORT);
+
+            if (("https".equalsIgnoreCase(protocol) && "443".equals(port)) || ("http".equalsIgnoreCase(protocol) && "80".equals(port))) {
+                port = "";
+            } else {
+                port = ":" + port;
+            }
+            baseUrl = protocol + "://" + host + port + ServiceContext.get().getBaseUrl();
+        }
+        return baseUrl;
+    }
 }

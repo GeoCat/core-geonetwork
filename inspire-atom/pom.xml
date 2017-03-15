@@ -103,6 +103,7 @@
                             <processors>
                                 <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
                             </processors>
+                            <encoding>UTF-8</encoding>
                         </configuration>
                     </execution>
                 </executions>

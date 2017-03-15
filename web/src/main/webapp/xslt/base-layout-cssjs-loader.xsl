@@ -28,7 +28,8 @@
 
     <link href="{/root/gui/url}/static/bootstrap-table.min.css" rel="stylesheet" media="screen"></link>
     <link href="{/root/gui/url}/static/ng-skos.css" rel="stylesheet" media="screen"></link>
-    <link href="{/root/gui/url}/static/{/root/gui/nodeId}_custom_style.css{$minimizedParam}" rel="stylesheet" media="screen" />
+    <!--<link href="{/root/gui/url}/static/{/root/gui/nodeId}_custom_style.css{$minimizedParam}" rel="stylesheet" media="screen" />-->
+
   </xsl:template>
 
 
@@ -39,7 +40,14 @@
       <xsl:when test="$isDebugMode">
 
         <script src="{$uiResourcesPath}lib/modernizr.js"></script>
+        <script type="text/javascript" language="JavaScript">
+          <![CDATA[
 
+          var browserSupported = Modernizr && Modernizr.filereader && Modernizr.blobconstructor;
+          if (!browserSupported) {
+          window.location.replace('../../catalog/views/geodatastore/templates/nonSupportedBrowser.html');
+          }]]>
+        </script>
         <script src="{$uiResourcesPath}lib/closure/base.js"></script>
 
         <script src="{$uiResourcesPath}lib/base64.js"></script>
@@ -66,15 +74,15 @@
         <script src="{$uiResourcesPath}lib/angular.ext/bindHtml.js"></script>
         <script src="{$uiResourcesPath}lib/angular.ext/tabs.js"></script>
         <script src="{$uiResourcesPath}lib/angular.ext/slider.js"></script>
+        <script src="{$uiResourcesPath}lib/angular.ui/ui-bootstrap-custom-tpls-0.13.1.js"></script>
         <script src="{$uiResourcesPath}lib/angular.ext/colorpicker/angularjs-color-picker.js"></script>
         <script src="{$uiResourcesPath}lib/tinycolor.js"></script>
-		<script src="{$uiResourcesPath}lib/angular.ui/ui-bootstrap-custom-tpls-0.13.1.js"></script>
 
         <script src="{$uiResourcesPath}lib/style/bootstrap/dist/js/bootstrap.js"></script>
         <script src="{$uiResourcesPath}lib/jquery.ext/jquery-ui-slider.min.js"></script>
         <script src="{$uiResourcesPath}lib/proj4js-compressed.js"></script>
         <script src="{$uiResourcesPath}lib/ngeo/ngeo-debug.js"></script>
-		<script src="{$uiResourcesPath}lib/ngShowErrors/showErrors.js"></script>
+        <script src="{$uiResourcesPath}lib/ngShowErrors/showErrors.js"></script>
 
 
         <xsl:if test="$withD3">
@@ -93,19 +101,20 @@
           </script>
         </xsl:if>
 
+
         <!--<xsl:if test="$isEditing">-->
         <script src="{$uiResourcesPath}lib/jquery.ext/jquery.ui.widget.js"></script>
-		<script src="{$uiResourcesPath}lib/jquery.ext/load-image.all.min.js"></script>
+        <script src="{$uiResourcesPath}lib/jquery.ext/load-image.all.min.js"></script>
         <script src="{$uiResourcesPath}lib/jquery.ext/jquery.iframe-transport.js"></script>
         <script src="{$uiResourcesPath}lib/jquery.ext/jquery.fileupload.js"></script>
         <script src="{$uiResourcesPath}lib/jquery.ext/jquery.fileupload-process.js"></script>
-		<script src="{$uiResourcesPath}lib/jquery.ext/jquery.fileupload-image.js"></script>
+        <script src="{$uiResourcesPath}lib/jquery.ext/jquery.fileupload-image.js"></script>
         <script src="{$uiResourcesPath}lib/jquery.ext/jquery.fileupload-validate.js"></script>
         <script src="{$uiResourcesPath}lib/jquery.ext/jquery.fileupload-angular.js"></script>
         <script src="{$uiResourcesPath}lib/bootstrap.ext/typeahead.js/typeahead.bundle.js"></script>
         <script src="{$uiResourcesPath}lib/bootstrap.ext/typeahead.js/handlebars-v2.0.0.js"></script>
         <script src="{$uiResourcesPath}lib/bootstrap.ext/tagsinput/bootstrap-tagsinput.js"></script>
-		<script src="{$uiResourcesPath}lib/bootstrap.ext/tagsinput/bootstrap-tagsinput-angular.js"></script>
+        <script src="{$uiResourcesPath}lib/bootstrap.ext/tagsinput/bootstrap-tagsinput-angular.js"></script>
         <script src="{$uiResourcesPath}lib/bootstrap.ext/datepicker/bootstrap-datepicker.js"></script>
         <script src="{$uiResourcesPath}/lib/bootstrap-table/dist/bootstrap-table.js"></script>
         <!--</xsl:if>-->
@@ -125,8 +134,15 @@
             </script>
         </xsl:when>
         <xsl:otherwise>
-			<script src="{/root/gui/url}/static/lib.js"></script>
-            
+            <script src="{/root/gui/url}/static/lib.js"></script>
+            <script type="text/javascript" language="JavaScript">
+              <![CDATA[
+
+            var browserSupported = Modernizr && Modernizr.filereader && Modernizr.blobconstructor;
+            if (!browserSupported) {
+            window.location.replace('../../catalog/views/geodatastore/templates/nonSupportedBrowser.html');
+            }]]>
+            </script>
             <script src="{/root/gui/url}/static/{$angularModule}.js{$minimizedParam}"></script>
         </xsl:otherwise>
     </xsl:choose>
@@ -183,7 +199,7 @@
           gnViewerSettings.mapConfig = <xsl:value-of select="$mapConfig"/>;
           gnGlobalSettings.isMapViewerEnabled = <xsl:value-of select="$isMapViewerEnabled"/>;
         }]);
-		var ngr_url = "{{geonetwork.ngr.url}}";
+        var ngr_url = "{{geonetwork.ngr.url}}";
       </script>
     </xsl:if>
     

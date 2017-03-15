@@ -24,6 +24,8 @@
 					uri="schema/gco/gco.xsd"/>
 	<system systemId="http://www.isotc211.org/2005/gmd/gmd.xsd" 
 	        uri="schema/gmd/gmd.xsd"/>
+	<system systemId="http://schemas.opengis.net/iso/19139/20060504/gmd/gmd.xsd"
+					uri="schema/gmd/gmd.xsd"/>
 	<system systemId="http://www.isotc211.org/2005/gco/gco.xsd" 
 	        uri="schema/gco/gco.xsd"/>
 	<system systemId="http://www.isotc211.org/2005/gmx/gmx.xsd" 

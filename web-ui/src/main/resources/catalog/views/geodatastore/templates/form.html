@@ -41,27 +41,9 @@ template for metadata form
 	<div class="form-group">
 		<i class="fa fa-question-circle fa-fw floatright" style="margin-top: 6px" data-tooltip="{{'helpTopicField'|translate}}"></i>
 		<label for="topicField">{{'topicCategories'|translate}}</label>
-		<select class="form-control" id="topicField" tabindex=3 data-ng-model="mdToEdit.topicCategory">
-			<option value="">{{'placeholderTopicField'|translate}}</option>
-			<option value="imageryBaseMapsEarthCover">Luchtfoto / Dekking van de Aarde</option>
-			<option value="inlandWaters">Binnenwateren</option>
-			<option value="biota">Biota (flora, fauna, habitat)</option>
-			<option value="economy">Economie</option>
-			<option value="geoscientificInformation">Geo-wetenschappelijke informatie</option>
-			<option value="health">Gezondheid</option>
-			<option value="boundaries">Grenzen</option>
-			<option value="intelligenceMilitary">Inlichtingen / Defensie</option>
-			<option value="climatologyMeteorologyAtmosphere">Klimatologie / Meteorologie</option>
-			<option value="farming">Landbouw</option>
-			<option value="location">Locatie</option>
-			<option value="society">Maatschappij</option>
-			<option value="environment">Milieu</option>
-			<option value="oceans">Oceanen</option>
-			<option value="planningCadastre">Planning / Kadaster</option>
-			<option value="structure">Structuur</option>
-			<option value="utilitiesCommunication">Nuts diensten / Communicatie</option>
-			<option value="elevation">Hoogte</option>
-			<option value="transportation">Vervoer</option>
+		<select class="form-control" id="topicField" tabindex=3 data-ng-model="mdToEdit.topicCategory"
+				data-ng-options="item.key as item.label for item in topicCategoryList | orderBy:'label' ">
+			<option value="" class="gds-placeholder">{{'placeholderTopicField'|translate}}</option>
 		</select>
 	</div>
 	<div class="form-group">
@@ -80,13 +62,13 @@ template for metadata form
 		<label for="locationField">{{'location'|translate}}</label>
         	<input id="locationField" tabindex="6" data-ng-model="mdToEdit.location" placeholder="{{'placeholderLocationField'|translate}}"
                data-uri-model="mdToEdit.locationUri"
-               class="form-control" data-gds-keyword-picker data-thesaurus-key="external.place.administrativeAreas"/>
+               class="form-control" data-gds-keyword-picker/>
 	</div>
 	<div class="form-group">
 		<i class="fa fa-question-circle fa-fw floatright" style="margin-top: 6px" data-tooltip="{{'helpLicenseField'|translate}}"></i>
 		<label for="licenseField">{{'license'|translate}}</label>
 		<select class="form-control" id="licenseField" tabindex=7 data-ng-model="mdToEdit.license"
-                data-ng-options="item.value as item.label for item in licenseList">
+                data-ng-options="item.key as item.label for item in licenseList">
 			<!--<option value="">{{'placeholderLicenseField'|translate}}</option>-->
 		</select>
 	</div>
@@ -94,8 +76,8 @@ template for metadata form
 		<i class="fa fa-question-circle fa-fw floatright" style="margin-top: 6px" data-tooltip="{{'helpScaleField'|translate}}"></i>
 		<label for="resolutionField">{{'resolution'|translate}}</label>
 		<select class="form-control" id="resolutionField" tabindex=8 data-ng-model="mdToEdit.resolution"
-                data-ng-options="item.value as item.label for item in resolutionList">
-			<option value="">{{'placeholderScaleField'|translate}}</option>
+                data-ng-options="item.key as item.label for item in resolutionList | orderBy: itemKeyToNumber">
+			<option value="" class="gds-placeholder">{{'placeholderScaleField'|translate}}</option>
 		</select>
 	</div>
 	<div class="row">
@@ -113,10 +95,6 @@ template for metadata form
 					<div class="thumbcont">
 						<img data-ng-src="{{mdToEdit.thumbnailUri}}" alt="Afbeelding/Thumbnail" data-ng-if="mdToEdit.thumbnailUri">
 					</div>
-					<!--<div class="thumbact">
-						<button type="button" id="Vervangen" class="btn btn-default btn-sm floatright"><i class="fa fa-exchange fa-fw"></i>{{'replace'|translate}}</button>
-						<button type="button" id="Verwijder" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i>{{'remove'|translate}}</button>
-					</div>-->
 				</div>
 				<div data-ng-repeat="file in queue" data-ng-class="{'processing': file.$processing()}">
 					<div class="thumbcont text-center" data-file-upload-preview="file"></div>

@@ -201,6 +201,13 @@
         <appender-ref ref="fileAppender" />
     </logger>
 
+    <!-- Geodatastore logging -->
+    <logger name="pdok.geodatastore.api" additivity="false">
+        <level value="DEBUG" />
+        <appender-ref ref="consoleAppender" />
+        <appender-ref ref="fileAppender" />
+    </logger>
+
 
     <!-- Turn off logging except when explicitly declared below -->
     <root>

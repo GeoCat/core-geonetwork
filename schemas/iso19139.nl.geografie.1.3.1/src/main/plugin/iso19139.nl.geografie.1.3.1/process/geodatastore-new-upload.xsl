@@ -16,6 +16,7 @@
   <xsl:param name="lineage" select="$defaultConstant"/>
   <xsl:param name="title" select="$defaultConstant"/>
   <xsl:param name="publicationDate" select="$defaultConstant"/>
+  <xsl:param name="revisionDate" select="$defaultConstant"/>
   <xsl:param name="uuid" select="$defaultConstant"/>
   <xsl:param name="abstract" select="$defaultConstant"/>
   <xsl:param name="thumbnailUri" select="$defaultConstant"/>
@@ -137,8 +138,9 @@
   <!-- Metadata modified date -->
   <xsl:template match="/gmd:MD_Metadata/gmd:dateStamp">
     <xsl:copy>
+      <xsl:variable name="metadataModifiedDateOnly" select="tokenize($metadataModifiedDate,'T')[1]" />
       <xsl:call-template name="defaultDateTemplate">
-        <xsl:with-param name="fieldValue" select="$metadataModifiedDate" />
+        <xsl:with-param name="fieldValue" select="$metadataModifiedDateOnly" />
         <xsl:with-param name="defaultValue" select="$defaultConstant"/>
       </xsl:call-template>
     </xsl:copy>
@@ -178,13 +180,26 @@
   </xsl:template>
 
   <!-- Creation date -->
-  <xsl:template match="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date[../gmd:dateType/gmd:CI_DateTypeCode[@codeListValue='creation']]">
+  <!--<xsl:template match="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date[../gmd:dateType/gmd:CI_DateTypeCode[@codeListValue='creation']]">
     <xsl:copy>
       <xsl:comment>
         Datum waarop de dataset is aangemaakt
       </xsl:comment>
       <xsl:call-template name="defaultDateTemplate">
         <xsl:with-param name="fieldValue" select="$publicationDate" />
+        <xsl:with-param name="defaultValue" select="$defaultConstant"/>
+      </xsl:call-template>
+    </xsl:copy>
+  </xsl:template>-->
+
+  <!-- Revision date -->
+  <xsl:template match="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date[../gmd:dateType/gmd:CI_DateTypeCode[@codeListValue='revision']]">
+    <xsl:copy>
+      <xsl:comment>
+        Datum waarop de dataset is bijgewerkt
+      </xsl:comment>
+      <xsl:call-template name="defaultDateTemplate">
+        <xsl:with-param name="fieldValue" select="$revisionDate" />
         <xsl:with-param name="defaultValue" select="$defaultConstant"/>
       </xsl:call-template>
     </xsl:copy>

@@ -1,16 +1,16 @@
 package nl.kadaster.pdok.bussiness.registryservices;
 
 import nl.kadaster.pdok.bussiness.registryservices.bean.Denominator;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Service;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Created by juanluisrp on 12/01/2016.
  */
-public class DenominatorRegistryService implements RegistryService {
-    private Set<Denominator> denominatorSortedSet = new TreeSet<>();
-
+@Service
+public class DenominatorRegistryService extends AbstractInMemoryRegistryService {
     public DenominatorRegistryService() {
         addElement("1000000", "1:1.000.000");
         addElement("250000", "1:250.000");
@@ -25,7 +25,7 @@ public class DenominatorRegistryService implements RegistryService {
         Denominator denom = new Denominator();
         denom.setKey(key);
         denom.setLabel(label);
-        denominatorSortedSet.add(denom);
-
+        addItem(denom);
     }
+
 }

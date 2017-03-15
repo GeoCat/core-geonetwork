@@ -43,11 +43,11 @@
   <xsl:variable name="angularApp" select="
     if ($service = 'admin.console') then 'gn_admin'
     else if ($service = 'catalog.signin' or 
-              $service = 'new.account' or 
-              $service = 'new.password' or 
+              $service = 'new.password' or
               $service = 'error' or
               $service = 'service-not-allowed' or
               $service = 'node-change-warning') then 'gn_login'
+    else if ($service = 'new.account') then 'geodatastore_new_account'
     else if ($service = 'contact.us') then 'gn_contact_us'
     else if ($service = 'catalog.edit') then 'gn_editor'
     else if ($service = 'catalog.viewer') then 'gn_viewer'

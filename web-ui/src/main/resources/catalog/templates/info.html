@@ -2,8 +2,8 @@
     data-ng-hide="status === null"
     data-ng-class="'alert-' + status.type" >
     <button type="button" class="close" data-ng-click="clearStatusMessage()">×</button>
-    <h4 data-ng-hide="!status.title">{{status.title}}</h4>
-    <p data-ng-hide="!status.msg">{{status.msg}}</p>
+    <h4 data-ng-hide="!status.title">{{status.title | translate}}</h4>
+    <p data-ng-hide="!status.msg">{{status.msg | translate}}</p>
     
     <div data-ng-hide="!status.error">
         {{status.error['class'] | translate}}

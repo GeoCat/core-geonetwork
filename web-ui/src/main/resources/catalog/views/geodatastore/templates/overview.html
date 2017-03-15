@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=11">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="Kadaster">
+    <link rel="icon" href="https://www.pdok.nl/sites/all/libraries/starterskit/favicon.ico">
+    
+    <title>PDOK Geodatastore</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/black-tie/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.11.3.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    
+    <!-- Bootstrap overrides -->
+    <link rel="stylesheet" href="css/override.css">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+    $(document).ready (function() {
+      $( "#selectable" ).selectable();
+      $('[data-toggle="tooltip"]').tooltip();
+      $('li.ui-selected').click(function() {
+        alert ("Hello World");
+        console.log('another string');
+        $('#metadata').css('display', 'block');
+      });
+    });
+
+    </script>
+  </head>
+
+  <body id="overview">
+  <div class="container">
+   <nav class="verytop">
+	<div class="floatright">
+      <ul>
+        <li><a href="#">Contact</a></li>
+        <li class="last"><a href="#">Help</a></li>
+      </ul>
+    </div>
+     <ul>
+        <li class="first"><a href="#"><i class="fa fa-print"></i>Print</a></li>
+      </ul>
+       
+    </nav>
+    <div class="page">
+      <header>
+        <div class="topdrop">
+        <div class="floatright">
+        <i class="fa fa-cloud-upload fa-5x floatright"></i><h4>Upload nieuwe data</h4>
+        </div>
+       </div>
+        <div class="branding">
+          <a href="#" title="Ga naar de homepagina"><img height="57px" src="img/PDOK-GDS-logo.svg" alt="Publieke Dienstverlening Op de Kaart"></a>
+		</div>
+      </header>
+      <nav class="tabs">
+       <div class="floatright userlog hidden-xs">
+         <div class="user floatright">Jan Jansen Martínez</div><br/>
+         <div class="log floatright"><a href="#"><i class="fa fa-power-off"></i>uitloggen</a></div>
+       </div>
+        <ul class="nav nav-tabs">
+          <li role="presentation" class="first"><a href="index.html">Mijn publiceerbare datasets <span class="badge">44</span></a></li>
+          <li role="presentation" class="active"><a href="overview.html">Mijn gepubliceerde datasets <span class="badge">4</span></a></li>
+        </ul>
+      </nav>
+      <section>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Zoek naar...">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">Ga!</button>
+            </span>
+          </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+        <div class="col-lg-6 ">
+         <div>
+         <button type="button" class="btn btn-default sort-btn floatright" aria-label="Sort Ascending"><i class="fa fa-sort-amount-asc"></i></button>
+          <select class="form-control" style="width:80%">
+            <option>Wijzigingsdatum</option>
+            <option>Titel</option>
+            <option>Publicatiedatum</option>
+            <option>Bestandsnaam</option>
+            <option>Bestandsgrootte</option>
+            <option>Bestandstype</option>
+          </select>
+          
+          </div>
+        </div><!-- /.col-lg-6 -->
+      </div><!-- /.row -->
+       <ol id="selectable">
+        <li id="k1">
+         <div class="arrow-left"></div>
+         <div class="thumb"></div>
+          <div class="title">
+            <div class="floatright">
+              <a class="delete" href="#" data-toggle="tooltip" data-placement="top" title="verwijderen"><i class="fa fa-trash fa-lg"></i></a>
+            </div>
+            <span>DANK - Potentiële invang fijn stof door vegetatie (PM10) WCS</span>
+          </div>
+          <div class="message">
+          <div class="floatright">25-06-2015</div>
+          <i class="fa fa-file-code-o fa-fw" style="font-size:1em; margin-right: 4px"></i>fijn-stof.gml</div>
+        </li>
+        <li id="k2">
+         <div class="arrow-left"></div>
+         <div class="thumb"></div>
+          <div class="title">
+            <div class="floatright">g
+              <a class="delete" href="#" data-toggle="tooltip" data-placement="top" title="verwijderen"><i class="fa fa-trash fa-lg"></i></a>
+            </div>
+            <span>Gebied waterkwantiteit uit Waterwet, 07-2012</span>
+          </div>
+          <div class="message">
+          <div class="floatright">23-06-2015</div>
+          <i class="fa fa-file-archive-o fa-fw" style="font-size:1em; margin-right: 4px"></i>waterkwantiteit2012.shp.zip</div>
+        </li>
+        <li id="k3">
+          <div class="arrow-left"></div>
+          <div class="title">
+            <div class="floatright">
+              <a class="delete" href="#" data-toggle="tooltip" data-placement="top" title="verwijderen"><i class="fa fa-trash fa-lg"></i></a>
+            </div>
+            <span>DANK - Conservation Units voor bomen</span>
+          </div>
+          <div class="message">
+          <div class="floatright">21-06-2015</div>
+          <i class="fa fa-file-archive-o fa-fw" style="font-size:1em; margin-right: 4px"></i>boomlocaties2012.shp.zip</div>
+        </li>
+        <li id="k4">
+          <div class="arrow-left"></div>
+          <div class="thumb"></div>
+          <div class="title">
+            <div class="floatright">
+              <a class="delete" href="#" data-toggle="tooltip" data-placement="top" title="verwijderen"><i class="fa fa-trash fa-lg"></i></a>
+            </div>
+            <span>Lange-afstandswandelroutes (LAW) WMS</span>
+          </div>
+          <div class="message">
+          <div class="floatright">19-06-2015</div>
+          <i class="pdok-i-csv fa-fw" style="font-size:1em; margin-right: 4px"></i>afstandswandelroutes-2015.csv</div>
+        </li>
+      </ol>
+      <div>
+        <span style="margin-top:6px; display: inline-block;">4 datasets</span>
+      </div>
+      </section>
+      <aside>
+       <div id="metadata">
+        <form>
+          <div class="row">
+           <div class="col-lg-6 form-group">
+            <label><i class="fa fa-cloud-upload fa-fw" style="font-size:1em; margin-right: 4px"></i>Publicatiedatum</label>
+            <div class="value"  style="padding-left:23px">13-03-2013</div>
+            </div><!-- /.col-lg-6 -->
+            <div class="col-lg-6 form-group">
+            <label><i class="fa fa-pencil fa-fw" style="font-size:1em; margin-right: 4px"></i>Wijzigingsdatum</label>
+            <div class="value"  style="padding-left:23px">23-06-2015</div>
+            </div><!-- /.col-lg-6 -->
+          </div><!-- /.row -->
+          <div class="form-group">
+            <i class="fa fa-link fa-fw"></i> <a href="#"><span class="value">http://geodatastore.pdok.nl/doc/dataset/aaa-bbb-ccc-111</span></a>
+          </div>
+          <div class="form-group">
+            <label for="tt">Titel</label>
+            <input class="form-control" id="tt" tabindex=1 value="Gebied waterkwantiteit uit Waterwet, 07-2012">
+          </div>
+          <div class="form-group">
+            <label for="os">Omschrijving</label>
+            <textarea rows="5" class="form-control" id="os" tabindex=2>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fermentum, ante sed venenatis gravida, est nisi dignissim purus, sit amet aliquam nulla orci eget ipsum. Maecenas ex justo, pulvinar vitae mollis eu, vestibulum non turpis. Praesent euismod odio vel orci vehicula, eget maximus velit egestas. Fusce porta ornare orci, eget feugiat sem. Proin placerat, lectus auctor auctor gravida, lacus massa suscipit nulla, ut iaculis purus nunc id odio. Nulla facilisi. Cras pharetra bibendum porttitor.</textarea>
+          </div>
+          <div class="form-group">
+           <div class="floatright"><br/><button type="button" id="Vervangen" class="btn btn-default btn-sm floatright"><i class="fa fa-exchange fa-fw"></i>Vervangen</button></div>
+            <label>Bestand</label>
+            <div class="value"><a href="#"><i class="fa fa-file-archive-o fa-fw"></i>inkomensverdeling2010.shp.zip</a> (812 KB)</div>
+          </div><!-- /.row -->
+          <div class="form-group">
+            <label for="ow">Onderwerp</label>
+            <select class="form-control" id="ow" tabindex=3>
+            <option>Selecteer</option>
+            <option>Beeldspraak / Dekking van de Aarde</option>
+            <option>Binnenwateren</option>
+            <option selected="selected">Biota (flora, fauna, habitat)</option>
+            <option>Economie</option>
+            <option>Geo-wetenschappelijke informatie</option>
+            <option>Gezondheid</option>
+            <option>Grenzen</option>
+            <option>Intelligentie / Military</option>
+            <option>Klimatologie / Meteorologie</option>
+            <option>Landbouw</option>
+            <option>Locatie</option>
+            <option>Maatschappij</option>
+            <option>Milieu</option>
+            <option>Oceans</option>
+            <option>Planning / Kadaster</option>
+            <option>Structuur</option>
+            <option>Utilities / Communicatie</option>
+            <option>Verhoging</option>
+            <option>Vervoer</option>
+        </select>
+          </div>
+          <div class="form-group">
+            <label for="tw">Trefwoorden</label>
+            <input class="form-control" id="tw" placeholder="komma gescheiden lijst" tabindex=4 value="Trefwoord of zin 1, Trefwoord of zin 2, Trefwoord 3, Trefwoord 4">
+          </div>
+          <div class="form-group">
+            <label for="bh">Beschrijving herkomst</label>
+            <input class="form-control" id="bh" tabindex=5 value="Waterschappen">
+          </div>
+          <div class="form-group">
+            <label for="lk">Lokatie</label>
+            <input class="form-control" id="lk" tabindex=6 value="Veluwe">
+          </div>
+		  <div class="form-group">
+            <label for="odl">Open Data Licentie</label>
+            <select class="form-control" id="odl" tabindex=7>
+          <option>Public Domain</option>
+          <option>CC0 (Creative Commons)</option>
+		  <option selected="selected">CC-BY (Creative Commons Naamsvermelding)</option>
+        </select>
+          </div>
+		  <div class="form-group">
+            <label for="gb">Gebruiksbeperkingen</label>
+            <textarea rows="3" class="form-control" id="gb" tabindex=8>Zie http://www.rijkswaterstaat.nl/apps/geoservices/legal/NWB_disclaimer.html</textarea>
+          </div>
+		   <div class="form-group">
+            <label for="tps">Toepassingsschaal</label>
+            <select class="form-control" id="tps" tabindex=9>
+          <option value="1000000">Landelijk</option>
+		  <option value="100000">Provinciaal</option>
+		  <option value="25000" selected="selected">Gemeentelijk</option>
+          <option value="10000">Wijkniveau</option>
+		  <option value="2500">Straatniveau</option>
+		  <option value="500">Huis</option>
+        </select>
+           </div>
+           <div class="row">
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="exampleInputFile">Afbeelding</label>
+                <div class="thumbcont"><img src="/img/thumbnail.png" alt="Afbeelding/Thumbnail"></div>
+                <div class="thumbact">
+                 <button type="button" id="Vervangen" class="btn btn-default btn-sm floatright"><i class="fa fa-exchange fa-fw"></i>Vervangen</button>
+                  <button type="button" id="Verwijder" class="btn btn-default btn-sm"><i class="fa fa-trash fa-fw"></i>Verwijderen</button>
+                </div>
+              </div>
+            </div><!-- /.col-lg-6 -->
+            <div class="col-lg-6 ">
+              <div class="form-group">
+            <label for="bb">Extra bestanden</label>
+            <div>
+            <button type="button" id="upload" class="btn btn-default btn-sm floatright"><i class="fa fa-cloud-upload fa-fw"></i></button><input class="form-control" type="file" id="exampleInputFile" style="width:80%"></div>
+            </div>
+            <div class="form-group">
+              <a href="#" class="floatright"><i class="fa fa-trash fa-fw"></i></a>
+              <a href="#"><i class="fa fa-file-pdf-o fa-fw"></i><span class="value">documentatie.pdf</span></a>
+            </div>
+            <div class="form-group">
+              <a href="#" class="floatright"><i class="fa fa-trash fa-fw"></i></a>
+              <a href="#"><i class="fa fa-file-pdf-o fa-fw"></i><span class="value">richtlijnen.pdf</span></a>
+            </div>
+          
+            </div><!-- /.col-lg-6 -->
+          </div><!-- /.row -->
+          <div class="form-group" style="border-top: solid 1px; padding-top: 15px;">
+           <div class="floatright">
+           <button type="button" id="upload" class="btn btn-default btn-sm "><i class="fa fa-trash fa-fw"></i>Verwijder</button>
+           <button type="button" id="upload" class="btn btn-default btn-sm "><i class="fa fa-arrow-left fa-fw"></i>Depubliceren</button>
+           <button type="button" id="upload" class="btn btn-default btn-sm "><i class="fa fa-archive fa-fw"></i>Archiveer</button>
+            <button type="button" id="upload" class="btn btn-default btn-sm "><i class="fa fa-floppy-o fa-fw"></i>Opslaan</button>
+            </div>
+          </div>
+        </form>
+        </div>
+      </aside>
+      <div style="clear:both"></div>
+    </div>
+    <footer>
+     <div class="floatright">
+       <ul>
+         <li><a href="#">Copyright</a></li>
+         <li><a href="#">Privacy</a></li>
+         <li><a href="#">Cookies</a></li>
+         <li><a href="#">Toegankelijkheid</a></li>
+         <li class="last"><a href="#">Open Data</a></li>
+       </ul>
+     </div>
+      © Publieke Dienstverlening Op de Kaart (PDOK) 2015
+    </footer>
+  </div>
+  </body>
+</html>

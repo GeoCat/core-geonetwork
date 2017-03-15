@@ -1,0 +1,163 @@
+<style type="text/css">
+  .required .control-label:after {
+     content:"*";
+     color:red;
+  }
+</style>
+
+<div class="container" data-ng-controller="GdsNewAccountController">
+  <div class="row">
+    <div class="col-lg-6 col-lg-push-6">
+        <p>
+          Voor toegang tot PDOK Geodatastore gelden dezelfde accounts als voor de beheeromgeving van het Nationaal Georegister (NGR).
+          Indien uw organisatie al een NGR account heeft, dan kan de NGR contactpersoon van uw organisatie een persoonlijk (sub) account voor u aanmaken.
+          </p>
+      <p>
+          Let op dat de organisatie gegevens gebruikt worden als publieke contactgegevens ten behoeve van het publiceren van uw dataset, de contactgegevens worden niet publiekelijk gedeeld en worden slechts gebruikt als het PDOK klant contact centrum met u in contact wil komen.
+         </p>
+      <p>
+          Indien uw organisatie nog geen NGR account heeft, dan kunt u bijgaand formulier invullen om een nieuw account aan te vragen, waarmee u kunt inloggen op PDOK Geodatastore en NGR (doorlooptijd is ca. 3 werkdagen).
+      </p>
+      <p>
+        Met vragen kunt u terecht bij het PDOK Klantcontactcenter (tel.: 088-1834500, email: <a href="mailto:beheerpdok@kadaster.nl?subject=Vraag over nieuw account Geodatastore">beheerpdok@kadaster.nl</a>)
+      </p>
+      </div>
+      <div class="col-lg-6 col-lg-pull-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">Account aanvragen</div>
+          <div class="panel-body">
+            <form class="form-horizontal" id="userinfo" name="userinfo" method="post" enctype="multipart/form-data"
+                  data-file-upload="newAccountOptions">
+
+              <h2>Organisatie</h2>
+
+              <div class="form-group required" data-show-errors>
+                <label class="control-label col-lg-4" for="org" data-translate="">Organisatie</label>
+                <div class="col-lg-8">
+                  <!-- TODO : Add org list -->
+                  <input type="text" id="org" name="org" data-ng-model="registerBean.org" class="form-control" required/>
+                </div>
+              </div>
+
+                <div class="form-group required" data-show-errors>
+                  <label class="control-label col-lg-4" for="address" data-translate="">Adres</label>
+                  <div class="col-lg-8">
+                    <input type="text" id="address" name="address" data-ng-model="registerBean.address" class="form-control" required/>
+                  </div>
+                </div>
+                <div class="form-group required" data-show-errors>
+                  <label class="control-label col-lg-4" for="zip" data-translate="">Postcode</label>
+                  <div class="col-lg-8">
+                    <input type="text" id="zip" name="zip" data-ng-model="registerBean.zip" class="form-control" required/>
+                  </div>
+                </div>
+                <div class="form-group required" data-show-errors>
+                  <label class="control-label col-lg-4" for="city" data-translate="">Plaats</label>
+                  <div class="col-lg-8">
+                    <input type="text" id="city" name="city" data-ng-model="registerBean.city" class="form-control" required/>
+                  </div>
+                </div>
+                <div class="form-group required" data-show-errors>
+                  <label class="control-label col-lg-4" for="country" data-translate="">Land</label>
+                  <div class="col-lg-8">
+                    <!-- TODO : Add country list -->
+                    <input type="text" id="country" name="country" data-ng-model="registerBean.country" class="form-control"
+                           required/>
+                  </div>
+                </div>
+                <div class="form-group required" data-show-errors>
+                  <label class="control-label col-lg-4" for="orgEmail" data-translate="">E-mail</label>
+                  <div class="col-lg-8">
+                    <!-- TODO : Add country list -->
+                    <input type="email" id="orgEmail" name="orgEmail" data-ng-model="registerBean.orgEmail" class="form-control"
+                           placeholder="email@example.com" required/>
+                  </div>
+                </div>
+
+                <div class="form-group required" data-show-errors>
+                  <label class="control-label col-lg-4" for="website" data-translate="">Website</label>
+                  <div class="col-lg-8">
+                    <input type="url" id="website" name="website" data-ng-model="registerBean.website" class="form-control"
+                           placeholder="De url moet beginnen met http:// of https://" required/>
+                  </div>
+                </div>
+
+                <div class="form-group required">
+                  <label class="control-label col-lg-4" for="logo" data-translate="">Logo</label>
+                  <div class="col-lg-8">
+                    <span class="btn btn-default btn-sm fileinput-button">
+                      <i class="fa fa-folder-open-o fa-fw"></i>
+                      <span>Selecteer een bestand</span>
+                      <input type="file" id="logo" name="logo" class="form-control" accept="image/*"/>
+                    </span>
+                    <span data-ng-repeat="file in queue">
+                      <small>{{file.name}}</small>
+                    </span>
+                    <br/>
+                    <small>Het logo van de organisatie moet worden geupload in het formaat PNG met zelfde breedte en hoogte verhoudingen, ongeveer 100*100.</small>
+                  </div>
+                </div>
+
+
+              <h2>Contactpersoon voor PDOK</h2>
+
+              <div class="form-group radio-form-control required" data-show-errors>
+                <label class="control-label col-lg-4" data-translate="">Aanhef</label>
+                <div class="col-lg-8">
+                    <label>
+                        <input type="radio" class="form-control" id="mr" name="title" data-ng-model="registerBean.title" value="mr" required /> De heer
+                    </label>
+                    <label >
+                        <input type="radio" class="form-control" id="ms" name="title" data-ng-model="registerBean.title" value="ms" required /> Mevrouw
+                    </label>
+                </div>
+              </div>
+
+              <div class="form-group required" data-show-errors>
+                <label class="control-label col-lg-4" for="name" data-translate="">Achternaam</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" id="name" name="name" data-ng-model="registerBean.name" required/>
+                </div>
+              </div>
+
+              <div class="form-group required" data-show-errors>
+                <label class="control-label col-lg-4" for="surname" data-translate="">Voorletters</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" id="surname" name="surname" data-ng-model="registerBean.surname" required/>
+                </div>
+              </div>
+
+              <div class="form-group required" data-show-errors>
+                <label class="control-label col-lg-4" for="email" data-translate="">E-mail</label>
+                <div class="col-lg-8">
+                  <input type="email" id="email" name="email" data-ng-model="registerBean.email" class="form-control"
+                         placeholder="email@example.com" required/>
+                </div>
+              </div>
+
+             <div class="form-group required" data-show-errors>
+                  <label class="control-label col-lg-4" for="telephone" data-translate="">Telefoon</label>
+                  <div class="col-lg-8">
+                    <input type="tel" id="telephone" name="telephone" data-ng-model="registerBean.telephone" class="form-control" required/>
+                  </div>
+                </div>
+
+              <button data-gn-click-and-spin="processSubmit()" class="btn btn-primary btn-block" data-ng-disabled="!isReadyToSubmit()"
+                data-translate="">register</button>
+            </form>
+            <div class="row spacer">
+              <div data-ng-show="success" class="alert alert-success" role="alert">
+                <span data-translate="">contactDetailsSent</span>
+              </div>
+              <div data-ng-show="errors" class="alert alert-danger" role="alert">
+                  There are fields with errors. Please fix them.
+              </div>
+              <div data-ng-show="globalError" class="alert alert-danger" role="alert">
+                  The email could not be sent. Please try again or contact with the administrator.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

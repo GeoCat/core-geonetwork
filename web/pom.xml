@@ -62,7 +62,7 @@
     <dependency>
       <groupId>org.openrdf</groupId>
       <artifactId>sesame</artifactId>
-    </dependency>	 
+    </dependency>	
     <dependency>
       <groupId>org.openrdf</groupId>
       <artifactId>rio</artifactId>
@@ -91,6 +91,19 @@
          <groupId>org.springframework</groupId>
          <artifactId>spring-test</artifactId>
           <scope>compile</scope>
+      </dependency>
+      <!-- This is to avoid 406 error with spring -->
+      <dependency>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>javax.xml.bind</groupId>
+          <artifactId>jaxb-api</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>com.sun.xml.bind</groupId>
+          <artifactId>jaxb-impl</artifactId>
       </dependency>
 
       <!-- Z39.50, SRU  stuff (ie: Spring, CQL, ...)  -->
@@ -403,8 +416,7 @@
 	    <artifactId>jsoup</artifactId>
 	    <version>0.2.2</version>
 	</dependency>
-
-    <!-- <dependency>
+	<!--dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>geonetwork-client</artifactId>
       <version>${project.version}</version>
@@ -801,7 +813,7 @@
         <env>inspire</env>
       </properties>
     </profile>
-	<profile>
+    <profile>
       <id>geodatastore</id>
       <dependencies>
         <dependency>
@@ -823,8 +835,8 @@
     <minify.verbose>false</minify.verbose>
     <build.webapp.resources>${project.build.directory}/webapp</build.webapp.resources>
     <web.xml.main.config.overrides>/WEB-INF/config-overrides-${env}.xml</web.xml.main.config.overrides>
-    <web.xml.widget.config.overrides></web.xml.widget.config.overrides>
-    <system.specific.overrides></system.specific.overrides>
+	<web.xml.widget.config.overrides />
+    <system.specific.overrides />
     <rootProjectDir>${basedir}/..</rootProjectDir>
     <wro4jOutput>${project.build.directory}/wro4j-output/</wro4jOutput>
   </properties>

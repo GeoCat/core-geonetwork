@@ -6,6 +6,7 @@
   goog.require('gn_popup_service');
   goog.require('gds_thesaurus_directive');
   goog.require('geodatastore_api_urls');
+  goog.require('geodatastore_registry_service');
 
   var module = angular.module('geodatastore_edit_metadata_controller', [
     'geodatastore_api_urls',
@@ -14,7 +15,8 @@
     'gn_utility_directive',
     'gn_popup_service',
     'pascalprecht.translate',
-    'gds_thesaurus_directive'
+    'gds_thesaurus_directive',
+    'geodatastore_registry_service'
 
   ]);
 
@@ -37,37 +39,29 @@
 
 
   module.controller('GdsEditMetadataController', ['$scope', 'GdsUploadFactory', '$log', 'gnPopup', '$translate', '$q',
-    'UPDATE_DATASET_URL',
-    function ($scope, GdsUploadFactory, $log, gnPopup, $translate, $q, UPDATE_DATASET_URL) {
+      'gdsRegistryService', 'UPDATE_DATASET_URL',
+    function ($scope, GdsUploadFactory, $log, gnPopup, $translate, $q, gdsRegistryService, UPDATE_DATASET_URL) {
       $scope.GdsUploadFactory = GdsUploadFactory;
       $scope.publish = false;
 
       $scope.mdToEdit = null;
 
-      $scope.licenseList = [
-        {
-          value: "http://creativecommons.org/publicdomain/mark/1.0/deed.nl",
-          label: "Public Domain"
-        },
-        {
-          value: "http://creativecommons.org/publicdomain/zero/1.0/",
-          label: "CC0 (Creative Commons)"
-        },
-        {
-          value: "http://creativecommons.org/licenses/by/3.0/nl/",
-          label: "CC-BY (Creative Commons Naamsvermelding)"
-        }
-      ];
+      gdsRegistryService.getLicenses().then(function (data) {
+        $scope.licenseList = data;
 
-      $scope.resolutionList = [
-        {value: "1000000", label: "1:1.000.000"},
-        {value: "250000", label: "1:250.000"},
-        {value: "100000", label: "1:100.000"},
-        {value: "25000", label: "1:25.000"},
-        {value: "10000", label: "1:10.000"},
-        {value: "2500", label: "1:2.500"},
-        {value: "1000", label: "1:1.000"}
-      ];
+      });
+      gdsRegistryService.getDenominators().then(function (data){
+        $scope.resolutionList = data;
+      });
+      gdsRegistryService.getTopicCategories().then(function(data) {
+        $scope.topicCategoryList = data;
+      });
+
+      $scope.itemKeyToNumber = function (item) {
+        return Number(item.key);
+      };
+
+
 
       $scope.$watch("editMdForm.$dirty", function (newValue) {
         GdsUploadFactory.setDirty(newValue);
@@ -156,12 +150,10 @@
           $scope.editMdForm.$setUntouched();
           GdsUploadFactory.replace(GdsUploadFactory.list, data);
           GdsUploadFactory.replace($scope.searchResults.metadata, data);
-		  //a message in a div should not block workflow
-		  //$("#msg-success").children("span").html($translate('edit.success.title')).parent().show(500).delay(5000).hide(500);
-		  //gnPopup.createModal({
-          // title: '<strong>' + $translate('edit.success.title') + '</strong>',
-          //  content: '<div class="alert alert-success" role="alert">' + $translate('edit.success.content') + '</div>'
-          //}, $scope);
+          GdsUploadFactory.setDirty(false);
+          if ($scope.tab === 'published') {
+            $scope.editState.isEditing = false;
+          }
         } else {
           $scope.error = true;
           $scope.messages = data.messages;

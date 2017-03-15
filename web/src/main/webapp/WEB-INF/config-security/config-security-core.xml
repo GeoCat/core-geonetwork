@@ -36,6 +36,7 @@
 				<sec:filter-chain pattern="/xml/schemas/**" filters="" />
 				<sec:filter-chain pattern="/xsl/harvesting/**" filters="" />
 				<sec:filter-chain pattern="/xsl/ownership/**" filters="" />
+				<ref bean="ajaxFilterChain" />
 				<ref bean="coreFilterChain"/>
  				<!-- <sec:filter-chain pattern="/**" filters="securityContextPersistenceFilter,
  				logoutFilter,
@@ -269,4 +270,45 @@
   <!-- Listener to log the last login date in the database -->
   <bean class="org.fao.geonet.kernel.security.listener.UpdateTimestampListener" id="updateTimestampListener">
   </bean>
+
+	<!-- AJAX requests -->
+	<bean id="expiredSessionFilter" class="org.fao.geonet.nl.kadaster.pdok.api.security.ExpiredSessionFilter">
+	</bean>
+	<bean id="apiEntryPoint" class="org.fao.geonet.nl.kadaster.pdok.api.security.AjaxEntryPoint"/>
+	<bean id="apiDeniedHandler" class="org.springframework.security.web.access.AccessDeniedHandlerImpl"/>
+	<bean id="apiExceptionTranslationFilter"
+				class="org.springframework.security.web.access.ExceptionTranslationFilter">
+		<constructor-arg name="authenticationEntryPoint" ref="apiEntryPoint"/>
+		<property name="accessDeniedHandler" ref="apiDeniedHandler" />
+	</bean>
+
+	<bean id="apiFilters" class="java.util.ArrayList">
+		<constructor-arg>
+			<list>
+				<ref bean="securityContextPersistenceFilter" />
+				<ref bean="logoutFilter" />
+				<!-- A filter that check if an external service already authenticated user
+					 (default implementation does nothing but can be overridden) -->
+				<ref bean="multiNodeAuthenticationFilter" />
+				<ref bean="preAuthenticationFilter" />
+				<ref bean="basicAuthenticationFilter" />
+				<ref bean="expiredSessionFilter" />
+				<ref bean="requestCacheFilter" />
+				<ref bean="anonymousFilter" />
+				<ref bean="sessionMgmtFilter" />
+				<ref bean="apiExceptionTranslationFilter" />
+				<ref bean="gdsFilterSecurityInterceptor" />
+			</list>
+		</constructor-arg>
+	</bean>
+	<bean id="ajaxFilterChain" class="org.springframework.security.web.DefaultSecurityFilterChain">
+		<constructor-arg>
+			<bean class="org.springframework.security.web.util.AntPathRequestMatcher">
+				<constructor-arg value="/api/**"/>
+			</bean>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="apiFilters"/>
+		</constructor-arg>
+	</bean>
 </beans>

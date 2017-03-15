@@ -2,6 +2,8 @@ package nl.kadaster.pdok.bussiness;
 
 import com.google.common.collect.ImmutableMap;
 import nl.kadaster.pdok.bussiness.registryservices.RegistryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.Map;
  */
 public class GdsRegistryServiceLocator implements RegistryServiceLocator{
     private Map<String, Class> registryServiceMap;
+    @Autowired private ApplicationContext applicationContext;
 
     /**
      * Builds a new GdsRegistryServiceLocator
@@ -24,7 +27,17 @@ public class GdsRegistryServiceLocator implements RegistryServiceLocator{
 
     @Override
     public RegistryService getService(String codelist) {
-        return null;
+        Class className = this.registryServiceMap.get(codelist);
+        if (className == null) {
+            return null;
+        }
+        Object serviceObject = applicationContext.getBean(className);
+        if (serviceObject == null || ! RegistryService.class.isAssignableFrom(className)) {
+            return null;
+        }
+
+
+        return (RegistryService) serviceObject;
     }
 
     @Override

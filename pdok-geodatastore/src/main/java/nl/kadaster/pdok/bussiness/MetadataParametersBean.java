@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by JuanLuis on 13/07/2015.
  */
+@XmlRootElement(name = "metadata")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MetadataParametersBean {
     private String title;

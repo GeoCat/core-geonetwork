@@ -68,6 +68,7 @@
     <filter-mapping>
       <filter-name>SessionTimeoutCookieFilter</filter-name>
       <url-pattern>/srv/*</url-pattern>
+      <url-pattern>/api/*</url-pattern>
     </filter-mapping>
 
     <!-- url rewrite filter -->
@@ -87,7 +88,7 @@
             sysout:DEBUG -->
         <init-param>
             <param-name>logLevel</param-name>
-            <param-value>WARN</param-value>
+            <param-value>INFO</param-value>
         </init-param>
 
         <!-- you can disable status page if desired. Can be: true, false (default true) -->
@@ -350,14 +351,14 @@
         </servlet-class>
         <init-param>
             <param-name>nodeId</param-name>
-            <param-value>srv</param-value>
+            <param-value>web</param-value>
         </init-param>
         <load-on-startup>2</load-on-startup>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>spring</servlet-name>
-        <url-pattern>/srv/*</url-pattern>
+        <url-pattern>/web/*</url-pattern>
     </servlet-mapping>
 
 
@@ -400,4 +401,12 @@
     <session-config>
         <session-timeout>${sessionTimeout}</session-timeout>
     </session-config>
+
+    <!-- =================================================================== -->
+    <!--                          Mime Mappings                              -->
+    <!-- =================================================================== -->
+    <mime-mapping>
+        <extension>json</extension>
+        <mime-type>application/json</mime-type>
+    </mime-mapping>
 </web-app>

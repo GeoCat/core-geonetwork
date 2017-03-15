@@ -88,7 +88,7 @@
     <value>gn_admin_default.css</value>
     <value>gn_admin.js</value>
     <value>gn_login_default.css</value>
-    <value>srv_custom_style.css</value>
+    <value>web_custom_style.css</value>
     <value>gn_login.js</value>
   </util:list>
 

@@ -77,14 +77,22 @@
 
         //send request and decode result
         if (gnUrlUtils.isValid(url)) {
+          var defer = $q.defer();
+
           var proxyUrl = this.proxyUrl(url);
-          return $http.get(proxyUrl, {
+          $http.get(proxyUrl, {
             cache: true
           }).then(
-              function(response) {
-                return unmarshaller.unmarshalString(response.data).value;
+              function(data) {
+                var response = unmarshaller.unmarshalString(data.data).value;
+                defer.resolve(response);
+              },
+              function(data) {
+                defer.reject(data);
               }
           );
+
+          return defer.promise;
         }
       };
 

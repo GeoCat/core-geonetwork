@@ -24,76 +24,124 @@
         <from>^(.+)@json$</from>
         <to type="permanent-redirect">%{context-path}$1?_content_type=json</to>
     </rule>
-    <rule>
-        <condition name="content-type" operator="notequal">multipart/form-data</condition>
-        <from>^(.+)@json(\?.*)$</from>
-        <to type="permanent-redirect">%{context-path}$1$2&amp;_content_type=json</to>
-    </rule>
-    <rule>
-        <from>^(.*)/ar/(.*)$</from>
-        <to type="permanent-redirect" last="true">%{context-path}$1/ara/$2</to>
-    </rule>
-    <rule>
-        <from>^(.*)/ca/(.*)$</from>
-        <to type="permanent-redirect" last="true">%{context-path}$1/cat/$2</to>
-    </rule>
-    <rule>
-        <from>^(.*)/cn/(.*)$</from>
-        <to type="permanent-redirect" last="true">%{context-path}$1/chi/$2</to>
-    </rule>
-    <rule>
-        <from>^(.*)/nl/(.*)$</from>
-        <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
-    </rule>
-    <rule>
-        <from>^(.*)/fi/(.*)$</from>
-        <to type="permanent-redirect" last="true">%{context-path}$1/fin/$2</to>
-    </rule>
-    <rule>
-        <from>^(.*)/fr/(.*)$</from>
-        <to type="permanent-redirect" last="true">%{context-path}$1/fre/$2</to>
-    </rule>
-    <rule>
-        <from>^(.*)/de/(.*)$</from>
-        <to type="permanent-redirect" last="true">%{context-path}$1/ger/$2</to>
-    </rule>
-    <rule>
-        <from>^(.*)/no/(.*)$</from>
-        <to type="permanent-redirect" last="true">%{context-path}$1/nor/$2</to>
-    </rule>
-    <rule>
-        <from>^(.*)/pt/(.*)$</from>
-        <to type="permanent-redirect" last="true">%{context-path}$1/por/$2</to>
-    </rule>
-    <rule>
-        <from>^(.*)/ru/(.*)$</from>
-        <to type="permanent-redirect" last="true">%{context-path}$1/rus/$2</to>
-    </rule>
-    <rule>
-        <from>^(.*)/es/(.*)$</from>
-        <to type="permanent-redirect" last="true">%{context-path}$1/spa/$2</to>
-    </rule>
-    <rule>
-        <from>^(.*)/en/(.*)$</from>
-        <to type="permanent-redirect" last="true">%{context-path}$1/eng/$2</to>
-    </rule>
-    <rule>
-        <from>^(.*)/tr/(.*)$</from>
-        <to type="permanent-redirect" last="true">%{context-path}$1/tur/$2</to>
-    </rule>
-    <rule>
-        <from>^(.*)/it/(.*)$</from>
-        <to type="permanent-redirect" last="true">%{context-path}$1/ita/$2</to>
-    </rule>
-    <rule>
-        <note>
-            Retrieves robots.txt filemap pointing to sitemaps for better indexing.
-        </note>
-        <from>^/robots.txt$</from>
-        <to type="forward" last="true">/srv/eng/robots.txt</to>
-    </rule>
+       <rule>
+           <condition name="content-type" operator="notequal">multipart/form-data</condition>
+           <from>^(.+)@json(\?.*)$</from>
+           <to type="permanent-redirect">%{context-path}$1$2&amp;_content_type=json</to>
+       </rule>
+        <rule>
+           <from>^(.*)/ar/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/ara/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/ca/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/cn/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/chi/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/nl/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/fi/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/fin/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/fr/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/fre/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/de/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+        <rule>
+           <from>^(.*)/ger/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/no/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/nor/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/pt/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/por/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/ru/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/rus/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/es/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/spa/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/en/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/eng/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/tr/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+        <rule>
+           <from>^(.*)/tur/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/it/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <from>^(.*)/ita/(.*)$</from>
+           <to type="permanent-redirect" last="true">%{context-path}$1/dut/$2</to>
+       </rule>
+       <rule>
+           <note>
+               Retrieves robots.txt filemap pointing to sitemaps for better indexing.
+           </note>
+           <from>^/robots.txt$</from>
+           <to type="forward" last="true">/web/eng/robots.txt</to>
+       </rule>
 
-    <!-- Use new home service because it performs a faster redirect -->
+       <!-- Use new home service because it performs a faster redirect -->
     <rule>
         <from>^/([^/]*)/(\w\w\w)/home$</from>
         <to type="permanent-redirect" last="true">%{context-path}/home?hl=$2&amp;node=$1</to>
@@ -128,7 +176,7 @@
             Example URL: http://localhost:8080/geonetwork/metadata/eng/da165110-88fd-11da-a88f-000d939bc5d8.zip
         </note>
         <from>^/metadata/(.*)/(.*).zip$</from>
-        <to type="forward">/srv/$1/mef.export?uuid=$2</to>
+        <to type="forward">/web/$1/mef.export?uuid=$2</to>
     </rule>
 
     <rule>
@@ -137,7 +185,7 @@
             Example URL: http://localhost:8080/geonetwork/metadata/eng/da165110-88fd-11da-a88f-000d939bc5d8.xml
         </note>
         <from>^/metadata/(.*)/(.*).xml$</from>
-        <to type="forward">/srv/$1/xml.metadata.get?uuid=$2</to>
+        <to type="forward">/web/$1/xml.metadata.get?uuid=$2</to>
     </rule>
     
     <rule>
@@ -146,7 +194,7 @@
             Example URL: http://localhost:8080/geonetwork/metadata/eng/da165110-88fd-11da-a88f-000d939bc5d8.rdf
         </note>
         <from>^/metadata/(.*)/(.*).rdf$</from>
-        <to type="forward">/srv/$1/rdf.metadata.get?uuid=$2</to>
+        <to type="forward">/web/$1/rdf.metadata.get?uuid=$2</to>
     </rule>
     
     <rule>
@@ -155,7 +203,7 @@
             Example URL: http://localhost:8080/geonetwork/metadata/eng/da165110-88fd-11da-a88f-000d939bc5d8.pdf
         </note>
         <from>^/metadata/(.*)/(.*).pdf$</from>
-        <to type="forward">/srv/$1/pdf?uuid=$2</to>
+        <to type="forward">/web/$1/pdf?uuid=$2</to>
     </rule>
 
     <rule>
@@ -165,39 +213,47 @@
             Example URL: http://localhost:8080/geonetwork/metadata/eng/summary/da165110-88fd-11da-a88f-000d939bc5d8.xml
         </note>
         <from>^/metadata/(.*)/(.*)/(.*).(xml|html)$</from>
-        <to type="forward">/srv/$1/metadata.formatter.$4?uuid=$3&amp;xsl=$4</to>
+        <to type="forward">/web/$1/metadata.formatter.$4?uuid=$3&amp;xsl=$4</to>
     </rule>
 
     <rule> 
-        <from>^/srv/(.*)/index(.*)</from> 
-        <to type="forward">/srv/$1/catalog.search</to> 
+        <from>^/web/(.*)/index(.*)</from> 
+        <to type="forward">/web/$1/catalog.search</to> 
     </rule> 
 
     <rule>
         <from>^/id/dataset/(.*)</from>
-        <to type="forward">/srv/id/dataset/$1</to>
+        <to type="forward">/web/id/dataset/$1</to>
     </rule>
 
     <rule>
         <from>^/id/thumbnail/(.*)</from>
-        <to type="forward">/srv/id/thumbnail/$1</to>
+        <to type="forward">/web/id/thumbnail/$1</to>
     </rule>
     
     <rule> 
         <condition name="Accept">application/rdf\+xml</condition> 
         <from>^/doc/dataset/(.*)/(.*)</from> 
-        <to type="forward">/srv/dut/rdf.metadata.get?uuid=$1</to> 
+        <to type="forward">/web/dut/rdf.metadata.get?uuid=$1</to> 
     </rule> 
 
     <rule> 
         <condition name="Accept">application/json</condition> 
         <from>^/doc/dataset/(.*)/(.*)</from> 
-        <to type="forward">/srv/dut/xml.metadata.get?_content_type=json&amp;uuid=$1</to> 
+        <to type="forward">/web/dut/xml.metadata.get?_content_type=json&amp;uuid=$1</to> 
     </rule> 
 
     <rule>
         <from>^/doc/dataset/(.*)$</from>
-        <to type="forward">/srv/dut/xml.metadata.get?uuid=$1</to>
+        <to type="forward">/web/dut/xml.metadata.get?uuid=$1</to>
+    </rule>
+
+    <rule>
+        <note>
+            Geodatastore Registry
+        </note>
+        <from>^/registries</from>
+        <to type="forward">/web/dut/api/v1/registries</to>
     </rule>
 
     <rule>
@@ -250,7 +306,7 @@
           INSPIRE Atom OpenSearchDescription
         </note>
         <from>^/opensearch/(.*)/(.*)/OpenSearchDescription.xml$</from>
-        <to type="forward">/srv/$1/atom.description?fileIdentifier=$2</to>
+        <to type="forward">/web/$1/atom.description?fileIdentifier=$2</to>
     </rule>
 
     <rule>
@@ -258,7 +314,7 @@
           INSPIRE Atom search
         </note>
         <from>^/opensearch/(.*)/(.*)/search?(.*)$</from>
-        <to type="forward">/srv/$1/atom.search?fileIdentifier=$2</to>
+        <to type="forward">/web/$1/atom.search?fileIdentifier=$2</to>
     </rule>
 
     <rule>
@@ -266,7 +322,7 @@
           INSPIRE Atom search
         </note>
         <from>^/opensearch/(.*)/search?(.*)$</from>
-        <to type="forward">/srv/$1/atom.search</to>
+        <to type="forward">/web/$1/atom.search</to>
     </rule>
 
     <rule>
@@ -274,7 +330,7 @@
           INSPIRE Atom Describe (service)
         </note>
         <from>^/opensearch/(.*)/(.*)/describe?(.*)$</from>
-        <to type="forward">/srv/$1/atom.describe?fileIdentifier=$2</to>
+        <to type="forward">/web/$1/atom.describe?fileIdentifier=$2</to>
     </rule>
 
     <rule>
@@ -282,7 +338,7 @@
           INSPIRE Atom DescribeBy
         </note>
         <from>^/opensearch/(.*)/describe?(.*)$</from>
-        <to type="forward">/srv/$1/atom.describe</to>
+        <to type="forward">/web/$1/atom.describe</to>
     </rule>
 
 
@@ -291,7 +347,7 @@
           INSPIRE Atom GetData
         </note>
         <from>^/opensearch/(.*)/download?(.*)$</from>
-        <to type="forward">/srv/$1/atom.download</to>
+        <to type="forward">/web/$1/atom.download</to>
     </rule>
     <!-- Rules for direct links (for RDF at least) -->
     <rule>
@@ -300,7 +356,7 @@
             Example URL: http://localhost:8080/geonetwork/metadata/da165110-88fd-11da-a88f-000d939bc5d8
         </note>
         <from>^/(metadata|resource)/(.*)$</from>
-        <to type="forward">/srv/eng/xml.metadata.get?uuid=$1</to>
+        <to type="forward">/web/eng/xml.metadata.get?uuid=$1</to>
     </rule>
 
     <rule>
@@ -309,16 +365,17 @@
             Example URL: http://localhost:8080/geonetwork/thesaurus/external.theme.inspire-service-taxonomy
         </note>
         <from>^/thesaurus/(.*)$</from>
-        <to type="forward">/srv/eng/thesaurus.download?ref=$1</to>
+        <to type="forward">/web/eng/thesaurus.download?ref=$1</to>
     </rule>
 
+    <!-- /Rules for direct links (for RDF at least) -->
     <!-- Sitemap URLs -->
     <rule>
         <note>
             sitemap with format and page number
         </note>
         <from>^/sitemap/(.*)/([0-9]+)/(.*)$</from>
-        <to type="forward">/srv/$3/portal.sitemap?doc=$2&amp;format=$1</to>
+        <to type="forward">/web/$3/portal.sitemap?doc=$2&amp;format=$1</to>
     </rule>
 
     <rule>
@@ -326,7 +383,7 @@
             sitemap with page number
         </note>
         <from>^/sitemap/([0-9]+)/(.*)$</from>
-        <to type="forward">/srv/$2/portal.sitemap?doc=$1</to>
+        <to type="forward">/web/$2/portal.sitemap?doc=$1</to>
     </rule>
 
 
@@ -335,7 +392,7 @@
             sitemap with format
         </note>
         <from>^/sitemap/(.*)/(.*)$</from>
-        <to type="forward">/srv/$2/portal.sitemap?format=$1</to>
+        <to type="forward">/web/$2/portal.sitemap?format=$1</to>
     </rule>
 
     <rule>
@@ -343,7 +400,7 @@
             sitemap
         </note>
         <from>^/sitemap/(.*)$</from>
-        <to type="forward">/srv/$1/portal.sitemap</to>
+        <to type="forward">/web/$1/portal.sitemap</to>
     </rule>
 
     <rule>
@@ -351,7 +408,7 @@
             sitemap
         </note>
         <from>^/sitemap$</from>
-        <to type="forward">/srv/eng/portal.sitemap</to>
+        <to type="forward">/web/eng/portal.sitemap</to>
     </rule>
     <!-- Sitemap URLs -->
 
@@ -362,7 +419,7 @@
             Geodatastore search query
         </note>
         <from>^/geodatastore/api/datasets</from>
-        <to type="forward" last="true">/srv/dut/q@json</to>
+        <to type="forward" last="true">/web/dut/q@json</to>
     </rule>-->
   <!--  <rule>
         <note>
@@ -370,22 +427,71 @@
         </note>
         <condition type="method">DELETE</condition>
         <from>^/geodatastore/api/dataset/(.+)</from>
-        <to type="forward">/srv/dut/md.delete?_content_type=json&amp;uuid=$1</to>
+        <to type="forward">/web/dut/md.delete?_content_type=json&amp;uuid=$1</to>
+    </rule>-->
+<!--
+    <rule>
+        <note>
+            Geodatastore Registry
+        </note>
+        <from>^/registry/(.*)$</from>
+        <to type="forward">/web/dut/api/v1/registy/$1</to>
     </rule>-->
 
     <rule>
         <note>
             Geodatastore datasets rule
         </note>
-        <from>^/api/(v[0-9]+)/datasets(.*)$</from>
-        <to type="forward" last="true">/srv/dut/api/$1/datasets</to>
+        <from>^/api/(v[0-9]+)/docs(.*)$</from>
+        <to type="forward" last="true">/catalog/views/geodatastore/docs/$2</to>
     </rule>
+
+    <rule>
+        <note>
+            Geodatastore datasets rule
+        </note>
+        <from>^/api/(v[0-9]+)/datasets(.*)$</from>
+        <to type="forward" last="true">/web/dut/api/$1/datasets</to>
+    </rule>
+
+	<rule>
+        <note>
+            Geodatastore registry rule
+        </note>
+        <from>^/registry/(.*)(\?.*)$</from>
+        <to type="forward" last="true">/web/dut/api/v1/registry/$1</to>
+    </rule>
+
+    <rule>
+        <note>
+            Geodatastore registry rule
+        </note>
+        <from>^/registry/(.*)$</from>
+        <to type="forward" last="true">/web/dut/api/v1/registry/$1</to>
+    </rule>
+	
+    <rule>
+        <note>
+            Geodatastore registry rule
+        </note>
+        <from>^/api/(v[0-9]+)/registry/(.*)(\?.*)$</from>
+        <to type="forward" last="true">/web/dut/api/$1/registry/$2</to>
+    </rule>
+
+    <rule>
+        <note>
+            Geodatastore registry rule
+        </note>
+        <from>^/api/(v[0-9]+)/registry/(.*)$</from>
+        <to type="forward" last="true">/web/dut/api/$1/registry/$2</to>
+    </rule>
+
     <rule>
         <note>
             Geodatastore API general rule
         </note>
         <from>^/api/(v[0-9]+)/(.*)$</from>
-        <to type="forward">/srv/dut/api/$1/$2</to>
+        <to type="forward">/web/dut/api/$1/$2</to>
     </rule>
 
     <!-- hide jsession id from google bot -->

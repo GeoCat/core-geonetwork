@@ -12,6 +12,7 @@
       return this.itemValue(item);
     },
     freeInput: true,
+    addOnBlur: true,
     maxTags: undefined,
     confirmKeys: [13],
     onTagExists: function(item, $tag) {
@@ -36,6 +37,11 @@
 
     this.$container = $('<div class="bootstrap-tagsinput"></div>');
     this.$input = $('<input size="' + this.inputSize + '" type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
+    if (this.$element.attr('tabindex')) {
+      var tabIndex = this.$element.attr('tabindex');
+      this.$element.removeAttr('tabindex');
+      this.$input.attr('tabindex', tabIndex);
+    }
 
     this.$element.after(this.$container);
 
@@ -88,7 +94,7 @@
           itemText = self.options.itemText(item),
           tagClass = self.options.tagClass(item);
 
-      // Ignore items allready added
+      // Ignore items already added
       var existing = $.grep(self.itemsArray, function(item) { return self.options.itemValue(item) === itemValue; } )[0];
       if (existing) {
         // Invoke onTagExists
@@ -290,6 +296,19 @@
       self.$container.on('click', $.proxy(function(event) {
         self.$input.focus();
       }, self));
+
+      // Add keyword on blur
+      if (self.options.addOnBlur && self.options.freeInput) {
+        self.$input.on('focusout', $.proxy(function(event) {
+          // HACK: only process on focusout when no typeahead opened, to
+          //       avoid adding the typeahead text as tag
+          if ($('.typeahead, .twitter-typeahead', self.$container).length === 0) {
+            self.add(self.$input.val());
+            self.$input.val('');
+          }
+        }, self));
+      }
+
 
       self.$container.on('keydown', 'input', $.proxy(function(event) {
         var $input = $(event.target),

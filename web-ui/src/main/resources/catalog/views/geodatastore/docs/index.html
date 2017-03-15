@@ -12,14 +12,27 @@
 </head>
 <body>
 
-<div class="container">
+ 
+ <div class="container">
     <h1>Geodatastore API v1 Documentation</h1>
-    <p><p>Geodatastore is a project that facilitates governments to publish geospatial open datasets. 
-	A user is facilitated in uploading a dataset and provide some metadata, the metadata is then decorated serverside to meet national profile requirements. 
-	Typical api workflow; authentication using basic auth, retrieve datasets, to see which datasets are already uploaded by user. Upload dataset (and update dataset). 
-	If all properties are provided the dataset can be published. </p>
+    <p><p>Geodatastore is a project of PDOK that facilitates governments to publish geospatial open datasets. 
+    A user is facilitated in uploading a dataset and provide some metadata, the metadata is then decorated 
+    serverside to meet national profile requirements. Typical api workflow; authentication using basic auth, 
+    retrieve datasets, to see which datasets are already uploaded by user. Upload dataset (and update dataset). 
+    If all properties are provided the dataset can be published. Remove dataset. After publication, it can take 
+    up to 24 hours before the dataset will be available in <a href="http://www.nationaalgeoregister.nl">http://www.nationaalgeoregister.nl</a> and up to 48 hours 
+    in <a href="http://data.overheid.nl">http://data.overheid.nl</a>. Visit the PDOK forum at <a href="https://www.pdok.nl/forum">https://www.pdok.nl/forum</a> for additional information 
+    about Geodatastore API development.</p>
     </p>
     
+        <div id="sw-default-consumes" class="sw-default-value">
+            <span class="sw-default-value-header">Default request content-types:</span>
+            application/json
+        </div>
+        <div id="sw-default-produces" class="sw-default-value">
+            <span class="sw-default-value-header">Default response content-types:</span>
+            application/json
+        </div>
     
     <div id="sw-schemes" class="sw-default-value">
         <span class="sw-default-value-header">Schemes:</span>
@@ -48,22 +61,19 @@
                         </td>
                     </tr>
                     <tr>
-                            <td class="swagger--summary-path" rowspan="1">
+                            <td class="swagger--summary-path" rowspan="2">
                                 <a href="#path--api-v1-dataset--id-">/api/v1/dataset/{id}</a>
                             </td>
                         <td>
-                            <a href="#operation--api-v1-dataset--id--get">GET</a>
+                            <a href="#operation--api-v1-dataset--id--delete">DELETE</a>
                         </td>
                         <td>
                             
                         </td>
                     </tr>
                     <tr>
-                            <td class="swagger--summary-path" rowspan="1">
-                                <a href="#path--api-v1-datasetp--id-">/api/v1/dataset/{id}</a>
-                            </td>
                         <td>
-                            <a href="#operation--api-v1-datasetp--id--post">POST</a>
+                            <a href="#operation--api-v1-dataset--id--post">POST</a>
                         </td>
                         <td>
                             
@@ -93,6 +103,17 @@
                     </tr>
                     <tr>
                             <td class="swagger--summary-path" rowspan="1">
+                                <a href="#path--api-v1-registry-location">/api/v1/registry/location</a>
+                            </td>
+                        <td>
+                            <a href="#operation--api-v1-registry-location-get">GET</a>
+                        </td>
+                        <td>
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                            <td class="swagger--summary-path" rowspan="1">
                                 <a href="#path--api-v1-registry--name-">/api/v1/registry/{name}</a>
                             </td>
                         <td>
@@ -106,6 +127,23 @@
         </table>
     
     
+        <h2>Security</h2>
+    
+            <div id="security-definition-basicAuth" class="panel panel-security-definition panel-security-definition-basic">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="security-name">basicAuth</span> <strong><span class="sw-security-definition-basic"></span></strong></h3>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-security-properties">
+                            <dt>
+                            </dt>
+                            <dt>
+                                    <span class="security-property-name">description:</span>
+                                    <span class="security-property-type">Users can login with basic authentication using their nationaalgeoregister account</span>
+                            </dt>
+                    </section>
+                </div>
+            </div>
     
     <h2>Paths</h2>
     
@@ -121,7 +159,12 @@
                         <p>Create a new dataset</p>
             
                     </section>
-                    
+                        
+                            <section class="sw-request-body">
+                                
+                                    <p><span class="label label-default">multipart/form-data</span> 
+                        </p>
+                            </section>        
                         <section class="sw-request-params">
                             <table class="table">
                                 <thead>
@@ -136,115 +179,11 @@
                                 <tbody>
                                         <tr>
                                             <td>
-                                                title
-                                            <td><p>Title of the dataset</p>
+                                                metadata
+                                            <td><p>A JSON string representation of an object of type Metadata.</p>
                                         </td>
                                             <td>formData</td>
-                                            <td><span class="json-property-type">string</span>
-                                        <span class="json-property-range" title="Value limits"></span>
-                                        
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                summary
-                                            <td><p>Summary describing the dataset</p>
-                                        </td>
-                                            <td>formData</td>
-                                            <td><span class="json-property-type">string</span>
-                                        <span class="json-property-range" title="Value limits"></span>
-                                        
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                keywords
-                                            <td><p>Keywords describing the dataset</p>
-                                        </td>
-                                            <td>formData</td>
-                                            <td><span class="json-property-type">string[]</span>
-                                        <span class="json-property-range" title="Value limits"></span>
-                                        
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                lineage
-                                            <td><p>Lineage information on how the dataset has been created/collected</p>
-                                        </td>
-                                            <td>formData</td>
-                                            <td><span class="json-property-type">string</span>
-                                        <span class="json-property-range" title="Value limits"></span>
-                                        
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                license
-                                            <td><p>License under which te dataset is made available. Should be a URI of one of /api/v1/registry/licenses.</p>
-                                        </td>
-                                            <td>formData</td>
-                                            <td><span class="json-property-type">string</span>
-                                        <span class="json-property-range" title="Value limits"></span>
-                                        
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                resolution
-                                            <td><p>The resolution (scale) in which this dataset is best used. Should be a URI of one of /api/v1/registry/resolutions.</p>
-                                        </td>
-                                            <td>formData</td>
-                                            <td><span class="json-property-type">string</span>
-                                        <span class="json-property-range" title="Value limits"></span>
-                                        
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                locationUri
-                                            <td><p>The location of the dataset. Should be a URI of one of /api/v1/registry/locations.</p>
-                                        </td>
-                                            <td>formData</td>
-                                            <td><span class="json-property-type">string</span>
-                                        <span class="json-property-range" title="Value limits"></span>
-                                        
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                publish
-                                            <td><p>This flag indicates if the dataset should be instantly published or saved as draft.</p>
-                                        </td>
-                                            <td>formData</td>
-                                            <td><span class="json-property-type">boolean</span>
-                                        <span class="json-property-range" title="Value limits"></span>
-                                        
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                topicCategory
-                                            <td><p>The topic of the dataset. Should be a URI of one of /api/v1/registry/topicCategories.</p>
-                                        </td>
-                                            <td>formData</td>
-                                            <td><span class="json-property-type">string[]</span>
+                                            <td><span class="json-property-type">object</span>
                                         <span class="json-property-range" title="Value limits"></span>
                                         
                                             </td>
@@ -254,7 +193,7 @@
                                         <tr>
                                             <td>
                                                 dataset
-                                            <td><p>The dataset file</p>
+                                            <td><p>The dataset file.</p>
                                         </td>
                                             <td>formData</td>
                                             <td><span class="json-property-type">file</span>
@@ -267,10 +206,23 @@
                                         <tr>
                                             <td>
                                                 thumbnail
-                                            <td><p>A thumbnail file</p>
+                                            <td><p>A thumbnail file, usually an image.</p>
                                         </td>
                                             <td>formData</td>
                                             <td><span class="json-property-type">file</span>
+                                        <span class="json-property-range" title="Value limits"></span>
+                                        
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                publish
+                                            <td><p>Indicate if the metadata should be instantly published. Defaults to <code>false</code>. The metadata only will be published if it is valid (all metadata fields are filled with valid values and it has a dataset file). If <code>true</code> is indicated but the dataset cannot be published, it will be saved as draft but not published.</p>
+                                        </td>
+                                            <td>formData</td>
+                                            <td><span class="json-property-type">boolean</span>
                                         <span class="json-property-range" title="Value limits"></span>
                                         
                                             </td>
@@ -293,7 +245,7 @@
                                     <dd class="sw-response-200">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p>Successful response</p>
+                                                    <p>Successful response. A new dataset has been created and published if the <code>publish</code> parameter was <code>true</code>, metadata was valid and it has a dataset file. Returns a Dataset object with the ID of the created object set.</p>
                                             
                                                 </div>
                                             </div>
@@ -302,19 +254,71 @@
                                                 <div class="col-md-6 sw-response-model">
                                                 <div  class="panel panel-definition">
                                                     <div class="panel-body">
-                                                                <a class="json-schema-ref" href="#/definitions/dataset">dataset</a>
+                                                                <a class="json-schema-ref" href="#/definitions/Dataset">Dataset</a>
                                                     </div>
                                                 </div></div>
                                             
                                             </div>                </dd>
-                                    <dt class="sw-response-405">
-                                        405 Method Not Allowed
+                                    <dt class="sw-response-400">
+                                        400 Bad Request
                                     
                                     </dt>
-                                    <dd class="sw-response-405">
+                                    <dd class="sw-response-400">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p>Invalid input</p>
+                                                    <p>Invalid input. For example: </p>
+                                            <ul>
+                                            <li>None of the <code>dataset</code>, <code>thumbnail</code> or <code>metadata</code> has been provided.</li>
+                                            <li><code>metadata</code> parameter is not a valid JSON string or it doesn&#39;t have 
+                                            the right properties.</li>
+                                            <li></li>
+                                            </ul>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                                <a class="json-schema-ref" href="#/definitions/ErrorResponse">ErrorResponse</a>
+                                                    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                                    <dt class="sw-response-403">
+                                        403 Forbidden
+                                    
+                                    </dt>
+                                    <dd class="sw-response-403">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>Forbidden. There are some causes for this error for example:</p>
+                                            <ul>
+                                            <li>The user is not a Reviewer in the group. Contact with support to 
+                                            check this case.</li>
+                                            <li>The email for the user&#39;s group is not set. Contact with support to 
+                                            check this case.</li>
+                                            <li>The description for the user&#39;s group is not set. Contact with support 
+                                            to check this case.</li>
+                                            </ul>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                            </div>
+                                            
+                                            </div>                </dd>
+                                    <dt class="sw-response-500">
+                                        500 Internal Server Error
+                                    
+                                    </dt>
+                                    <dd class="sw-response-500">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>error response caused by an internal server error.</p>
                                             
                                                 </div>
                                             </div>
@@ -326,17 +330,34 @@
                                             </div>                </dd>
                             </dl>
                         </section>
+                        <section class="sw-request-security">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="sw-request-security-schema"></th>
+                                    <th class="sw-request-security-scopes"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                        <tr>
+                                            <td><a href="#security-definition-basicAuth">basicAuth</a></td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </section>
                 </div>
             </div>    
         <span id="path--api-v1-dataset--id-"></span>
-            <div id="operation--api-v1-dataset--id--get" class="swagger--panel-operation-get panel">
+            <div id="operation--api-v1-dataset--id--delete" class="swagger--panel-operation-delete panel">
                 <div class="panel-heading">
                     <div class="operation-summary"></div>
-                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/api/v1/dataset/{id}</strong></h3>
+                    <h3 class="panel-title"><span class="operation-name">DELETE</span> <strong>/api/v1/dataset/{id}</strong></h3>
                 </div>
                 <div class="panel-body">
                     <section class="sw-operation-description">
-                        <p>Get <code>dataset</code> object.</p>
+                        <p>delete a dataset. The metadata, dataset and thumbnail are removed from the system.</p>
             
                     </section>
                     
@@ -371,7 +392,10 @@
                         </section>
                     
                         <section class="sw-responses">
-                    
+                                <p><a href="#sw-default-produces">Uses default content-types: </a>
+                                    <span class="label label-default">application/json</span> 
+                                </p>
+                            
                             <dl>
                                     <dt class="sw-response-200">
                                         200 OK
@@ -380,18 +404,31 @@
                                     <dd class="sw-response-200">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p>Successful response</p>
+                                                    <p>Successful response. The dataset has been deleted.</p>
                                             
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 
                                                 <div class="col-md-6 sw-response-model">
-                                                <div  class="panel panel-definition">
-                                                    <div class="panel-body">
-                                                                <a class="json-schema-ref" href="#/definitions/dataset">dataset</a>
-                                                    </div>
-                                                </div></div>
+                                            </div>
+                                            
+                                            </div>                </dd>
+                                    <dt class="sw-response-403">
+                                        403 Forbidden
+                                    
+                                    </dt>
+                                    <dd class="sw-response-403">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>The user cannot delete the dataset, probably because it doesn&#39;t belong to its organization.</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                            </div>
                                             
                                             </div>                </dd>
                                     <dt class="sw-response-404">
@@ -401,54 +438,61 @@
                                     <dd class="sw-response-404">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p>Dataset does not exist or no privileges</p>
+                                                    <p>Dataset not found.</p>
                                             
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 
                                                 <div class="col-md-6 sw-response-model">
-                                                <div  class="panel panel-definition">
-                                                    <div class="panel-body">
-                                                            
-                                                    </div>
-                                                </div></div>
+                                            </div>
                                             
                                             </div>                </dd>
-                                    <dt class="sw-response-405">
-                                        405 Method Not Allowed
+                                    <dt class="sw-response-500">
+                                        500 Internal Server Error
                                     
                                     </dt>
-                                    <dd class="sw-response-405">
+                                    <dd class="sw-response-500">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p>Invalid input</p>
+                                                    <p>Internal server error.</p>
                                             
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 
                                                 <div class="col-md-6 sw-response-model">
-                                                <div  class="panel panel-definition">
-                                                    <div class="panel-body">
-                                                            
-                                                    </div>
-                                                </div></div>
+                                            </div>
                                             
                                             </div>                </dd>
                             </dl>
                         </section>
+                        <section class="sw-request-security">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="sw-request-security-schema"></th>
+                                    <th class="sw-request-security-scopes"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                        <tr>
+                                            <td><a href="#security-definition-basicAuth">basicAuth</a></td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </section>
                 </div>
-            </div>    
-        <span id="path--api-v1-datasetp--id-"></span>
-            <div id="operation--api-v1-datasetp--id--post" class="swagger--panel-operation-post panel">
+            </div>    <div id="operation--api-v1-dataset--id--post" class="swagger--panel-operation-post panel">
                 <div class="panel-heading">
                     <div class="operation-summary"></div>
                     <h3 class="panel-title"><span class="operation-name">POST</span> <strong>/api/v1/dataset/{id}</strong></h3>
                 </div>
                 <div class="panel-body">
                     <section class="sw-operation-description">
-                        <p>Update a dataset</p>
+                        <p>Update an existing dataset.</p>
             
                     </section>
                     
@@ -466,103 +510,11 @@
                                 <tbody>
                                         <tr>
                                             <td>
-                                                id
-                                            <td><p>Identifier of the dataset</p>
-                                        </td>
-                                            <td>path</td>
-                                            <td><span class="json-property-type">string</span>
-                                        <span class="json-property-range" title="Value limits"></span>
-                                        
-                                            </td>
-                                            <td>
-                                                    <span class="json-property-required"></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                title
-                                            <td><p>Title of the dataset</p>
+                                                metadata
+                                            <td><p>the metadata object. It must be the string of a JSON object of type metadata.</p>
                                         </td>
                                             <td>formData</td>
-                                            <td><span class="json-property-type">string</span>
-                                        <span class="json-property-range" title="Value limits"></span>
-                                        
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                summary
-                                            <td><p>Summary describing the dataset</p>
-                                        </td>
-                                            <td>formData</td>
-                                            <td><span class="json-property-type">string</span>
-                                        <span class="json-property-range" title="Value limits"></span>
-                                        
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                keywords
-                                            <td><p>Keywords describing the dataset</p>
-                                        </td>
-                                            <td>formData</td>
-                                            <td><span class="json-property-type">string[]</span>
-                                        <span class="json-property-range" title="Value limits"></span>
-                                        
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                lineage
-                                            <td><p>Lineage information on how the dataset has been created/collected</p>
-                                        </td>
-                                            <td>formData</td>
-                                            <td><span class="json-property-type">string</span>
-                                        <span class="json-property-range" title="Value limits"></span>
-                                        
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                license
-                                            <td><p>License under which te dataset is made available. Should be a URI of one of /api/v1/registry/licenses.</p>
-                                        </td>
-                                            <td>formData</td>
-                                            <td><span class="json-property-type">string</span>
-                                        <span class="json-property-range" title="Value limits"></span>
-                                        
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                resolution
-                                            <td><p>The resolution (scale) in which this dataset is best used. Should be a URI of one of /api/v1/registry/resolutions.</p>
-                                        </td>
-                                            <td>formData</td>
-                                            <td><span class="json-property-type">string</span>
-                                        <span class="json-property-range" title="Value limits"></span>
-                                        
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                locationUri
-                                            <td><p>The location of the dataset. Should be a URI of one of /api/v1/registry/locations.</p>
-                                        </td>
-                                            <td>formData</td>
-                                            <td><span class="json-property-type">string</span>
+                                            <td><span class="json-property-type">object</span>
                                         <span class="json-property-range" title="Value limits"></span>
                                         
                                             </td>
@@ -572,23 +524,10 @@
                                         <tr>
                                             <td>
                                                 publish
-                                            <td><p>This flag indicates if the dataset should be instantly published or saved as draft.</p>
+                                            <td><p>Indicate if the metadata should be instantly published. Defaults to <code>false</code>. The metadata only will be published if it is valid (all metadata fields are filled with valid values and it has a dataset file). If <code>true</code> is indicated but the dataset cannot be published, it will be saved as draft but not published.</p>
                                         </td>
                                             <td>formData</td>
                                             <td><span class="json-property-type">boolean</span>
-                                        <span class="json-property-range" title="Value limits"></span>
-                                        
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                topicCategory
-                                            <td><p>The topic of the dataset. Should be a URI of one of /api/v1/registry/topicCategories.</p>
-                                        </td>
-                                            <td>formData</td>
-                                            <td><span class="json-property-type">string[]</span>
                                         <span class="json-property-range" title="Value limits"></span>
                                         
                                             </td>
@@ -637,7 +576,7 @@
                                     <dd class="sw-response-200">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p>Successful response</p>
+                                                    <p>Successful response. The dataset has been updated and/or published.</p>
                                             
                                                 </div>
                                             </div>
@@ -646,33 +585,97 @@
                                                 <div class="col-md-6 sw-response-model">
                                                 <div  class="panel panel-definition">
                                                     <div class="panel-body">
-                                                                <a class="json-schema-ref" href="#/definitions/dataset">dataset</a>
+                                                                <a class="json-schema-ref" href="#/definitions/Dataset">Dataset</a>
                                                     </div>
                                                 </div></div>
                                             
                                             </div>                </dd>
-                                    <dt class="sw-response-405">
-                                        405 Method Not Allowed
+                                    <dt class="sw-response-400">
+                                        400 Bad Request
                                     
                                     </dt>
-                                    <dd class="sw-response-405">
+                                    <dd class="sw-response-400">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p>Invalid input</p>
+                                                    <p>There are error in the parameters sent to the server. Please check that metadata is a valid JSON String if sent.</p>
                                             
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 
                                                 <div class="col-md-6 sw-response-model">
-                                                <div  class="panel panel-definition">
-                                                    <div class="panel-body">
-                                                            
-                                                    </div>
-                                                </div></div>
+                                            </div>
+                                            
+                                            </div>                </dd>
+                                    <dt class="sw-response-403">
+                                        403 Forbidden
+                                    
+                                    </dt>
+                                    <dd class="sw-response-403">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>Forbidden. The user has not enough permissions to edit the dataset or the user&#39;s group has not email or description. See the error message in the response and contact with support if it says something related with the email or description.</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                            </div>
+                                            
+                                            </div>                </dd>
+                                    <dt class="sw-response-404">
+                                        404 Not Found
+                                    
+                                    </dt>
+                                    <dd class="sw-response-404">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>Dataset not found. Check the identifier.</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                            </div>
+                                            
+                                            </div>                </dd>
+                                    <dt class="sw-response-500">
+                                        500 Internal Server Error
+                                    
+                                    </dt>
+                                    <dd class="sw-response-500">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>Internal server error.</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                            </div>
                                             
                                             </div>                </dd>
                             </dl>
+                        </section>
+                        <section class="sw-request-security">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="sw-request-security-schema"></th>
+                                    <th class="sw-request-security-scopes"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                        <tr>
+                                            <td><a href="#security-definition-basicAuth">basicAuth</a></td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                </tbody>
+                            </table>
                         </section>
                 </div>
             </div>    
@@ -684,10 +687,10 @@
                 </div>
                 <div class="panel-body">
                     <section class="sw-operation-description">
-                        <p>Gets <code>dataset</code> objects.
+                        <p>Gets <code>dataset</code> objects of the user organization.
             Optional query params of <strong>q</strong>, <strong>pageSize</strong>, <strong>sortOrder</strong>, <strong>sortBy</strong> determines filter,
             size and order of returned array
-            The status parameter indicates if datasets that are publised or draft are returned.</p>
+            The status parameter indicates if datasets that are published or draft are returned.</p>
             
                     </section>
                     
@@ -719,13 +722,14 @@
                                         <tr>
                                             <td>
                                                 sortBy
-                                            <td><p>an attribute to use as sort order</p>
+                                            <td><p>an attribute to use as sort order (changeDate, _title). 
+                                        Default to changeDate.</p>
                                         </td>
                                             <td>query</td>
                                             <td><span class="json-property-type">string</span>    <span class="json-property-enum" title="Possible values">, x &isin; {
-                                                        <span class="json-property-enum-item">title</span>
+                                                        <span class="json-property-enum-item">_title</span>
                                                     ,
-                                                        <span class="json-property-enum-item">lastModified</span>
+                                                        <span class="json-property-enum-item">changeDate</span>
                                                         (default)
                                                     
                                                 }
@@ -739,14 +743,14 @@
                                         <tr>
                                             <td>
                                                 sortOrder
-                                            <td><p>order of sort</p>
+                                            <td><p>order of sort (asc or desc). Default to &quot;desc&quot;.</p>
                                         </td>
                                             <td>query</td>
                                             <td><span class="json-property-type">string</span>    <span class="json-property-enum" title="Possible values">, x &isin; {
-                                                        <span class="json-property-enum-item">Asc</span>
-                                                        (default)
+                                                        <span class="json-property-enum-item">asc</span>
                                                     ,
-                                                        <span class="json-property-enum-item">Desc</span>
+                                                        <span class="json-property-enum-item">desc</span>
+                                                        (default)
                                                     
                                                 }
                                                 </span>
@@ -758,8 +762,21 @@
                                         </tr>
                                         <tr>
                                             <td>
+                                                from
+                                            <td><p>first record to be returned. Defaults to 1.</p>
+                                        </td>
+                                            <td>query</td>
+                                            <td><span class="json-property-type">integer</span>
+                                        <span class="json-property-range" title="Value limits"></span>
+                                        
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
                                                 pageSize
-                                            <td><p>Size of array</p>
+                                            <td><p>Max number of returned records. Defaults to 20 elements.</p>
                                         </td>
                                             <td>query</td>
                                             <td><span class="json-property-type">integer</span>
@@ -772,7 +789,8 @@
                                         <tr>
                                             <td>
                                                 status
-                                            <td><p>Indicate to filter aither published of non published</p>
+                                            <td><p>Indicate to filter either published of non published (published or draft).
+                                        Defaults to &quot;published&quot;.</p>
                                         </td>
                                             <td>query</td>
                                             <td><span class="json-property-type">string</span>    <span class="json-property-enum" title="Possible values">, x &isin; {
@@ -789,12 +807,28 @@
                                             <td>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td>
+                                                summaryOnly
+                                            <td><p>Indicates if the response should contains only the info about the number of records found but do not return the actual records. Default to <code>false</code>.</p>
+                                        </td>
+                                            <td>query</td>
+                                            <td><span class="json-property-type">boolean</span>
+                                        <span class="json-property-range" title="Value limits"></span>
+                                        
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
                                 </tbody>
                             </table>
                         </section>
                     
                         <section class="sw-responses">
-                    
+                                <p><a href="#sw-default-produces">Uses default content-types: </a>
+                                    <span class="label label-default">application/json</span> 
+                                </p>
+                            
                             <dl>
                                     <dt class="sw-response-200">
                                         200 OK
@@ -803,7 +837,7 @@
                                     <dd class="sw-response-200">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p>Successful response</p>
+                                                    <p>The response contains a summary with the number of records  found, starting record, last record of the range and an array with  the actual records if the param summaryOnly was <code>false</code> or not provided. <br/>NOTE: if the user doesn&#39;t belong to any group an error field would  be set to <code>true</code> with a message indicating this fact.</p>
                                             
                                                 </div>
                                             </div>
@@ -812,27 +846,19 @@
                                                 <div class="col-md-6 sw-response-model">
                                                 <div  class="panel panel-definition">
                                                     <div class="panel-body">
-                                                            
-                                                                            <section class="json-schema-array-items">
-                                                                                <span class="json-property-type">    <a class="json-schema-ref" href="#/definitions/dataset">dataset</a>
-                                                                                </span>
-                                                                                <span class="json-property-range" title="Value limits"></span>
-                                                                                
-                                                                                <div class="json-inner-schema">
-                                                                                    
-                                                                                </div>
-                                                                            </section>    </div>
+                                                                <a class="json-schema-ref" href="#/definitions/QueryResponse">QueryResponse</a>
+                                                    </div>
                                                 </div></div>
                                             
                                             </div>                </dd>
-                                    <dt class="sw-response-405">
-                                        405 Method Not Allowed
+                                    <dt class="sw-response-400">
+                                        400 Bad Request
                                     
                                     </dt>
-                                    <dd class="sw-response-405">
+                                    <dd class="sw-response-400">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p>Invalid input</p>
+                                                    <p>Invalid input. You get this response if for example you pass a <code>String</code> instead an <code>integer</code> for <code>pageSize</code> parameter.</p>
                                             
                                                 </div>
                                             </div>
@@ -848,6 +874,23 @@
                                             </div>                </dd>
                             </dl>
                         </section>
+                        <section class="sw-request-security">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="sw-request-security-schema"></th>
+                                    <th class="sw-request-security-scopes"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                        <tr>
+                                            <td><a href="#security-definition-basicAuth">basicAuth</a></td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </section>
                 </div>
             </div>    
         <span id="path--api-v1-registries"></span>
@@ -858,12 +901,14 @@
                 </div>
                 <div class="panel-body">
                     <section class="sw-operation-description">
-                        <p>Gets <code>registry</code> objects.</p>
+                        <p>Gets the avaliable <code>registry</code> objects. </p>
             
                     </section>
                     
                     
                         <section class="sw-responses">
+                                <p><span class="label label-default">text/xml</span> <span class="label label-default">application/json</span> 
+                    </p>
                     
                             <dl>
                                     <dt class="sw-response-200">
@@ -926,6 +971,197 @@
                         </section>
                 </div>
             </div>    
+        <span id="path--api-v1-registry-location"></span>
+            <div id="operation--api-v1-registry-location-get" class="swagger--panel-operation-get panel">
+                <div class="panel-heading">
+                    <div class="operation-summary"></div>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/api/v1/registry/location</strong></h3>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-operation-description">
+                        <p>Gets <code>location</code> objects.
+            Optional query param of <strong>pageSize</strong> and <strong>q</strong> determines
+            size of returned array</p>
+            
+                    </section>
+                    
+                        <section class="sw-request-params">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="sw-param-name"></th>
+                                    <th class="sw-param-description"></th>
+                                    <th class="sw-param-type"></th>
+                                    <th class="sw-param-data-type"></th>
+                                    <th class="sw-param-annotation"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                        <tr>
+                                            <td>
+                                                q
+                                            <td><p>A filter used in query</p>
+                                        </td>
+                                            <td>query</td>
+                                            <td><span class="json-property-type">string</span>
+                                        <span class="json-property-range" title="Value limits"></span>
+                                        
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                pageSize
+                                            <td><p>Max number or records returned</p>
+                                        </td>
+                                            <td>query</td>
+                                            <td><span class="json-property-type">integer</span>
+                                        <span class="json-property-range" title="Value limits"></span>
+                                        
+                                                <span class="json-property-default-value">200</span>
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </section>
+                    
+                        <section class="sw-responses">
+                                <p><span class="label label-default">text/xml</span> <span class="label label-default">application/json</span> 
+                    </p>
+                    
+                            <dl>
+                                    <dt class="sw-response-200">
+                                        200 OK
+                                    
+                                    </dt>
+                                    <dd class="sw-response-200">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>Successful response</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                            
+                                                                            <section class="json-schema-array-items">
+                                                                                <span class="json-property-type">object</span>
+                                                                                <span class="json-property-range" title="Value limits"></span>
+                                                                                
+                                                                                <div class="json-inner-schema">
+                                                                                    
+                                                                                            <section class="json-schema-properties">
+                                                                                                <dl>
+                                                                                                        <dt data-property-name="key">
+                                                                                                            <span class="json-property-name">key:</span>
+                                                                                                            <span class="json-property-type">string</span>
+                                                                                                            <span class="json-property-range" title="Value limits"></span>
+                                                                                                            
+                                                                                                        </dt>
+                                                                                                        <dd>
+                                                                                                            
+                                                                                                            <div class="json-inner-schema">
+                                                                                                                
+                                                                                                            </div>
+                                                                                                        </dd>
+                                                                                                        <dt data-property-name="label">
+                                                                                                            <span class="json-property-name">label:</span>
+                                                                                                            <span class="json-property-type">string</span>
+                                                                                                            <span class="json-property-range" title="Value limits"></span>
+                                                                                                            
+                                                                                                        </dt>
+                                                                                                        <dd>
+                                                                                                            
+                                                                                                            <div class="json-inner-schema">
+                                                                                                                
+                                                                                                            </div>
+                                                                                                        </dd>
+                                                                                                        <dt data-property-name="coordEast">
+                                                                                                            <span class="json-property-name">coordEast:</span>
+                                                                                                            <span class="json-property-type">number</span>
+                                                                                                            <span class="json-property-range" title="Value limits"></span>
+                                                                                                            
+                                                                                                        </dt>
+                                                                                                        <dd>
+                                                                                                            
+                                                                                                            <div class="json-inner-schema">
+                                                                                                                
+                                                                                                            </div>
+                                                                                                        </dd>
+                                                                                                        <dt data-property-name="coordWest">
+                                                                                                            <span class="json-property-name">coordWest:</span>
+                                                                                                            <span class="json-property-type">number</span>
+                                                                                                            <span class="json-property-range" title="Value limits"></span>
+                                                                                                            
+                                                                                                        </dt>
+                                                                                                        <dd>
+                                                                                                            
+                                                                                                            <div class="json-inner-schema">
+                                                                                                                
+                                                                                                            </div>
+                                                                                                        </dd>
+                                                                                                        <dt data-property-name="coordNorth">
+                                                                                                            <span class="json-property-name">coordNorth:</span>
+                                                                                                            <span class="json-property-type">number</span>
+                                                                                                            <span class="json-property-range" title="Value limits"></span>
+                                                                                                            
+                                                                                                        </dt>
+                                                                                                        <dd>
+                                                                                                            
+                                                                                                            <div class="json-inner-schema">
+                                                                                                                
+                                                                                                            </div>
+                                                                                                        </dd>
+                                                                                                        <dt data-property-name="coordSouth">
+                                                                                                            <span class="json-property-name">coordSouth:</span>
+                                                                                                            <span class="json-property-type">number</span>
+                                                                                                            <span class="json-property-range" title="Value limits"></span>
+                                                                                                            
+                                                                                                        </dt>
+                                                                                                        <dd>
+                                                                                                            
+                                                                                                            <div class="json-inner-schema">
+                                                                                                                
+                                                                                                            </div>
+                                                                                                        </dd>
+                                                                                                </dl>
+                                                                                            </section>
+                                                                                </div>
+                                                                            </section>    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                                    <dt class="sw-response-404">
+                                        404 Not Found
+                                    
+                                    </dt>
+                                    <dd class="sw-response-404">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>Registry does not exist</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                            
+                                                    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                            </dl>
+                        </section>
+                </div>
+            </div>    
         <span id="path--api-v1-registry--name-"></span>
             <div id="operation--api-v1-registry--name--get" class="swagger--panel-operation-get panel">
                 <div class="panel-heading">
@@ -934,9 +1170,7 @@
                 </div>
                 <div class="panel-body">
                     <section class="sw-operation-description">
-                        <p>Gets <code>registry</code> objects.
-            Optional query param of <strong>pageSize</strong> determines
-            size of returned array</p>
+                        <p>Gets <code>keyword</code> objects.</p>
             
                     </section>
                     
@@ -966,37 +1200,13 @@
                                                     <span class="json-property-required"></span>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                q
-                                            <td><p>A filter used in query</p>
-                                        </td>
-                                            <td>query</td>
-                                            <td><span class="json-property-type">string</span>
-                                        <span class="json-property-range" title="Value limits"></span>
-                                        
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                pageSize
-                                            <td><p>Size of array</p>
-                                        </td>
-                                            <td>query</td>
-                                            <td><span class="json-property-type">integer</span>
-                                        <span class="json-property-range" title="Value limits"></span>
-                                        
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
                                 </tbody>
                             </table>
                         </section>
                     
                         <section class="sw-responses">
+                                <p><span class="label label-default">text/xml</span> <span class="label label-default">application/json</span> 
+                    </p>
                     
                             <dl>
                                     <dt class="sw-response-200">
@@ -1024,8 +1234,8 @@
                                                                                     
                                                                                             <section class="json-schema-properties">
                                                                                                 <dl>
-                                                                                                        <dt data-property-name="uri">
-                                                                                                            <span class="json-property-name">uri:</span>
+                                                                                                        <dt data-property-name="key">
+                                                                                                            <span class="json-property-name">key:</span>
                                                                                                             <span class="json-property-type">string</span>
                                                                                                             <span class="json-property-range" title="Value limits"></span>
                                                                                                             
@@ -1047,25 +1257,6 @@
                                                                                                             <div class="json-inner-schema">
                                                                                                                 
                                                                                                             </div>
-                                                                                                        </dd>
-                                                                                                        <dt data-property-name="bounds">
-                                                                                                            <span class="json-property-name">bounds:</span>
-                                                                                                            <span class="json-property-type">number[]</span>
-                                                                                                            <span class="json-property-range" title="Value limits"></span>
-                                                                                                            
-                                                                                                        </dt>
-                                                                                                        <dd>
-                                                                                                            
-                                                                                                            <div class="json-inner-schema">
-                                                                                                                
-                                                                                                                                <section class="json-schema-array-items">
-                                                                                                                                    <span class="json-property-type">number</span>
-                                                                                                                                    <span class="json-property-range" title="Value limits"></span>
-                                                                                                                                    
-                                                                                                                                    <div class="json-inner-schema">
-                                                                                                                                        
-                                                                                                                                    </div>
-                                                                                                                                </section>                </div>
                                                                                                         </dd>
                                                                                                 </dl>
                                                                                             </section>
@@ -1105,9 +1296,209 @@
         <h2>Schema definitions</h2>
     
             
-                <div id="definition-dataset" class="panel panel-definition">
+                <div id="definition-Dataset" class="panel panel-definition">
                         <div class="panel-heading">
-                                <h3 class="panel-title"><a name="/definitions/dataset"></a>dataset:
+                                <h3 class="panel-title"><a name="/definitions/Dataset"></a>Dataset:
+                                    <span class="json-property-type"><span class="json-property-type"></span>
+                <span class="json-property-range" title="Value limits"></span>
+                
+                </span>
+                                </h3>
+                        </div>
+                    <div class="panel-body">
+                            
+                                <section class="json-schema-allOf">
+                                    <section class="json-schema-allOf-inherited">
+                                        <ul>
+                                                    <a class="json-schema-ref" href="#/definitions/Metadata">Metadata</a>
+                                        </ul>
+                                    </section>
+                                    <section class="json-schema-allOf-additional">
+                                                
+                                                        <section class="json-schema-properties">
+                                                            <dl>
+                                                                    <dt data-property-name="identifier">
+                                                                        <span class="json-property-name">identifier:</span>
+                                                                        <span class="json-property-type">string</span>    <span class="json-property-format">(uuid)</span>
+                                                                        <span class="json-property-range" title="Value limits"></span>
+                                                                        
+                                                                    </dt>
+                                                                    <dd>
+                                                                        <p>Unique identifier of dataset.</p>
+                                                        
+                                                                        <div class="json-inner-schema">
+                                                                            
+                                                                        </div>
+                                                                    </dd>
+                                                                    <dt data-property-name="extent">
+                                                                        <span class="json-property-name">extent:</span>
+                                                                        <span class="json-property-type">string</span>
+                                                                        <span class="json-property-range" title="Value limits"></span>
+                                                                        
+                                                                    </dt>
+                                                                    <dd>
+                                                                        <p>The geographical extent (box) of the location of the dataset. It 
+                                                        is expressed as a Well Known Text (WKT) string.</p>
+                                                        
+                                                                        <div class="json-inner-schema">
+                                                                            
+                                                                        </div>
+                                                                    </dd>
+                                                                    <dt data-property-name="location">
+                                                                        <span class="json-property-name">location:</span>
+                                                                        <span class="json-property-type">string</span>
+                                                                        <span class="json-property-range" title="Value limits"></span>
+                                                                        
+                                                                    </dt>
+                                                                    <dd>
+                                                                        <p>The label of the location.</p>
+                                                        
+                                                                        <div class="json-inner-schema">
+                                                                            
+                                                                        </div>
+                                                                    </dd>
+                                                                    <dt data-property-name="valid">
+                                                                        <span class="json-property-name">valid:</span>
+                                                                        <span class="json-property-type">boolean</span>
+                                                                        <span class="json-property-range" title="Value limits"></span>
+                                                                        
+                                                                    </dt>
+                                                                    <dd>
+                                                                        <p>indication if all required properties are filled and the dataset 
+                                                        can be published.</p>
+                                                        
+                                                                        <div class="json-inner-schema">
+                                                                            
+                                                                        </div>
+                                                                    </dd>
+                                                                    <dt data-property-name="status">
+                                                                        <span class="json-property-name">status:</span>
+                                                                        <span class="json-property-type">string</span>    <span class="json-property-enum" title="Possible values">, x &isin; {
+                                                                                        <span class="json-property-enum-item">draft</span>
+                                                                                    ,
+                                                                                        <span class="json-property-enum-item">published</span>
+                                                                                    
+                                                                                }
+                                                                                </span>
+                                                                        <span class="json-property-range" title="Value limits"></span>
+                                                                        
+                                                                    </dt>
+                                                                    <dd>
+                                                                        <p>&quot;published&quot; if the dataset has been previously published.
+                                                        &quot;draft&quot; if the dataset hasn&#39;t been published yet.</p>
+                                                        
+                                                                        <div class="json-inner-schema">
+                                                                            
+                                                                        </div>
+                                                                    </dd>
+                                                                    <dt data-property-name="error">
+                                                                        <span class="json-property-name">error:</span>
+                                                                        <span class="json-property-type">boolean</span>
+                                                                        <span class="json-property-range" title="Value limits"></span>
+                                                                        
+                                                                    </dt>
+                                                                    <dd>
+                                                                        <p>true if an error occured while processing the request. 
+                                                        If true check the messages property for more info.</p>
+                                                        
+                                                                        <div class="json-inner-schema">
+                                                                            
+                                                                        </div>
+                                                                    </dd>
+                                                                    <dt data-property-name="messages">
+                                                                        <span class="json-property-name">messages:</span>
+                                                                        <span class="json-property-type">string[]</span>
+                                                                        <span class="json-property-range" title="Value limits"></span>
+                                                                        
+                                                                    </dt>
+                                                                    <dd>
+                                                                        <p>if an error occured, this property has additional info about the error.</p>
+                                                        
+                                                                        <div class="json-inner-schema">
+                                                                            
+                                                                                            <section class="json-schema-array-items">
+                                                                                                <span class="json-property-type">string</span>
+                                                                                                <span class="json-property-range" title="Value limits"></span>
+                                                                                                
+                                                                                                <div class="json-inner-schema">
+                                                                                                    
+                                                                                                </div>
+                                                                                            </section>                </div>
+                                                                    </dd>
+                                                                    <dt data-property-name="fileName">
+                                                                        <span class="json-property-name">fileName:</span>
+                                                                        <span class="json-property-type">string</span>
+                                                                        <span class="json-property-range" title="Value limits"></span>
+                                                                        
+                                                                    </dt>
+                                                                    <dd>
+                                                                        <p>the fileName of the uploaded dataset.</p>
+                                                        
+                                                                        <div class="json-inner-schema">
+                                                                            
+                                                                        </div>
+                                                                    </dd>
+                                                                    <dt data-property-name="fileType">
+                                                                        <span class="json-property-name">fileType:</span>
+                                                                        <span class="json-property-type">string</span>
+                                                                        <span class="json-property-range" title="Value limits"></span>
+                                                                        
+                                                                    </dt>
+                                                                    <dd>
+                                                                        <p>the detected MIME type of the dataset.</p>
+                                                        
+                                                                        <div class="json-inner-schema">
+                                                                            
+                                                                        </div>
+                                                                    </dd>
+                                                                    <dt data-property-name="thumbnailUri">
+                                                                        <span class="json-property-name">thumbnailUri:</span>
+                                                                        <span class="json-property-type">string</span>
+                                                                        <span class="json-property-range" title="Value limits"></span>
+                                                                        
+                                                                    </dt>
+                                                                    <dd>
+                                                                        <p>URL of the thumbnail.</p>
+                                                        
+                                                                        <div class="json-inner-schema">
+                                                                            
+                                                                        </div>
+                                                                    </dd>
+                                                                    <dt data-property-name="changeDate">
+                                                                        <span class="json-property-name">changeDate:</span>
+                                                                        <span class="json-property-type">string</span>    <span class="json-property-format">(date-time)</span>
+                                                                        <span class="json-property-range" title="Value limits"></span>
+                                                                        
+                                                                    </dt>
+                                                                    <dd>
+                                                                        <p>date of latest change of the metadata.</p>
+                                                        
+                                                                        <div class="json-inner-schema">
+                                                                            
+                                                                        </div>
+                                                                    </dd>
+                                                                    <dt data-property-name="publishDate">
+                                                                        <span class="json-property-name">publishDate:</span>
+                                                                        <span class="json-property-type">string</span>    <span class="json-property-format">(date)</span>
+                                                                        <span class="json-property-range" title="Value limits"></span>
+                                                                        
+                                                                    </dt>
+                                                                    <dd>
+                                                                        <p>date of publication of the metadata.</p>
+                                                        
+                                                                        <div class="json-inner-schema">
+                                                                            
+                                                                        </div>
+                                                                    </dd>
+                                                            </dl>
+                                                        </section>
+                                    </section>
+                                </section>
+                    </div>
+                </div>        
+                <div id="definition-ErrorResponse" class="panel panel-definition">
+                        <div class="panel-heading">
+                                <h3 class="panel-title"><a name="/definitions/ErrorResponse"></a>ErrorResponse:
                                     <span class="json-property-type"><span class="json-property-type">object</span>
                 <span class="json-property-range" title="Value limits"></span>
                 
@@ -1118,19 +1509,60 @@
                             
                                     <section class="json-schema-properties">
                                         <dl>
-                                                <dt data-property-name="identifier">
-                                                    <span class="json-property-name">identifier:</span>
-                                                    <span class="json-property-type">string</span>
+                                                <dt data-property-name="error">
+                                                    <span class="json-property-name">error:</span>
+                                                    <span class="json-property-type">boolean</span>
                                                     <span class="json-property-range" title="Value limits"></span>
                                                     
                                                 </dt>
                                                 <dd>
-                                                    <p>Identifier of dataset</p>
+                                                    <p>true if there is any error.</p>
                                     
                                                     <div class="json-inner-schema">
                                                         
                                                     </div>
                                                 </dd>
+                                                <dt data-property-name="messages">
+                                                    <span class="json-property-name">messages:</span>
+                                                    <span class="json-property-type">string[]</span>
+                                                    <span class="json-property-range" title="Value limits"></span>
+                                                    
+                                                </dt>
+                                                <dd>
+                                                    <p>error messages.</p>
+                                    
+                                                    <div class="json-inner-schema">
+                                                        
+                                                                        <section class="json-schema-array-items">
+                                                                            <span class="json-property-type">string</span>
+                                                                            <span class="json-property-range" title="Value limits"></span>
+                                                                            
+                                                                            <div class="json-inner-schema">
+                                                                                    <section class="json-schema-description">
+                                                                                        <p>a message</p>
+                                                                                
+                                                                                    </section>
+                                                                                
+                                                                            </div>
+                                                                        </section>                </div>
+                                                </dd>
+                                        </dl>
+                                    </section>
+                    </div>
+                </div>        
+                <div id="definition-Metadata" class="panel panel-definition">
+                        <div class="panel-heading">
+                                <h3 class="panel-title"><a name="/definitions/Metadata"></a>Metadata:
+                                    <span class="json-property-type"><span class="json-property-type">object</span>
+                <span class="json-property-range" title="Value limits"></span>
+                
+                </span>
+                                </h3>
+                        </div>
+                    <div class="panel-body">
+                            
+                                    <section class="json-schema-properties">
+                                        <dl>
                                                 <dt data-property-name="title">
                                                     <span class="json-property-name">title:</span>
                                                     <span class="json-property-type">string</span>
@@ -1138,7 +1570,7 @@
                                                     
                                                 </dt>
                                                 <dd>
-                                                    <p>title of the dataset</p>
+                                                    <p>Name by which the cited resource is known.</p>
                                     
                                                     <div class="json-inner-schema">
                                                         
@@ -1151,7 +1583,7 @@
                                                     
                                                 </dt>
                                                 <dd>
-                                                    <p>summary of te dataset</p>
+                                                    <p>Brief narrative summary of the content of the resource(s).</p>
                                     
                                                     <div class="json-inner-schema">
                                                         
@@ -1164,7 +1596,8 @@
                                                     
                                                 </dt>
                                                 <dd>
-                                                    <p>keywords that describe the dataset</p>
+                                                    <p>Commonly used word(s) or formalised word(s) or phrase(s) used to describe the
+                                    subject.</p>
                                     
                                                     <div class="json-inner-schema">
                                                         
@@ -1184,7 +1617,8 @@
                                                     
                                                 </dt>
                                                 <dd>
-                                                    <p>Information about dataset creation/collection</p>
+                                                    <p>Information about the events or source data used in constructing the data
+                                    specified by the scope or lack of knowledge about lineage.</p>
                                     
                                                     <div class="json-inner-schema">
                                                         
@@ -1197,7 +1631,9 @@
                                                     
                                                 </dt>
                                                 <dd>
-                                                    <p>License under which the dataset is made available</p>
+                                                    <p>License under which the dataset is made available. Is must be one of
+                                    the key values returned by /api/v1/registry/license service. If not, 
+                                    the passed value will be ignored.</p>
                                     
                                                     <div class="json-inner-schema">
                                                         
@@ -1210,7 +1646,9 @@
                                                     
                                                 </dt>
                                                 <dd>
-                                                    <p>Resolution for which the dataset is optimal</p>
+                                                    <p>Denominator of the representative fraction on a source map. It must be one
+                                    of the key values returned by /api/v1/registry/denominator service. 
+                                    If it is not one of those, the passed value will be ignored.</p>
                                     
                                                     <div class="json-inner-schema">
                                                         
@@ -1223,53 +1661,9 @@
                                                     
                                                 </dt>
                                                 <dd>
-                                                    <p>URI of a location of the dataset</p>
-                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                                <dt data-property-name="extent">
-                                                    <span class="json-property-name">extent:</span>
-                                                    <span class="json-property-type">number[]</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                </dt>
-                                                <dd>
-                                                    <p>The geographical extent (box) of the location of the dataset</p>
-                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                                        <section class="json-schema-array-items">
-                                                                            <span class="json-property-type">number</span>
-                                                                            <span class="json-property-range" title="Value limits"></span>
-                                                                            
-                                                                            <div class="json-inner-schema">
-                                                                                
-                                                                            </div>
-                                                                        </section>                </div>
-                                                </dd>
-                                                <dt data-property-name="location">
-                                                    <span class="json-property-name">location:</span>
-                                                    <span class="json-property-type">string</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                </dt>
-                                                <dd>
-                                                    <p>The label of the location</p>
-                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                                <dt data-property-name="publish">
-                                                    <span class="json-property-name">publish:</span>
-                                                    <span class="json-property-type">boolean</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                </dt>
-                                                <dd>
-                                                    <p>indicates if user tried to publish, and if publish succeeded</p>
+                                                    <p>URI of the geographical location that the dataset refers to. It must be
+                                    one of the key values returned by the service /api/v1/registry/location.
+                                    If not, the passed value will be ignored.</p>
                                     
                                                     <div class="json-inner-schema">
                                                         
@@ -1282,7 +1676,14 @@
                                                     
                                                 </dt>
                                                 <dd>
-                                                    <p>the topic of the dataset</p>
+                                                    <p>Main theme(s) of the datset. It must be one of the key values returned
+                                    by the /api/v1/registry/topicCategory service.
+                                    High-level geographic data thematic classification to assist in the 
+                                    grouping and search of available geographic data sets. Can be used 
+                                    to group keywords as well. 
+                                    NOTE It is understood there are overlaps 
+                                    between general categories and the user is encouraged to select the 
+                                    one most appropriate.</p>
                                     
                                                     <div class="json-inner-schema">
                                                         
@@ -1295,128 +1696,88 @@
                                                                             </div>
                                                                         </section>                </div>
                                                 </dd>
-                                                <dt data-property-name="valid">
-                                                    <span class="json-property-name">valid:</span>
-                                                    <span class="json-property-type">boolean</span>
+                                        </dl>
+                                    </section>
+                    </div>
+                </div>        
+                <div id="definition-QueryResponse" class="panel panel-definition">
+                        <div class="panel-heading">
+                                <h3 class="panel-title"><a name="/definitions/QueryResponse"></a>QueryResponse:
+                                    <span class="json-property-type"><span class="json-property-type">object</span>
+                <span class="json-property-range" title="Value limits"></span>
+                
+                </span>
+                                </h3>
+                        </div>
+                    <div class="panel-body">
+                            
+                                    <section class="json-schema-properties">
+                                        <dl>
+                                                <dt data-property-name="from">
+                                                    <span class="json-property-name">from:</span>
+                                                    <span class="json-property-type">integer</span>
                                                     <span class="json-property-range" title="Value limits"></span>
                                                     
                                                 </dt>
                                                 <dd>
-                                                    <p>indication if all required properties are filled and the dataset can be published</p>
+                                                    <p>first record returned from the total result list.</p>
                                     
                                                     <div class="json-inner-schema">
                                                         
                                                     </div>
                                                 </dd>
-                                                <dt data-property-name="status">
-                                                    <span class="json-property-name">status:</span>
-                                                    <span class="json-property-type">string</span>    <span class="json-property-enum" title="Possible values">, x &isin; {
-                                                                    <span class="json-property-enum-item">published</span>
-                                                                ,
-                                                                    <span class="json-property-enum-item">draft</span>
-                                                                
-                                                            }
-                                                            </span>
+                                                <dt data-property-name="to">
+                                                    <span class="json-property-name">to:</span>
+                                                    <span class="json-property-type">integer</span>
                                                     <span class="json-property-range" title="Value limits"></span>
                                                     
                                                 </dt>
                                                 <dd>
-                                                    <p>true if this file has been previously published</p>
+                                                    <p>lasr record returned from the total result list.</p>
                                     
                                                     <div class="json-inner-schema">
                                                         
                                                     </div>
                                                 </dd>
-                                                <dt data-property-name="error">
-                                                    <span class="json-property-name">error:</span>
-                                                    <span class="json-property-type">boolean</span>
+                                                <dt data-property-name="count">
+                                                    <span class="json-property-name">count:</span>
+                                                    <span class="json-property-type">integer</span>
                                                     <span class="json-property-range" title="Value limits"></span>
                                                     
                                                 </dt>
                                                 <dd>
-                                                    <p>true if an error occured while processing the request</p>
+                                                    <p>total number of matching records found.</p>
                                     
                                                     <div class="json-inner-schema">
                                                         
                                                     </div>
                                                 </dd>
-                                                <dt data-property-name="messages">
-                                                    <span class="json-property-name">messages:</span>
-                                                    <span class="json-property-type">string[]</span>
+                                                <dt data-property-name="metadata">
+                                                    <span class="json-property-name">metadata:</span>
+                                                    <span class="json-property-type">object[]</span>
                                                     <span class="json-property-range" title="Value limits"></span>
                                                     
                                                 </dt>
                                                 <dd>
-                                                    <p>if an error occured, this property has additional info about the error</p>
-                                    
+                                                    
                                                     <div class="json-inner-schema">
                                                         
                                                                         <section class="json-schema-array-items">
-                                                                            <span class="json-property-type">string</span>
+                                                                            <span class="json-property-type">    <a class="json-schema-ref" href="#/definitions/Dataset">Dataset</a>
+                                                                            </span>
                                                                             <span class="json-property-range" title="Value limits"></span>
                                                                             
                                                                             <div class="json-inner-schema">
                                                                                 
                                                                             </div>
                                                                         </section>                </div>
-                                                </dd>
-                                                <dt data-property-name="fileName">
-                                                    <span class="json-property-name">fileName:</span>
-                                                    <span class="json-property-type">string</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                </dt>
-                                                <dd>
-                                                    <p>the fileName of the uploaded dataset</p>
-                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                                <dt data-property-name="thumbnailUri">
-                                                    <span class="json-property-name">thumbnailUri:</span>
-                                                    <span class="json-property-type">string</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                </dt>
-                                                <dd>
-                                                    <p>url of the thumbnail</p>
-                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                                <dt data-property-name="changeDate">
-                                                    <span class="json-property-name">changeDate:</span>
-                                                    <span class="json-property-type">string</span>    <span class="json-property-format">(date)</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                </dt>
-                                                <dd>
-                                                    <p>date of latest change of the metadata</p>
-                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                                <dt data-property-name="publishDate">
-                                                    <span class="json-property-name">publishDate:</span>
-                                                    <span class="json-property-type">string</span>    <span class="json-property-format">(date-time)</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                </dt>
-                                                <dd>
-                                                    <p>date of publication of the metadata</p>
-                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
                                                 </dd>
                                         </dl>
                                     </section>
                     </div>
                 </div>
 </div>
-
+ 
+ 
 </body>
 </html>

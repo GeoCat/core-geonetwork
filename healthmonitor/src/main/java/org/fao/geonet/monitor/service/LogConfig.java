@@ -73,7 +73,7 @@ public class LogConfig {
 
     /**
      * Download the log file in a ZIP.
-     * @param response
+     * @param response The response servlet
      * @throws IOException
      */
     @RequestMapping(value = "/{lang}/log/file", produces = {
@@ -98,17 +98,14 @@ public class LogConfig {
             byte[] bytes = new byte[1024];
             ZipOutputStream zos = null;
             ZipEntry ze;
-            InputStream in = null;
-            try {
+            try (InputStream in = new FileInputStream(file)) {
                 zos = new ZipOutputStream(response.getOutputStream());
                 ze = new ZipEntry(file.getName());
                 zos.putNextEntry(ze);
-                in=new FileInputStream(file);
                 while ((read = in.read(bytes)) != -1) {
                     zos.write(bytes, 0, read);
                 }
             } finally {
-                IOUtils.closeQuietly(in);
                 if (zos != null) zos.flush();
                 IOUtils.closeQuietly(zos);
             }

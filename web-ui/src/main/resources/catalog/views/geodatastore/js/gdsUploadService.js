@@ -90,7 +90,7 @@
         } else if (type === "text/plain" || type === "application/rtf") {
           iconClass = "fa-file-text-o";
         } else if (["csv"].indexOf(file) >= 0) {
-          iconClass = "gds-i-csv";
+          iconClass = "pdok-i-csv";
         } else if (type === "text/css" || type === "text/html" || type === "application/rdf" || type === "application/rdf+xml"
             || type === "text/sgml" || type.includes("xml")) {
           iconClass = "fa-file-code-o";

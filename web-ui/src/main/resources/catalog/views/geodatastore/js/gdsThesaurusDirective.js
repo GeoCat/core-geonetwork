@@ -2,14 +2,14 @@
   goog.provide('gds_thesaurus_directive');
 
 
-  goog.require('gn_thesaurus_service');
+  goog.require('gds_registry_location_service');
 
 
-  var module = angular.module('gds_thesaurus_directive', ['gn_thesaurus_service']);
+  var module = angular.module('gds_thesaurus_directive', ['gds_registry_location_service']);
 
   /**
    * @ngdoc directive
-   * @name gn_thesaurus.directive:gnKeywordPicker
+   * @name gn_thesaurus.directive:gdsKeywordPicker
    * @function
    *
    * @description
@@ -18,8 +18,8 @@
    * We can't transclude input (http://plnkr.co/edit/R2O2ixWA1QJUsVcUHl0N)
    */
   module.directive('gdsKeywordPicker', [
-    'gnThesaurusService', '$compile', '$translate',
-    function (gnThesaurusService, $compile, $translate) {
+    'gdsRegistryLocationService', '$compile', '$translate',
+    function (gdsRegistryLocationService, $compile, $translate) {
       return {
         restrict: 'A',
         require: '?ngModel',  // The two-way data bound value that is returned by the directive
@@ -27,27 +27,9 @@
           uriModel: '=uriModel'
         },
         link: function (scope, element, attrs, ngModel) {
-          scope.thesaurusKey = attrs.thesaurusKey || '';
-          scope.max = gnThesaurusService.DEFAULT_NUMBER_OF_RESULTS;
+          scope.max = gdsRegistryLocationService.DEFAULT_NUMBER_OF_RESULTS;
           var initialized = false;
 
-          // Create an input group around the element
-          // with a thesaurus selector on the right.
-          var addThesaurusSelectorOnElement = function () {
-            var inputGroup = angular.
-                element('<div class="input-group"></div>');
-            var dropDown = angular.
-                element('<div class="input-group-btn"></div>');
-            // Thesaurus selector is a directive
-            var thesaurusSel = '<span data-gn-thesaurus-selector="" ' +
-                'data-selector-only="true"></span>';
-
-            var input = element.replaceWith(inputGroup);
-            inputGroup.append(input);
-            inputGroup.append(dropDown);
-            // Compile before insertion
-            dropDown.append($compile(thesaurusSel)(scope));
-          };
 
 
           var init = function () {
@@ -56,15 +38,9 @@
             element.typeahead('destroy');
             element.attr('placeholder', $translate('searchOrTypeKeyword'));
 
-            // Thesaurus selector is not added if the key is defined
-            // by configuration
-            if (!initialized && !attrs.thesaurusKey) {
-              addThesaurusSelectorOnElement(element);
-            }
+
             var keywordsAutocompleter =
-                gnThesaurusService.getKeywordAutocompleter({
-                  thesaurusKey: scope.thesaurusKey
-                });
+                gdsRegistryLocationService.getKeywordAutocompleter({});
 
             // Init typeahead
             element.typeahead({
@@ -96,7 +72,7 @@
               scope.$apply(function () {
                 var newViewValue = suggestion;
                 ngModel.$setViewValue(newViewValue.label);
-                scope.uriModel = suggestion.props.uri;
+                scope.uriModel = suggestion.props.key;
               });
             }
 
