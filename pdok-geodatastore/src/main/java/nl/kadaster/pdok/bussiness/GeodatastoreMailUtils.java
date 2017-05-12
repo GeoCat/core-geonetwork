@@ -167,6 +167,7 @@ public class GeodatastoreMailUtils {
                 session = Session.getInstance(javaMailProperties);
             }
 
+            email.setSendPartial(true);
             email.setMailSession(session);
             email.setCharset(org.apache.commons.mail.EmailConstants.UTF_8);
             email.setFrom(from);
