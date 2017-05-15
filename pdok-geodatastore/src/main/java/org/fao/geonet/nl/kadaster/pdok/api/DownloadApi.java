@@ -46,6 +46,8 @@ import java.util.List;
 public class DownloadApi {
     private static final String GDS_LOG = "pdok.geodatastore.download";
 
+    private final User anonymousUser;
+
     @Autowired
     private DataManager metadataManager;
     @Autowired
@@ -56,6 +58,11 @@ public class DownloadApi {
 
     @Autowired
     private MetadataFileDownloadRepository downloadRepository;
+
+    public DownloadApi() {
+        this.anonymousUser = new User();
+        this.anonymousUser.setUsername("anonymousUser");
+    }
 
     /**
      * Download the recentest thumbnail found in the public folder of the metadata.
@@ -230,7 +237,13 @@ public class DownloadApi {
      * @param fname
      */
     private void updateDownloadStatistics(Integer metadataId, String fname) {
-        User activeUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User activeUser;
+        if (principal instanceof User) {
+            activeUser = (User) principal;
+        } else {
+            activeUser = this.anonymousUser;
+        }
 
         final String userName = activeUser.getUsername();
 
