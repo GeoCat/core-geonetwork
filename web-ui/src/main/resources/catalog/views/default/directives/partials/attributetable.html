@@ -1,12 +1,21 @@
 <table class="table table-striped">
   <tr>
     <th data-translate="">attributeName</th>
+    <th data-translate="">attributeCode</th>
     <th data-translate="">attributeDefinition</th>
   </tr>
   <tr data-ng-repeat="attribute in attributeTable track by $index">
     <td>
       <strong>{{attribute.name}}</strong>
       <span data-ng-show="attribute.type">&nbsp;({{attribute.type}})</span>
+    </td>
+    <td>
+    <span data-ng-show="attribute.type">
+    <a data-ng-show="attribute.link" href="{{attribute.link}}" target="_blank">
+      {{attribute.code}}</a>
+    <span data-ng-hide="attribute.link">
+      {{attribute.code}}</span>  
+    </span>
     </td>
     <td>
       {{attribute.definition}}

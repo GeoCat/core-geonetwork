@@ -27,7 +27,9 @@
                          xmlns:gco="http://www.isotc211.org/2005/gco"
                          xmlns:gmd="http://www.isotc211.org/2005/gmd"
                          xmlns:gmx="http://www.isotc211.org/2005/gmx"
-                         uuid="56cf8277-e2be-48ef-9bb7-05a10dedf665">
+                         xmlns:xlink="http://www.w3.org/1999/xlink" 
+                         xsi:schemaLocation="http://www.isotc211.org/2005/gfc http://www.isotc211.org/2005/gfc/gfc.xsd" 
+                         uuid="xxx">
   <gmx:name>
     <gco:CharacterString>Feature catalogue template in ISO19110</gco:CharacterString>
   </gmx:name>
@@ -140,6 +142,9 @@
               </gco:range>
             </gco:Multiplicity>
           </gfc:cardinality>
+          <gfc:code>
+              <gco:CharacterString>code-as-string</gco:CharacterString>
+          </gfc:code>
           <gfc:valueMeasurementUnit>
             <gml:UnitDefinition xmlns:gml="http://www.opengis.net/gml" gml:id="unknown">
               <gml:description/>
@@ -202,6 +207,9 @@
               </gco:range>
             </gco:Multiplicity>
           </gfc:cardinality>
+          <gfc:code>
+              <gmx:Anchor xlink:href="http://geocat.net">code-as-uri</gmx:Anchor>
+          </gfc:code>
           <gfc:valueType>
             <gco:TypeName>
               <gco:aName>
@@ -233,6 +241,9 @@
               </gco:range>
             </gco:Multiplicity>
           </gfc:cardinality>
+          <gfc:code>
+              <gmx:Anchor xlink:href="http://inspire.ec.europa.eu/featureconcept/AbstractInstallation">Abstract Installation</gmx:Anchor>
+          </gfc:code>
           <gfc:valueType>
             <gco:TypeName>
               <gco:aName>

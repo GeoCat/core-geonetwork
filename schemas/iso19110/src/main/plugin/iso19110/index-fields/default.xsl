@@ -22,10 +22,12 @@
   ~ Rome - Italy. email: geonetwork@osgeo.org
   -->
 
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:gfc="http://www.isotc211.org/2005/gfc"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+                xmlns:gfc="http://www.isotc211.org/2005/gfc"
                 xmlns:gmd="http://www.isotc211.org/2005/gmd"
                 xmlns:gmx="http://www.isotc211.org/2005/gmx"
                 xmlns:gco="http://www.isotc211.org/2005/gco"
+                xmlns:xlink="http://www.w3.org/1999/xlink" 
                 version="1.0">
 
   <!-- This file defines what parts of the metadata are indexed by Lucene
@@ -107,6 +109,8 @@
           <xsl:for-each select="$attributes">
             {"name": "<xsl:value-of select="*/gfc:memberName/*/text()"/>",
             "definition": "<xsl:value-of select="*/gfc:definition/*/text()"/>",
+            "code": "<xsl:value-of select="*/gfc:code/*/text()"/>",
+            "link": "<xsl:value-of select="*/gfc:code/gmx:Anchor/@xlink:href"/>",
             "type": "<xsl:value-of select="*/gfc:valueType/gco:TypeName/gco:aName/*/text()"/>"
             <xsl:if test="*/gfc:listedValue">
               ,"values": [
