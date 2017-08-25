@@ -1,7 +1,31 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.services.metadata.schema;
 
 import jeeves.constants.Jeeves;
 import jeeves.server.context.ServiceContext;
+
 import org.fao.geonet.Util;
 import org.fao.geonet.constants.Params;
 import org.fao.geonet.domain.*;
@@ -15,11 +39,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 
 import javax.annotation.Nonnull;
+
 import java.io.IOException;
 import java.util.List;
 
 /**
- *  Load, edit, delete {@link org.fao.geonet.domain.SchematronCriteria} entities.
+ * Load, edit, delete {@link org.fao.geonet.domain.SchematronCriteria} entities.
  *
  * Created by Jesse on 2/7/14.
  */
@@ -41,7 +66,7 @@ public class SchematronCriteriaService extends AbstractSchematronService {
         final SchematronCriteriaGroupRepository criteriaGroupRepository = context.getBean(SchematronCriteriaGroupRepository.class);
 
         final SchematronCriteriaType type = SchematronCriteriaType
-                .valueOf(Util.getParam(params, PARAM_TYPE));
+            .valueOf(Util.getParam(params, PARAM_TYPE));
         final String value = Util.getParam(params, PARAM_VALUE, "");
         final String uitype = Util.getParam(params, PARAM_UI_TYPE);
         final String uivalue = Util.getParam(params, PARAM_UI_VALUE, "");
@@ -81,7 +106,7 @@ public class SchematronCriteriaService extends AbstractSchematronService {
         String id = Util.getParam(params, Params.ID, null);
 
         if (id != null && schematronId != null && groupName != null) {
-            throw new IllegalArgumentException("Either one of " + Params.ID + " cannot be present if either "+ PARAM_GROUP_NAME + " or " + PARAM_SCHEMATRON_ID + " are also present.");
+            throw new IllegalArgumentException("Either one of " + Params.ID + " cannot be present if either " + PARAM_GROUP_NAME + " or " + PARAM_SCHEMATRON_ID + " are also present.");
         }
 
         final SchematronCriteriaRepository criteriaRepository = context.getBean(SchematronCriteriaRepository.class);

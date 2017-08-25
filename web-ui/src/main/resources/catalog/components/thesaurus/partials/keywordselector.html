@@ -1,7 +1,7 @@
 <div>
   <div data-ng-show="invalidKeywordMatch" class="alert alert-danger">
     <p data-translate="notFoundInThesaurus"
-       data-translate-values="{keywords: {{initialKeywords}}}"></p>
+       data-translate-values="{keywords: initialKeywords}"></p>
     <button class="btn btn-danger pull-right" data-ng-click="resetKeywords()">
       <i class="fa fa-times"></i>&nbsp;<span data-translate="">resetKeywordsAnyway</span>
     </button>
@@ -65,10 +65,11 @@
 
 		<div class="row" ng-show="concept">
       <div class="col-sm-9 col-md-offset-2">
-        <skos-browser class="tmpl-border" concept="concept" add-concept="addThesaurusConcept" language="langs"></skos-browser>
+        <skos-browser class="tmpl-border" concept="concept" add-concept="addThesaurusConcept"
+                      language="langs"></skos-browser>
       </div>
     </div>
-    
+
     <!-- The thesaurus snippet to insert once received -->
     <div>
       <input name="{{elementRef}}" type="hidden" value="{{snippet}}"/>

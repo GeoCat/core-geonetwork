@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.repository;
 
 import org.fao.geonet.domain.SchematronCriteria;
@@ -11,6 +34,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -35,7 +59,7 @@ public class SchematronCriteriaRepositoryTest extends AbstractSpringDataTest {
 
     @Test
     public void testFindOne() throws Exception {
-        final SchematronCriteriaGroup criteriaGroup = criteriaGroupRepository.save(newGroup(_inc,_schematronRepo));
+        final SchematronCriteriaGroup criteriaGroup = criteriaGroupRepository.save(newGroup(_inc, _schematronRepo));
 
         final SchematronCriteria criteria = criteriaGroup.getCriteria().get(0);
         final SchematronCriteria found = _repo.findOne(criteria.getId());
@@ -45,7 +69,7 @@ public class SchematronCriteriaRepositoryTest extends AbstractSpringDataTest {
 
     @Test
     public void testDelete() throws Exception {
-        final SchematronCriteriaGroup criteriaGroup = criteriaGroupRepository.save(newGroup(_inc,_schematronRepo));
+        final SchematronCriteriaGroup criteriaGroup = criteriaGroupRepository.save(newGroup(_inc, _schematronRepo));
         final SchematronCriteria criteria = criteriaGroup.getCriteria().get(0);
 
         assertTrue(_repo.exists(criteria.getId()));
@@ -55,7 +79,7 @@ public class SchematronCriteriaRepositoryTest extends AbstractSpringDataTest {
 
     @Test
     public void testDeleteEntity() throws Exception {
-        final SchematronCriteriaGroup criteriaGroup = criteriaGroupRepository.save(newGroup(_inc,_schematronRepo));
+        final SchematronCriteriaGroup criteriaGroup = criteriaGroupRepository.save(newGroup(_inc, _schematronRepo));
         final SchematronCriteria criteria = criteriaGroup.getCriteria().get(0);
         assertTrue(_repo.exists(criteria.getId()));
         _repo.delete(criteria);
@@ -64,7 +88,7 @@ public class SchematronCriteriaRepositoryTest extends AbstractSpringDataTest {
 
     @Test
     public void testSave() throws Exception {
-        final SchematronCriteriaGroup criteriaGroup = criteriaGroupRepository.save(newGroup(_inc,_schematronRepo));
+        final SchematronCriteriaGroup criteriaGroup = criteriaGroupRepository.save(newGroup(_inc, _schematronRepo));
         final SchematronCriteria criteria = criteriaGroup.getCriteria().get(0);
 
         final String newValue = "newValue";
@@ -94,11 +118,10 @@ public class SchematronCriteriaRepositoryTest extends AbstractSpringDataTest {
     }
 
 
-
     @Test
     public void testDeleteMany() throws Exception {
-        final SchematronCriteriaGroup criteriaGroup1 = criteriaGroupRepository.save(newGroup(_inc,_schematronRepo));
-        final SchematronCriteriaGroup criteriaGroup2 = criteriaGroupRepository.save(newGroup(_inc,_schematronRepo));
+        final SchematronCriteriaGroup criteriaGroup1 = criteriaGroupRepository.save(newGroup(_inc, _schematronRepo));
+        final SchematronCriteriaGroup criteriaGroup2 = criteriaGroupRepository.save(newGroup(_inc, _schematronRepo));
         final SchematronCriteria criteria1 = criteriaGroup1.getCriteria().get(0);
         final SchematronCriteria criteria2 = criteriaGroup2.getCriteria().get(0);
         assertTrue(_repo.exists(criteria1.getId()));

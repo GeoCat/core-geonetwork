@@ -24,24 +24,26 @@
 package org.fao.geonet.services.resources.handlers;
 
 import jeeves.server.context.ServiceContext;
+
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.domain.MetadataFileUpload;
 import org.fao.geonet.lib.Lib;
 import org.fao.geonet.repository.MetadataFileUploadRepository;
+import org.fao.geonet.utils.FilePathChecker;
 import org.fao.geonet.utils.Log;
 import org.jdom.Element;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+
 import javax.servlet.http.HttpServletRequest;
 
 
 /**
  * Class that implements resource upload custom behavior.
  *
- *   - Deletes the resource.
- *   - Stores delete resource information for reporting.
+ * - Deletes the resource. - Stores delete resource information for reporting.
  *
  * @author josegar74
  */
@@ -51,8 +53,10 @@ public class DefaultResourceRemoveHandler implements IResourceRemoveHandler {
                          String fileName, String access) throws ResourceHandlerException {
 
         try {
+            FilePathChecker.verify(fileName);
+
             // delete online resource
-            Path dir  = Lib.resource.getDir(context, access, metadataId);
+            Path dir = Lib.resource.getDir(context, access, metadataId);
             Path file = dir.resolve(fileName);
 
             Files.deleteIfExists(file);
@@ -68,10 +72,6 @@ public class DefaultResourceRemoveHandler implements IResourceRemoveHandler {
 
     /**
      * Stores a file upload delete request in the MetadataFileUploads table.
-     *
-     * @param context
-     * @param metadataId
-     * @param fileName
      */
     private void storeFileUploadDeleteRequest(ServiceContext context, int metadataId, String fileName) {
         MetadataFileUploadRepository repo = context.getBean(MetadataFileUploadRepository.class);
@@ -87,14 +87,16 @@ public class DefaultResourceRemoveHandler implements IResourceRemoveHandler {
         }
     }
 
-	@Override
-	public void onDelete(ServiceContext context, HttpServletRequest request,
-			int metadataId, String fileName, String access)
-			throws ResourceHandlerException {
+    @Override
+    public void onDelete(ServiceContext context, HttpServletRequest request,
+                         int metadataId, String fileName, String access)
+        throws ResourceHandlerException {
 
         try {
+            FilePathChecker.verify(fileName);
+
             // delete online resource
-            Path dir  = Lib.resource.getDir(context, access, metadataId);
+            Path dir = Lib.resource.getDir(context, access, metadataId);
             Path file = dir.resolve(fileName);
 
             Files.deleteIfExists(file);
@@ -106,6 +108,6 @@ public class DefaultResourceRemoveHandler implements IResourceRemoveHandler {
             ex.printStackTrace();
             throw new ResourceHandlerException(ex);
         }
-		
-	}
+
+    }
 }

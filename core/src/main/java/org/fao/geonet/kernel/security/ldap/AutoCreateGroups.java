@@ -1,5 +1,28 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 /**
- * 
+ *
  */
 package org.fao.geonet.kernel.security.ldap;
 
@@ -19,21 +42,18 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Map;
+
 import javax.naming.Context;
 import javax.naming.directory.Attributes;
 
 /**
  * When a group is created on the database, create it on the LDAP
- * 
+ *
  * @author delawen
- * 
- * 
  */
 public class AutoCreateGroups implements ApplicationListener<GroupCreated> {
-    private final Log logger = LogFactory.getLog(AutoCreateGroups.class);
-
     private static Integer lastGidNumber = null;
-
+    private final Log logger = LogFactory.getLog(AutoCreateGroups.class);
     @SuppressWarnings("unused")
     private ContextSource contextSource;
     private LdapTemplate template;
@@ -45,7 +65,6 @@ public class AutoCreateGroups implements ApplicationListener<GroupCreated> {
 
     /**
      * @see org.springframework.context.ApplicationListener#onApplicationEvent(org.springframework.context.ApplicationEvent)
-     * @param event
      */
     @Override
     public void onApplicationEvent(GroupCreated event) {
@@ -57,7 +76,7 @@ public class AutoCreateGroups implements ApplicationListener<GroupCreated> {
         } else {
             for (Profile p : Profile.values()) {
                 String profile = (profileMapping.containsKey(p.name()) ? profileMapping
-                        .get(p.name()) : p.name());
+                    .get(p.name()) : p.name());
                 String id = profilePattern;
                 id = id.replace("{0}", profile);
                 id = id.replace("{1}", identifier);
@@ -75,18 +94,18 @@ public class AutoCreateGroups implements ApplicationListener<GroupCreated> {
             DistinguishedName dn = buildDn(identifier);
 
             logger.trace("Creating group on LDAP  '" + identifier
-                    + "' with DN '" + dn + "'");
+                + "' with DN '" + dn + "'");
 
             template.bind(dn, ctx, null);
         }
     }
 
     protected void copyToContext(String identifier, Group group,
-            DirContextAdapter ctx) {
-        ctx.setAttributeValues("objectclass", new String[] { "top",
-                "posixGroup" });
+                                 DirContextAdapter ctx) {
+        ctx.setAttributeValues("objectclass", new String[]{"top",
+            "posixGroup"});
         ctx.setAttributeValue("cn", identifier);
-        
+
         if (!StringUtils.isEmpty(group.getDescription())) {
             ctx.setAttributeValue("description", group.getDescription());
         }
@@ -102,7 +121,7 @@ public class AutoCreateGroups implements ApplicationListener<GroupCreated> {
             AttributesMapper mapper = new GidAttributesMapper();
             @SuppressWarnings("unchecked")
             List<Integer> existingGroups = template.search(baseDn,
-                    "(&(objectClass=posixGroup))", mapper);
+                "(&(objectClass=posixGroup))", mapper);
             for (Integer g : existingGroups) {
                 if (lastGidNumber == null || lastGidNumber < g) {
                     AutoCreateGroups.lastGidNumber = g;
@@ -169,7 +188,7 @@ public class AutoCreateGroups implements ApplicationListener<GroupCreated> {
     private static class GidAttributesMapper implements AttributesMapper {
 
         public Integer mapFromAttributes(Attributes attributes)
-                throws javax.naming.NamingException {
+            throws javax.naming.NamingException {
             return Integer.valueOf(attributes.get("gidNumber").get().toString());
         }
     }

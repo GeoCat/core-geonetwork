@@ -17,7 +17,6 @@ INSERT INTO CategoriesDes (iddes, langid, label) VALUES (7,'tur','Fotoğraf');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (8,'tur','Ses/Video');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (9,'tur','Dizinler');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (10,'tur','Diğer bilgi kaynakları');
-INSERT INTO CategoriesDes (iddes, langid, label) VALUES (11,'tur','Z3950 Sunucular');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (12,'tur','Kayıtlar');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (13,'tur','Fiziksel Örnekleri');
 
@@ -526,3 +525,6 @@ INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (2,'tur','Approved');
 INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (3,'tur','Retired');
 INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (4,'tur','Submitted');
 INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (5,'tur','Rejected');
+
+INSERT INTO SelectionsDes (iddes, langid, label) VALUES (0,'tur','Preferred records');
+INSERT INTO SelectionsDes (iddes, langid, label) VALUES (1,'tur','Watch list');

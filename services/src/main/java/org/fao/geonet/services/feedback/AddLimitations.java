@@ -27,6 +27,7 @@ import jeeves.interfaces.Service;
 import jeeves.server.ServiceConfig;
 import jeeves.server.UserSession;
 import jeeves.server.context.ServiceContext;
+
 import org.fao.geonet.Util;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.constants.Params;
@@ -39,6 +40,7 @@ import org.fao.geonet.repository.MetadataRepository;
 import org.fao.geonet.repository.UserRepository;
 import org.fao.geonet.services.Utils;
 import org.fao.geonet.utils.BinaryFile;
+import org.fao.geonet.utils.FilePathChecker;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
 
@@ -56,18 +58,17 @@ import java.util.List;
  */
 
 public class AddLimitations implements Service {
-    private Path stylePath;
-
     // This shouldn't be static because DateFormat is not thread safe
     private final SimpleDateFormat _dateFormat = createDateFormatter();
+    private Path stylePath;
     //--------------------------------------------------------------------------
     //---
     //--- Init
     //---
     //--------------------------------------------------------------------------
 
-    public void init(Path appPath, ServiceConfig params) throws Exception {
-        this.stylePath = appPath.resolve(Geonet.Path.STYLESHEETS);
+    protected static void addElement(Element root, String name, String value) {
+        root.addContent(new Element(name).setText(value));
     }
 
     //--------------------------------------------------------------------------
@@ -75,6 +76,24 @@ public class AddLimitations implements Service {
     //--- Service
     //---
     //--------------------------------------------------------------------------
+
+    private static String now() {
+        Calendar cal = Calendar.getInstance();
+        return createDateFormatter().format(cal.getTime());
+    }
+
+    //---------------------------------------------------------------------------
+
+    private static SimpleDateFormat createDateFormatter() {
+        // This shouldn't be static because DateFormat is not thread safe
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    }
+
+    //---------------------------------------------------------------------------
+
+    public void init(Path appPath, ServiceConfig params) throws Exception {
+        this.stylePath = appPath.resolve(Geonet.Path.STYLESHEETS);
+    }
 
     public Element exec(Element params, final ServiceContext context) throws Exception {
         String id = Utils.getIdentifierFromParameters(params, context);
@@ -105,7 +124,9 @@ public class AddLimitations implements Service {
 
             String fname = elem.getText();
 
-            if (fname.contains("..")) {
+            try {
+                FilePathChecker.verify(fname);
+            } catch (Exception ex) {
                 continue;    // Avoid unsecured file name
             }
 
@@ -189,24 +210,6 @@ public class AddLimitations implements Service {
         }
 
         return response;
-    }
-
-    //---------------------------------------------------------------------------
-
-    protected static void addElement(Element root, String name, String value) {
-        root.addContent(new Element(name).setText(value));
-    }
-
-    //---------------------------------------------------------------------------
-
-    private static String now() {
-        Calendar cal = Calendar.getInstance();
-        return createDateFormatter().format(cal.getTime());
-    }
-
-    private static SimpleDateFormat createDateFormatter() {
-        // This shouldn't be static because DateFormat is not thread safe
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
 }
 

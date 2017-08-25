@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.repository;
 
 import org.fao.geonet.domain.Metadata;
@@ -18,9 +41,7 @@ import javax.persistence.criteria.Root;
 /**
  * Implementation for custom category methods.
  * <p/>
- * User: Jesse
- * Date: 9/9/13
- * Time: 8:00 PM
+ * User: Jesse Date: 9/9/13 Time: 8:00 PM
  */
 public class MetadataCategoryRepositoryImpl implements MetadataCategoryRepositoryCustom {
 
@@ -50,14 +71,14 @@ public class MetadataCategoryRepositoryImpl implements MetadataCategoryRepositor
           * At least in the unit tests.
          */
         final Query nativeQuery2 = _entityManager.createNativeQuery("Select * from " + Metadata.METADATA_CATEG_JOIN_TABLE_NAME + " WHERE "
-                                                                    + Metadata.METADATA_CATEG_JOIN_TABLE_CATEGORY_ID + "=" + id);
+            + Metadata.METADATA_CATEG_JOIN_TABLE_CATEGORY_ID + "=" + id);
 
         nativeQuery2.setMaxResults(1);
         nativeQuery2.getResultList();
         // END HACK
 
         final Query nativeQuery = _entityManager.createNativeQuery("DELETE FROM " + Metadata.METADATA_CATEG_JOIN_TABLE_NAME + " WHERE "
-                                                                   + Metadata.METADATA_CATEG_JOIN_TABLE_CATEGORY_ID + "=?");
+            + Metadata.METADATA_CATEG_JOIN_TABLE_CATEGORY_ID + "=?");
         nativeQuery.setParameter(1, id);
         nativeQuery.executeUpdate();
 

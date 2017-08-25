@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_owscontext_directive');
 
@@ -32,11 +55,11 @@
   module.directive('gnOwsContext', [
     'gnViewerSettings',
     'gnOwsContextService',
-    'gnConfig',
+    'gnGlobalSettings',
     '$translate',
     '$rootScope',
     '$http',
-    function(gnViewerSettings, gnOwsContextService, gnConfig,
+    function(gnViewerSettings, gnOwsContextService, gnGlobalSettings,
         $translate, $rootScope, $http) {
       return {
         restrict: 'A',
@@ -47,9 +70,9 @@
           map: '='
         },
         link: function(scope, element, attrs) {
-          scope.mapFileName = $translate('mapFileName');
+          scope.mapFileName = $translate.instant('mapFileName');
           scope.save = function($event) {
-            scope.mapFileName = $translate('mapFileName') +
+            scope.mapFileName = $translate.instant('mapFileName') +
                 '-z' + scope.map.getView().getZoom() +
                 '-c' + scope.map.getView().getCenter().join('-');
 
@@ -68,7 +91,7 @@
           };
 
           scope.isSaveMapInCatalogAllowed =
-              gnConfig['map.isSaveMapInCatalogAllowed'];
+              gnGlobalSettings.gnCfg.mods.map.isSaveMapInCatalogAllowed || true;
           scope.mapUuid = null;
           scope.mapProps = {
             map_title: '',
@@ -79,7 +102,7 @@
             var xml = gnOwsContextService.writeContext(scope.map);
             scope.mapProps.map_string =
                 new XMLSerializer().serializeToString(xml);
-            scope.mapProps.map_filename = $translate('mapFileName') +
+            scope.mapProps.map_filename = $translate.instant('mapFileName') +
                 '-z' + scope.map.getView().getZoom() +
                 '-c' + scope.map.getView().getCenter().join('-') + '.ows';
             return $http.post('map.import?_content_type=json',
@@ -118,11 +141,15 @@
           });
 
           // load context from url or from storage
+          var key = 'owsContext_' +
+              window.location.host + window.location.pathname;
+          var storage = gnViewerSettings.storage ?
+              window[gnViewerSettings.storage] : window.localStorage;
           if (gnViewerSettings.owsContext) {
             gnOwsContextService.loadContextFromUrl(gnViewerSettings.owsContext,
-                scope.map, true);
-          } else if (window.localStorage.getItem('owsContext')) {
-            var c = window.localStorage.getItem('owsContext');
+                scope.map);
+          } else if (storage.getItem(key)) {
+            var c = storage.getItem(key);
             gnOwsContextService.loadContext(c, scope.map);
           } else if (gnViewerSettings.defaultContext) {
             gnOwsContextService.loadContextFromUrl(

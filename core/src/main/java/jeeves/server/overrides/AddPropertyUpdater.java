@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package jeeves.server.overrides;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -16,7 +39,7 @@ class AddPropertyUpdater extends PropertyUpdater {
     @SuppressWarnings("unchecked")
     @Override
     protected void doUpdate(ConfigurableListableBeanFactory beanFactory, BeanDefinition bean, Object value) {
-        Log.debug(Log.JEEVES, "Adding new value "+value+" to property: "+propertyName+" on "+beanName);
+        Log.debug(Log.JEEVES, "Adding new value " + value + " to property: " + propertyName + " on " + beanName);
         PropertyValue propertyValue = bean.getPropertyValues().getPropertyValue(propertyName);
         if (propertyValue == null) {
             final String beanClassName = bean.getBeanClassName();
@@ -39,13 +62,13 @@ class AddPropertyUpdater extends PropertyUpdater {
                         } else if (Collection.class.isAssignableFrom(collectionType)) {
                             propertyValue = new PropertyValue(propertyName, new ManagedList<Object>());
                         } else {
-                            throw new IllegalArgumentException(collectionType+" is not a supported type for adding new values");
+                            throw new IllegalArgumentException(collectionType + " is not a supported type for adding new values");
                         }
                         break;
                     }
                 }
                 if (propertyValue == null) {
-                    throw new IllegalArgumentException("Unable to find the collection type for property: "+propertyName+" on bean "+beanName);
+                    throw new IllegalArgumentException("Unable to find the collection type for property: " + propertyName + " on bean " + beanName);
                 }
                 bean.getPropertyValues().addPropertyValue(propertyValue);
             } catch (ClassNotFoundException e) {
@@ -58,8 +81,8 @@ class AddPropertyUpdater extends PropertyUpdater {
             Collection<Object> coll = (Collection<Object>) originalValue;
             coll.add(value);
         } else {
-            throw new IllegalArgumentException(originalValue+" is not a collection as expected");
+            throw new IllegalArgumentException(originalValue + " is not a collection as expected");
         }
     }
-    
+
 }

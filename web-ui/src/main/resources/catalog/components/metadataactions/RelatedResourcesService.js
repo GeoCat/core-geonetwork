@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_relatedresources_service');
 
@@ -28,25 +51,20 @@
         'gnSearchLocation',
         'gnOwsContextService',
         'gnWfsService',
-        function(gnMap, gnOwsCapabilities, gnSearchSettings, 
+        '$filter',
+        function(gnMap, gnOwsCapabilities, gnSearchSettings,
             ngeoDecorateLayer, gnSearchLocation, gnOwsContextService,
-                 gnWfsService) {
+            gnWfsService, $filter) {
 
           this.configure = function(options) {
             angular.extend(this.map, options);
           };
 
           var addWMSToMap = function(link, md) {
-
-            if (link.name &&
-                (angular.isArray(link.name) && link.name.length > 0)) {
-              angular.forEach(link.name, function(name) {
-                gnMap.addWmsFromScratch(gnSearchSettings.viewerMap,
-                                  link.url, name, false, md);
-              });
-            } else if (link.name && !angular.isArray(link.name)) {
+            var layerName = $filter('gnLocalized')(link.title);
+            if (layerName) {
               gnMap.addWmsFromScratch(gnSearchSettings.viewerMap,
-                 link.url, link.name, false, md);
+                 link.url, layerName, false, md);
             } else {
               gnMap.addOwsServiceToMap(link.url, 'WMS');
             }
@@ -56,26 +74,18 @@
 
 
           var addWFSToMap = function(link, md) {
-
-
-            if (link.name &&
-                (angular.isArray(link.name) && link.name.length > 0)) {
-              angular.forEach(link.name, function(name) {
-                gnMap.addWfsFromScratch(gnSearchSettings.viewerMap,
-                       link.url, name, false, md);
-              });
-            } else if (link.name && !angular.isArray(link.name)) {
+            var ftName = $filter('gnLocalized')(link.title);
+            if (ftName) {
               gnMap.addWfsFromScratch(gnSearchSettings.viewerMap,
-                 link.url, link.name, false, md);
+                 link.url, ftName, false, md);
             } else {
               gnMap.addOwsServiceToMap(link.url, 'WFS');
             }
-
             gnSearchLocation.setMap();
           };
 
 
-          var addWMTSToMap = function(link, md) {
+          function addWMTSToMap(link, md) {
 
             if (link.name &&
                 (angular.isArray(link.name) && link.name.length > 0)) {
@@ -103,22 +113,21 @@
             }
           };
 
-          var addKMLToMap = function(record, md) {
+          function addKMLToMap(record, md) {
             gnMap.addKmlToMap(record.name, record.url,
                gnSearchSettings.viewerMap);
             gnSearchLocation.setMap();
           };
 
-          var addMapToMap = function(record, md) {
+          function addMapToMap(record, md) {
             gnOwsContextService.loadContextFromUrl(record.url,
-               gnSearchSettings.viewerMap, true);
+                gnSearchSettings.viewerMap);
 
             gnSearchLocation.setMap();
           };
 
-          var openMd = function(record, md) {
-            return window.location.hash = '#/metadata/' +
-                (record.uuid || record['geonet:info'].uuid);
+          var openMd = function(r, md) {
+            return window.location.hash = '#/metadata/' + r.id;
           };
 
           var openLink = function(record, link) {
@@ -143,7 +152,7 @@
             },
             'WFS' : {
               iconClass: 'fa-globe',
-              label: 'webserviceLink',
+              label: 'addToMap',
               action: addWFSToMap
             },
             'WCS' : {
@@ -201,6 +210,26 @@
               label: 'download',
               action: openLink
             },
+            'LINKDOWNLOAD-ZIP' : {
+              iconClass: 'fa-file-zip-o',
+              label: 'download',
+              action: openLink
+            },
+            'LINKDOWNLOAD-PDF' : {
+              iconClass: 'fa-file-pdf-o',
+              label: 'download',
+              action: openLink
+            },
+            'LINKDOWNLOAD-XML' : {
+              iconClass: 'fa-file-code-o',
+              label: 'download',
+              action: openLink
+            },
+            'LINKDOWNLOAD-RDF' : {
+              iconClass: 'fa-share-alt',
+              label: 'download',
+              action: openLink
+            },
             'LINK' : {
               iconClass: 'fa-link',
               label: 'openPage',
@@ -218,8 +247,17 @@
                 this.map['DEFAULT'].iconClass;
           };
 
-          this.getLabel = function(type) {
-            return this.map[type || 'DEFAULT'].label;
+          this.getLabel = function(mainType, type) {
+            // Old key before the move to API
+            var oldKey = {
+              hasfeaturecats: 'hasfeaturecat',
+              onlines: 'onlinesrc',
+              siblings: 'sibling',
+              fcats: 'fcat',
+              hassources: 'hassource'
+            };
+            return this.map[mainType || 'DEFAULT'].label +
+                   (oldKey[type] ? oldKey[type] : type);
           };
           this.getAction = function(type) {
             return this.map[type || 'DEFAULT'].action;
@@ -230,7 +268,7 @@
             f(parameters, md);
           };
 
-          this.getType = function(resource) {
+          this.getType = function(resource, type) {
             var protocolOrType = resource.protocol + resource.serviceType;
             // Cas for links
             if (angular.isString(protocolOrType) &&
@@ -252,31 +290,42 @@
               } else if (protocolOrType.match(/kml/i)) {
                 return 'KML';
               } else if (protocolOrType.match(/download/i)) {
-                return 'LINKDOWNLOAD';
-              } else if (protocolOrType.match(/link/i)) {
+                if (resource.url.match(/zip/i)) {
+                  return 'LINKDOWNLOAD-ZIP';
+                } else if (resource.url.match(/pdf/i)) {
+                  return 'LINKDOWNLOAD-PDF';
+                } else if (resource.url.match(/xml/i)) {
+                  return 'LINKDOWNLOAD-XML';
+                } else if (resource.url.match(/rdf/i)) {
+                  return 'LINKDOWNLOAD-RDF';
+                } else {
+                  return 'LINKDOWNLOAD';
+                }
+              // Anything that is not matched before, gets the link icon
+              } else {
                 return 'LINK';
               }
             }
 
             // Metadata records
-            if (resource['@type'] &&
-                (resource['@type'] === 'parent' ||
-                 resource['@type'] === 'children')) {
+            if (type &&
+                (type === 'parent' ||
+                 type === 'children')) {
               return 'MDFAMILY';
-            } else if (resource['@type'] &&
-               (resource['@type'] === 'sibling')) {
+            } else if (type &&
+               (type === 'siblings')) {
               return 'MDSIBLING';
-            } else if (resource['@type'] &&
-               (resource['@type'] === 'sources' ||
-                resource['@type'] === 'hassource')) {
+            } else if (type &&
+               (type === 'sources' ||
+                type === 'hassources')) {
               return 'MDSOURCE';
-            } else if (resource['@type'] &&
-               (resource['@type'] === 'associated' ||
-               resource['@type'] === 'services' ||
-               resource['@type'] === 'hasfeaturecat' ||
-               resource['@type'] === 'datasets')) {
+            } else if (type &&
+               (type === 'associated' ||
+               type === 'services' ||
+               type === 'hasfeaturecats' ||
+               type === 'datasets')) {
               return 'MD';
-            } else if (resource['@type'] && resource['@type'] === 'fcats') {
+            } else if (type && type === 'fcats') {
               return 'MDFCATS';
             }
 

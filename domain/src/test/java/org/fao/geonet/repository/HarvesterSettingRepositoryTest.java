@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.repository;
 
 import org.fao.geonet.domain.HarvesterSetting;
@@ -21,6 +44,11 @@ public class HarvesterSettingRepositoryTest extends AbstractSpringDataTest {
     HarvesterSettingRepository _repo;
 
     private String[] _skipProps = new String[]{"getValueAsInt", "getValueAsBool"};
+
+    public static HarvesterSetting newSetting(AtomicInteger inc) {
+        int id = inc.incrementAndGet();
+        return new HarvesterSetting().setName("name " + id).setValue("value " + id);
+    }
 
     @Test
     public void testFindByName() throws Exception {
@@ -172,7 +200,6 @@ public class HarvesterSettingRepositoryTest extends AbstractSpringDataTest {
         assertEquals(0, found2.size());
     }
 
-
     @Test
     public void testFindOneByPath() throws Exception {
         HarvesterSetting parent = _repo.save(newSetting().setName("2"));
@@ -197,6 +224,7 @@ public class HarvesterSettingRepositoryTest extends AbstractSpringDataTest {
 
         assertEquals(0, _repo.count());
     }
+
     @Test
     public void testDeleteByEntity() throws Exception {
         HarvesterSetting parent = _repo.save(newSetting().setName("2"));
@@ -238,10 +266,6 @@ public class HarvesterSettingRepositoryTest extends AbstractSpringDataTest {
 
     private HarvesterSetting newSetting() {
         return newSetting(_inc);
-    }
-    public static HarvesterSetting newSetting(AtomicInteger inc) {
-        int id = inc.incrementAndGet();
-        return new HarvesterSetting().setName("name " + id).setValue("value " + id);
     }
 
 }

@@ -25,14 +25,6 @@
       </label>
     </div>
 
-    <label class="control-label"
-           data-translate="">print_legend</label>
-    <div class="checkbox">
-      <label>
-        <input type="checkbox" ng-model="enableLegends"> {{'print_legend_field'|translate}}
-      </label>
-    </div>
-
     <div class="" ng-hide="auto">
       <select class="form-control"
               data-ng-model="config.scale"
@@ -40,6 +32,25 @@
               data-ng-options="l.name for l in config.scales"></select>
     </div>
   </div>
+
+  <div class="form-group">
+    <label class="control-label" data-translate="">print_format</label>
+    <div class="">
+      <select class="form-control"
+              data-ng-model="config.format"
+              data-ng-options="f.name for f in config.formats"></select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label" data-translate="">print_legend</label>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" ng-model="enableLegends"> {{'print_legend_field'|translate}}
+      </label>
+    </div>
+  </div>
+
   <div class="form-group">
     <label class="control-label"
            data-translate="">mapComment</label>
@@ -49,10 +60,10 @@
   </div>
   <button class="btn btn-default btn-block" ng-class="{'disabled': printing}"
           data-ng-click="submit()">
-      <i class="fa fa-print" ng-if="!printing"></i>
-      <i class="fa fa-spinner fa-spin" ng-if="printing"></i>
-      &nbsp;
-      <span ng-if="!printing">{{'Print'|translate}}</span>
-      <span ng-if="printing">{{'Printing'|translate}}</span>
+    <i class="fa fa-print" ng-if="!printing"></i>
+    <i class="fa fa-spinner fa-spin" ng-if="printing"></i>
+    &nbsp;
+    <span ng-if="!printing">{{'Print'|translate}}</span>
+    <span ng-if="printing">{{'Printing'|translate}}</span>
   </button>
 </form>

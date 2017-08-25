@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_mdview_directive');
 
@@ -43,9 +66,14 @@
 
           var unRegister;
 
+          element.find('.panel-body').append(scope.fragment);
           scope.dismiss = function() {
             unRegister();
-            gnMdView.removeLocationUuid();
+            // Do not close parent mdview
+            if ($('[gn-metadata-display] ~ [gn-metadata-display]')
+                .length == 0) {
+              gnMdView.removeLocationUuid();
+            }
             element.remove();
             //TODO: is the scope destroyed ?
           };
@@ -79,10 +107,9 @@
 
 
           scope.rateForRecord = function() {
-            return $http.get('md.rate?_content_type=json&' +
-                'uuid=' + scope.md['geonet:info'].uuid +
-                '&rating=' + scope.rate).success(function(data) {
-              scope.rate = data[0];
+            return $http.put('../api/records/' + scope.md['geonet:info'].uuid +
+                             '/rate', scope.rate).success(function(data) {
+              scope.rate = data;
             });
           };
         }

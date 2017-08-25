@@ -1,11 +1,36 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.services.metadata.schema;
 
 import com.google.common.collect.Lists;
+
 import jeeves.constants.Jeeves;
 import jeeves.interfaces.Service;
 import jeeves.server.ServiceConfig;
 import jeeves.server.context.ServiceContext;
 import jeeves.server.dispatchers.guiservices.XmlCacheManager;
+
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.SchematronCriteriaGroup;
 import org.fao.geonet.domain.SchematronCriteriaType;
@@ -115,7 +140,7 @@ public class SchematronCriteriaTypeService implements Service {
             for (Element type : types) {
                 final String name = type.getChildText(EL_NAME).toUpperCase();
                 String label = criteriaTypeTranslations.getChildText(name.toLowerCase());
-                if (label == null ) {
+                if (label == null) {
                     label = name;
                 }
                 type.addContent(new Element(EL_LABEL).setText(label));
@@ -128,7 +153,7 @@ public class SchematronCriteriaTypeService implements Service {
         Element criteriaTypeTranslations;
         try {
             criteriaTypeTranslations = cacheManager.get(context.getApplicationContext(), true, schemaDir.resolve("loc"), translationFile, context.getLanguage(),
-                    Geonet.DEFAULT_LANGUAGE, true);
+                Geonet.DEFAULT_LANGUAGE, true);
         } catch (NoSuchFileException e) {
             // there is a case where the schematron plugin doesn't have any translations for the criteria (maybe there aren't any criteria).
             criteriaTypeTranslations = new Element("strings");
@@ -137,17 +162,17 @@ public class SchematronCriteriaTypeService implements Service {
     }
 
     private Element genericXPathCriteriaType() {
-       return new Element(EL_TYPE).addContent(Arrays.asList(
-               new Element(EL_VALUE).setText("@@value@@"),
-               new Element(EL_TYPE).setText(SchematronCriteriaType.XPATH.name()),
-               new Element(EL_NAME).setText(SchematronCriteriaType.XPATH.name()))
-       );
+        return new Element(EL_TYPE).addContent(Arrays.asList(
+            new Element(EL_VALUE).setText("@@value@@"),
+            new Element(EL_TYPE).setText(SchematronCriteriaType.XPATH.name()),
+            new Element(EL_NAME).setText(SchematronCriteriaType.XPATH.name()))
+        );
     }
 
     private Element alwaysAcceptCriteriaType() {
         return new Element(EL_TYPE).addContent(Arrays.asList(
-                new Element(EL_TYPE).setText(SchematronCriteriaType.ALWAYS_ACCEPT.name()),
-                new Element(EL_NAME).setText(SchematronCriteriaType.ALWAYS_ACCEPT.name()))
+            new Element(EL_TYPE).setText(SchematronCriteriaType.ALWAYS_ACCEPT.name()),
+            new Element(EL_NAME).setText(SchematronCriteriaType.ALWAYS_ACCEPT.name()))
         );
     }
 }

@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.utils;
 
 import static org.quartz.CronScheduleBuilder.cronSchedule;
@@ -45,7 +68,7 @@ public final class QuartzSchedulerUtils {
                 }
             } catch (IOException e) {
                 throw new SchedulerException("Unable to load configuration for scheduler " + id + ".  Configuration file "
-                        + quartzConfigurationFile + " exists and was loaded but an error occurred during loading", e);
+                    + quartzConfigurationFile + " exists and was loaded but an error occurred during loading", e);
             } finally {
                 if (in != null) {
                     IOUtils.closeQuietly(in);
@@ -62,27 +85,26 @@ public final class QuartzSchedulerUtils {
 
     /**
      * Parse string and create a trigger with provided id and group name.
-     * 
-     * Formats are cron format ({@link CronExpression}, integer representing period in minutes or 
+     *
+     * Formats are cron format ({@link CronExpression}, integer representing period in minutes or
      * format like 10 hours, 5 minutes, 30 seconds, which will be parsed to create a period.
-     *  
-     * @param id id of trigger
+     *
+     * @param id        id of trigger
      * @param groupName groupName to assign to trigger
-     * @param schedule the schedule string that needs to be parsed.
-     * @param maxEvery the maximum period to permit
-     * 
+     * @param schedule  the schedule string that needs to be parsed.
+     * @param maxEvery  the maximum period to permit
      * @return trigger object
      */
-	public static Trigger getTrigger(String id, String groupName, String schedule, long maxEvery) {
-		TriggerBuilder<Trigger> trigger = newTrigger().withIdentity(id, groupName);
+    public static Trigger getTrigger(String id, String groupName, String schedule, long maxEvery) {
+        TriggerBuilder<Trigger> trigger = newTrigger().withIdentity(id, groupName);
         try {
-        	trigger.withSchedule(cronSchedule(new CronExpression(schedule)));
+            trigger.withSchedule(cronSchedule(new CronExpression(schedule)));
         } catch (ParseException e) {
-        	int periodMillis = 0;
-        	try {
-	            int everyMin = Integer.parseInt(schedule); 
-	    		periodMillis = everyMin * 1000 * 60;    		
-        	} catch (NumberFormatException nfe) {
+            int periodMillis = 0;
+            try {
+                int everyMin = Integer.parseInt(schedule);
+                periodMillis = everyMin * 1000 * 60;
+            } catch (NumberFormatException nfe) {
 
                 int mult = 0;
 
@@ -94,36 +116,28 @@ public final class QuartzSchedulerUtils {
                     if (token.endsWith(" hour")) {
                         token = token.substring(0, token.length() - 5);
                         mult = 3600;
-                    }
-
-                    else if (token.endsWith(" hours")) {
+                    } else if (token.endsWith(" hours")) {
                         token = token.substring(0, token.length() - 6);
                         mult = 3600;
-                    }
-
-                    else if (token.endsWith(" min")) {
+                    } else if (token.endsWith(" min")) {
                         token = token.substring(0, token.length() - 4);
                         mult = 60;
-                    }
-
-                    else if (token.endsWith(" sec")) {
+                    } else if (token.endsWith(" sec")) {
                         token = token.substring(0, token.length() - 4);
                         mult = 1;
-                    }
-
-                    else
+                    } else
                         throw new IllegalArgumentException("Bad period format :" + schedule);
 
                     periodMillis += mult * Integer.parseInt(token);
                 }
-        	}
-    		if (periodMillis <1 || periodMillis > maxEvery)
-    			throw new IllegalArgumentException(schedule+" is an illegal value, it must be between 1 and "+maxEvery);
+            }
+            if (periodMillis < 1 || periodMillis > maxEvery)
+                throw new IllegalArgumentException(schedule + " is an illegal value, it must be between 1 and " + maxEvery);
 
             trigger.withSchedule(simpleSchedule().withIntervalInMilliseconds(periodMillis).repeatForever().withMisfireHandlingInstructionFireNow()).
                 startAt(DateBuilder.futureDate(periodMillis, IntervalUnit.MILLISECOND));
-	    }
+        }
 
         return trigger.build();
-	}
+    }
 }

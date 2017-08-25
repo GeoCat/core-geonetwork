@@ -1,7 +1,32 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet;
 
 import com.google.common.base.Function;
+
 import com.vividsolutions.jts.util.Assert;
+
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.client.ClientProtocolException;
@@ -33,17 +58,15 @@ import java.util.Set;
 /**
  * Creates requests that return hardcoded responses.
  * <p/>
- * User: Jesse
- * Date: 10/18/13
- * Time: 4:30 PM
+ * User: Jesse Date: 10/18/13 Time: 4:30 PM
  */
 public class MockRequestFactoryGeonet extends GeonetHttpRequestFactory {
 
+    private final CloseableHttpClient _mockClient = new MockCloseableHttpClient();
     private Map<Request, Object> _requests = new HashMap<Request, Object>();
     private Set<Request> _uncalledRequests = new HashSet<Request>();
     private Set<Request> _throwExceptionIfCalledRequests = new HashSet<Request>();
     private HttpClientBuilder _builder = Mockito.mock(HttpClientBuilder.class);
-    private final CloseableHttpClient _mockClient = new MockCloseableHttpClient();
 
     {
         Mockito.when(_builder.build()).thenReturn(_mockClient);
@@ -68,7 +91,7 @@ public class MockRequestFactoryGeonet extends GeonetHttpRequestFactory {
     private Object getRequest(Request key) {
         final Object request = _requests.get(key);
         if (_throwExceptionIfCalledRequests.contains(key)) {
-            throw new AssertionError("Request "+key+" should not have been made");
+            throw new AssertionError("Request " + key + " should not have been made");
         }
 
         _uncalledRequests.remove(key);
@@ -145,12 +168,12 @@ public class MockRequestFactoryGeonet extends GeonetHttpRequestFactory {
 
         public Request(URI uri) {
             this(uri.getAuthority(),
-                    uri.getPort() == -1 ?
-                            uri.getScheme().equalsIgnoreCase("https")?443:80
-                        :
-                            uri.getPort() ,
-                    uri.getScheme(),
-                    uri.getPath());
+                uri.getPort() == -1 ?
+                    uri.getScheme().equalsIgnoreCase("https") ? 443 : 80
+                    :
+                    uri.getPort(),
+                uri.getScheme(),
+                uri.getPath());
         }
 
         @Override
@@ -163,7 +186,8 @@ public class MockRequestFactoryGeonet extends GeonetHttpRequestFactory {
             if (port != request.port) return false;
             if (host != null ? !host.equals(request.host) : request.host != null) return false;
             if (path != null ? !path.equals(request.path) : request.path != null) return false;
-            if (protocol != null ? !protocol.equals(request.protocol) : request.protocol != null) return false;
+            if (protocol != null ? !protocol.equals(request.protocol) : request.protocol != null)
+                return false;
 
             return true;
         }
@@ -179,7 +203,7 @@ public class MockRequestFactoryGeonet extends GeonetHttpRequestFactory {
 
         @Override
         public String toString() {
-            return protocol + "://" + host + ":" + port+path;
+            return protocol + "://" + host + ":" + port + path;
         }
     }
 
@@ -187,7 +211,7 @@ public class MockRequestFactoryGeonet extends GeonetHttpRequestFactory {
 
         @Override
         protected CloseableHttpResponse doExecute(HttpHost target, HttpRequest request, HttpContext context) throws IOException,
-                ClientProtocolException {
+            ClientProtocolException {
             try {
                 final URI uri = new URI(request.getRequestLine().getUri());
 

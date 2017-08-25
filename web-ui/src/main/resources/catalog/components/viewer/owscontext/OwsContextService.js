@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_owscontext_service');
 
@@ -51,9 +74,14 @@
     '$translate',
     '$q',
     '$filter',
+    '$rootScope',
     '$timeout',
+    'gnGlobalSettings',
     function(gnMap, gnOwsCapabilities, $http, gnViewerSettings,
-             $translate, $q, $filter, $timeout) {
+             $translate, $q, $filter, $rootScope, $timeout, gnGlobalSettings) {
+
+
+      var firstLoad = true;
 
       /**
        * @ngdoc method
@@ -71,7 +99,9 @@
         var layersToRemove = [];
         map.getLayers().forEach(function(layer) {
           if (layer.displayInLayerManager) {
-            layersToRemove.push(layer);
+            if (!(layer.get('fromUrlParams') && firstLoad)) {
+              layersToRemove.push(layer);
+            }
           }
         });
         for (var i = 0; i < layersToRemove.length; i++) {
@@ -82,11 +112,18 @@
         var bbox = context.general.boundingBox.value;
         var ll = bbox.lowerCorner;
         var ur = bbox.upperCorner;
-        var extent = ll.concat(ur);
         var projection = bbox.crs;
+
+        if (projection == 'EPSG:4326') {
+          ll.reverse();
+          ur.reverse();
+        }
+        var extent = ll.concat(ur);
         // reproject in case bbox's projection doesn't match map's projection
-        extent = ol.proj.transformExtent(extent, map.getView().getProjection(),
-            projection);
+        extent = ol.proj.transformExtent(extent,
+            projection, map.getView().getProjection());
+
+        extent = gnMap.secureExtent(extent, map.getView().getProjection());
 
         // store the extent into view settings so that it can be used later in
         // case the map is not visible yet
@@ -101,47 +138,67 @@
         var layers = context.resourceList.layer;
         var i, j, olLayer, bgLayers = [];
         var self = this;
-        var re = /type\s*=\s*([^,|^}|^\s]*)/;
         var promises = [];
-        for (i = 0; i < layers.length; i++) {
-          var layer = layers[i];
-          if (layer.name) {
-            if (layer.group == 'Background layers' &&
-                layer.name.match(re)) {
-              var type = re.exec(layer.name)[1];
-              if (type != 'wmts') {
-                var olLayer = gnMap.createLayerForType(type);
-                if (olLayer) {
-                  bgLayers.push({layer: olLayer, idx: i});
-                  olLayer.displayInLayerManager = false;
-                  olLayer.background = true;
-                  olLayer.set('group', 'Background layers');
-                  olLayer.setVisible(!layer.hidden);
+        var overlays = [];
+        if (angular.isArray(layers)) {
+          for (i = 0; i < layers.length; i++) {
+            var type, layer = layers[i];
+            if (layer.name) {
+              if (layer.group == 'Background layers') {
+
+                // {type=bing_aerial} (mapquest, osm ...)
+                var re = this.getREForPar('type');
+                if (layer.name.match(re) &&
+                    (type = re.exec(layer.name)[1]) != 'wmts') {
+                  re = this.getREForPar('name');
+                  var opt;
+                  if (layer.name.match(re)) {
+                    var lyr = re.exec(layer.name)[1];
+                    opt = {name: lyr};
+                  }
+                  var olLayer =
+                      gnMap.createLayerForType(type, opt, layer.title);
+                  if (olLayer) {
+                    bgLayers.push({layer: olLayer, idx: i});
+                    olLayer.displayInLayerManager = false;
+                    olLayer.background = true;
+                    olLayer.set('group', 'Background layers');
+                    olLayer.setVisible(!layer.hidden);
+                  }
+                }
+
+                // {type=wmts,name=Ocean_Basemap} or WMS
+                else {
+                  promises.push(this.createLayer(layer, map, i).then(
+                      function(olLayer) {
+                        if (olLayer) {
+                          bgLayers.push({
+                            layer: olLayer,
+                            idx: olLayer.get('bgIdx')
+                          });
+                          olLayer.displayInLayerManager = false;
+                          olLayer.background = true;
+                        }
+                      }));
+                }
+              } else if (layer.server) {
+                var server = layer.server[0];
+                if (server.service == 'urn:ogc:serviceType:WMS') {
+                  var p = self.createLayer(layer, map, undefined, i);
+                  promises.push(p);
+                  p.then(function(layer) {
+                    overlays[layer.get('tree_index')] = layer;
+                  });
                 }
               }
-              else {
-                promises.push(this.createLayer(layer, map, i).then(
-                    function(olLayer) {
-                      bgLayers.push({
-                        layer: olLayer,
-                        idx: olLayer.get('bgIdx')
-                      });
-                      olLayer.displayInLayerManager = false;
-                      olLayer.background = true;
-                    }));
-              }
-            } else {
-              var server = layer.server[0];
-              if (server.service == 'urn:ogc:serviceType:WMS') {
-                self.createLayer(layer, map);
-              }
             }
+            firstLoad = false;
           }
         }
 
         // if there's at least one valid bg layer in the context use them for
         // the application otherwise use the defaults from config
-        $q.all(promises).then (function() {
+        $q.all(promises).then(function() {
           if (bgLayers.length > 0) {
             // make sure we remove any existing bglayer
             if (map.getLayers().getLength() > 0) {
@@ -166,6 +223,17 @@
                 firstVisibleBgLayer = false;
               }
             });
+            if (firstVisibleBgLayer && gnViewerSettings.bgLayers.length) {
+              var l = gnViewerSettings.bgLayers[0];
+              l.setVisible(true);
+              map.getLayers().insertAt(0, l);
+              firstVisibleBgLayer = false;
+            }
+          }
+          if (overlays.length > 0) {
+            map.getLayers().extend(overlays.filter(function(l) {
+              return !!l;
+            }));
           }
         });
       };
@@ -180,13 +248,31 @@
        * @param {string} url URL to context
        * @param {ol.map} map map
        */
-      this.loadContextFromUrl = function(url, map, useProxy) {
+      this.loadContextFromUrl = function(url, map) {
         var self = this;
-        if (useProxy) {
-          url = '../../proxy?url=' + encodeURIComponent(url);
-        }
-        $http.get(url).success(function(data) {
-          self.loadContext(data, map);
+        //        if (/^(f|ht)tps?:\/\//i.test(url)) {
+        //          url = gnGlobalSettings.proxyUrl + encodeURIComponent(url);
+        //        }
+        $http.get(url).then(function(r) {
+          if (r.data === '') {
+            var msg = $translate.instant('emptyMapLoadError', {
+              url: url
+            });
+            $rootScope.$broadcast('StatusUpdated', {
+              msg: msg,
+              timeout: 0,
+              type: 'danger'});
+          }
+
+          self.loadContext(r.data, map);
+        }, function(r) {
+          var msg = $translate.instant('mapLoadError', {
+            url: url
+          });
+          $rootScope.$broadcast('StatusUpdated', {
+            msg: msg,
+            timeout: 0,
+            type: 'danger'});
         });
       };
 
@@ -240,11 +326,22 @@
             name = '{type=mapquest}';
           } else if (source instanceof ol.source.BingMaps) {
             name = '{type=bing_aerial}';
+          } else if (source instanceof ol.source.Stamen) {
+            name = '{type=stamen,name=' + layer.getSource().get('type') + '}';
           } else if (source instanceof ol.source.WMTS) {
             name = '{type=wmts,name=' + layer.get('name') + '}';
             params.server = [{
               onlineResource: [{
                 href: layer.get('urlCap')
+              }],
+              service: 'urn:ogc:serviceType:WMS'
+            }];
+          } else if (source instanceof ol.source.ImageWMS) {
+            var s = layer.getSource();
+            name = s.getParams().LAYERS;
+            params.server = [{
+              onlineResource: [{
+                href: s.getUrl()
               }],
               service: 'urn:ogc:serviceType:WMS'
             }];
@@ -257,7 +354,7 @@
 
         map.getLayers().forEach(function(layer) {
           var source = layer.getSource();
-          var url = '';
+          var url = '', version = null;
           var name;
 
           // background layers already taken into account
@@ -267,15 +364,17 @@
 
           if (source instanceof ol.source.ImageWMS) {
             name = source.getParams().LAYERS;
+            version = source.getParams().VERSION;
             url = source.getUrl();
-          } else if (source instanceof ol.source.TileWMS) {
+          } else if (source instanceof ol.source.TileWMS ||
+              source instanceof ol.source.ImageWMS) {
             name = source.getParams().LAYERS;
-            url = source.getUrls()[0];
+            url = layer.get('url');
           } else if (source instanceof ol.source.WMTS) {
             name = '{type=wmts,name=' + layer.get('name') + '}';
             url = layer.get('urlCap');
           }
-          resourceList.layer.push({
+          var layerParams = {
             hidden: !layer.getVisible(),
             opacity: layer.getOpacity(),
             name: name,
@@ -288,7 +387,11 @@
               }],
               service: 'urn:ogc:serviceType:WMS'
             }]
-          });
+          };
+          if (version) {
+            layerParams.server[0].version = version;
+          }
+          resourceList.layer.push(layerParams);
         });
 
         var context = {
@@ -321,13 +424,17 @@
        * @param {ol.Map} map object
        */
       this.saveToLocalStorage = function(map) {
+        var storage = gnViewerSettings.storage ?
+            window[gnViewerSettings.storage] : window.localStorage;
         if (map.getSize()[0] == 0 || map.getSize()[1] == 0) {
           // don't save a map which has not been rendered yet
           return;
         }
         var xml = this.writeContext(map);
         var xmlString = (new XMLSerializer()).serializeToString(xml);
-        window.localStorage.setItem('owsContext', xmlString);
+        var key = 'owsContext_' +
+            window.location.host + window.location.pathname;
+        storage.setItem(key, xmlString);
       };
 
       /**
@@ -342,15 +449,16 @@
        * @param {ol.map} map map
        * @param {numeric} bgIdx if it is a background layer, index in the
        * dropdown
+       * @param {numeric} index of the layer in the tree
        */
-      this.createLayer = function(layer, map, bgIdx) {
+      this.createLayer = function(layer, map, bgIdx, index) {
 
         var server = layer.server[0];
         var res = server.onlineResource[0];
         var reT = /type\s*=\s*([^,|^}|^\s]*)/;
         var reL = /name\s*=\s*([^,|^}|^\s]*)/;
 
-        var createOnly = angular.isDefined(bgIdx);
+        var createOnly = angular.isDefined(bgIdx) || angular.isDefined(index);
 
         if (layer.name.match(reT)) {
           var type = reT.exec(layer.name)[1];
@@ -369,27 +477,58 @@
                   }
                   if (bgIdx) {
                     olL.set('bgIdx', bgIdx);
+                  } else if (index) {
+                    olL.set('tree_index', index);
                   }
                   return olL;
-                }).catch(function(){});
+                }).catch(function() {});
           }
         }
         else { // we suppose it's WMS
-
-          return gnMap.addWmsFromScratch(map, res.href, layer.name, createOnly).
+          // TODO: Would be good to attach the MD
+          // even when loaded from a context.
+          return gnMap.addWmsFromScratch(
+              map, res.href, layer.name,
+              createOnly, null, server.version).
               then(function(olL) {
-                olL.set('group', layer.group);
-                olL.set('groupcombo', layer.groupcombo);
-                olL.setOpacity(layer.opacity);
-                olL.setVisible(!layer.hidden);
-                if (layer.title) {
-                  olL.set('title', layer.title);
-                  olL.set('label', layer.title);
+                if (olL) {
+                  try {
+                    // Avoid double encoding
+                    if (layer.group) {
+                      layer.group = decodeURIComponent(escape(layer.group));
+                    }
+                  } catch (e) {}
+                  olL.set('group', layer.group);
+                  olL.set('groupcombo', layer.groupcombo);
+                  olL.set('tree_index', index);
+                  olL.setOpacity(layer.opacity);
+                  olL.setVisible(!layer.hidden);
+                  if (layer.title) {
+                    olL.set('title', layer.title);
+                    olL.set('label', layer.title);
+                  }
+                  $rootScope.$broadcast('layerAddedFromContext', olL);
+                  return olL;
                 }
                 return olL;
-              }).catch(function(){});
+              }).catch(function() {});
         }
       };
+
+      /**
+       * @ngdoc method
+       * @name gnOwsContextService#getREForPar
+       * @methodOf gn_viewer.service:gnOwsContextService
+       *
+       * @description
+       * Creates a regular expression for a given parameter
+       *
+       * * @param {Object} context parameter
+       */
+      this.getREForPar = function(par) {
+        return re = new RegExp(par + '\\s*=\\s*([^,|^}|^\\s]*)');
+      };
+
     }
   ]);
 })();

@@ -1,5 +1,28 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 /**
- * 
+ *
  */
 package org.fao.geonet.kernel.security.ldap;
 
@@ -16,17 +39,16 @@ import org.springframework.security.ldap.LdapUtils;
 
 import java.util.LinkedList;
 import java.util.Map;
+
 import javax.naming.Context;
 
 /**
  * When a user-group relation is removed, removed it also on LDAP
- * 
+ *
  * @author delawen
- * 
- * 
  */
 public class AutoUpdateUserGroupsOnRemove implements
-        ApplicationListener<GroupLeft> {
+    ApplicationListener<GroupLeft> {
 
     @Autowired
     private AbstractLDAPUserDetailsContextMapper ldapMapper;
@@ -40,7 +62,6 @@ public class AutoUpdateUserGroupsOnRemove implements
 
     /**
      * @see org.springframework.context.ApplicationListener#onApplicationEvent(org.springframework.context.ApplicationEvent)
-     * @param event
      */
     @Override
     public void onApplicationEvent(GroupLeft event) {
@@ -54,7 +75,7 @@ public class AutoUpdateUserGroupsOnRemove implements
             saveUserGroup(identifier, username);
         } else {
             String profile = (profileMapping.containsKey(p) ? profileMapping
-                    .get(p) : p);
+                .get(p) : p);
             String id = profilePattern;
             id = id.replace("{0}", profile);
             id = id.replace("{1}", identifier);
@@ -78,7 +99,7 @@ public class AutoUpdateUserGroupsOnRemove implements
                     members.add(memberuids[i]);
                 }
             }
-            
+
             String[] newmemberuids = new String[memberuids.length - 1];
             newmemberuids = members.toArray(newmemberuids);
 

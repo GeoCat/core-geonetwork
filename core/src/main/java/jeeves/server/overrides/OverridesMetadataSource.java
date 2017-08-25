@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package jeeves.server.overrides;
 
 import org.springframework.security.access.ConfigAttribute;
@@ -12,6 +35,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.ReflectionUtils;
 
 import javax.annotation.Nullable;
+
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -30,7 +54,7 @@ public class OverridesMetadataSource implements FilterInvocationSecurityMetadata
         Field field = ReflectionUtils.findField(metadataSource.getClass(), "requestMap");
         if (field == null) {
             throw new IllegalArgumentException("The implementation of " + FilterInvocationSecurityMetadataSource.class.getName()
-                    + " has changed an now this class must be updated to work with new implementation");
+                + " has changed an now this class must be updated to work with new implementation");
         }
 
         field.setAccessible(true);
@@ -40,8 +64,8 @@ public class OverridesMetadataSource implements FilterInvocationSecurityMetadata
     private void assertKnownType(FilterInvocationSecurityMetadataSource metadataSource) {
         if (!(metadataSource instanceof DefaultFilterInvocationSecurityMetadataSource)) {
             throw new IllegalArgumentException("Modifying the interceptUrls can only be done when the metadataSource is an instanceof "
-                    + DefaultFilterInvocationSecurityMetadataSource.class.getName() + ". Instead the metadataSource was a "
-                    + metadataSource.getClass().getName());
+                + DefaultFilterInvocationSecurityMetadataSource.class.getName() + ". Instead the metadataSource was a "
+                + metadataSource.getClass().getName());
         }
     }
 
@@ -62,18 +86,20 @@ public class OverridesMetadataSource implements FilterInvocationSecurityMetadata
 
     /**
      * Add a new mapping to this metadata source.
-     * 
-     * @param pattern the url pattern.  It is used to check for existing matchers to this pattern and and the new one to the existing matcher
-     * @param matcher the matcher to add if the apping does not exist.
-     * @param access the new access rights for this metcher
-     * @param position the position to add the new rule.  if < 1 then it will be first rule.  If >= numberOfRules() then it will be the last rule
+     *
+     * @param pattern  the url pattern.  It is used to check for existing matchers to this pattern
+     *                 and and the new one to the existing matcher
+     * @param matcher  the matcher to add if the apping does not exist.
+     * @param access   the new access rights for this metcher
+     * @param position the position to add the new rule.  if < 1 then it will be first rule.  If >=
+     *                 numberOfRules() then it will be the last rule
      */
     public synchronized void addMapping(final String pattern, final RequestMatcher matcher, final String access, final int position) {
         _baseSource = null;
         final Collection<ConfigAttribute> attributes = createAttributes(matcher, access);
 
         RequestMatcher requestMatcher = findMatchingRequestMatcher(pattern);
-        if(requestMatcher == null) {
+        if (requestMatcher == null) {
             requestMatcher = matcher;
         }
         Collection<ConfigAttribute> allAttributes = _requestMap.get(requestMatcher);
@@ -83,15 +109,15 @@ public class OverridesMetadataSource implements FilterInvocationSecurityMetadata
 
         allAttributes.addAll(attributes);
         _requestMap.remove(requestMatcher);
-        
-        if(position > numberOfRules()) {
+
+        if (position > numberOfRules()) {
             _requestMap.put(requestMatcher, allAttributes);
         } else {
             final int finalPos = max(0, position);
             LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> newMap = new LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>>();
             int i = 0;
             for (Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : _requestMap.entrySet()) {
-                if(i == finalPos) {
+                if (i == finalPos) {
                     newMap.put(requestMatcher, allAttributes);
                 }
                 newMap.put(entry.getKey(), entry.getValue());
@@ -103,15 +129,17 @@ public class OverridesMetadataSource implements FilterInvocationSecurityMetadata
 
     /**
      * Change the existing mapping.
-     * @param pattern the URL pattern to update.  This is used to remove the old matcher and attributes
-     * @param access the new access permissions
+     *
+     * @param pattern the URL pattern to update.  This is used to remove the old matcher and
+     *                attributes
+     * @param access  the new access permissions
      * @throws IllegalArgumentException thrown in pattern does not find a match
      */
     public synchronized void setMapping(String pattern, final String access) throws IllegalArgumentException {
         _baseSource = null;
         RequestMatcher oldMatcher = findMatchingRequestMatcher(pattern);
         for (Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : _requestMap.entrySet()) {
-            if(entry.getKey() == oldMatcher) {
+            if (entry.getKey() == oldMatcher) {
                 entry.setValue(createAttributes(oldMatcher, access));
                 break;
             }
@@ -134,23 +162,25 @@ public class OverridesMetadataSource implements FilterInvocationSecurityMetadata
         atts.add(new SecurityConfig(access));
 
         ExpressionBasedFilterInvocationSecurityMetadataSource ms = new ExpressionBasedFilterInvocationSecurityMetadataSource(map,
-                new DefaultWebSecurityExpressionHandler());
-        
+            new DefaultWebSecurityExpressionHandler());
+
         return ms.getAllConfigAttributes();
     }
 
     public synchronized RequestMatcher removeMapping(String pattern) {
         _baseSource = null;
         RequestMatcher toRemove = findMatchingRequestMatcher(pattern);
-        if(toRemove == null) {
-            throw new IllegalArgumentException(pattern+" has not been found.");
+        if (toRemove == null) {
+            throw new IllegalArgumentException(pattern + " has not been found.");
         } else {
             _requestMap.remove(toRemove);
         }
         return toRemove;
     }
 
-    private @Nullable RequestMatcher findMatchingRequestMatcher(String pattern) {
+    private
+    @Nullable
+    RequestMatcher findMatchingRequestMatcher(String pattern) {
         for (RequestMatcher requestMatcher : _requestMap.keySet()) {
             if (requestMatcher instanceof RegexRequestMatcher) {
                 RegexRequestMatcher regexMatcher = (RegexRequestMatcher) requestMatcher;
@@ -167,9 +197,9 @@ public class OverridesMetadataSource implements FilterInvocationSecurityMetadata
         Field field = ReflectionUtils.findField(RegexRequestMatcher.class, "pattern");
         if (field == null) {
             throw new IllegalArgumentException("The implementation of " + RegexRequestMatcher.class.getName()
-                    + " has changed an now this class must be updated to work with new implementation");
+                + " has changed an now this class must be updated to work with new implementation");
         }
-        
+
         field.setAccessible(true);
         Object otherPattern = ReflectionUtils.getField(field, regexMatcher);
         return otherPattern;

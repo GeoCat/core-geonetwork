@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_new_metadata_controller');
 
@@ -17,7 +40,7 @@
     'gnConfigService',
     'gnConfig',
     function($scope, $routeParams, $http, $rootScope, $translate, $compile,
-            gnSearchManagerService, 
+            gnSearchManagerService,
             gnUtilityService,
             gnMetadataManager,
             gnConfigService,
@@ -48,7 +71,7 @@
       $scope.$watchCollection('groups', function() {
         if (!angular.isUndefined($scope.groups)) {
           if ($scope.groups.length == 1) {
-            $scope.ownerGroup = $scope.groups[0]['@id'];
+            $scope.ownerGroup = $scope.groups[0].id;
           }
         }
       });
@@ -86,8 +109,8 @@
 
 
           // TODO: Better handling of lots of templates
-          gnSearchManagerService.search('qi@json?' +
-              query + '&fast=index&from=1&to=200').
+          gnSearchManagerService.search('qi?_content_type=json&' +
+              query + '&fast=index&from=1&to=200&_isTemplate=y or n').
               then(function(data) {
 
                 $scope.mdList = data;
@@ -165,11 +188,11 @@
 
 
       if ($routeParams.childOf) {
-        $scope.title = $translate('createChildOf');
+        $scope.title = $translate.instant('createChildOf');
       } else if ($routeParams.from) {
-        $scope.title = $translate('createCopyOf');
+        $scope.title = $translate.instant('createCopyOf');
       } else {
-        $scope.title = $translate('createA');
+        $scope.title = $translate.instant('createA');
       }
 
       $scope.createNewMetadata = function(isPublic) {
@@ -206,7 +229,7 @@
             metadataUuid
         ).error(function(data) {
           $rootScope.$broadcast('StatusUpdated', {
-            title: $translate('createMetadataError'),
+            title: $translate.instant('createMetadataError'),
             error: data.error,
             timeout: 0,
             type: 'danger'});
@@ -225,7 +248,7 @@
         var selectedTemplate = getSelectedMdIdentifierTemplate();
 
         $scope.mdIdSelectedTemplateForLabel = selectedTemplate.template
-          .replaceAll('{', ' ').replaceAll('}', ' ');
+            .replaceAll('{', ' ').replaceAll('}', ' ');
 
         var tokens = selectedTemplate.template.match(/\{(.+?)\}/g);
 
@@ -303,7 +326,7 @@
       String.prototype.replaceAll = function(find, replace) {
         var str = this;
         return str.replace(new RegExp(find
-          .replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g'), replace);
+            .replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g'), replace);
       };
 
 
@@ -323,8 +346,8 @@
       function loadMetadataIdentifierTemplates() {
         $scope.mdIdentifierTemplateSelected = {};
 
-        $http.get('metadataIdentifierTemplates?_content_type=json')
-          .success(function(data) {
+        $http.get('../api/identifiers')
+            .success(function(data) {
               $scope.mdIdentifierTemplates = data;
 
             });

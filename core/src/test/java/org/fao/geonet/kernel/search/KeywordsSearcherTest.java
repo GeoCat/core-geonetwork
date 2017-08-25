@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel.search;
 
 import org.fao.geonet.constants.Geonet;
@@ -93,8 +116,8 @@ public class KeywordsSearcherTest extends AbstractThesaurusBasedTest {
     private Thesaurus createThesaurus(Path directory, String string) throws Exception {
         Path thesaurusBlahFile = directory.resolve(string + ".rdf");
         Thesaurus thes = new Thesaurus(isoLangMapper, string + ".rdf", Geonet.CodeList.EXTERNAL, string, thesaurusBlahFile, "http://" +
-                                                                                                                            string + ""
-                                                                                                                            + ".com");
+            string + ""
+            + ".com");
         thes.initRepository();
         if (!Files.exists(thesaurusBlahFile) || Files.size(thesaurusBlahFile) == 0) {
             populateThesaurus(thes, smallWords, "http://" + string + ".com#", string + "Val", string + "Note", languages);
@@ -155,7 +178,7 @@ public class KeywordsSearcherTest extends AbstractThesaurusBasedTest {
     public void testSearchNoContextEngLangNoSearchAllThesauri() throws Exception {
         KeywordsSearcher searcher = new KeywordsSearcher(isoLangMapper, thesaurusFinder);
         KeywordSearchParamsBuilder params = new KeywordSearchParamsBuilder(isoLangMapper)
-                .addLang("eng");
+            .addLang("eng");
         searcher.search(params.build());
         assertSearchNoContextEngLangNoSearchAllThesauri(searcher);
 
@@ -176,9 +199,9 @@ public class KeywordsSearcherTest extends AbstractThesaurusBasedTest {
     public void testSearchNoContextMultiLangNoSearchAllThesauri() throws Exception {
         KeywordsSearcher searcher = new KeywordsSearcher(isoLangMapper, thesaurusFinder);
         KeywordSearchParamsBuilder params = new KeywordSearchParamsBuilder(isoLangMapper)
-                .addLang("fre")
-                .addLang("eng")
-                .addLang("chi");
+            .addLang("fre")
+            .addLang("eng")
+            .addLang("chi");
         searcher.search(params.build());
         assertSearchNoContextMultiLangNoSearchAllThesauri(searcher);
 
@@ -200,10 +223,10 @@ public class KeywordsSearcherTest extends AbstractThesaurusBasedTest {
     public void testSearchNoContextMultiLangKeywordSearchAllThesauri() throws Exception {
         KeywordsSearcher searcher = new KeywordsSearcher(isoLangMapper, thesaurusFinder);
         KeywordSearchParamsBuilder params = new KeywordSearchParamsBuilder(isoLangMapper)
-                .keyword("fooVal", KeywordSearchType.CONTAINS, false)
-                .addLang("fre")
-                .addLang("eng")
-                .addLang("chi");
+            .keyword("fooVal", KeywordSearchType.CONTAINS, false)
+            .addLang("fre")
+            .addLang("eng")
+            .addLang("chi");
         searcher.search(params.build());
         assertSearchNoContextMultiLangSearchAllThesauri(searcher);
 
@@ -226,10 +249,10 @@ public class KeywordsSearcherTest extends AbstractThesaurusBasedTest {
     public void testSearchNoContextMultiLangKeywordNoSearchOneCategory() throws Exception {
         KeywordsSearcher searcher = new KeywordsSearcher(isoLangMapper, thesaurusFinder);
         KeywordSearchParamsBuilder params = new KeywordSearchParamsBuilder(isoLangMapper)
-                .thesauriDomainName(thesaurusBlah.getDname())
-                .addLang("fre")
-                .addLang("eng")
-                .addLang("chi");
+            .thesauriDomainName(thesaurusBlah.getDname())
+            .addLang("fre")
+            .addLang("eng")
+            .addLang("chi");
         searcher.search(params.build());
         assertSearchNoContextMultiLangNoSearchOneCategory(searcher);
 
@@ -252,10 +275,10 @@ public class KeywordsSearcherTest extends AbstractThesaurusBasedTest {
     public void testSearchNoContextMultiLangKeywordSearchOneSpecificThesauri() throws Exception {
         KeywordsSearcher searcher = new KeywordsSearcher(isoLangMapper, thesaurusFinder);
         KeywordSearchParamsBuilder params = new KeywordSearchParamsBuilder(isoLangMapper)
-                .addThesaurus(thesaurusBlah.getKey())
-                .addLang("fre")
-                .addLang("eng")
-                .addLang("chi");
+            .addThesaurus(thesaurusBlah.getKey())
+            .addLang("fre")
+            .addLang("eng")
+            .addLang("chi");
         searcher.search(params.build());
         assertSearchNoContextMultiLangKeywordSearchOneSpecificThesauri(searcher);
 
@@ -278,11 +301,11 @@ public class KeywordsSearcherTest extends AbstractThesaurusBasedTest {
     public void testSearchNoContextMultiLangKeywordSearchTwoSpecificThesauri() throws Exception {
         KeywordsSearcher searcher = new KeywordsSearcher(isoLangMapper, thesaurusFinder);
         KeywordSearchParamsBuilder params = new KeywordSearchParamsBuilder(isoLangMapper)
-                .addThesaurus(thesaurusBlah.getKey())
-                .addThesaurus(thesaurusFoo.getKey())
-                .addLang("fre")
-                .addLang("eng")
-                .addLang("chi");
+            .addThesaurus(thesaurusBlah.getKey())
+            .addThesaurus(thesaurusFoo.getKey())
+            .addLang("fre")
+            .addLang("eng")
+            .addLang("chi");
         searcher.search(params.build());
         assertSearchNoContextMultiLangKeywordSearchTwoSpecificThesauri(searcher);
 
@@ -304,11 +327,11 @@ public class KeywordsSearcherTest extends AbstractThesaurusBasedTest {
     public void testSearchContextMultiLangKeywordNoSearchTwoSpecificThesauri() throws Exception {
         KeywordsSearcher searcher = new KeywordsSearcher(isoLangMapper, thesaurusFinder);
         KeywordSearchParamsBuilder params = new KeywordSearchParamsBuilder(isoLangMapper)
-                .addThesaurus(thesaurusBlah.getKey())
-                .addThesaurus(thesaurusFoo.getKey())
-                .addLang("fre")
-                .addLang("eng")
-                .addLang("chi");
+            .addThesaurus(thesaurusBlah.getKey())
+            .addThesaurus(thesaurusFoo.getKey())
+            .addLang("fre")
+            .addLang("eng")
+            .addLang("chi");
         searcher.search("ger", params.toXmlParams());
         assertSearchNoContextMultiLangKeywordSearchTwoSpecificThesauri(searcher);
     }
@@ -317,10 +340,10 @@ public class KeywordsSearcherTest extends AbstractThesaurusBasedTest {
     public void testSearchUriSearch() throws Exception {
         KeywordsSearcher searcher = new KeywordsSearcher(isoLangMapper, thesaurusFinder);
         KeywordSearchParamsBuilder params = new KeywordSearchParamsBuilder(isoLangMapper)
-                .uri(THESAURUS_KEYWORD_NS + 30)
-                .addLang("fre")
-                .addLang("eng")
-                .addLang("chi");
+            .uri(THESAURUS_KEYWORD_NS + 30)
+            .addLang("fre")
+            .addLang("eng")
+            .addLang("chi");
         searcher.search(params.build());
         assertSearchUriSearch(searcher);
 
@@ -343,8 +366,8 @@ public class KeywordsSearcherTest extends AbstractThesaurusBasedTest {
     public void testSearchMaxResults() throws Exception {
         KeywordsSearcher searcher = new KeywordsSearcher(isoLangMapper, thesaurusFinder);
         KeywordSearchParamsBuilder params = new KeywordSearchParamsBuilder(isoLangMapper)
-                .addLang("eng")
-                .maxResults(5);
+            .addLang("eng")
+            .maxResults(5);
         searcher.search(params.build());
         assertEquals(5, searcher.getNbResults());
     }
@@ -353,8 +376,8 @@ public class KeywordsSearcherTest extends AbstractThesaurusBasedTest {
     public void testSearchOffest() throws Exception {
         KeywordsSearcher searcher = new KeywordsSearcher(isoLangMapper, thesaurusFinder);
         KeywordSearchParamsBuilder params = new KeywordSearchParamsBuilder(isoLangMapper)
-                .addLang("eng")
-                .offset(5);
+            .addLang("eng")
+            .offset(5);
         try {
             params.build();
             fail("Expected an IllegalStateException because offset is not allowed if no thesaurus is defined");
@@ -379,10 +402,10 @@ public class KeywordsSearcherTest extends AbstractThesaurusBasedTest {
     public void testSearchOffestMaxResults() throws Exception {
         KeywordsSearcher searcher = new KeywordsSearcher(isoLangMapper, thesaurusFinder);
         KeywordSearchParamsBuilder params = new KeywordSearchParamsBuilder(isoLangMapper)
-                .addLang("eng")
-                .offset(5)
-                .addThesaurus(thesaurus.getKey())
-                .maxResults(5);
+            .addLang("eng")
+            .offset(5)
+            .addThesaurus(thesaurus.getKey())
+            .maxResults(5);
         searcher.search(params.build());
         assertEquals(5, searcher.getNbResults());
         assertEquals("5", searcher.getResults().get(0).getRelativeCode());
@@ -392,8 +415,8 @@ public class KeywordsSearcherTest extends AbstractThesaurusBasedTest {
     public void testSearchContextNoLangKeywordNoSearchTwoSpecificThesauri() throws Exception {
         KeywordsSearcher searcher = new KeywordsSearcher(isoLangMapper, thesaurusFinder);
         KeywordSearchParamsBuilder params = new KeywordSearchParamsBuilder(isoLangMapper)
-                .addThesaurus(thesaurusFoo.getKey())
-                .addThesaurus(thesaurusBlah.getKey());
+            .addThesaurus(thesaurusFoo.getKey())
+            .addThesaurus(thesaurusBlah.getKey());
 
         searcher.search("ger", params.toXmlParams());
 
@@ -456,8 +479,8 @@ public class KeywordsSearcherTest extends AbstractThesaurusBasedTest {
     public void testSortResults() throws Exception {
         KeywordsSearcher searcher = new KeywordsSearcher(isoLangMapper, thesaurusFinder);
         KeywordSearchParamsBuilder params = new KeywordSearchParamsBuilder(isoLangMapper)
-                .addLang("eng")
-                .maxResults(10);
+            .addLang("eng")
+            .maxResults(10);
         params.setComparator(KeywordSort.defaultLabelSorter(SortDirection.ASC));
         searcher.search(params.build());
 
@@ -480,8 +503,8 @@ public class KeywordsSearcherTest extends AbstractThesaurusBasedTest {
     public void testSelectUnselectKeywords() throws Exception {
         KeywordsSearcher searcher = new KeywordsSearcher(isoLangMapper, thesaurusFinder);
         KeywordSearchParamsBuilder params = new KeywordSearchParamsBuilder(isoLangMapper)
-                .addLang("eng")
-                .maxResults(10);
+            .addLang("eng")
+            .maxResults(10);
         searcher.search(params.build());
         Element selectParams = new Element("params");
         Set<String> ids = new HashSet<String>();
@@ -523,8 +546,8 @@ public class KeywordsSearcherTest extends AbstractThesaurusBasedTest {
     public void testExistsResult() throws Exception {
         KeywordsSearcher searcher = new KeywordsSearcher(isoLangMapper, thesaurusFinder);
         KeywordSearchParamsBuilder params = new KeywordSearchParamsBuilder(isoLangMapper)
-                .addLang("eng")
-                .maxResults(10);
+            .addLang("eng")
+            .maxResults(10);
         searcher.search(params.build());
 
         assertEquals(2, searcher.getKeywordFromResultsById(2).getId());
@@ -556,13 +579,13 @@ public class KeywordsSearcherTest extends AbstractThesaurusBasedTest {
         KeywordsSearcher searcher = new KeywordsSearcher(isoLangMapper, thesaurusFinder);
         String searchTerm = "1";
         Element params = new Element("params").
-                addContent(new Element("pNewSearch").setText("true")).
-                addContent(new Element("pTypeSearch").setText("" + KeywordSearchType.CONTAINS.ordinal())).
-                addContent(new Element("pThesauri").setText(AllThesaurus.ALL_THESAURUS_KEY)).
-                addContent(new Element("pMode").setText("searchBox")).
-                addContent(new Element("maxResults").setText("10")).
-                addContent(new Element("pLanguage").setText("eng")).
-                addContent(new Element("pKeyword").setText(searchTerm));
+            addContent(new Element("pNewSearch").setText("true")).
+            addContent(new Element("pTypeSearch").setText("" + KeywordSearchType.CONTAINS.ordinal())).
+            addContent(new Element("pThesauri").setText(AllThesaurus.ALL_THESAURUS_KEY)).
+            addContent(new Element("pMode").setText("searchBox")).
+            addContent(new Element("maxResults").setText("10")).
+            addContent(new Element("pLanguage").setText("eng")).
+            addContent(new Element("pKeyword").setText(searchTerm));
         searcher.search("eng", params, KeywordSort.searchResultsSorter(searchTerm, SortDirection.DESC));
         List<KeywordBean> results = searcher.getResults();
         assertEquals(10, results.size());
@@ -595,7 +618,7 @@ public class KeywordsSearcherTest extends AbstractThesaurusBasedTest {
 
     private void assertStartsWith(List<KeywordBean> results, int i, String prefix) {
         assertTrue("Expected result at position " + i + " (" + results.get(i).getDefaultValue() + ") to start with 10_", results.get(i)
-                .getDefaultValue().startsWith(prefix));
+            .getDefaultValue().startsWith(prefix));
     }
 
 }

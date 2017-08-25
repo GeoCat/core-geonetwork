@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_mdview_service');
 
@@ -191,7 +214,7 @@
              gnSearchSettings, $q, gnMetadataManager) {
 
 
-      this.getFormatterUrl = function(fUrl, scope, uuid) {
+      this.getFormatterUrl = function(fUrl, scope, uuid, opt_url) {
         var url;
         var promiseMd;
         if (scope && scope.md) {
@@ -205,7 +228,7 @@
 
         return promiseMd.then(function(md) {
           if (angular.isString(fUrl)) {
-            url = fUrl + md.getUuid();
+            url = fUrl.replace('{{uuid}}', md.getUuid());
           }
           else if (angular.isFunction(fUrl)) {
             url = fUrl(md);
@@ -219,14 +242,18 @@
         });
       };
 
-      this.load = function(uuid, selector, scope) {
+      this.load = function(uuid, selector, scope, opt_url) {
         $rootScope.$broadcast('mdLoadingStart');
         var newscope = scope ? scope.$new() :
             angular.element($(selector)).scope().$new();
 
-        this.getFormatterUrl(gnSearchSettings.formatter.defaultUrl,
-            newscope, uuid).then(function(url) {
-          $http.get(url).then(function(response) {
+        this.getFormatterUrl(opt_url || gnSearchSettings.formatter.defaultUrl,
+            newscope, uuid, opt_url).then(function(url) {
+          $http.get(url, {
+            headers: {
+              Accept: 'text/html'
+            }
+          }).then(function(response) {
             $rootScope.$broadcast('mdLoadingEnd');
 
             var newscope = scope ? scope.$new() :

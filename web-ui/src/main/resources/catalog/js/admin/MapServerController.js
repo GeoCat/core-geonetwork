@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_mapserver_controller');
 
@@ -19,15 +42,13 @@
       $scope.mapserverSelected = null;
       $scope.mapserverUpdated = false;
       $scope.mapserverSearch = '';
-      $scope.operation = null;
+      $scope.isUpdate = null;
 
       function loadMapservers() {
         $scope.mapserverSelected = null;
-        $http.get('geoserver.publisher?_content_type=json&action=LIST')
-          .success(function(data) {
-              $scope.mapservers = data != 'null' ? data : [];
-            }).error(function(data) {
-              // TODO
+        $http.get('../api/mapservers')
+            .success(function(data) {
+              $scope.mapservers = data;
             });
       }
 
@@ -36,44 +57,44 @@
       };
 
       $scope.selectMapServer = function(v) {
-        $scope.operation = 'UPDATE_NODE';
+        $scope.isUpdate = true;
         $scope.mapserverUpdated = false;
         $scope.mapserverSelected = v;
       };
 
       $scope.addMapServer = function() {
-        $scope.operation = 'ADD_NODE';
+        $scope.isUpdate = false;
         $scope.mapserverSelected = {
           'id': '',
           'name': '',
           'description': '',
-          'adminUrl': '',
-          'wmsUrl': '',
-          'wfsUrl': '',
-          'wcsUrl': '',
-          'stylerUrl': '',
+          'configurl': '',
+          'wmsurl': '',
+          'wfsurl': '',
+          'wcsurl': '',
+          'stylerurl': '',
           'username': '',
           'password': '',
-          'namespaceUrl': '',
+          'namespace': '',
           'namespacePrefix': '',
           'pushStyleInWorkspace': ''
         };
       };
-      $scope.saveMapServer = function(formId) {
-
-        $http.get('geoserver.publisher?_content_type=json&action=' +
-            $scope.operation +
-            '&' + $(formId).serialize())
-          .success(function(data) {
+      $scope.saveMapServer = function() {
+        $http.put('../api/mapservers' +
+            ($scope.isUpdate ? '/' +
+            $scope.mapserverSelected.id : ''),
+            $scope.mapserverSelected)
+            .success(function(data) {
               loadMapservers();
               $rootScope.$broadcast('StatusUpdated', {
-                msg: $translate('mapserverUpdated'),
+                msg: $translate.instant('mapserverUpdated'),
                 timeout: 2,
                 type: 'success'});
             })
-          .error(function(data) {
+            .error(function(data) {
               $rootScope.$broadcast('StatusUpdated', {
-                title: $translate('mapserverUpdateError'),
+                title: $translate.instant('mapserverUpdateError'),
                 error: data,
                 timeout: 0,
                 type: 'danger'});
@@ -89,14 +110,13 @@
       };
 
       $scope.saveNewPassword = function() {
-        var params = {action: 'UPDATE_NODE_ACCOUNT',
-          id: $scope.mapserverSelected.id,
-          username: $scope.resetUsername,
-          password: $scope.resetPassword
-        };
-
-        $http.post('geoserver.publisher@json', null, {params: params})
-          .success(function(data) {
+        $http.post('../api/mapservers/' +
+            $scope.mapserverSelected.id + '/auth', null, {params:
+                  {
+                    username: $scope.resetUsername,
+                    password: $scope.resetPassword
+                  }})
+            .success(function(data) {
               $scope.resetPassword = null;
               $('#passwordResetModal').modal('hide');
             }).error(function(data) {
@@ -105,15 +125,14 @@
 
       };
       $scope.deleteMapServer = function() {
-        $http.get('geoserver.publisher?_content_type=json&action=' +
-            'REMOVE_NODE&id=' +
-                  $scope.mapserverSelected.id)
-          .success(function(data) {
+        $http.delete('../api/mapservers/' +
+            $scope.mapserverSelected.id)
+            .success(function(data) {
               loadMapservers();
             })
-          .error(function(data) {
+            .error(function(data) {
               $rootScope.$broadcast('StatusUpdated', {
-                title: $translate('mapserverDeleteError'),
+                title: $translate.instant('mapserverDeleteError'),
                 error: data,
                 timeout: 0,
                 type: 'danger'});

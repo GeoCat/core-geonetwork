@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.domain;
 
 import org.fao.geonet.entitylistener.AbstractEntityListenerManager;
@@ -8,8 +31,8 @@ import javax.persistence.*;
 /**
  * An entity that represents a status change of a metadata.
  * <p/>
- * Note: I am not the author of metadata status, but it appears that this tracks the history as well since the Id consists of the User,
- * date, metadata and statusvalue of the metadata status change.
+ * Note: I am not the author of metadata status, but it appears that this tracks the history as well
+ * since the Id consists of the User, date, metadata and statusvalue of the metadata status change.
  *
  * @author Jesse
  */
@@ -18,7 +41,6 @@ import javax.persistence.*;
 @Table(name = "MetadataStatus")
 @EntityListeners(MetadataStatus.EntityListener.class)
 public class MetadataStatus extends GeonetEntity {
-    public static class EntityListener extends AbstractEntityListenerManager<MetadataStatus> {}
     /**
      * The Root element of the xml returned by {@link #getAsXml}.
      */
@@ -43,7 +65,6 @@ public class MetadataStatus extends GeonetEntity {
      * One of the child elements of the xml returned by {@link #getAsXml}.
      */
     public static final String EL_NAME = "name";
-
     private MetadataStatusId id = new MetadataStatusId();
     private String changeMessage;
     private StatusValue statusValue;
@@ -68,7 +89,8 @@ public class MetadataStatus extends GeonetEntity {
     }
 
     /**
-     * Get the change message, the message that describes the change in status. It is application specific.
+     * Get the change message, the message that describes the change in status. It is application
+     * specific.
      *
      * @return the change message
      */
@@ -78,7 +100,8 @@ public class MetadataStatus extends GeonetEntity {
     }
 
     /**
-     * Set the change message, the message that describes the change in status. It is application specific.
+     * Set the change message, the message that describes the change in status. It is application
+     * specific.
      *
      * @param changeMessage the change message
      */
@@ -101,10 +124,13 @@ public class MetadataStatus extends GeonetEntity {
     @Transient
     public Element getAsXml() {
         return new Element(EL_METADATA_STATUS)
-                .addContent(new Element(EL_STATUS_ID).setText(String.valueOf(getId().getStatusId())))
-                .addContent(new Element(EL_USER_ID).setText(String.valueOf(getId().getUserId())))
-                .addContent(new Element(EL_CHANGE_DATE).setText(getId().getChangeDate().getDateAndTime()))
-                .addContent(new Element(EL_CHANGE_MESSAGE).setText(getChangeMessage()))
-                .addContent(new Element(EL_NAME).setText(getStatusValue().getName()));
+            .addContent(new Element(EL_STATUS_ID).setText(String.valueOf(getId().getStatusId())))
+            .addContent(new Element(EL_USER_ID).setText(String.valueOf(getId().getUserId())))
+            .addContent(new Element(EL_CHANGE_DATE).setText(getId().getChangeDate().getDateAndTime()))
+            .addContent(new Element(EL_CHANGE_MESSAGE).setText(getChangeMessage()))
+            .addContent(new Element(EL_NAME).setText(getStatusValue().getName()));
+    }
+
+    public static class EntityListener extends AbstractEntityListenerManager<MetadataStatus> {
     }
 }

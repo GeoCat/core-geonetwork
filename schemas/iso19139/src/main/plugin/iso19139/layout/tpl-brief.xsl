@@ -1,25 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2001-2016 Food and Agriculture Organization of the
+  ~ United Nations (FAO-UN), United Nations World Food Programme (WFP)
+  ~ and United Nations Environment Programme (UNEP)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation; either version 2 of the License, or (at
+  ~ your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but
+  ~ WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~ General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+  ~
+  ~ Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+  ~ Rome - Italy. email: geonetwork@osgeo.org
+  -->
+
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:gmd="http://www.isotc211.org/2005/gmd"
-  xmlns:gco="http://www.isotc211.org/2005/gco"
-  xmlns:srv="http://www.isotc211.org/2005/srv"
-  xmlns:gmx="http://www.isotc211.org/2005/gmx"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:gml="http://www.opengis.net/gml"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:gn="http://www.fao.org/geonetwork"
-  xmlns:gn-fn-core="http://geonetwork-opensource.org/xsl/functions/core"
-  xmlns:gn-fn-iso19139="http://geonetwork-opensource.org/xsl/functions/profiles/iso19139"
-  xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="#all" version="2.0">
+                xmlns:gmd="http://www.isotc211.org/2005/gmd"
+                xmlns:gco="http://www.isotc211.org/2005/gco"
+                xmlns:srv="http://www.isotc211.org/2005/srv"
+                xmlns:gmx="http://www.isotc211.org/2005/gmx"
+                xmlns:gml="http://www.opengis.net/gml"
+                xmlns:gn="http://www.fao.org/geonetwork"
+                xmlns:gn-fn-core="http://geonetwork-opensource.org/xsl/functions/core"
+                xmlns:gn-fn-iso19139="http://geonetwork-opensource.org/xsl/functions/profiles/iso19139"
+                exclude-result-prefixes="#all"
+                version="2.0">
 
   <xsl:include href="utility-fn.xsl"/>
   <xsl:include href="utility-tpl.xsl"/>
-  
+
   <!-- ===================================================================== -->
   <!-- === iso19139 brief formatting === -->
   <!-- ===================================================================== -->
   <xsl:template mode="superBrief" match="gmd:MD_Metadata|*[@gco:isoType='gmd:MD_Metadata']"
-    priority="2">
+                priority="2">
     <xsl:variable name="langId" select="gn-fn-iso19139:getLangId(., $lang)"/>
 
     <id>
@@ -30,7 +52,7 @@
     </uuid>
     <title>
       <xsl:apply-templates mode="localised"
-        select="gmd:identificationInfo/*/gmd:citation/*/gmd:title">
+                           select="gmd:identificationInfo/*/gmd:citation/*/gmd:title">
         <xsl:with-param name="langId" select="$langId"/>
       </xsl:apply-templates>
     </title>
@@ -62,7 +84,7 @@
     </xsl:if>
 
     <xsl:variable name="langId" select="gn-fn-iso19139:getLangId(., $lang)"/>
-    
+
     <xsl:apply-templates mode="briefster" select="gmd:identificationInfo/*">
       <xsl:with-param name="id" select="$id"/>
       <xsl:with-param name="langId" select="$langId"/>
@@ -98,7 +120,7 @@
           <xsl:attribute name="name" select="$name"/>
           <xsl:attribute name="protocol" select="$protocol"/>
           <xsl:attribute name="type"
-            select="gn-fn-core:protocolMimeType($linkage, $protocol, $mimeType)"/>
+                         select="gn-fn-core:protocolMimeType($linkage, $protocol, $mimeType)"/>
         </xsl:element>
 
       </xsl:if>
@@ -187,11 +209,11 @@
       </xsl:choose>
 
 
-      <!-- 
+      <!--
           Internal category could be define using different informations
         in a metadata record (according to standard). This could be improved.
         This type of categories could be added to Lucene index also in order
-        to be queriable. 
+        to be queriable.
         Services and datasets are at least the required internal categories
         to be distinguished for INSPIRE requirements (hierarchyLevel could be
         use also). TODO
@@ -297,11 +319,11 @@
       <temporalExtent>
         <begin>
           <xsl:apply-templates mode="brieftime"
-            select="gml:beginPosition|gml:begin/gml:TimeInstant/gml:timePosition"/>
+                               select="gml:beginPosition|gml:begin/gml:TimeInstant/gml:timePosition"/>
         </begin>
         <end>
           <xsl:apply-templates mode="brieftime"
-            select="gml:endPosition|gml:end/gml:TimeInstant/gml:timePosition"/>
+                               select="gml:endPosition|gml:end/gml:TimeInstant/gml:timePosition"/>
         </end>
       </temporalExtent>
     </xsl:for-each>
@@ -333,7 +355,7 @@
                       </image>
                     </xsl:when>
                     <xsl:otherwise>
-                      <!-- When harvested, thumbnail is stored in local node (eg. ogcwxs). 
+                      <!-- When harvested, thumbnail is stored in local node (eg. ogcwxs).
                         Only GeoNetHarvester set smallThumbnail elements.
                         -->
                       <image type="thumbnail">

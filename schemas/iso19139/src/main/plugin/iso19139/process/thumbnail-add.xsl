@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco"
-  xmlns:geonet="http://www.fao.org/geonetwork" exclude-result-prefixes="#all" version="2.0">
+<!--
+  ~ Copyright (C) 2001-2016 Food and Agriculture Organization of the
+  ~ United Nations (FAO-UN), United Nations World Food Programme (WFP)
+  ~ and United Nations Environment Programme (UNEP)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation; either version 2 of the License, or (at
+  ~ your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but
+  ~ WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~ General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+  ~
+  ~ Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+  ~ Rome - Italy. email: geonetwork@osgeo.org
+  -->
 
-  <!-- 
-      Usage: 
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:gmd="http://www.isotc211.org/2005/gmd"
+                xmlns:gco="http://www.isotc211.org/2005/gco"
+                xmlns:geonet="http://www.fao.org/geonetwork" exclude-result-prefixes="#all"
+                version="2.0">
+
+  <!--
+      Usage:
         thumbnail-from-url-add?thumbnail_url=http://geonetwork.org/thumbnails/image.png
     -->
 
@@ -13,6 +38,10 @@
   <!-- Element to use for the file name. -->
   <xsl:param name="thumbnail_desc" select="''"/>
   <xsl:param name="thumbnail_type" select="''"/>
+
+  <!-- Target element to update. The key is based on the concatenation
+  of URL+Name -->
+  <xsl:param name="updateKey"/>
 
   <xsl:template match="gmd:MD_DataIdentification|*[@gco:isoType='gmd:MD_DataIdentification']">
     <xsl:copy>
@@ -25,7 +54,9 @@
       <xsl:apply-templates select="gmd:pointOfContact"/>
       <xsl:apply-templates select="gmd:resourceMaintenance"/>
 
-      <xsl:call-template name="fill"/>
+      <xsl:if test="$updateKey = ''">
+        <xsl:call-template name="fill"/>
+      </xsl:if>
 
       <xsl:apply-templates select="gmd:graphicOverview"/>
 
@@ -42,19 +73,26 @@
       <xsl:apply-templates select="gmd:environmentDescription"/>
       <xsl:apply-templates select="gmd:extent"/>
       <xsl:apply-templates select="gmd:supplementalInformation"/>
-
     </xsl:copy>
   </xsl:template>
+
+
+  <xsl:template match="gmd:graphicOverview[concat(
+                          */gmd:fileName/gco:CharacterString,
+                          */gmd:fileDescription/gco:CharacterString) = normalize-space($updateKey)]">
+    <xsl:call-template name="fill"/>
+  </xsl:template>
+
 
   <xsl:template name="fill">
     <xsl:if test="$thumbnail_url != ''">
 
       <xsl:variable name="useOnlyPTFreeText"
                     select="count(//*[gmd:PT_FreeText and
-                                      not(gco:CharacterString)]) > 0" />
+                                      not(gco:CharacterString)]) > 0"/>
       <xsl:variable name="separator" select="'\|'"/>
       <xsl:variable name="mainLang"
-                    select="//gmd:MD_Metadata/gmd:language/gmd:LanguageCode/@codeListValue" />
+                    select="//gmd:MD_Metadata/gmd:language/gmd:LanguageCode/@codeListValue"/>
 
       <gmd:graphicOverview>
         <gmd:MD_BrowseGraphic>
@@ -85,13 +123,17 @@
 
                   <gmd:PT_FreeText>
                     <xsl:for-each select="tokenize($thumbnail_desc, $separator)">
-                      <xsl:variable name="nameLang" select="substring-before(., '#')"></xsl:variable>
-                      <xsl:variable name="nameValue" select="substring-after(., '#')"></xsl:variable>
+                      <xsl:variable name="nameLang"
+                                    select="substring-before(., '#')"></xsl:variable>
+                      <xsl:variable name="nameValue"
+                                    select="substring-after(., '#')"></xsl:variable>
 
                       <xsl:if test="$useOnlyPTFreeText = true() or
                                     $nameLang != $mainLang">
                         <gmd:textGroup>
-                          <gmd:LocalisedCharacterString locale="{concat('#', $nameLang)}"><xsl:value-of select="$nameValue" /></gmd:LocalisedCharacterString>
+                          <gmd:LocalisedCharacterString locale="{concat('#', $nameLang)}">
+                            <xsl:value-of select="$nameValue"/>
+                          </gmd:LocalisedCharacterString>
                         </gmd:textGroup>
                       </xsl:if>
                     </xsl:for-each>

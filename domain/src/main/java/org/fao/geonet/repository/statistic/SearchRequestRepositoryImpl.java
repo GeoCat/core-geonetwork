@@ -1,7 +1,31 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.repository.statistic;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+
 import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.domain.ISODate_;
 import org.fao.geonet.domain.Pair;
@@ -12,6 +36,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
@@ -31,9 +56,7 @@ import javax.persistence.metamodel.SingularAttribute;
 /**
  * Implementation for the custom search methods of {@link org.fao.geonet.repository.statistic.SearchRequestParamRepositoryCustom}.
  * <p/>
- * User: Jesse
- * Date: 9/29/13
- * Time: 7:42 PM
+ * User: Jesse Date: 9/29/13 Time: 7:42 PM
  */
 public class SearchRequestRepositoryImpl implements SearchRequestRepositoryCustom {
     static final String[] TERMS_TO_EXCLUDE_FROM_TAG_CLOUD;
@@ -84,9 +107,9 @@ public class SearchRequestRepositoryImpl implements SearchRequestRepositoryCusto
         }
         final CompoundSelection<Tuple> selection = cb.tuple(requestDateByType, cb.count(requestRoot));
         cbQuery.select(selection)
-                .where(whereClause)
-                .groupBy(requestDateByType)
-                .orderBy(cb.desc(requestDateByType));
+            .where(whereClause)
+            .groupBy(requestDateByType)
+            .orderBy(cb.desc(requestDateByType));
 
         final TypedQuery<Tuple> query = _EntityManager.createQuery(cbQuery);
         List<Tuple> stats = query.getResultList();
@@ -106,7 +129,7 @@ public class SearchRequestRepositoryImpl implements SearchRequestRepositoryCusto
 
     @Override
     public <T> List<Pair<T, Integer>> getHitSummary(Specification<SearchRequest> spec, PathSpec<SearchRequest, T> groupingPath, Sort
-            .Direction direction) {
+        .Direction direction) {
         final CriteriaBuilder cb = _EntityManager.getCriteriaBuilder();
         final CriteriaQuery<Tuple> query = cb.createTupleQuery();
         Root<SearchRequest> root = query.from(SearchRequest.class);
@@ -127,9 +150,9 @@ public class SearchRequestRepositoryImpl implements SearchRequestRepositoryCusto
         }
 
         query.select(cb.tuple(path, cb.count(root)))
-                .where(predicate)
-                .groupBy(path)
-                .orderBy(order);
+            .where(predicate)
+            .groupBy(path)
+            .orderBy(order);
 
         return Lists.transform(_EntityManager.createQuery(query).getResultList(), new Function<Tuple, Pair<T, Integer>>() {
             @Nullable

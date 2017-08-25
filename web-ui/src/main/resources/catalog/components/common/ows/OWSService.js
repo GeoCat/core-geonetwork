@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_ows_service');
 
@@ -15,7 +38,7 @@
           var result = parser.read(data);
 
           var layers = [];
-          var url = result.Capability.Request.GetCapabilities.
+          var url = result.Capability.Request.GetMap.
               DCPType[0].HTTP.Get.OnlineResource;
 
           // Push all leaves into a flat array of Layers.
@@ -49,6 +72,7 @@
           getFlatLayers(result.Capability.Layer);
           setLayerAsArray(result.Capability);
           result.Capability.layers = layers;
+          result.Capability.version = result.version;
           return result.Capability;
         };
 
@@ -93,19 +117,17 @@
 
               //send request and decode result
               if (gnUrlUtils.isValid(url)) {
-                var proxyUrl = gnGlobalSettings.proxyUrl +
-                    encodeURIComponent(url);
-                $http.get(proxyUrl, {
+                $http.get(url, {
                   cache: true
                 })
-                  .success(function(data) {
+                    .success(function(data) {
                       try {
                         defer.resolve(displayFileContent(data));
                       } catch (e) {
                         defer.reject('capabilitiesParseError');
                       }
                     })
-                  .error(function(data, status) {
+                    .error(function(data, status) {
                       defer.reject(status);
                     });
               }
@@ -123,9 +145,7 @@
 
               if (gnUrlUtils.isValid(url)) {
 
-                var proxyUrl = gnGlobalSettings.proxyUrl +
-                    encodeURIComponent(url);
-                $http.get(proxyUrl, {
+                $http.get(url, {
                   cache: true
                 })
                     .success(function(data, status, headers, config) {
@@ -148,15 +168,20 @@
             //var olExtent = [ext[1],ext[0],ext[3],ext[2]];
             // TODO fix using layer.BoundingBox[0].extent
             // when sextant fix his capabilities
-            if (angular.isArray(layer.EX_GeographicBoundingBox)) {
-              extent =
-                  ol.extent.containsExtent(
-                      proj.getWorldExtent(),
-                      layer.EX_GeographicBoundingBox) ?
-                      ol.proj.transformExtent(layer.EX_GeographicBoundingBox,
-                          'EPSG:4326', proj) :
-                      proj.getExtent();
 
+            var bboxProp;
+            ['EX_GeographicBoundingBox', 'WGS84BoundingBox'].forEach(
+                function(prop) {
+                  if (angular.isArray(layer[prop])) {
+                    bboxProp = layer[prop];
+                  }
+                });
+
+            if (bboxProp) {
+              extent = ol.extent.containsExtent(proj.getWorldExtent(),
+                      bboxProp) ?
+                      ol.proj.transformExtent(bboxProp, 'EPSG:4326', proj) :
+                      proj.getExtent();
             } else if (angular.isArray(layer.BoundingBox)) {
               for (var i = 0; i < layer.BoundingBox.length; i++) {
                 var bbox = layer.BoundingBox[i];
@@ -185,8 +210,11 @@
 
             for (var i = 0, len = layers.length; i < len; i++) {
               //check layername
-              if (name == layers[i].Name) {
+              if (name == layers[i].Name || name == layers[i].Identifier) {
                 layers[i].nameToUse = name;
+                if (capObj.version) {
+                  layers[i].version = capObj.version;
+                }
                 return layers[i];
               }
 
@@ -216,6 +244,9 @@
 
             //FIXME: allow multiple, remove duplicates
             if (needles.length > 0) {
+              if (capObj.version) {
+                needles[0].version = capObj.version;
+              }
               return needles[0];
             }
             else {

@@ -1,6 +1,30 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.domain.statistic;
 
 import com.google.common.base.Optional;
+
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.*;
 
@@ -19,9 +43,9 @@ public enum LuceneQueryParamType {
             if (query instanceof TermQuery) {
                 final TermQuery termQuery = (TermQuery) query;
                 SearchRequestParam param = new SearchRequestParam()
-                        .setTermField(termQuery.getTerm().field())
-                        .setTermText(termQuery.getTerm().text())
-                        .setQueryType(this);
+                    .setTermField(termQuery.getTerm().field())
+                    .setTermText(termQuery.getTerm().text())
+                    .setQueryType(this);
 
                 return Optional.of(param);
             } else {
@@ -35,10 +59,10 @@ public enum LuceneQueryParamType {
             if (query instanceof FuzzyQuery) {
                 final FuzzyQuery fuzzyQuery = (FuzzyQuery) query;
                 SearchRequestParam param = new SearchRequestParam()
-                        .setTermField(fuzzyQuery.getTerm().field())
-                        .setTermText(fuzzyQuery.getTerm().text())
-                        .setQueryType(this)
-                        .setSimilarity(((double) fuzzyQuery.getMaxEdits() - 1) / 10);
+                    .setTermField(fuzzyQuery.getTerm().field())
+                    .setTermText(fuzzyQuery.getTerm().text())
+                    .setQueryType(this)
+                    .setSimilarity(((double) fuzzyQuery.getMaxEdits() - 1) / 10);
 
                 return Optional.of(param);
             } else {
@@ -53,9 +77,9 @@ public enum LuceneQueryParamType {
                 String field = prefixQuery.getPrefix().field();
                 String text = prefixQuery.getPrefix().text();
                 SearchRequestParam param = new SearchRequestParam()
-                        .setTermField(field)
-                        .setTermText(text)
-                        .setQueryType(this);
+                    .setTermField(field)
+                    .setTermText(text)
+                    .setQueryType(this);
 
                 return Optional.of(param);
             } else {
@@ -73,9 +97,9 @@ public enum LuceneQueryParamType {
                 String fields = concatTermsField(terms.toArray(new Term[terms.size()]), null);
                 String texts = concatTermsText(new Term[terms.size()], null);
                 SearchRequestParam param = new SearchRequestParam()
-                        .setTermField(fields)
-                        .setTermText(texts)
-                        .setQueryType(this);
+                    .setTermField(fields)
+                    .setTermText(texts)
+                    .setQueryType(this);
 
                 return Optional.of(param);
             } else {
@@ -90,9 +114,9 @@ public enum LuceneQueryParamType {
                 String field = wildcardQuery.getTerm().field();
                 String text = wildcardQuery.getTerm().text();
                 SearchRequestParam param = new SearchRequestParam()
-                        .setTermField(field)
-                        .setTermText(text)
-                        .setQueryType(this);
+                    .setTermField(field)
+                    .setTermText(text)
+                    .setQueryType(this);
 
                 return Optional.of(param);
             } else {
@@ -108,9 +132,9 @@ public enum LuceneQueryParamType {
                 String fields = concatTermsField(terms, null);
                 String texts = concatTermsText(terms, null);
                 SearchRequestParam param = new SearchRequestParam()
-                        .setTermField(fields)
-                        .setTermText(texts)
-                        .setQueryType(this);
+                    .setTermField(fields)
+                    .setTermText(texts)
+                    .setQueryType(this);
 
                 return Optional.of(param);
             } else {
@@ -146,9 +170,9 @@ public enum LuceneQueryParamType {
                 NumericRangeQuery<?> numericRangeQuery = (NumericRangeQuery<?>) query;
 
                 SearchRequestParam param = new SearchRequestParam()
-                        .setLowerText(numericRangeQuery.getMin().toString())
-                        .setUpperText(numericRangeQuery.getMax().toString())
-                        .setTermField(numericRangeQuery.getField());
+                    .setLowerText(numericRangeQuery.getMin().toString())
+                    .setUpperText(numericRangeQuery.getMax().toString())
+                    .setTermField(numericRangeQuery.getField());
 
                 return Optional.of(param);
             } else {
@@ -157,9 +181,6 @@ public enum LuceneQueryParamType {
         }
 
     };
-
-    protected abstract Optional<SearchRequestParam> createTypeFrom(Query query);
-
 
     public static Optional<SearchRequestParam> createRequestParam(Query query) {
         for (LuceneQueryParamType luceneQueryParamType : values()) {
@@ -172,7 +193,6 @@ public enum LuceneQueryParamType {
 
         return Optional.absent();
     }
-
 
     /**
      * Concatenates the given terms' fields into a single String, with the given separator.
@@ -213,4 +233,6 @@ public enum LuceneQueryParamType {
         }
         return sb.toString();
     }
+
+    protected abstract Optional<SearchRequestParam> createTypeFrom(Query query);
 }

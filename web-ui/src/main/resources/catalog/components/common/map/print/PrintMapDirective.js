@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_printmap_directive');
 
@@ -39,7 +62,9 @@
           layouts: data.layouts,
           dpi: data.dpis[1],
           scales: data.scales,
-          scale: data.scales[5]
+          scale: data.scales[5],
+          formats: data.outputFormats,
+          format: data.outputFormats[0]
         };
       });
       return http;
@@ -79,7 +104,9 @@
           if (angular.isFunction(deregister[i])) {
             deregister[i]();
           } else {
-            deregister[i].src.unByKey(deregister[i]);
+            // FIXME
+            var src = deregister[i].src || deregister[i].target;
+            src.unByKey(deregister[i]);
           }
         }
       }
@@ -171,7 +198,7 @@
       // http://mapfish.org/doc/print/protocol.html#print-pdf
       var view = $scope.map.getView();
       var proj = view.getProjection();
-      var lang = $translate.uses();
+      var lang = $translate.use();
       var defaultPage = {
         comment: $scope.mapComment || '',
         title: $scope.mapTitle || ''
@@ -217,9 +244,13 @@
         rotation: -((view.getRotation() * 180.0) / Math.PI),
         lang: lang,
         dpi: $scope.config.dpi.value,
+        outputFormat: $scope.config.format.name,
         layers: encLayers,
         legends: encLegends,
-        enableLegends: $scope.enableLegends,
+        enableLegends: $scope.enableLegends && encLegends ? true : false,
+        hasTitle: $scope.mapTitle ? true : false,
+        hasNoTitle: $scope.mapTitle ? false : true,
+        hasAttribution: !!attributions.length,
         pages: [
           angular.extend({
             center: gnPrint.getPrintRectangleCenterCoord(

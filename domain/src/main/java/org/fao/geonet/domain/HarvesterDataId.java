@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.domain;
 
 import com.vividsolutions.jts.util.Assert;
@@ -6,6 +29,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+
 import java.io.Serializable;
 
 /**
@@ -31,7 +55,8 @@ public class HarvesterDataId implements Serializable {
     /**
      * The uuid of the harvester that the {@link org.fao.geonet.domain.HarvesterData} belongs to.
      *
-     * @return uuid of the harvester that the {@link org.fao.geonet.domain.HarvesterData} belongs to.
+     * @return uuid of the harvester that the {@link org.fao.geonet.domain.HarvesterData} belongs
+     * to.
      */
     public String getHarvesterUuid() {
         return harvesterUuid;
@@ -39,7 +64,9 @@ public class HarvesterDataId implements Serializable {
 
     /**
      * Set uuid of the harvester that the {@link org.fao.geonet.domain.HarvesterData} belongs to.
-     * @param harvesterUuid uuid of the harvester that the {@link org.fao.geonet.domain.HarvesterData} belongs to.
+     *
+     * @param harvesterUuid uuid of the harvester that the {@link org.fao.geonet.domain.HarvesterData}
+     *                      belongs to.
      */
     public void setHarvesterUuid(String harvesterUuid) {
         this.harvesterUuid = harvesterUuid;
@@ -50,15 +77,17 @@ public class HarvesterDataId implements Serializable {
      *
      * @return the key.
      */
+    @Column(name = "keyvalue", nullable = false, length = 255)
     public String getKey() {
         return key;
     }
 
     /**
-     * Set the key identifying the data entity (within the scope of the harvester).  Max length is 255
-     * @param key  identifying the data entity (within the scope of the harvester).
+     * Set the key identifying the data entity (within the scope of the harvester).  Max length is
+     * 255
+     *
+     * @param key identifying the data entity (within the scope of the harvester).
      */
-    @Column(nullable = false, length = 255)
     public void setKey(String key) {
         Assert.isTrue(key.length() <= 255);
         this.key = key;
@@ -87,8 +116,8 @@ public class HarvesterDataId implements Serializable {
     @Override
     public String toString() {
         return "ID {" +
-               "harvesterUuid='" + harvesterUuid + '\'' +
-               ", key='" + key + '\'' +
-               '}';
+            "harvesterUuid='" + harvesterUuid + '\'' +
+            ", key='" + key + '\'' +
+            '}';
     }
 }

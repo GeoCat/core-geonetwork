@@ -1,33 +1,65 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.monitor.service;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.fao.geonet.api.API;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
 import java.util.HashSet;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Services related to thread monitoring and activity.
  *
  * @author Jesse on 2/4/2015.
  */
+@RequestMapping(value = {
+    "/api/site/threads",
+    "/api/" + API.VERSION_0_1 + "/site/threads"
+})
 @Controller("/thread")
 public class Threads {
-    @RequestMapping(value = "/{lang}/thread/status", produces = {
-            MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(
+        value = "/status",
+        produces = {
+            MediaType.APPLICATION_XML_VALUE,
+            MediaType.APPLICATION_JSON_VALUE
+        })
     @ResponseBody
     public ThreadResponse status() {
         ThreadMXBean bean = ManagementFactory.getThreadMXBean();
@@ -58,8 +90,12 @@ public class Threads {
         return response;
     }
 
-    @RequestMapping(value = "/{lang}/thread/trace/{threadid}", produces = {
-            MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(
+        value = "/trace/{threadid}",
+        produces = {
+            MediaType.APPLICATION_XML_VALUE,
+            MediaType.APPLICATION_JSON_VALUE
+        })
     @ResponseBody
     public StackTrace trace(@PathVariable String threadid) {
         ThreadMXBean bean = ManagementFactory.getThreadMXBean();
@@ -68,12 +104,16 @@ public class Threads {
     }
 
 
-    @RequestMapping(value = "/{lang}/thread/debugging/{contention}/{enablement}", produces = {
-            MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(
+        value = "/debugging/{contention}/{enablement}",
+        produces = {
+            MediaType.APPLICATION_XML_VALUE,
+            MediaType.APPLICATION_JSON_VALUE
+        })
     @ResponseBody
     public ThreadResponse debugging(
-            @PathVariable(value = "contention") boolean threadContentionMonitoring,
-            @PathVariable boolean enablement) {
+        @PathVariable(value = "contention") boolean threadContentionMonitoring,
+        @PathVariable boolean enablement) {
         ThreadMXBean bean = ManagementFactory.getThreadMXBean();
 
         if (threadContentionMonitoring && bean.isThreadContentionMonitoringSupported()) {
@@ -87,16 +127,16 @@ public class Threads {
     }
 
 
-    @XmlRootElement(name = "response")
+    @XmlRootElement(name = "threads")
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class ThreadResponse implements Serializable {
 
-        @XmlElement(name = "thread")
-        private List<ThreadDetail> threads = Lists.newArrayList();
         public boolean threadContentionMonitoringEnabled;
         public boolean threadContentionMonitoringSupported;
         public boolean threadCpuTimeSupported;
         public boolean threadCpuTimeEnabled;
+        @XmlElement(name = "thread")
+        private List<ThreadDetail> threads = Lists.newArrayList();
 
         public boolean isThreadContentionMonitoringEnabled() {
             return threadContentionMonitoringEnabled;
@@ -118,6 +158,7 @@ public class Threads {
             return threads;
         }
     }
+
     @XmlRootElement(name = "thread")
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class ThreadDetail implements Serializable {
@@ -149,6 +190,7 @@ public class Threads {
             this.waitTime = -1;
             this.blockedTime = -1;
         }
+
         public ThreadDetail(ThreadInfo threadInfo, long userTime, long cpuTime, boolean isDeadlocked) {
             this.name = threadInfo.getThreadName();
             this.id = threadInfo.getThreadId();
@@ -202,6 +244,7 @@ public class Threads {
         private StackTrace() {
             stackTrace = "";
         }
+
         private StackTrace(StackTraceElement[] stackTrace) {
             StringBuilder builder = new StringBuilder();
             for (StackTraceElement element : stackTrace) {

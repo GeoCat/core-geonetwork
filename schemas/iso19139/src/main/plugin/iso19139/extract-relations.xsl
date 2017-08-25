@@ -1,77 +1,140 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
+  ~ Copyright (C) 2001-2016 Food and Agriculture Organization of the
+  ~ United Nations (FAO-UN), United Nations World Food Programme (WFP)
+  ~ and United Nations Environment Programme (UNEP)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation; either version 2 of the License, or (at
+  ~ your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but
+  ~ WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~ General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+  ~
+  ~ Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+  ~ Rome - Italy. email: geonetwork@osgeo.org
+  -->
+
+<!--
   Create a simple XML tree for relation description.
   <relations>
     <relation type="related|services|children">
       + super-brief representation.
 -->
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco"
-  xmlns:gmx="http://www.isotc211.org/2005/gmx"
-  xmlns:geonet="http://www.fao.org/geonetwork"
-  xmlns:util="java:org.fao.geonet.util.XslUtil"
-  xmlns:exslt="http://exslt.org/common"
-  xmlns:gn-fn-rel="http://geonetwork-opensource.org/xsl/functions/relations"
-  exclude-result-prefixes="gn-fn-rel geonet exslt gmd gco">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:gmd="http://www.isotc211.org/2005/gmd"
+                xmlns:gco="http://www.isotc211.org/2005/gco"
+                xmlns:util="java:org.fao.geonet.util.XslUtil"
+                xmlns:gn-fn-rel="http://geonetwork-opensource.org/xsl/functions/relations"
+                version="2.0"
+                exclude-result-prefixes="#all">
 
-  <xsl:include href="../iso19139/convert/functions.xsl" />
+  <xsl:include href="../iso19139/convert/functions.xsl"/>
 
   <xsl:function name="gn-fn-rel:translate">
     <xsl:param name="el"/>
     <xsl:param name="lang"/>
     <xsl:choose>
-      <xsl:when test="$el/gco:CharacterString!=''"><xsl:value-of select="$el/gco:CharacterString"/></xsl:when>
-      <xsl:when test="($el/gmd:PT_FreeText//gmd:LocalisedCharacterString[@locale = $lang][text() != ''])[1]">
-        <xsl:value-of select="($el/gmd:PT_FreeText//gmd:LocalisedCharacterString[@locale = $lang][text() != ''])[1]"/>
+      <xsl:when test="$el/gco:CharacterString!=''">
+        <xsl:value-of select="$el/gco:CharacterString"/>
       </xsl:when>
-      <xsl:otherwise><xsl:value-of select="($el/gmd:PT_FreeText//gmd:LocalisedCharacterString[text() != ''])[1]"/></xsl:otherwise>
+      <xsl:when
+        test="($el/gmd:PT_FreeText//gmd:LocalisedCharacterString[@locale = $lang][text() != ''])[1]">
+        <xsl:value-of
+          select="($el/gmd:PT_FreeText//gmd:LocalisedCharacterString[@locale = $lang][text() != ''])[1]"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of
+          select="($el/gmd:PT_FreeText//gmd:LocalisedCharacterString[text() != ''])[1]"/>
+      </xsl:otherwise>
     </xsl:choose>
   </xsl:function>
+
+  <!-- Convert an element gco:CharacterString
+  to the GN localized string structure -->
+  <xsl:template mode="get-iso19139-localized-string" match="*">
+    <xsl:for-each select="gco:CharacterString|
+                          gmd:PT_FreeText/*/gmd:LocalisedCharacterString">
+      <xsl:variable name="localeId"
+                    select="substring-after(@locale, '#')"/>
+      <xsl:variable name="mainLanguage"
+                    select="ancestor::gmd:MD_Metadata/gmd:language/*/@codeListValue"/>
+      <value lang="{if (@locale)
+                  then ancestor::gmd:MD_Metadata/gmd:locale/*[@id = $localeId]/gmd:languageCode/*/@codeListValue
+                  else if ($mainLanguage) then $mainLanguage else $lang}">
+        <xsl:value-of select="."/>
+      </value>
+    </xsl:for-each>
+  </xsl:template>
 
   <!-- Relation contained in the metadata record has to be returned
   It could be document or thumbnails
   -->
-  <xsl:template mode="relation" match="metadata[gmd:MD_Metadata or *[contains(@gco:isoType, 'MD_Metadata')]]" priority="99">
+  <xsl:template mode="relation"
+                match="metadata[gmd:MD_Metadata or *[contains(@gco:isoType, 'MD_Metadata')]]"
+                priority="99">
 
-    <xsl:for-each select="*/descendant::*[name(.) = 'gmd:graphicOverview']/*">
-      <relation type="thumbnail">
-        <id><xsl:value-of select="gmd:fileName/gco:CharacterString"/></id>
-        <title><xsl:value-of select="gmd:fileDescription/gco:CharacterString"/></title>
-      </relation>
-    </xsl:for-each>
+    <xsl:if test="count(*/descendant::*[name(.) = 'gmd:graphicOverview']/*) > 0">
+      <thumbnails>
+        <xsl:for-each select="*/descendant::*[name(.) = 'gmd:graphicOverview']/*">
+          <item>
+            <id>
+              <xsl:value-of select="gmd:fileName/gco:CharacterString"/>
+            </id>
+            <url>
+              <xsl:value-of select="gmd:fileName/gco:CharacterString"/>
+            </url>
+            <title>
+              <xsl:apply-templates mode="get-iso19139-localized-string"
+                                   select="gmd:fileDescription"/>
+            </title>
+            <type>thumbnail</type>
+          </item>
+        </xsl:for-each>
+      </thumbnails>
+    </xsl:if>
 
-    <xsl:for-each select="*/descendant::*[name(.) = 'gmd:onLine']/*[gmd:linkage/gmd:URL!='']">
-      <relation type="onlinesrc">
-        <xsl:variable name="langCode">
-          <xsl:value-of select="concat('#', upper-case(util:twoCharLangCode($lang, 'EN')))"/>
-        </xsl:variable>
-        <xsl:variable name="url" select="gmd:linkage/gmd:URL" />
-        <!-- Compute title based on online source info-->
-        <xsl:variable name="title">
-          <xsl:variable name="title" select="''"/>
-          <xsl:value-of select="if ($title = '' and ../@uuidref) then ../@uuidref else $title"/><xsl:text> </xsl:text>
-          <xsl:value-of select="if (gn-fn-rel:translate(gmd:name, $langCode) != '')
-            then gn-fn-rel:translate(gmd:name, $langCode)
-            else if (gmd:name/gmx:MimeFileType != '')
-            then gmd:name/gmx:MimeFileType
-            else if (gn-fn-rel:translate(gmd:description, $langCode) != '')
-            then gn-fn-rel:translate(gmd:description, $langCode)
-            else $url"/>
-        </xsl:variable>
-        <id><xsl:value-of select="$url"/></id>
-        <title>
-          <xsl:value-of select="if ($title != '') then $title else $url"/>
-        </title>
-        <url>
-          <xsl:value-of select="$url"/>
-        </url>
-        <name>
-          <xsl:value-of select="gn-fn-rel:translate(gmd:name, $langCode)"/>
-        </name>
-        <abstract><xsl:value-of select="gn-fn-rel:translate(gmd:description, $langCode)"/></abstract>
-        <description><xsl:value-of select="gn-fn-rel:translate(gmd:description, $langCode)"/></description>
-        <protocol><xsl:value-of select="gn-fn-rel:translate(gmd:protocol, $langCode)"/></protocol>
-      </relation>
-    </xsl:for-each>
+    <xsl:if test="count(*/descendant::*[name(.) = 'gmd:onLine']/*[gmd:linkage/gmd:URL!='']) > 0">
+      <onlines>
+        <xsl:for-each select="*/descendant::*[name(.) = 'gmd:onLine']/*[gmd:linkage/gmd:URL!='']">
+          <item>
+            <xsl:variable name="langCode">
+              <xsl:value-of select="concat('#', upper-case(util:twoCharLangCode($lang, 'EN')))"/>
+            </xsl:variable>
+            <xsl:variable name="url" select="gmd:linkage/gmd:URL"/>
+            <id>
+              <xsl:value-of select="$url"/>
+            </id>
+            <title>
+              <xsl:apply-templates mode="get-iso19139-localized-string"
+                                   select="gmd:name"/>
+            </title>
+            <url>
+              <xsl:value-of select="$url"/>
+            </url>
+            <function>
+              <xsl:value-of select="gmd:function/*/@codeListValue"/>
+            </function>
+            <applicationProfile>
+              <xsl:value-of select="gmd:applicationProfile/gco:CharacterString"/>
+            </applicationProfile>
+            <description>
+              <xsl:apply-templates mode="get-iso19139-localized-string"
+                                   select="gmd:description"/>
+            </description>
+            <protocol>
+              <xsl:value-of select="gn-fn-rel:translate(gmd:protocol, $langCode)"/>
+            </protocol>
+            <type>onlinesrc</type>
+          </item>
+        </xsl:for-each>
+      </onlines>
+    </xsl:if>
   </xsl:template>
 </xsl:stylesheet>

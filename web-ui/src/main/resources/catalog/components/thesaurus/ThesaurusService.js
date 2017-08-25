@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_thesaurus_service');
 
@@ -14,7 +37,7 @@
         return this.props.uri;
       },
       getLabel: function() {
-        return this.props.value['#text'];
+        return this.props.value['#text'] || this.props.value;
       }
     };
 
@@ -50,16 +73,16 @@
           'Keyword',
           'Thesaurus',
           function($q, $rootScope, $http, gnUrlUtils, Keyword, Thesaurus) {
-            var getKeywordsSearchUrl = function(filter, 
-                thesaurus, max, typeSearch) {
-              return gnUrlUtils.append('keywords',
+            var getKeywordsSearchUrl = function(filter,
+                thesaurus, lang, max, typeSearch) {
+              return gnUrlUtils.append('../api/registries/vocabularies/search',
                   gnUrlUtils.toKeyValue({
-                    pNewSearch: 'true',
-                    pTypeSearch: typeSearch || 1,
-                    pThesauri: thesaurus,
-                    pMode: 'searchBox',
-                    maxResults: max,
-                    pKeyword: filter || ''
+                    type: typeSearch || 'CONTAINS',
+                    thesaurus: thesaurus,
+                    rows: max,
+                    q: filter || '',
+                    uri: ('*' + filter + '*') || '',
+                    lang: lang || 'eng'
                   })
               );
             };
@@ -67,8 +90,8 @@
 
             var parseKeywordsResponse = function(data, dataToExclude) {
               var listOfKeywords = [];
-              angular.forEach(data[0], function(k) {
-                if (k.value['#text']) {
+              angular.forEach(data, function(k) {
+                if (k.value) {
                   listOfKeywords.push(new Keyword(k));
                 }
               });
@@ -163,6 +186,7 @@
                     wildcard: 'QUERY',
                     url: this.getKeywordsSearchUrl('QUERY',
                         config.thesaurusKey || '',
+                        config.lang,
                         config.max || this.DEFAULT_NUMBER_OF_RESULTS),
                     filter: function(data) {
                       return parseKeywordsResponse(data, config.dataToExclude);
@@ -178,7 +202,7 @@
                *
                * eg. to-iso19139-keyword for default form.
                */
-              getXML: function(thesaurus, 
+              getXML: function(thesaurus,
                   keywordUris, transformation, lang, textgroupOnly) {
                 // http://localhost:8080/geonetwork/srv/eng/
                 // xml.keyword.get?thesaurus=external.place.regions&id=&
@@ -241,10 +265,10 @@
                * Filter element if dataToExclude parameter defined.
                */
               parseKeywordsResponse: parseKeywordsResponse,
-              getKeywords: function(filter, thesaurus, max, typeSearch) {
+              getKeywords: function(filter, thesaurus, lang, max, typeSearch) {
                 var defer = $q.defer();
                 var url = getKeywordsSearchUrl(filter,
-                    thesaurus, max, typeSearch);
+                    thesaurus, lang, max, typeSearch);
                 $http.get(url, { cache: true }).
                     success(function(data, status) {
                       defer.resolve(parseKeywordsResponse(data));

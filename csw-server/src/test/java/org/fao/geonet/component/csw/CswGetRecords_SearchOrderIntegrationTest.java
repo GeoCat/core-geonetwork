@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.component.csw;
 
 import org.fao.geonet.csw.common.Csw;
@@ -28,10 +51,10 @@ public class CswGetRecords_SearchOrderIntegrationTest extends AbstractLanguageSe
         Element filter = new Element("And", Csw.NAMESPACE_OGC);
         for (String part : parts) {
             Element isEqualTo = new Element("PropertyIsEqualTo", Csw.NAMESPACE_OGC)
-                    .addContent(new Element("PropertyName",
-                            Csw.NAMESPACE_OGC).setText("abstract"))
-                    .addContent(new Element("Literal",
-                            Csw.NAMESPACE_OGC).setText("" + part));
+                .addContent(new Element("PropertyName",
+                    Csw.NAMESPACE_OGC).setText("abstract"))
+                .addContent(new Element("Literal",
+                    Csw.NAMESPACE_OGC).setText("" + part));
 
             filter.addContent(isEqualTo);
         }
@@ -42,29 +65,29 @@ public class CswGetRecords_SearchOrderIntegrationTest extends AbstractLanguageSe
         }
 
         Element request = new Element("GetRecords", Csw.NAMESPACE_CSW)
-                .setAttribute("service", "CSW")
-                .setAttribute("version", "2.0.2")
-                .setAttribute("resultType", "results")
-                .setAttribute("startPosition", "1")
-                .setAttribute("maxRecords", "50")
-                .setAttribute("outputSchema", "csw:Record")
-                .addContent(new Element("Query", Csw.NAMESPACE_CSW)
-                        .addContent(new Element("ElementSetName", Csw.NAMESPACE_CSW).setText("summary"))
-                        .addContent(new Element("SortBy", Csw.NAMESPACE_OGC)
-                                .addContent(
-                                        new Element("SortProperty", Csw.NAMESPACE_OGC)
-                                                .addContent(new Element("PropertyName", Csw.NAMESPACE_OGC).setText("_title"))
-                                                .addContent(new Element("SortOrder", Csw.NAMESPACE_OGC).setText("A"))
-                                ))
+            .setAttribute("service", "CSW")
+            .setAttribute("version", "2.0.2")
+            .setAttribute("resultType", "results")
+            .setAttribute("startPosition", "1")
+            .setAttribute("maxRecords", "50")
+            .setAttribute("outputSchema", "csw:Record")
+            .addContent(new Element("Query", Csw.NAMESPACE_CSW)
+                .addContent(new Element("ElementSetName", Csw.NAMESPACE_CSW).setText("summary"))
+                .addContent(new Element("SortBy", Csw.NAMESPACE_OGC)
+                    .addContent(
+                        new Element("SortProperty", Csw.NAMESPACE_OGC)
+                            .addContent(new Element("PropertyName", Csw.NAMESPACE_OGC).setText("_title"))
+                            .addContent(new Element("SortOrder", Csw.NAMESPACE_OGC).setText("A"))
+                    ))
+                .addContent(
+                    new Element("Constraint", Csw.NAMESPACE_CSW)
+                        .setAttribute("version", "1.0.0")
                         .addContent(
-                                new Element("Constraint", Csw.NAMESPACE_CSW)
-                                        .setAttribute("version", "1.0.0")
-                                        .addContent(
-                                                new Element("Filter", Csw.NAMESPACE_OGC)
-                                                        .addContent(filter)
-                                        )
+                            new Element("Filter", Csw.NAMESPACE_OGC)
+                                .addContent(filter)
                         )
-                );
+                )
+            );
 
         final Element result = _getRecords.execute(request, _serviceContext);
 

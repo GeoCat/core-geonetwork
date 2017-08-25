@@ -1,6 +1,30 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.utils;
 
 import com.google.common.base.Predicate;
+
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.jdom.Element;
@@ -9,6 +33,7 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.mock.http.client.MockClientHttpResponse;
 
 import javax.annotation.Nullable;
+
 import java.io.*;
 import java.net.URI;
 import java.util.*;
@@ -17,15 +42,13 @@ import java.util.concurrent.Callable;
 /**
  * An XmlRequest implementation for tests.
  *
- * User: Jesse
- * Date: 10/20/13
- * Time: 10:24 AM
+ * User: Jesse Date: 10/20/13 Time: 10:24 AM
  */
 public class MockXmlRequest extends XmlRequest {
 
     private Set<Predicate<HttpRequestBase>> _unaccessed = new HashSet<Predicate<HttpRequestBase>>();
     private Map<Predicate<HttpRequestBase>, Callable<ClientHttpResponse>> _mapping = new LinkedHashMap<Predicate<HttpRequestBase>,
-            Callable<ClientHttpResponse>>();
+        Callable<ClientHttpResponse>>();
 
     public MockXmlRequest(String host, int port, String protocol) {
         super(host, port, protocol, null);
@@ -45,13 +68,11 @@ public class MockXmlRequest extends XmlRequest {
             }
         }
 
-        throw new IllegalArgumentException(httpMethod+" is not have a mapped request");
+        throw new IllegalArgumentException(httpMethod + " is not have a mapped request");
     }
 
     /**
      * Begin mapping a request to a response.
-     * @param path
-     * @return
      */
     public MockXmlRequestWithWhen when(String path) {
         return new MockXmlRequestWithWhen(path);
@@ -59,8 +80,6 @@ public class MockXmlRequest extends XmlRequest {
 
     /**
      * Begin mapping a request to a response.
-     * @param predicate
-     * @return
      */
     public MockXmlRequestWithWhen when(Predicate<HttpRequestBase> predicate) {
         return new MockXmlRequestWithWhen(predicate);
@@ -74,8 +93,46 @@ public class MockXmlRequest extends XmlRequest {
         return missed;
     }
 
+    private static class PathMatchingPredicate implements Predicate<HttpRequestBase> {
+
+        private final String _path;
+
+        public PathMatchingPredicate(String path) {
+            this._path = path;
+        }
+
+        @Override
+        public boolean apply(@Nullable HttpRequestBase input) {
+            if (input == null) {
+                return false;
+            }
+            final URI uri = input.getURI();
+            final boolean equalPath = uri.toString().equalsIgnoreCase(_path);
+
+            return input instanceof HttpGet && equalPath;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            PathMatchingPredicate that = (PathMatchingPredicate) o;
+
+            if (_path != null ? !_path.equals(that._path) : that._path != null) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return _path != null ? _path.hashCode() : 0;
+        }
+    }
+
     /**
-     * The in-between object that provides the methods for completing a {@link MockXmlRequest} request mapping.
+     * The in-between object that provides the methods for completing a {@link MockXmlRequest}
+     * request mapping.
      */
     public class MockXmlRequestWithWhen {
         private final Predicate<HttpRequestBase> _predicate;
@@ -97,54 +154,19 @@ public class MockXmlRequest extends XmlRequest {
         }
 
         public MockXmlRequest thenReturn(final Element response) {
-                return thenReturn(new Callable<ClientHttpResponse>() {
-                    @Override
-                    public ClientHttpResponse call() throws Exception {
-                        return new MockClientHttpResponse(Xml.getString(response).getBytes("UTF-8"), HttpStatus.OK);
-                    }
-                });
+            return thenReturn(new Callable<ClientHttpResponse>() {
+                @Override
+                public ClientHttpResponse call() throws Exception {
+                    return new MockClientHttpResponse(Xml.getString(response).getBytes("UTF-8"), HttpStatus.OK);
+                }
+            });
         }
+
         public MockXmlRequest thenReturn(Callable<ClientHttpResponse> response) {
             MockXmlRequest.this._mapping.put(_predicate, response);
             MockXmlRequest.this._unaccessed.add(_predicate);
             return MockXmlRequest.this;
         }
 
-    }
-
-    private static class PathMatchingPredicate implements Predicate<HttpRequestBase> {
-
-        private final String _path;
-        public PathMatchingPredicate(String path) {
-          this._path = path;
-        }
-
-        @Override
-        public boolean apply(@Nullable HttpRequestBase input) {
-            if (input == null) {
-                return false;
-            }
-            final URI uri = input.getURI();
-            final boolean equalPath = uri.toString().equalsIgnoreCase(_path);
-
-            return input instanceof HttpGet && equalPath ;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            PathMatchingPredicate that = (PathMatchingPredicate) o;
-
-            if (_path != null ? !_path.equals(that._path) : that._path != null) return false;
-
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            return _path != null ? _path.hashCode() : 0;
-        }
     }
 }

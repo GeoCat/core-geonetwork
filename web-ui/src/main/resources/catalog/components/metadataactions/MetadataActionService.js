@@ -1,12 +1,39 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_mdactions_service');
 
+
+
+
   goog.require('gn_category');
+  goog.require('gn_popup');
   goog.require('gn_share');
 
 
   var module = angular.module('gn_mdactions_service', [
-    'gn_share', 'gn_category'
+    'gn_share', 'gn_category', 'gn_popup'
   ]);
 
   module.service('gnMetadataActions', [
@@ -17,18 +44,25 @@
     'gnMetadataManager',
     'gnAlertService',
     'gnSearchSettings',
+    'gnUtilityService',
+    'gnShareService',
     'gnPopup',
+    'gnMdFormatter',
     '$translate',
     '$q',
     '$http',
     function($rootScope, $timeout, $location, gnHttp,
              gnMetadataManager, gnAlertService, gnSearchSettings,
-             gnPopup,
+             gnUtilityService, gnShareService, gnPopup, gnMdFormatter,
              $translate, $q, $http) {
 
       var windowName = 'geonetwork';
       var windowOption = '';
-
+      var translations = null;
+      $translate(['privilegesUpdated',
+        'privilegesUpdatedError']).then(function(t) {
+        translations = t;
+      });
       var alertResult = function(msg) {
         gnAlertService.addAlert({
           msg: msg,
@@ -83,7 +117,7 @@
        * (uuid), we print only one metadata.
        * @param {Object|string} params
        */
-      this.metadataPrint = function(params) {
+      this.metadataPrint = function(params, bucket) {
         var url;
         if (angular.isObject(params) && params.sortBy) {
           url = gnHttp.getService('mdGetPDFSelection');
@@ -91,16 +125,17 @@
           if (params.sortOrder) {
             url += '&sortOrder=' + params.sortOrder;
           }
-        }
-        else if (angular.isString(params)) {
-          // TODO: May depend on schema
-          url = gnSearchSettings.formatter.defaultPdfUrl + params;
-        }
-        if (url) {
+          url += '&bucket=' + bucket;
           location.replace(url);
         }
-        else {
-          console.error('Error while exporting PDF');
+        else if (angular.isString(params)) {
+          gnMdFormatter.getFormatterUrl(null, null, params).then(function(url) {
+            $http.get(url, {
+              headers: {
+                Accept: 'text/html'
+              }
+            });
+          });
         }
       };
 
@@ -118,33 +153,39 @@
        * one metadata, else export the whole selection.
        * @param {string} uuid
        */
-      this.metadataMEF = function(uuid) {
+      this.metadataMEF = function(uuid, bucket) {
         var url = gnHttp.getService('mdGetMEF') + '?version=2';
         url += angular.isDefined(uuid) ?
             '&uuid=' + uuid : '&format=full';
+        url += angular.isDefined(bucket) ?
+            '&bucket=' + bucket : '';
 
         location.replace(url);
       };
 
-      this.exportCSV = function() {
-        window.open(gnHttp.getService('csv'), windowName, windowOption);
+      this.exportCSV = function(bucket) {
+        window.open(gnHttp.getService('csv') +
+            '?bucket=' + bucket, windowName, windowOption);
       };
-      this.validateMd = function(md) {
+      this.validateMd = function(md, bucket) {
         if (md) {
           return gnMetadataManager.validate(md.getId()).then(function() {
             $rootScope.$broadcast('mdSelectNone');
             $rootScope.$broadcast('search');
           });
-        }
-        else {
-          return callBatch('mdValidateBatch').then(function() {
+        } else {
+          return gnHttp.callService('../api/records/validate?' +
+              'bucket=' + bucket, null, {
+                    method: 'PUT'
+                  }).then(function(data) {
+            alertResult(data.data);
             $rootScope.$broadcast('mdSelectNone');
             $rootScope.$broadcast('search');
           });
         }
       };
 
-      this.deleteMd = function(md) {
+      this.deleteMd = function(md, bucket) {
         if (md) {
           return gnMetadataManager.remove(md.getId()).then(function() {
             $rootScope.$broadcast('mdSelectNone');
@@ -155,19 +196,21 @@
           });
         }
         else {
-          return callBatch('mdDeleteBatch').then(function() {
+          return $http.delete('../api/records?' +
+              'bucket=' + bucket).then(function() {
             $rootScope.$broadcast('mdSelectNone');
-            // TODO: Same here.
             $rootScope.$broadcast('search');
           });
         }
       };
 
+
       this.openPrivilegesPanel = function(md, scope) {
         openModal({
-          title: $translate('privileges') + ' - ' +
+          title: $translate.instant('privileges') + ' - ' +
               (md.title || md.defaultTitle),
-          content: '<div gn-share="' + md.getId() + '"></div>'
+          content: '<div gn-share="' + md.getId() + '"></div>',
+          className: 'gn-privileges-popup'
         }, scope, 'PrivilegesUpdated');
       };
 
@@ -179,47 +222,55 @@
       };
 
       this.startWorkflow = function(md, scope) {
-        return $http.get('md.status.update?' +
-            '_content_type=json&id=' + md.getId() +
-            '&changeMessage=Enable workflow' +
-            '&status=1').then(
+        return $http.put('../api/records/' + md.getId() +
+            '/status?status=1&comment=Enable workflow').then(
             function(data) {
               gnMetadataManager.updateMdObj(md);
               scope.$emit('metadataStatusUpdated', true);
               scope.$emit('StatusUpdated', {
-                msg: $translate('metadataStatusUpdatedWithNoErrors'),
+                msg: $translate.instant('metadataStatusUpdatedWithNoErrors'),
                 timeout: 2,
                 type: 'success'});
             }, function(data) {
               scope.$emit('metadataStatusUpdated', false);
               scope.$emit('StatusUpdated', {
-                title: $translate('metadataStatusUpdatedErrors'),
+                title: $translate.instant('metadataStatusUpdatedErrors'),
                 error: data,
                 timeout: 0,
                 type: 'danger'});
             });
       };
 
-      this.openPrivilegesBatchPanel = function(scope) {
+      this.openPrivilegesBatchPanel = function(scope, bucket) {
         openModal({
           title: 'privileges',
-          content: '<div gn-share="" gn-share-batch="true"></div>'
+          content: '<div gn-share="" ' +
+              'gn-share-batch="true" ' +
+              'selection-bucket="' + bucket + '"></div>',
+          className: 'gn-privileges-popup'
         }, scope, 'PrivilegesUpdated');
       };
-      this.openCategoriesBatchPanel = function(scope) {
+      this.openBatchEditing = function(scope) {
+        $location.path('/batchediting');
+      };
+      this.openCategoriesBatchPanel = function(bucket, scope) {
         openModal({
           title: 'categories',
-          content: '<div gn-batch-categories=""></div>'
+          content: '<div gn-batch-categories="" ' +
+              'selection-bucket="' + bucket + '"></div>'
         }, scope, 'CategoriesUpdated');
       };
 
-      this.openTransferOwnership = function(md, scope) {
+      this.openTransferOwnership = function(md, bucket, scope) {
         var uuid = md ? md.getUuid() : '';
         var ownerId = md ? md.getOwnerId() : '';
+        var groupOwner = md ? md.getGroupOwner() : '';
         openModal({
           title: 'transferOwnership',
           content: '<div gn-transfer-ownership="' + uuid +
-              '" gn-transfer-md-owner="' + ownerId + '"></div>'
+              '" gn-transfer-md-owner="' + ownerId + '" ' +
+              '" gn-transfer-md-group-owner="' + groupOwner + '" ' +
+              'selection-bucket="' + bucket + '"></div>'
         }, scope, 'TransferOwnership');
       };
       /**
@@ -247,78 +298,59 @@
        * @param {string} flag
        * @return {*}
        */
-      this.publish = function(md, flag) {
+      this.publish = function(md, bucket, flag, scope) {
 
         if (md) {
           flag = md.isPublished() ? 'off' : 'on';
         }
-        var service = flag === 'on' ? 'publish' : 'unpublish';
+        var onOrOff = flag === 'on';
 
-        var publishNotification = function(data) {
-          var message = '<h4>' + $translate(service + 'Completed') +
-              '</h4><dl class="dl-horizontal"><dt>' +
-              $translate('mdPublished') + '</dt><dd>' +
-              data.data.published + '</dd><dt>' +
-              $translate('mdUnpublished') + '</dt><dd>' +
-              data.data.unpublished + '</dd><dt>' +
-              $translate('mdUnmodified') + '</dt><dd>' +
-              data.data.unmodified + '</dd><dt>' +
-              $translate('mdDisallowed') + '</dt><dd>' +
-              data.data.disallowed + '</dd></dl>';
-
-          var success = 'success';
-          if (md) {
-            if ((flag === 'on' && data.data.published === 0) ||
-                (flag !== 'on' && data.data.unpublished === 0)) {
-              if (data.data.unmodified > 0) {
-                message = $translate('metadataUnchanged');
-              } else if (data.data.disallowed > 0) {
-                message = $translate('accessRestricted');
+        return gnShareService.publish(
+            angular.isDefined(md) ? md.getId() : undefined,
+            angular.isDefined(md) ? undefined : bucket,
+            onOrOff, $rootScope.user)
+            .then(
+            function(data) {
+              scope.$emit('PrivilegesUpdated', true);
+              scope.$emit('StatusUpdated', {
+                msg: translations.privilegesUpdated,
+                timeout: 0,
+                type: 'success'});
+              if (md) {
+                md.publish();
               }
-              success = 'danger';
-            }
-          }
-          gnAlertService.addAlert({
-            msg: message,
-            type: success
-          });
+            }, function(data) {
+              scope.$emit('PrivilegesUpdated', false);
+              scope.$emit('StatusUpdated', {
+                title: translations.privilegesUpdatedError,
+                error: data,
+                timeout: 0,
+                type: 'danger'});
+            });
 
-          if (md && success === 'success') {
-            md.publish();
-          }
-        };
-        if (angular.isDefined(md)) {
-          return gnHttp.callService(service, {
-            ids: md.getId()
-          }).then(publishNotification);
-        } else {
-          return gnHttp.callService(service, {}).then(publishNotification);
-        }
       };
 
       this.assignGroup = function(metadataId, groupId) {
         var defer = $q.defer();
-        $http.get('md.group.update?id=' + metadataId +
-            '&groupid=' + groupId)
-          .success(function(data) {
+        $http.put('../api/records/' + metadataId +
+            '/group', groupId)
+            .success(function(data) {
               defer.resolve(data);
             })
-          .error(function(data) {
+            .error(function(data) {
               defer.reject(data);
             });
         return defer.promise;
       };
 
       this.assignCategories = function(metadataId, categories) {
-        var defer = $q.defer(), ids = '';
-        angular.forEach(categories, function(value) {
-          ids += '&_' + value + '=on';
-        });
-        $http.get('md.category.update?id=' + metadataId + ids)
-          .success(function(data) {
+        var defer = $q.defer();
+        $http.get('../records/' + metadataId +
+                  '/tags?id=' + categories.join('&id='))
+            .success(function(data) {
               defer.resolve(data);
             })
-          .error(function(data) {
+            .error(function(data) {
               defer.reject(data);
             });
         return defer.promise;
@@ -327,10 +359,10 @@
       this.startVersioning = function(metadataId) {
         var defer = $q.defer();
         $http.get('md.versioning.start?id=' + metadataId)
-          .success(function(data) {
+            .success(function(data) {
               defer.resolve(data);
             })
-          .error(function(data) {
+            .error(function(data) {
               defer.reject(data);
             });
         return defer.promise;
@@ -341,13 +373,9 @@
        * @param {Object} md
        */
       this.getPermalink = function(md) {
-
         var url = $location.absUrl().split('#')[0] + '#/metadata/' +
             md.getUuid();
-        gnPopup.createModal({
-          title: 'permalink',
-          content: '<div gn-permalink-input="' + url + '"></div>'
-        });
+        gnUtilityService.getPermalink(md.title || md.defaultTitle, url);
       };
     }]);
 })();

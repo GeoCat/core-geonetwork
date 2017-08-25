@@ -1,6 +1,30 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.utils;
 
 import com.google.common.base.Function;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
@@ -28,16 +52,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.PreDestroy;
 
 /**
- * Factory interface for making different kinds of requests.  This is an interface so that tests can mock their own implementations.
+ * Factory interface for making different kinds of requests.  This is an interface so that tests can
+ * mock their own implementations.
  *
- * User: Jesse
- * Date: 10/18/13
- * Time: 4:16 PM
+ * User: Jesse Date: 10/18/13 Time: 4:16 PM
  */
 public class GeonetHttpRequestFactory {
     private int numberOfConcurrentRequests = 20;
@@ -51,6 +75,7 @@ public class GeonetHttpRequestFactory {
         }
         connectionManager = null;
     }
+
     public synchronized void setNumberOfConcurrentRequests(int numberOfConcurrentRequests) {
         shutdown();
         this.numberOfConcurrentRequests = numberOfConcurrentRequests;
@@ -58,16 +83,13 @@ public class GeonetHttpRequestFactory {
 
     /**
      * Create a default XmlRequest.
-     *
-     * @return
      */
     public final XmlRequest createXmlRequest() {
         return createXmlRequest(null, 80, "http");
     }
+
     /**
      * Create a default XmlRequest.
-     *
-     * @return
      */
     public XmlRequest createXmlRequest(String host, int port, String protocol) {
         return new XmlRequest(host, port, protocol, this);
@@ -75,16 +97,13 @@ public class GeonetHttpRequestFactory {
 
     /**
      * Create a default XmlRequest.
-     *
-     * @return
      */
     public final XmlRequest createXmlRequest(String host) {
         return createXmlRequest(host, 80, "http");
     }
+
     /**
      * Create a default XmlRequest.
-     *
-     * @return
      */
     public final XmlRequest createXmlRequest(String host, int port) {
         String protocol = "http";
@@ -98,13 +117,12 @@ public class GeonetHttpRequestFactory {
      * Ceate an XmlRequest from a url.
      *
      * @param url the url of the request.
-     *
      * @return the XmlRequest.
      */
     public final XmlRequest createXmlRequest(URL url) {
         final int port = url.getPort();
         final XmlRequest request = createXmlRequest(url.getHost(), port,
-                url.getProtocol());
+            url.getProtocol());
 
         request.setAddress(url.getPath());
         request.setQuery(url.getQuery());
@@ -142,6 +160,7 @@ public class GeonetHttpRequestFactory {
         };
         return execute(request, setCredentials);
     }
+
     public ClientHttpResponse execute(HttpUriRequest request,
                                       Function<HttpClientBuilder, Void> configurator) throws IOException {
         final HttpClientBuilder clientBuilder = getDefaultHttpClientBuilder();
@@ -165,6 +184,7 @@ public class GeonetHttpRequestFactory {
         }
 
     }
+
     public HttpClientBuilder getDefaultHttpClientBuilder() {
         final HttpClientBuilder builder = HttpClientBuilder.create();
         builder.setRedirectStrategy(new LaxRedirectStrategy());

@@ -26,12 +26,14 @@ package org.fao.geonet.services.resources;
 import jeeves.constants.Jeeves;
 import jeeves.server.ServiceConfig;
 import jeeves.server.context.ServiceContext;
+
 import org.fao.geonet.Util;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.constants.Params;
 import org.fao.geonet.lib.Lib;
 import org.fao.geonet.services.NotInReadOnlyModeService;
 import org.fao.geonet.services.Utils;
+import org.fao.geonet.utils.FilePathChecker;
 import org.jdom.Element;
 
 import java.nio.file.Files;
@@ -39,7 +41,6 @@ import java.nio.file.Path;
 
 /**
  * Delete an uploaded file from the data directory.
- * 
  */
 @Deprecated
 public class Get extends NotInReadOnlyModeService {
@@ -48,7 +49,7 @@ public class Get extends NotInReadOnlyModeService {
     }
 
     public Element serviceSpecificExec(Element params, ServiceContext context)
-            throws Exception {
+        throws Exception {
         String id = Utils.getIdentifierFromParameters(params, context);
         String filename = Util.getParam(params, Params.FILENAME);
         String access = Util.getParam(params, Params.ACCESS);
@@ -57,16 +58,12 @@ public class Get extends NotInReadOnlyModeService {
 
         // delete the file
         Path file = Lib.resource.getDir(context, access, id).resolve(filename);
-        
-        if(filename.contains("..")
-                || filename.startsWith("://", 1) 
-                || filename.startsWith("/")) {
-            throw new SecurityException("Wrong filename");
-        }
+
+        FilePathChecker.verify(filename);
 
         Files.deleteIfExists(file);
 
         return new Element(Jeeves.Elem.RESPONSE)
-                .addContent(new Element(Geonet.Elem.ID).setText(id));
+            .addContent(new Element(Geonet.Elem.ID).setText(id));
     }
 }

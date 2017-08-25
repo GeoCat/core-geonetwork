@@ -1,7 +1,31 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.services.resources.handlers;
 
 
 import jeeves.server.context.ServiceContext;
+
 import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.Util;
 import org.fao.geonet.constants.Geonet;
@@ -23,27 +47,28 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import static org.fao.geonet.services.api.metadata.resources.ResourcesApi.getFileContentType;
+import static org.fao.geonet.api.records.attachments.AttachmentsApi.getFileContentType;
 
 public class DefaultResourceDownloadHandler implements IResourceDownloadHandler {
 
     @Autowired
     private ThreadPool threadPool;
+
     public HttpEntity<byte[]> onDownload(ServiceContext context, NativeWebRequest request, int metadataId,
-                              String fileName, Path file) throws ResourceHandlerException {
+                                         String fileName, Path file) throws ResourceHandlerException {
 
 
         try {
-            String requesterName =  getParam(request, "name", "");
-            String requesterMail =  getParam(request, "email",  "");
-            String requesterOrg =  getParam(request, "org",  "");
-            String requesterComments =  getParam(request, "comments",  "");
+            String requesterName = getParam(request, "name", "");
+            String requesterMail = getParam(request, "email", "");
+            String requesterOrg = getParam(request, "org", "");
+            String requesterComments = getParam(request, "comments", "");
 
 
             // Store download request for statistics
             String downloadDate = new ISODate().toString();
             storeFileDownloadRequest(context, metadataId, fileName, requesterName, requesterMail, requesterOrg,
-                    requesterComments, downloadDate);
+                requesterComments, downloadDate);
 
             if (Files.exists(file) && request.checkNotModified(Files.getLastModifiedTime(file).toMillis())) {
                 return null;
@@ -72,18 +97,18 @@ public class DefaultResourceDownloadHandler implements IResourceDownloadHandler 
 
     @Override
     public Element onDownloadMultiple(ServiceContext context, Element params, int metadataId, List<Element> files)
-            throws ResourceHandlerException {
+        throws ResourceHandlerException {
 
         try {
-            String requesterName =  Util.getParam(params, "name", "");
-            String requesterMail =  Util.getParam(params, "email",  "");
-            String requesterOrg =  Util.getParam(params, "org",  "");
-            String requesterComments =  Util.getParam(params, "comments",  "");
+            String requesterName = Util.getParam(params, "name", "");
+            String requesterMail = Util.getParam(params, "email", "");
+            String requesterOrg = Util.getParam(params, "org", "");
+            String requesterComments = Util.getParam(params, "comments", "");
 
             String fileList = "";
 
             for (Object o : files) {
-                Element elem = (Element)o;
+                Element elem = (Element) o;
                 String fname = elem.getText();
 
                 if (StringUtils.isEmpty(fileList)) {
@@ -98,12 +123,12 @@ public class DefaultResourceDownloadHandler implements IResourceDownloadHandler 
             String downloadDate = new ISODate().toString();
 
             for (Object o : files) {
-                Element elem = (Element)o;
+                Element elem = (Element) o;
                 String fname = elem.getText();
 
                 // Store download request for statistics
                 storeFileDownloadRequest(context, metadataId, fname, requesterName, requesterMail, requesterOrg,
-                        requesterComments, downloadDate);
+                    requesterComments, downloadDate);
             }
 
 
@@ -119,15 +144,6 @@ public class DefaultResourceDownloadHandler implements IResourceDownloadHandler 
 
     /**
      * * Stores a file download request in the MetadataFileDownloads table.
-     *
-     * @param context
-     * @param metadataId
-     * @param fname
-     * @param requesterName
-     * @param requesterMail
-     * @param requesterOrg
-     * @param requesterComments
-     * @param downloadDate
      */
     private void storeFileDownloadRequest(final ServiceContext context, final int metadataId, final String fname,
                                           final String requesterName, final String requesterMail,
@@ -152,7 +168,7 @@ public class DefaultResourceDownloadHandler implements IResourceDownloadHandler 
                 }
 
                 if (metadataFileUpload != null) {
-            MetadataFileDownload metadataFileDownload = new MetadataFileDownload();
+                    MetadataFileDownload metadataFileDownload = new MetadataFileDownload();
 
                     metadataFileDownload.setMetadataId(metadataId);
                     metadataFileDownload.setFileName(fname);

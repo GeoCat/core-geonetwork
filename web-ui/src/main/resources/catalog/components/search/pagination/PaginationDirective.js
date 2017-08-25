@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_pagination_directive');
 
@@ -12,8 +35,7 @@
         require: '^ngSearchForm',
         scope: {
           config: '=gnPagination',
-          values: '=hitsValues',
-          enableHotKeys: '@'
+          values: '=hitsValues'
         },
         templateUrl: '../../catalog/components/search/pagination/partials/' +
             'pagination.html',
@@ -71,25 +93,37 @@
             scope.config.currentPage = scope.config.pages;
             scope.updateSearch();
           };
+
+          if (angular.isDefined(attrs.enableEvents)) {
+            var events = ['first', 'previous', 'next', 'last'];
+            angular.forEach(events, function(key) {
+              scope.$on(key + 'Page', function(evt, cbFn) {
+                scope[key]();
+                if (angular.isFunction(cbFn)) {
+                  cbFn();
+                }
+              });
+            });
+          }
           controller.activatePagination();
 
           if (angular.isDefined(attrs.enableHotKeys)) {
             hotkeys.bindTo(scope)
-              .add({
+                .add({
                   combo: 'ctrl+left',
-                  description: $translate('hotkeyFirstPage'),
+                  description: $translate.instant('hotkeyFirstPage'),
                   callback: scope.first
                 }).add({
                   combo: 'left',
-                  description: $translate('hotkeyPreviousPage'),
+                  description: $translate.instant('hotkeyPreviousPage'),
                   callback: scope.previous
                 }).add({
                   combo: 'right',
-                  description: $translate('hotkeyNextPage'),
+                  description: $translate.instant('hotkeyNextPage'),
                   callback: scope.next
                 }).add({
                   combo: 'ctrl+right',
-                  description: $translate('hotkeyLastPage'),
+                  description: $translate.instant('hotkeyLastPage'),
                   callback: scope.last
                 });
           }

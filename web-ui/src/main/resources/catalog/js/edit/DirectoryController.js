@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_directory_controller');
 
@@ -5,7 +28,7 @@
   goog.require('gn_facets');
 
   var module = angular.module('gn_directory_controller',
-      ['gn_catalog_service', 'gn_facets']);
+      ['gn_catalog_service', 'gn_facets', 'pascalprecht.translate']);
 
   /**
    * Controller to create new metadata record.
@@ -16,14 +39,16 @@
     'gnSearchManagerService',
     'gnUtilityService',
     'gnEditor',
+    'gnUrlUtils',
     'gnCurrentEdit',
     'gnMetadataManager',
     'gnGlobalSettings',
-    function($scope, $routeParams, $http, 
+    function($scope, $routeParams, $http,
         $rootScope, $translate, $compile,
-            gnSearchManagerService, 
+            gnSearchManagerService,
             gnUtilityService,
             gnEditor,
+            gnUrlUtils,
             gnCurrentEdit,
             gnMetadataManager,
             gnGlobalSettings) {
@@ -34,14 +59,16 @@
       $scope.activeType = null;
       $scope.activeEntry = null;
       $scope.ownerGroup = null;
-      $scope.searchObj = {params: {
-        _isTemplate: 's',
-        any: '*',
-        _root: '',
-        sortBy: 'title',
-        sortOrder: 'reverse',
-        resultType: 'subtemplates'
-      }};
+      $scope.searchObj = {
+        selectionBucket: 'd101',
+        params: {
+          _isTemplate: 's',
+          any: '*',
+          _root: '',
+          sortBy: 'title',
+          sortOrder: 'reverse',
+          resultType: 'subtemplates'
+        }};
       $scope.paginationInfo = {
         pages: -1,
         currentPage: 1,
@@ -74,9 +101,9 @@
       };
 
       var init = function() {
-        $http.get('admin.group.list?_content_type=json', {cache: true}).
+        $http.get('../api/users', {cache: true}).
             success(function(data) {
-              $scope.groups = data !== 'null' ? data : null;
+              $scope.groups = data;
 
               // Select by default the first group.
               if ($scope.ownerGroup === null && data) {
@@ -154,9 +181,18 @@
           // and the newly created attributes.
           // Save to not lose current edits in main field.
           gnEditor.save(false)
-            .then(function() {
+              .then(function() {
                 gnEditor.add(gnCurrentEdit.id, ref, name,
                     insertRef, position, attribute);
+              }).then(function() {
+                // success. Nothing to do.
+              }, function(rejectedValue) {
+                $rootScope.$broadcast('StatusUpdated', {
+                  title: $translate.instant('runServiceError'),
+                  error: rejectedValue,
+                  timeout: 0,
+                  type: 'danger'
+                });
               });
         } else {
           gnEditor.add(gnCurrentEdit.id, ref, name,
@@ -179,16 +215,16 @@
       };
       $scope.save = function(refreshForm) {
         gnEditor.save(refreshForm)
-          .then(function(form) {
+            .then(function(form) {
               $scope.savedStatus = gnCurrentEdit.savedStatus;
               $rootScope.$broadcast('StatusUpdated', {
-                title: $translate('saveMetadataSuccess'),
+                title: $translate.instant('saveMetadataSuccess'),
                 timeout: 2
               });
             }, function(error) {
               $scope.savedStatus = gnCurrentEdit.savedStatus;
               $rootScope.$broadcast('StatusUpdated', {
-                title: $translate('saveMetadataError'),
+                title: $translate.instant('saveMetadataError'),
                 error: error,
                 timeout: 0,
                 type: 'danger'});
@@ -198,13 +234,13 @@
       };
       $scope.close = function() {
         gnEditor.save(false)
-          .then(function(form) {
+            .then(function(form) {
               $scope.gnCurrentEdit = '';
               $scope.selectEntry(null);
               searchEntries();
             }, function(error) {
               $rootScope.$broadcast('StatusUpdated', {
-                title: $translate('saveMetadataError'),
+                title: $translate.instant('saveMetadataError'),
                 error: error,
                 timeout: 0,
                 type: 'danger'});
@@ -213,6 +249,18 @@
         return false;
       };
 
+      /**
+       * Update textarea containing XML when the ACE editor change.
+       * See form-builder-xml.xsl.
+       */
+      $scope.xmlEditorChange = function(e) {
+        // TODO: Here we could check if XML is valid based on ACE info
+        // and disable save action ?
+        $('textarea[name=data]').val(e[1].getSession().getValue());
+      };
+      $scope.xmlEditorLoaded = function(e) {
+        // TODO: Adjust height of editor based on screen size ?
+      };
       /**
        * When the form is loaded, this function is called.
        * Use it to retrieve form variables or initialize
@@ -248,38 +296,37 @@
 
           $scope.gnCurrentEdit = gnCurrentEdit;
           $scope.editorFormUrl = gnEditor
-            .buildEditUrlPrefix('md.edit') +
+              .buildEditUrlPrefix('editor') +
               '&starteditingsession=yes&random=' + i++;
         }
       };
 
       $scope.isImporting = false;
-      $scope.importData = {
-        data: null,
-        insert_mode: 0,
-        template: 's',
-        fullPrivileges: 'y'
-      };
-
-
+      $scope.xml = '';
       $scope.startImportEntry = function() {
         $scope.selectEntry(null);
         $scope.isImporting = true;
         $scope.importData = {
-          data: null,
-          insert_mode: 0,
-          template: 's',
-          fullPrivileges: 'y',
+          metadataType: 'SUB_TEMPLATE',
           group: $scope.groups[0].id
         };
       };
 
-      $scope.importEntry = function(formId) {
-        gnMetadataManager.importMd($scope.importData).then(
-            function() {
-              searchEntries();
-              $scope.isImporting = false;
-              $scope.importData = null;
+      $scope.importEntry = function(xml) {
+        gnMetadataManager.importFromXml(
+            gnUrlUtils.toKeyValue($scope.importData), xml).then(
+            function(r) {
+              if (r.status === 400) {
+                $rootScope.$broadcast('StatusUpdated', {
+                  title: $translate.instant('saveMetadataError'),
+                  error: r.data,
+                  timeout: 0,
+                  type: 'danger'});
+              } else {
+                searchEntries();
+                $scope.isImporting = false;
+                $scope.xml = null;
+              }
             }
         );
       };
@@ -301,7 +348,7 @@
         //md.create?id=181&group=2&isTemplate=s&currTab=simple
         gnMetadataManager.copy(e['geonet:info'].id, $scope.ownerGroup,
             fullPrivileges,
-            's').then(searchEntries);
+            'SUB_TEMPLATE').then(searchEntries);
       };
 
       init();

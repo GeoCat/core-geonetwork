@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.domain;
 
 import org.jdom.Element;
@@ -5,28 +28,29 @@ import org.jdom.Namespace;
 import org.springframework.context.ApplicationContext;
 
 import javax.persistence.*;
+
 import java.util.IdentityHashMap;
 import java.util.List;
 
 /**
- * An entity representing a schematron criteria. This is for the extended
- * validation framework ({@link Schematron}).
- * 
+ * An entity representing a schematron criteria. This is for the extended validation framework
+ * ({@link Schematron}).
+ *
  * @author delawen
  */
 @Entity
 @Table(name = "SchematronCriteria")
 @Cacheable
 @Access(AccessType.PROPERTY)
-@SequenceGenerator(name= SchematronCriteria.ID_SEQ_NAME, initialValue=100, allocationSize=1)
+@SequenceGenerator(name = SchematronCriteria.ID_SEQ_NAME, initialValue = 100, allocationSize = 1)
 public class SchematronCriteria extends GeonetEntity {
     static final String ID_SEQ_NAME = "schematron_criteria_id_seq";
     static final String EL_UI_TYPE = "uitype";
     static final String EL_UI_VALUE = "uivalue";
 
     private int id;
-	private SchematronCriteriaType type;
-	private String value;
+    private SchematronCriteriaType type;
+    private String value;
     private String uiType;
     private String uiValue;
     private SchematronCriteriaGroup group;
@@ -34,75 +58,74 @@ public class SchematronCriteria extends GeonetEntity {
     /**
      * Get the unique id for the schematron criteria object
      */
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = ID_SEQ_NAME)
-	public int getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = ID_SEQ_NAME)
+    public int getId() {
+        return id;
+    }
 
     /**
      * Set the unique id for the schematron criteria object
      */
-	public SchematronCriteria setId(int id) {
-		this.id = id;
-		return this;
-	}
+    public SchematronCriteria setId(int id) {
+        this.id = id;
+        return this;
+    }
 
-	@Override
-	public String toString() {
-		return "SchematronCriteria [id=" + id + ", type=" + type
-				+ ", value=" + value + "]";
-	}
+    @Override
+    public String toString() {
+        return "SchematronCriteria [id=" + id + ", type=" + type
+            + ", value=" + value + "]";
+    }
 
     /**
-	 * @return the type
-	 */
-	@Column(nullable = false, name = "type")
+     * @return the type
+     */
+    @Column(nullable = false, name = "type")
     @Enumerated(EnumType.STRING)
-	public SchematronCriteriaType getType() {
-		return type;
-	}
-
-	/**
-	 * @param type
-	 *            the type to set
-	 */
-	public void setType(SchematronCriteriaType type) {
-		this.type = type;
-	}
-
-	/**
-	 * @return the value
-	 */
-	@Column(nullable = false, name = "value")
-	public String getValue() {
-		return value;
-	}
-
-	/**
-	 * @param value
-	 *            the value to set
-	 */
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public SchematronCriteriaType getType() {
+        return type;
+    }
 
     /**
-     * Get the <em>UI Type</em>.  The type of the criteria as reported in the UI.  This tends to be more descriptive and useful for a
-     * user.
+     * @param type the type to set
+     */
+    public void setType(SchematronCriteriaType type) {
+        this.type = type;
+    }
+
+    /**
+     * @return the value
+     */
+    @Column(nullable = false, name = "value")
+    public String getValue() {
+        return value;
+    }
+
+    /**
+     * @param value the value to set
+     */
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    /**
+     * Get the <em>UI Type</em>.  The type of the criteria as reported in the UI.  This tends to be
+     * more descriptive and useful for a user.
      *
-     * @return the <em>UI Type</em>.  The type of the criteria as reported in the UI.  This tends to be more descriptive and useful for a
-     * user.
+     * @return the <em>UI Type</em>.  The type of the criteria as reported in the UI.  This tends to
+     * be more descriptive and useful for a user.
      */
     public String getUiType() {
         return uiType;
     }
 
     /**
-     * Set the <em>UI Type</em>.  The type of the criteria as reported in the UI.  This tends to be more descriptive and useful for a
-     * user.
-     * @param uiType the <em>UI Type</em>.  The type of the criteria as reported in the UI.  This tends to be more descriptive and useful for a
-     * user.
+     * Set the <em>UI Type</em>.  The type of the criteria as reported in the UI.  This tends to be
+     * more descriptive and useful for a user.
+     *
+     * @param uiType the <em>UI Type</em>.  The type of the criteria as reported in the UI.  This
+     *               tends to be more descriptive and useful for a user.
      */
     public void setUiType(String uiType) {
         this.uiType = uiType;
@@ -127,8 +150,8 @@ public class SchematronCriteria extends GeonetEntity {
      */
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @PrimaryKeyJoinColumns(value = {
-            @PrimaryKeyJoinColumn(referencedColumnName = "name"),
-            @PrimaryKeyJoinColumn(referencedColumnName = "schematronId")
+        @PrimaryKeyJoinColumn(referencedColumnName = "name"),
+        @PrimaryKeyJoinColumn(referencedColumnName = "schematronId")
     })
     public SchematronCriteriaGroup getGroup() {
         return group;
@@ -165,6 +188,7 @@ public class SchematronCriteria extends GeonetEntity {
 
     /**
      * Create a copy of the c
+     *
      * @return
      */
     public SchematronCriteria copy() {

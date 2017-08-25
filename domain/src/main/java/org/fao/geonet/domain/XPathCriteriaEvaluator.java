@@ -1,6 +1,30 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.domain;
 
 import com.vividsolutions.jts.util.Assert;
+
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Attribute;
@@ -12,13 +36,9 @@ import org.springframework.context.ApplicationContext;
 import java.util.List;
 
 /**
- * Evaluate the value of a {@link org.fao.geonet.domain.SchematronCriteria} as an xpath against the document to see if the xpath
- * either:
- * <ul>
- *     <li>Returns true</li>
- *     <li>Returns a non-empty String</li>
- *     <li>Returns an Element</li>
- * </ul>
+ * Evaluate the value of a {@link org.fao.geonet.domain.SchematronCriteria} as an xpath against the
+ * document to see if the xpath either: <ul> <li>Returns true</li> <li>Returns a non-empty
+ * String</li> <li>Returns an Element</li> </ul>
  *
  *
  * Created by Jesse on 2/6/14.
@@ -29,8 +49,8 @@ public class XPathCriteriaEvaluator implements SchematronCriteriaEvaluator {
     private static final String AND = "__AND__";
 
     /**
-     * Construct {@link org.fao.geonet.domain.SchematronCriteria} with a value and
-     * {@link org.fao.geonet.domain.SchematronCriteriaType#XPATH}.
+     * Construct {@link org.fao.geonet.domain.SchematronCriteria} with a value and {@link
+     * org.fao.geonet.domain.SchematronCriteriaType#XPATH}.
      * <p/>
      * All of the text values needs to result in successes for the criteria to pass.
      *
@@ -42,8 +62,8 @@ public class XPathCriteriaEvaluator implements SchematronCriteriaEvaluator {
     }
 
     /**
-     * Construct {@link org.fao.geonet.domain.SchematronCriteria} with a value and
-     * {@link org.fao.geonet.domain.SchematronCriteriaType#XPATH}.
+     * Construct {@link org.fao.geonet.domain.SchematronCriteria} with a value and {@link
+     * org.fao.geonet.domain.SchematronCriteriaType#XPATH}.
      * <p/>
      * Only one of the text values needs to result in a success for the criteria to pass.
      *
@@ -55,10 +75,11 @@ public class XPathCriteriaEvaluator implements SchematronCriteriaEvaluator {
     }
 
     /**
-     * Construct {@link org.fao.geonet.domain.SchematronCriteria} with a value and
-     * {@link org.fao.geonet.domain.SchematronCriteriaType#XPATH}.
+     * Construct {@link org.fao.geonet.domain.SchematronCriteria} with a value and {@link
+     * org.fao.geonet.domain.SchematronCriteriaType#XPATH}.
      * <p/>
-     * When evaluating each XPATH will be tried until one passes.  If one passes then the evaluator will return true.
+     * When evaluating each XPATH will be tried until one passes.  If one passes then the evaluator
+     * will return true.
      *
      * @param xpaths the xpaths to OR together
      * @return a {@link org.fao.geonet.domain.SchematronCriteria}
@@ -77,10 +98,11 @@ public class XPathCriteriaEvaluator implements SchematronCriteriaEvaluator {
     }
 
     /**
-     * Construct {@link org.fao.geonet.domain.SchematronCriteria} with a value and
-     * {@link org.fao.geonet.domain.SchematronCriteriaType#XPATH}.
+     * Construct {@link org.fao.geonet.domain.SchematronCriteria} with a value and {@link
+     * org.fao.geonet.domain.SchematronCriteriaType#XPATH}.
      * <p/>
-     * When evaluating each XPATH will be tried until one fails.  If one fails then the evaluator will return false.
+     * When evaluating each XPATH will be tried until one fails.  If one fails then the evaluator
+     * will return false.
      *
      * @param xpaths the xpaths to OR together
      * @return a {@link org.fao.geonet.domain.SchematronCriteria}
@@ -145,10 +167,10 @@ public class XPathCriteriaEvaluator implements SchematronCriteriaEvaluator {
         try {
             String value = rawValue;
 
-            if (value.startsWith("/") && ! value.startsWith("//")) {
+            if (value.startsWith("/") && !value.startsWith("//")) {
                 value = value.substring(1);
             }
-            if (value.startsWith(metadata.getQualifiedName()+"/")) {
+            if (value.startsWith(metadata.getQualifiedName() + "/")) {
                 value = value.substring(metadata.getQualifiedName().length() + 1);
             }
             if (value.startsWith("//")) {
@@ -159,7 +181,7 @@ public class XPathCriteriaEvaluator implements SchematronCriteriaEvaluator {
             boolean accept = evaluateResult(nodes);
 
 
-            if (!accept && value.startsWith("*//"+metadata.getQualifiedName())) {
+            if (!accept && value.startsWith("*//" + metadata.getQualifiedName())) {
                 nodes = Xml.selectNodes(metadata, value.substring(metadata.getQualifiedName().length() + 3), metadataNamespaces);
                 accept = evaluateResult(nodes);
             }
@@ -189,7 +211,7 @@ public class XPathCriteriaEvaluator implements SchematronCriteriaEvaluator {
                     if (accept) {
                         break;
                     }
-                }else if (node instanceof Text) {
+                } else if (node instanceof Text) {
                     Text text = (Text) node;
                     if (!text.getTextTrim().isEmpty()) {
                         accept = true;
@@ -206,6 +228,6 @@ public class XPathCriteriaEvaluator implements SchematronCriteriaEvaluator {
 
     protected void warn(String value, Throwable e) {
         Log.warning(Constants.DOMAIN_LOG_MODULE,
-                "Error occurred while evaluating XPATH during schematron evaluation: \n\t" + value, e);
+            "Error occurred while evaluating XPATH during schematron evaluation: \n\t" + value, e);
     }
 }

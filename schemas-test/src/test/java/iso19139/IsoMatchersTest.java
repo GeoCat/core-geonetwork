@@ -1,10 +1,34 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package iso19139;
 
 import groovy.util.slurpersupport.GPathResult;
+
 import org.fao.geonet.schema.iso19139.ISO19139Namespaces;
-import org.fao.geonet.services.metadata.format.AbstractFormatterTest;
-import org.fao.geonet.services.metadata.format.groovy.Handler;
-import org.fao.geonet.services.metadata.format.groovy.Handlers;
+import org.fao.geonet.api.records.formatters.AbstractFormatterTest;
+import org.fao.geonet.api.records.formatters.groovy.Handler;
+import org.fao.geonet.api.records.formatters.groovy.Handlers;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
@@ -28,12 +52,13 @@ public class IsoMatchersTest extends AbstractFormatterTest {
     @Test
     public void testTextMatcher() throws Exception {
         MockHttpServletRequest request = new MockHttpServletRequest();
+        request.getSession();
         request.addParameter("html", "true");
 
         final String formatterId = "full_view";
         final Handlers handlers = getHandlers(request, formatterId);
         GPathResult elem = parseXml(
-                "<root><gmd:title  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:gmd=\"http://www.isotc211.org/2005/gmd\" xmlns:gco=\"http://www.isotc211.org/2005/gco\" xsi:type=\"gmd:PT_FreeText_PropertyType\" gco:nilReason=\"missing\">\n"
+            "<root><gmd:title  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:gmd=\"http://www.isotc211.org/2005/gmd\" xmlns:gco=\"http://www.isotc211.org/2005/gco\" xsi:type=\"gmd:PT_FreeText_PropertyType\" gco:nilReason=\"missing\">\n"
                 + "  <gmd:PT_FreeText xmlns:gco=\"http://www.isotc211.org/2005/gmd\">\n"
                 + "    <gmd:textGroup>\n"
                 + "      <gmd:LocalisedCharacterString locale=\"#DE\">GER Citation Title</gmd:LocalisedCharacterString>\n"
@@ -49,7 +74,7 @@ public class IsoMatchersTest extends AbstractFormatterTest {
         assertTrue(handlerResult, handlerResult.contains("GER Citation Title"));
 
         elem = parseXml(
-                "<root  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:gmd=\"http://www.isotc211.org/2005/gmd\" "
+            "<root  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:gmd=\"http://www.isotc211.org/2005/gmd\" "
                 + "xmlns:gco=\"http://www.isotc211.org/2005/gco\" xsi:type=\"gmd:PT_FreeText_PropertyType\" gco:nilReason=\"missing\">"
                 + "<gmd:language>\n"
                 + "    <gco:CharacterString>eng</gco:CharacterString>\n"

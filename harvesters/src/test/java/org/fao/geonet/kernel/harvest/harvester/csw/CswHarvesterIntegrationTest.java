@@ -1,31 +1,54 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel.harvest.harvester.csw;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Maps;
+
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.fao.geonet.MockRequestFactoryGeonet;
 import org.fao.geonet.csw.common.Csw;
 import org.fao.geonet.kernel.harvest.AbstractHarvesterIntegrationTest;
-import org.fao.geonet.MockRequestFactoryGeonet;
 import org.fao.geonet.utils.MockXmlRequest;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
 
 import java.util.Map;
+
 import javax.annotation.Nullable;
 
 /**
  * Integration Test for the Csw Harvester class.
  *
- * User: Jesse
- * Date: 10/18/13
- * Time: 4:01 PM
+ * User: Jesse Date: 10/18/13 Time: 4:01 PM
  */
 public class CswHarvesterIntegrationTest extends AbstractHarvesterIntegrationTest {
+    private static final String PROTOCOL = "http";
     private static final String HOST = "localhost";
     private static final int PORT = 8080;
-    private static final String PROTOCOL = "http";
-    public static final String REQUEST = PROTOCOL+"://"+HOST+":"+PORT+"/geonetwork/srv/eng/csw";
+    public static final String REQUEST = PROTOCOL + "://" + HOST + ":" + PORT + "/geonetwork/srv/eng/csw";
     public static final String CAPABILITIES_QUERY_STRING = "?service=CSW&request=GetCapabilities";
     public static final String CAPABILITIES_URL = REQUEST + CAPABILITIES_QUERY_STRING;
     public static final String OUTPUT_SCHEMA = "http://www.isotc211.org/2005/gmd";
@@ -34,16 +57,22 @@ public class CswHarvesterIntegrationTest extends AbstractHarvesterIntegrationTes
         super("csw");
     }
 
+    public static void addCswSpecificParams(Element params, String outputSchema) {
+        params.getChild("site")
+            .addContent(new Element("capabilitiesUrl").setText(CAPABILITIES_URL))
+            .addContent(new Element("outputSchema").setText(outputSchema));
+    }
+
     protected void mockHttpRequests(MockRequestFactoryGeonet bean) {
         final MockXmlRequest cswServerRequest = new MockXmlRequest(HOST, PORT, PROTOCOL);
         cswServerRequest.when(CAPABILITIES_URL)
-                .thenReturn(fileStream("capabilities.xml"));
+            .thenReturn(fileStream("capabilities.xml"));
         final String queryString = "?request=GetRecordById&service=CSW&version=2.0.2&outputSchema=" + getOutputSchema() + "&elementSetName=full&id=";
-        cswServerRequest.when(REQUEST+queryString+"7e926fbf-00fb-4ff5-a99e-c8576027c4e7")
-                .thenReturn(fileStream("GetRecordById-7e926fbf-00fb-4ff5-a99e-c8576027c4e7.xml"));
-        cswServerRequest.when(REQUEST+queryString+"da165110-88fd-11da-a88f-000d939bc5d8")
-                .thenReturn(fileStream("GetRecordById-da165110-88fd-11da-a88f-000d939bc5d8.xml"));
-        cswServerRequest.when(new Predicate<HttpRequestBase>(){
+        cswServerRequest.when(REQUEST + queryString + "7e926fbf-00fb-4ff5-a99e-c8576027c4e7")
+            .thenReturn(fileStream("GetRecordById-7e926fbf-00fb-4ff5-a99e-c8576027c4e7.xml"));
+        cswServerRequest.when(REQUEST + queryString + "da165110-88fd-11da-a88f-000d939bc5d8")
+            .thenReturn(fileStream("GetRecordById-da165110-88fd-11da-a88f-000d939bc5d8.xml"));
+        cswServerRequest.when(new Predicate<HttpRequestBase>() {
             @Override
             public boolean apply(@Nullable HttpRequestBase input) {
 
@@ -53,7 +82,7 @@ public class CswHarvesterIntegrationTest extends AbstractHarvesterIntegrationTes
                     return false;
                 }
 
-                String request,typeNames, elementSetName;
+                String request, typeNames, elementSetName;
                 final boolean noQueryFilter;
 
                 if (isHttpPost) {
@@ -101,12 +130,6 @@ public class CswHarvesterIntegrationTest extends AbstractHarvesterIntegrationTes
 
     protected void customizeParams(Element params) {
         addCswSpecificParams(params, getOutputSchema());
-    }
-
-    public static void addCswSpecificParams(Element params, String outputSchema) {
-        params.getChild("site")
-                .addContent(new Element("capabilitiesUrl").setText(CAPABILITIES_URL))
-                .addContent(new Element("outputSchema").setText(outputSchema));
     }
 
     @Override

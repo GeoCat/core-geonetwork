@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel.search.keyword;
 
 import org.fao.geonet.kernel.KeywordBean;
@@ -5,17 +28,19 @@ import org.fao.geonet.kernel.KeywordBean;
 import java.util.Comparator;
 
 /**
- * Contains factory methods for creating comparators for sorting collections of {@link KeywordBean} objects
+ * Contains factory methods for creating comparators for sorting collections of {@link KeywordBean}
+ * objects
+ *
  * @author jeichar
  */
 public final class KeywordSort {
-    private KeywordSort() { }
-    
+    private KeywordSort() {
+    }
+
     /**
      * Sort keywords based on the default label of the keywords
-     * 
+     *
      * @param direction if DESC then sort a-z otherwise z-a
-     * 
      * @return a comparator for sorting by label
      */
     public static Comparator<KeywordBean> defaultLabelSorter(final SortDirection direction) {
@@ -23,25 +48,27 @@ public final class KeywordSort {
             public int compare(final KeywordBean kw1, final KeywordBean kw2) {
                 return direction.multiplier * normalizeDesc(kw1.getDefaultValue()).compareTo(normalizeDesc(kw2.getDefaultValue()));
             }
+
             @Override
             public String toString() {
                 return "Sort by Value " + direction;
             }
         };
     }
+
     /**
      * Sort keywords based on the default definition of the keywords
-     * 
+     *
      * @param direction if DESC then sort a-z otherwise z-a
-     * 
      * @return a comparator for sorting by definition
      */
     public static Comparator<KeywordBean> defaultDefinitionSorter(final SortDirection direction) {
         return new Comparator<KeywordBean>() {
             public int compare(final KeywordBean kw1, final KeywordBean kw2) {
                 return direction.multiplier * normalizeDesc(kw1.getDefaultDefinition()).compareToIgnoreCase(
-                        normalizeDesc(kw2.getDefaultDefinition()));
+                    normalizeDesc(kw2.getDefaultDefinition()));
             }
+
             @Override
             public String toString() {
                 return "Sort by Definition " + direction;

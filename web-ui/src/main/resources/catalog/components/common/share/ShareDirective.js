@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_share_directive');
 
@@ -33,15 +56,24 @@
             'panel.html',
         scope: {
           id: '=gnShare',
-          batch: '@gnShareBatch'
+          batch: '@gnShareBatch',
+          selectionBucket: '@'
         },
         link: function(scope) {
+          var translations = null, isBatch = scope.batch === 'true';
+          $translate(['privilegesUpdated',
+            'privilegesUpdatedError']).then(function(t) {
+            translations = t;
+          });
+
+
           scope.onlyUserGroup = gnConfig['system.metadataprivs.usergrouponly'];
           scope.disableAllCol = gnShareConstants.disableAllCol;
           scope.displayProfile = gnShareConstants.displayProfile;
+          scope.icons = gnShareConstants.icons;
 
           angular.extend(scope, {
-            batch: scope.batch === 'true',
+            batch: isBatch,
             lang: scope.$parent.lang,
             user: scope.$parent.user,
             internalOperations: gnShareConstants.internalOperations,
@@ -55,7 +87,7 @@
 
           var loadPrivileges;
           var fillGrid = function(data) {
-            scope.groups = data.groups;
+            scope.privileges = data.privileges;
             scope.operations = data.operations;
             scope.isAdminOrReviewer = data.isAdminOrReviewer;
           };
@@ -75,11 +107,15 @@
             loadPrivileges();
           }
 
+          scope.isAllowed = function(group, key) {
+            return true; // TODO
+          };
           scope.checkAll = function(group) {
-            angular.forEach(group.privileges, function(p) {
-              if (!p.disabled) {
-                p.value = group.isCheckedAll === true;
+            angular.forEach(group.operations, function(value, key) {
+              if (scope.isAllowed(group, key)) {
+                group.operations[key] = group.isCheckedAll === true;
               }
+              $('[name=' + group.group + '-' + key + ']').addClass('ng-dirty');
             });
           };
 
@@ -87,24 +123,59 @@
             return group.label[scope.lang];
           };
 
-          scope.save = function() {
-            return gnShareService.savePrivileges(scope.id,
-                                                 scope.groups,
-                                                 scope.user).then(
+          scope.reset = function() {
+            $('#opsForm').find('input.ng-dirty').each(function(idx, el) {
+              el.checked = false;
+              $(el).removeClass('ng-dirty');
+            });
+          };
+
+          scope.save = function(replace) {
+
+            if (!replace) {
+              var updateCheckBoxes = [];
+              $('#opsForm input.ng-dirty[type=checkbox][data-ng-model]')
+                  .each(function(c, el) {
+                    updateCheckBoxes.push($(el).attr('name'));
+                  });
+              angular.forEach(scope.privileges, function(value, group) {
+                var keyPrefix = value.group + '-';
+                angular.forEach(value.operations, function(value, op) {
+                  var key = keyPrefix + op;
+                  if ($.inArray(key, updateCheckBoxes) === -1) {
+                    delete scope.privileges[group].operations[op];
+                  }
+                });
+              });
+            }
+            return gnShareService.savePrivileges(
+                isBatch ? undefined : scope.id,
+                isBatch ? scope.selectionBucket : undefined,
+                scope.privileges,
+                scope.user,
+                replace).then(
                 function(data) {
                   scope.$emit('PrivilegesUpdated', true);
                   scope.$emit('StatusUpdated', {
-                    msg: $translate('privilegesUpdated'),
+                    msg: translations.privilegesUpdated,
                     timeout: 0,
                     type: 'success'});
                 }, function(data) {
                   scope.$emit('PrivilegesUpdated', false);
                   scope.$emit('StatusUpdated', {
-                    title: $translate('privilegesUpdatedError'),
+                    title: translations.privilegesUpdatedError,
                     error: data,
                     timeout: 0,
                     type: 'danger'});
                 });
+          };
+
+          scope.pFilter = '';
+          scope.pFilterFn = function(v) {
+            if (scope.pFilter === '') return true;
+            var v = $translate.instant('group-' + v.group);
+            return v.toLowerCase().indexOf(
+                scope.pFilter.toLocaleLowerCase()) >= 0;
           };
 
           scope.sorter = {
@@ -123,13 +194,13 @@
 
           scope.sortGroups = function(g) {
             if (scope.sorter.predicate == 'g') {
-              return g.label[scope.lang];
+              return $translate.instant(g.group);
             }
             else if (scope.sorter.predicate == 'p') {
               return g.userProfile;
             }
             else {
-              return g.privileges[scope.sorter.predicate].value;
+              return g.operations[scope.sorter.predicate];
             }
           };
 

@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel.search.index;
 
 import java.io.IOException;
@@ -42,25 +65,42 @@ import org.fao.geonet.utils.Log;
 import org.springframework.context.ConfigurableApplicationContext;
 
 /**
- * Keeps track of the lucene indexes that currently exist so that we don't have
- * to keep polling filesystem
+ * Keeps track of the lucene indexes that currently exist so that we don't have to keep polling
+ * filesystem
  *
  * @author jeichar
  */
 public class LuceneIndexLanguageTracker {
-	private final Map<String, Directory> dirs = new HashMap<String, Directory>();
-	private final Map<String, TrackingIndexWriter> trackingWriters = new HashMap<String, TrackingIndexWriter>();
-	private final Map<String, GeonetworkNRTManager> searchManagers = new HashMap<String, GeonetworkNRTManager>();
-
-	private TaxonomyIndexTracker taxonomyIndexTracker;
-	private final SearcherVersionTracker versionTracker = new SearcherVersionTracker();
-	private AtomicBoolean initialized = new AtomicBoolean(false);
-	private Lock lock = new ReentrantLock();
-	private AtomicInteger _openReaderCounter = new AtomicInteger(0);
-	private AtomicBoolean destroyed = new AtomicBoolean(false);
+    private final Map<String, Directory> dirs = new HashMap<String, Directory>();
+    private final Map<String, TrackingIndexWriter> trackingWriters = new HashMap<String, TrackingIndexWriter>();
+    private final Map<String, GeonetworkNRTManager> searchManagers = new HashMap<String, GeonetworkNRTManager>();
+    private final SearcherVersionTracker versionTracker = new SearcherVersionTracker();
+    private TaxonomyIndexTracker taxonomyIndexTracker;
+    private AtomicBoolean initialized = new AtomicBoolean(false);
+    private Lock lock = new ReentrantLock();
+    private AtomicInteger _openReaderCounter = new AtomicInteger(0);
+    private AtomicBoolean destroyed = new AtomicBoolean(false);
 
     public LuceneIndexLanguageTracker() {
         // used by spring
+    }
+
+    private static String normalize(String locale) {
+        if (locale == null) {
+            locale = "none";
+        }
+        locale = locale.toLowerCase();
+        switch (locale) {
+            case "deu":
+                locale = "ger";
+                break;
+            case "fra":
+                locale = "fre";
+                break;
+            default:
+                // do nothing
+        }
+        return locale;
     }
 
     private void lazyInit() {
@@ -109,56 +149,30 @@ public class LuceneIndexLanguageTracker {
         LuceneConfig luceneConfig = context.getBean(LuceneConfig.class);
         DirectoryFactory directoryFactory = context.getBean(DirectoryFactory.class);
 
-        Directory cachedFSDir = null;
+        Directory cachedFSDir = directoryFactory.createIndexDirectory(indexId, luceneConfig);
         IndexWriter writer = null;
         GeonetworkNRTManager nrtManager = null;
         TrackingIndexWriter trackingIndexWriter;
+        boolean done = false;
         try {
-            cachedFSDir = directoryFactory.createIndexDirectory(indexId, luceneConfig);
             IndexWriterConfig conf = new IndexWriterConfig(Geonet.LUCENE_VERSION, SearchManager.getAnalyzer(indexId, false));
             ConcurrentMergeScheduler mergeScheduler = new ConcurrentMergeScheduler();
             conf.setMergeScheduler(mergeScheduler);
             writer = new IndexWriter(cachedFSDir, conf);
             trackingIndexWriter = new TrackingIndexWriter(writer);
             nrtManager = new GeonetworkNRTManager(luceneConfig, indexId,
-                    trackingIndexWriter, writer, null, true, taxonomyIndexTracker);
-        } catch (CorruptIndexException e) {
-            IOUtils.closeQuietly(nrtManager);
-            IOUtils.closeQuietly(writer);
-            IOUtils.closeQuietly(cachedFSDir);
-            throw e;
-        } catch (LockObtainFailedException e) {
-            IOUtils.closeQuietly(nrtManager);
-            IOUtils.closeQuietly(writer);
-            IOUtils.closeQuietly(cachedFSDir);
-            throw e;
-        } catch (IOException e) {
-            IOUtils.closeQuietly(nrtManager);
-            IOUtils.closeQuietly(writer);
-            IOUtils.closeQuietly(cachedFSDir);
-            throw e;
+                trackingIndexWriter, writer, null, true, taxonomyIndexTracker);
+            done = true;
+        } finally {
+            if (!done) {
+                IOUtils.closeQuietly(nrtManager);
+                IOUtils.closeQuietly(writer);
+                IOUtils.closeQuietly(cachedFSDir);
+            }
         }
         dirs.put(indexId, cachedFSDir);
         trackingWriters.put(indexId, trackingIndexWriter);
         searchManagers.put(indexId, nrtManager);
-    }
-
-    private static String normalize(String locale) {
-        if (locale == null) {
-            locale = "none";
-        }
-        locale = locale.toLowerCase();
-        switch (locale) {
-            case "deu":
-                locale = "ger";
-                break;
-            case "fra":
-                locale = "fre";
-                break;
-            default:
-                // do nothing
-        }
-        return locale;
     }
 
     /**
@@ -183,7 +197,7 @@ public class LuceneIndexLanguageTracker {
 
             long finalVersion = versionToken;
             Map<AcquireResult, GeonetworkNRTManager> searchers = new HashMap<>(
-                    (int) (searchManagers.size() * 1.5));
+                (int) (searchManagers.size() * 1.5));
             IndexReader[] readers = new IndexReader[searchManagers.size()];
             int i = 1;
             boolean tokenExpired = false;
@@ -212,7 +226,7 @@ public class LuceneIndexLanguageTracker {
 
             }
             return new IndexAndTaxonomy(finalVersion, new GeonetworkMultiReader(_openReaderCounter, readers, searchers),
-                    taxonomyIndexTracker.acquire());
+                taxonomyIndexTracker.acquire());
         } finally {
             lock.unlock();
         }
@@ -236,7 +250,7 @@ public class LuceneIndexLanguageTracker {
 
     public void commit() throws IOException {
         lock.lock();
-        try{
+        try {
             lazyInit();
             // before a writer commits the IndexWriter, it must commit the
             // TaxonomyWriter.
@@ -251,7 +265,7 @@ public class LuceneIndexLanguageTracker {
 
     void withWriter(Function function) throws IOException {
         lock.lock();
-        try{
+        try {
             lazyInit();
             for (TrackingIndexWriter writer : trackingWriters.values()) {
                 function.apply(taxonomyIndexTracker.writer(), writer);
@@ -262,9 +276,9 @@ public class LuceneIndexLanguageTracker {
     }
 
     public void addDocument(IndexInformation info)
-            throws IOException {
+        throws IOException {
         lock.lock();
-        try{
+        try {
             lazyInit();
             final String language = normalize(info.language);
             if (Log.isDebugEnabled(Geonet.INDEX_ENGINE)) {
@@ -289,13 +303,11 @@ public class LuceneIndexLanguageTracker {
 
     /**
      * Remove all facet fields from the provided document
-     * @param doc
-     * @return
      */
     Document removeFacetFields(Document doc) {
         List<IndexableField> listOfFields = doc.getFields();
         Iterator<IndexableField> iterator = listOfFields.iterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             IndexableField field = iterator.next();
             if (field instanceof FacetField) {
                 iterator.remove();
@@ -306,7 +318,7 @@ public class LuceneIndexLanguageTracker {
 
     public void open(String language) throws IOException {
         lock.lock();
-        try{
+        try {
             lazyInit();
             language = normalize(language);
             if (!trackingWriters.containsKey(language)) {
@@ -318,14 +330,15 @@ public class LuceneIndexLanguageTracker {
     }
 
     /**
-     * Wait for all readers to close, then delete all data from indices and clear out all caches.  Finally create empty indices.
+     * Wait for all readers to close, then delete all data from indices and clear out all caches.
+     * Finally create empty indices.
      *
-     * @param timeoutInMillis number of milliseconds to wait for reader to close before throwing exception.
-     * @throws Exception
+     * @param timeoutInMillis number of milliseconds to wait for reader to close before throwing
+     *                        exception.
      */
     public void reset(long timeoutInMillis) throws Exception {
         lock.lock();
-        try{
+        try {
             lazyInit();
             final ConfigurableApplicationContext context = ApplicationContextHolder.get();
             DirectoryFactory directoryFactory = context.getBean(DirectoryFactory.class);
@@ -343,9 +356,9 @@ public class LuceneIndexLanguageTracker {
 
     private void waitForReadersToClose(long timeoutInMillis) throws TimeoutException {
         final long startWait = System.currentTimeMillis();
-        while(_openReaderCounter.get() > 0) {
+        while (_openReaderCounter.get() > 0) {
             if (startWait + timeoutInMillis < System.currentTimeMillis()) {
-                throw new TimeoutException("Waited for longer than "+timeoutInMillis+" and readers remain open");
+                throw new TimeoutException("Waited for longer than " + timeoutInMillis + " and readers remain open");
             }
             try {
                 Thread.sleep(100);
@@ -373,15 +386,16 @@ public class LuceneIndexLanguageTracker {
     /**
      * Close all indices and clear all caches.
      *
-     * @param timeoutInMillis the time to wait for all readers to close before closing indices
-     * @param closeTaxonomy if true close taxonomy reader.  Normally true unless called from reset.
-     * @param lazyInitRequired if true, call to lazyInit is made before cleaning up. Should be avoided
-     *   in case of destruction (because the beans needed in the lazyInit call might be already destroyed).
-     * @throws IOException
+     * @param timeoutInMillis  the time to wait for all readers to close before closing indices
+     * @param closeTaxonomy    if true close taxonomy reader.  Normally true unless called from
+     *                         reset.
+     * @param lazyInitRequired if true, call to lazyInit is made before cleaning up. Should be
+     *                         avoided in case of destruction (because the beans needed in the
+     *                         lazyInit call might be already destroyed).
      */
     public void close(long timeoutInMillis, boolean closeTaxonomy, boolean lazyInitRequired) throws IOException {
         lock.lock();
-        try{
+        try {
             if (lazyInitRequired)
                 lazyInit();
 
@@ -389,8 +403,8 @@ public class LuceneIndexLanguageTracker {
             try {
                 waitForReadersToClose(timeoutInMillis);
             } catch (TimeoutException e) {
-                Log.warning(Geonet.LUCENE_TRACKING, "not all Lucene readers closed after waiting "+timeoutInMillis+" ms.  Going ahead " +
-                                                    "and closing indices");
+                Log.warning(Geonet.LUCENE_TRACKING, "not all Lucene readers closed after waiting " + timeoutInMillis + " ms.  Going ahead " +
+                    "and closing indices");
             }
             if (closeTaxonomy) {
                 // before a writer closes the IndexWriter, it must close() the
@@ -438,13 +452,14 @@ public class LuceneIndexLanguageTracker {
             lock.unlock();
         }
     }
+
     public void close(long timeoutInMillis, boolean closeTaxonomy) throws IOException {
         close(timeoutInMillis, closeTaxonomy, true);
     }
 
     public void optimize() throws Exception {
         lock.lock();
-        try{
+        try {
             lazyInit();
             for (TrackingIndexWriter writer : trackingWriters.values()) {
                 try {
@@ -458,11 +473,30 @@ public class LuceneIndexLanguageTracker {
         } finally {
             lock.unlock();
         }
+
+        // wait for the merges to be done outside of the lock to avoid locking writes to the indexes
+        for (TrackingIndexWriter writer: trackingWriters.values()) {
+            writer.getIndexWriter().waitForMerges();
+        }
+
+        // need to re-open the indexes for the files' size to actually reduce
+        lock.lock();
+        try{
+            ArrayList<String> ids = new ArrayList<>(trackingWriters.keySet());
+            for (String id : ids) {
+                trackingWriters.get(id).getIndexWriter().close();
+                searchManagers.get(id).close();
+                dirs.get(id).close();
+                openIndex(id);
+            }
+        } finally {
+            lock.unlock();
+        }
     }
 
     public void deleteDocuments(final Term term) throws IOException {
         lock.lock();
-        try{
+        try {
             lazyInit();
             if (Log.isDebugEnabled(Geonet.INDEX_ENGINE)) {
                 Log.debug(Geonet.INDEX_ENGINE, "deleting term '" + term + "' from index");
@@ -523,7 +557,7 @@ public class LuceneIndexLanguageTracker {
                 lock.unlock();
             }
             Log.info(Geonet.LUCENE, "Done running PurgeExpiredSearchersTask. " + versionTracker.size()
-                                    + " versions still cached.");
+                + " versions still cached.");
 
         }
     }

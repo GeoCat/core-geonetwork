@@ -1,44 +1,79 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_template_field_directive');
 
-  var module = angular.module('gn_template_field_directive', []);
-  module.directive('gnTemplateFieldAddButton', ['gnEditor', 'gnCurrentEdit',
-    function(gnEditor, gnCurrentEdit) {
+  var module = angular.module('gn_template_field_directive',
+      ['pascalprecht.translate']);
+  module.directive('gnTemplateFieldAddButton',
+      ['gnEditor', 'gnCurrentEdit', '$rootScope', '$translate',
+       function(gnEditor, gnCurrentEdit, $rootScope, $translate) {
 
-      return {
-        restrict: 'A',
-        replace: true,
-        scope: {
-          id: '@gnTemplateFieldAddButton'
-        },
-        link: function(scope, element, attrs) {
-          var textarea = $(element).parent()
-            .find('textarea[name=' + scope.id + ']');
-          // Unregister this textarea to the form
-          // It will be only submitted if user click the add button
-          textarea.removeAttr('name');
+         return {
+           restrict: 'A',
+           replace: true,
+           scope: {
+             id: '@gnTemplateFieldAddButton'
+           },
+           link: function(scope, element, attrs) {
+             var textarea = $(element).parent()
+             .find('textarea[name=' + scope.id + ']');
+             // Unregister this textarea to the form
+             // It will be only submitted if user click the add button
+             textarea.removeAttr('name');
 
-          scope.addFromTemplate = function() {
-            textarea.attr('name', scope.id);
+             scope.addFromTemplate = function() {
+               textarea.attr('name', scope.id);
 
-            // Save and refreshform
-            gnEditor.save(gnCurrentEdit.id, true);
-          };
+               // Save and refreshform
+               gnEditor.save(gnCurrentEdit.id, true).then(function() {
+                 // success. Do nothing
+               }, function(rejectedValue) {
+                 $rootScope.$broadcast('StatusUpdated', {
+                   title: $translate.instant('runServiceError'),
+                   error: rejectedValue,
+                   timeout: 0,
+                   type: 'danger'
+                 });
+               });
+             };
 
-          $(element).click(scope.addFromTemplate);
-        }
-      };
-    }]),
+             $(element).click(scope.addFromTemplate);
+           }
+         };
+       }]);
+
   /**
-     * The template field directive managed a custom field which
-     * is based on an XML snippet to be sent in the form with some
-     * string to be replace from related inputs.
-     *
-     * This allows to edit a complex XML structure with simple
-     * form fields. eg. a date of creation where only the date field
-     * is displayed to the end user and the creation codelist value
-     * is in the XML template for the field.
-     */
+   * The template field directive managed a custom field which
+   * is based on an XML snippet to be sent in the form with some
+   * string to be replace from related inputs.
+   *
+   * This allows to edit a complex XML structure with simple
+   * form fields. eg. a date of creation where only the date field
+   * is displayed to the end user and the creation codelist value
+   * is in the XML template for the field.
+   */
   module.directive('gnTemplateField', ['$http', '$rootScope', '$timeout',
     function($http, $rootScope, $timeout) {
 
@@ -75,7 +110,7 @@
                 xmlSnippet = xmlSnippet.replace(
                     '{{' + fieldName + '}}',
                     value.replace(/\&/g, '&amp;amp;')
-                         .replace(/\"/g, '&quot;'));
+                    .replace(/\"/g, '&quot;'));
 
                 // If one value is defined the field
                 // is defined

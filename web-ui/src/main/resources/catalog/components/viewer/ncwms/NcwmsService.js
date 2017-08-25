@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_ncwms_service');
 
@@ -21,7 +44,8 @@
     'gnUrlUtils',
     'gnOwsCapabilities',
     '$http',
-    function(gnMap, gnUrlUtils, gnOwsCapabilities, $http) {
+    'gnGlobalSettings',
+    function(gnMap, gnUrlUtils, gnOwsCapabilities, $http, gnGlobalSettings) {
 
       /**
        * @ngdoc method
@@ -64,11 +88,13 @@
        */
       this.feedOlLayer = function(layer) {
         var url = this.getMetadataUrl(layer);
-        var proxyUrl = '../../proxy?url=' + encodeURIComponent(url);
+        var proxyUrl = gnGlobalSettings.proxyUrl + encodeURIComponent(url);
 
         $http.get(proxyUrl)
-                  .success(function(json) {
-              layer.ncInfo = json;
+            .success(function(json) {
+              if (angular.isObject(json)) {
+                layer.ncInfo = json;
+              }
             });
         return layer;
       };
@@ -102,18 +128,18 @@
       };
 
       this.parseStyles = function(info) {
-        var t = [];
+        var t = {};
         if (angular.isArray(info.supportedStyles)) {
           angular.forEach(info.supportedStyles, function(s) {
             if (s == 'boxfill') {
               if (angular.isArray(info.palettes)) {
                 angular.forEach(info.palettes, function(p) {
-                  t.push(s + '/' + p);
+                  t[p] = s + '/' + p;
                 });
               }
             }
             else if (s == 'contour') {
-              t.push(s + '/');
+              t[s] = s + '/' + p;
             }
           });
         }
@@ -165,13 +191,18 @@
        * @param {aol.geometry} geom param
        * @param {string} service param
        * @return {string} url
-             */
+       */
       this.getNcwmsServiceUrl = function(layer, proj, geom, service) {
         var p = {
-                  FORMAT: 'image/png',
-                  CRS: proj.getCode(),
-                  LAYER: layer.getSource().getParams().LAYERS
+          FORMAT: 'image/png',
+          CRS: proj.getCode(),
+          LAYER: layer.getSource().getParams().LAYERS
         };
+        var time = layer.getSource().getParams().TIME;
+        if (time) {
+          p.TIME = time;
+        }
+
         if (service == 'profile') {
           p.REQUEST = 'GetVerticalProfile';
           p.POINT = gnMap.getTextFromCoordinates(geom);
@@ -179,9 +210,12 @@
         } else if (service == 'transect') {
           p.REQUEST = 'GetTransect';
           p.LINESTRING = gnMap.getTextFromCoordinates(geom);
+          var elevation = layer.getSource().getParams().ELEVATION;
+          if (elevation) {
+            p.ELEVATION = elevation;
+          }
         }
-        return gnUrlUtils.append(layer.getSource().getUrls(),
-            gnUrlUtils.toKeyValue(p));
+        return gnUrlUtils.append(layer.get('url'), gnUrlUtils.toKeyValue(p));
 
       };
 
@@ -202,8 +236,7 @@
           item: 'layerDetails',
           layerName: layer.getSource().getParams().LAYERS
         };
-        return gnUrlUtils.append(layer.getSource().getUrls(),
-            gnUrlUtils.toKeyValue(p));
+        return gnUrlUtils.append(layer.get('url'), gnUrlUtils.toKeyValue(p));
       };
 
       /**
@@ -227,12 +260,36 @@
           layers: layer.getSource().getParams().LAYERS,
           bbox: extent
         };
+        var time = layer.getSource().getParams().TIME;
+        if (time) {
+          p.TIME = time;
+        }
+        var elevation = layer.getSource().getParams().ELEVATION;
+        if (elevation) {
+          p.ELEVATION = elevation;
+        }
 
-        var url = gnUrlUtils.append(layer.getSource().getUrls(),
-                  gnUrlUtils.toKeyValue(p));
+        var url = gnUrlUtils.append(layer.get('url'), gnUrlUtils.toKeyValue(p));
 
-        var proxyUrl = '../../proxy?url=' + encodeURIComponent(url);
-        return $http.get(proxyUrl);
+        return $http.get(gnGlobalSettings.proxyUrl + encodeURIComponent(url));
+      };
+
+      /**
+       * Update the `legend` property of the layer depending on
+       * layers parameters.
+       *
+       * @param {string} legendUrl
+       * @return {string}
+       */
+      this.updateLengendUrl = function(legendUrl, params) {
+        var parts = legendUrl.split('?');
+
+        var p = parts.length > 1 ?
+            gnUrlUtils.parseKeyValue(parts[1]) : {};
+        angular.extend(p, params);
+
+        var sP = gnUrlUtils.toKeyValue(p);
+        return gnUrlUtils.append(parts[0], sP);
       };
     }
   ]);

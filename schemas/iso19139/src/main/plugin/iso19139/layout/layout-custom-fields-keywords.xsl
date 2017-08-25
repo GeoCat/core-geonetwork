@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<!--
+  ~ Copyright (C) 2001-2016 Food and Agriculture Organization of the
+  ~ United Nations (FAO-UN), United Nations World Food Programme (WFP)
+  ~ and United Nations Environment Programme (UNEP)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation; either version 2 of the License, or (at
+  ~ your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but
+  ~ WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~ General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+  ~
+  ~ Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+  ~ Rome - Italy. email: geonetwork@osgeo.org
+  -->
+
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:gmd="http://www.isotc211.org/2005/gmd"
                 xmlns:gco="http://www.isotc211.org/2005/gco"
                 xmlns:gmx="http://www.isotc211.org/2005/gmx"
@@ -9,15 +31,16 @@
                 xmlns:gn="http://www.fao.org/geonetwork"
                 xmlns:xslutil="java:org.fao.geonet.util.XslUtil"
                 xmlns:gn-fn-metadata="http://geonetwork-opensource.org/xsl/functions/metadata"
+                version="2.0"
                 exclude-result-prefixes="#all">
 
-  <!-- Custom rendering of keyword section 
-    * gmd:descriptiveKeywords is boxed element and the title 
+  <!-- Custom rendering of keyword section
+    * gmd:descriptiveKeywords is boxed element and the title
     of the fieldset is the thesaurus title
     * if the thesaurus is available in the catalog, display
-    the advanced editor which provides easy selection of 
+    the advanced editor which provides easy selection of
     keywords.
-  
+
   -->
 
 
@@ -29,18 +52,22 @@
 
     <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
     <xsl:variable name="isoType" select="if (../@gco:isoType) then ../@gco:isoType else ''"/>
-    <xsl:variable name="thesaurusTitleEl" select="gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title"/>
+    <xsl:variable name="thesaurusTitleEl"
+                  select="gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title"/>
     <xsl:variable name="thesaurusTitle">
       <xsl:choose>
         <xsl:when test="normalize-space($thesaurusTitleEl/gco:CharacterString) != ''">
           <xsl:value-of select="if ($overrideLabel != '')
               then $overrideLabel
-              else normalize-space($thesaurusTitleEl/gco:CharacterString)"/>
+              else concat(
+                      $iso19139strings/keywordFrom,
+                      normalize-space($thesaurusTitleEl/gco:CharacterString))"/>
         </xsl:when>
         <xsl:when test="normalize-space($thesaurusTitleEl/gmd:PT_FreeText/
                           gmd:textGroup/gmd:LocalisedCharacterString[
                             @locale = concat('#', upper-case(xslutil:twoCharLangCode($lang)))][1]) != ''">
-          <xsl:value-of select="$thesaurusTitleEl/gmd:PT_FreeText/gmd:textGroup/gmd:LocalisedCharacterString[@locale = concat('#', upper-case(xslutil:twoCharLangCode($lang)))][1]"/>
+          <xsl:value-of
+            select="$thesaurusTitleEl/gmd:PT_FreeText/gmd:textGroup/gmd:LocalisedCharacterString[@locale = concat('#', upper-case(xslutil:twoCharLangCode($lang)))][1]"/>
         </xsl:when>
         <xsl:when test="$thesaurusTitleEl/gmd:PT_FreeText/
                           gmd:textGroup/gmd:LocalisedCharacterString[
@@ -50,7 +77,7 @@
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="gmd:MD_Keywords/gmd:thesaurusName/
-                                  gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code" />
+                                  gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -59,7 +86,7 @@
         <!-- Create form for all existing attribute (not in gn namespace)
         and all non existing attributes not already present. -->
         <xsl:apply-templates mode="render-for-field-for-attribute"
-          select="
+                             select="
           @*|
           gn:attribute[not(@name = parent::node()/@*/name())]">
           <xsl:with-param name="ref" select="gn:element/@ref"/>
@@ -69,12 +96,10 @@
     </xsl:variable>
 
 
-
-
     <xsl:call-template name="render-boxed-element">
       <xsl:with-param name="label"
-        select="if ($thesaurusTitle) 
-                then $thesaurusTitle 
+        select="if ($thesaurusTitle !='')
+                then $thesaurusTitle
                 else gn-fn-metadata:getLabel($schema, name(), $labels, name(..), $isoType, $xpath)/label"/>
       <xsl:with-param name="editInfo" select="gn:element"/>
       <xsl:with-param name="cls" select="local-name()"/>
@@ -91,33 +116,30 @@
   </xsl:template>
 
 
-
-
-
   <xsl:template mode="mode-iso19139" match="gmd:MD_Keywords" priority="2000">
 
 
     <xsl:variable name="thesaurusIdentifier"
-                  select="gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code"/>
+                  select="normalize-space(gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/*/text())"/>
 
     <xsl:variable name="thesaurusTitle"
-        select="gmd:thesaurusName/gmd:CI_Citation/gmd:title/(gco:CharacterString|gmd:PT_FreeText/gmd:textGroup/gmd:LocalisedCharacterString)"/>
+                  select="gmd:thesaurusName/gmd:CI_Citation/gmd:title/(gco:CharacterString|gmd:PT_FreeText/gmd:textGroup/gmd:LocalisedCharacterString)"/>
 
 
     <xsl:variable name="thesaurusConfig"
                   as="element()?"
-                  select="if ($thesaurusList/thesaurus[@key=substring-after($thesaurusIdentifier/*/text(), 'geonetwork.thesaurus.')])
-                          then $thesaurusList/thesaurus[@key=substring-after($thesaurusIdentifier/*/text(), 'geonetwork.thesaurus.')]
+                  select="if ($thesaurusList/thesaurus[@key=substring-after($thesaurusIdentifier, 'geonetwork.thesaurus.')])
+                          then $thesaurusList/thesaurus[@key=substring-after($thesaurusIdentifier, 'geonetwork.thesaurus.')]
                           else $listOfThesaurus/thesaurus[title=$thesaurusTitle]"/>
 
     <xsl:choose>
       <xsl:when test="$thesaurusConfig">
 
-        <!-- The thesaurus key may be contained in the MD_Identifier field or 
+        <!-- The thesaurus key may be contained in the MD_Identifier field or
           get it from the list of thesaurus based on its title.
           -->
         <xsl:variable name="thesaurusInternalKey"
-          select="if ($thesaurusIdentifier)
+                      select="if ($thesaurusIdentifier)
           then $thesaurusIdentifier
           else $thesaurusConfig/key"/>
         <xsl:variable name="thesaurusKey"
@@ -150,15 +172,15 @@
 
         <!-- Get current transformation mode based on XML fragment analysis -->
         <xsl:variable name="transformation"
-          select="if (parent::node()/@xlink:href) then 'to-iso19139-keyword-as-xlink'
+                      select="if (parent::node()/@xlink:href) then 'to-iso19139-keyword-as-xlink'
           else if (count(gmd:keyword/gmx:Anchor) > 0)
-          then 'to-iso19139-keyword-with-anchor' 
+          then 'to-iso19139-keyword-with-anchor'
           else 'to-iso19139-keyword'"/>
 
         <xsl:variable name="parentName" select="name(..)"/>
 
-        <!-- Create custom widget: 
-              * '' for item selector, 
+        <!-- Create custom widget:
+              * '' for item selector,
               * 'tagsinput' for tags
               * 'tagsinput' and maxTags = 1 for only one tag
               * 'multiplelist' for multiple selection list
@@ -171,7 +193,7 @@
                               else ''"/>
         <!--
           Example: to restrict number of keyword to 1 for INSPIRE
-          <xsl:variable name="maxTags" 
+          <xsl:variable name="maxTags"
           select="if ($thesaurusKey = 'external.theme.inspire-theme') then '1' else ''"/>
         -->
         <!-- Create a div with the directive configuration
@@ -184,20 +206,22 @@
             * transformation: current transformation
           -->
 
-        <xsl:variable name="allLanguages" select="concat($metadataLanguage, ',', $metadataOtherLanguages)"></xsl:variable>
+        <xsl:variable name="allLanguages"
+                      select="concat($metadataLanguage, ',', $metadataOtherLanguages)"></xsl:variable>
         <div data-gn-keyword-selector="{$widgetMode}"
-          data-metadata-id="{$metadataId}"
-          data-element-ref="{concat('_X', ../gn:element/@ref, '_replace')}"
-          data-thesaurus-title="{$thesaurusTitle}"
-          data-thesaurus-key="{$thesaurusKey}"
-          data-keywords="{$keywords}" data-transformations="{$transformations}"
-          data-current-transformation="{$transformation}"
-          data-max-tags="{$maxTags}"
-          data-lang="{$metadataOtherLanguagesAsJson}"
-          data-textgroup-only="false">
+             data-metadata-id="{$metadataId}"
+             data-element-ref="{concat('_X', ../gn:element/@ref, '_replace')}"
+             data-thesaurus-title="{$thesaurusTitle}"
+             data-thesaurus-key="{$thesaurusKey}"
+             data-keywords="{$keywords}" data-transformations="{$transformations}"
+             data-current-transformation="{$transformation}"
+             data-max-tags="{$maxTags}"
+             data-lang="{$metadataOtherLanguagesAsJson}"
+             data-textgroup-only="false">
         </div>
 
-        <xsl:variable name="isTypePlace" select="count(gmd:type/gmd:MD_KeywordTypeCode[@codeListValue='place']) > 0"/>
+        <xsl:variable name="isTypePlace"
+                      select="count(gmd:type/gmd:MD_KeywordTypeCode[@codeListValue='place']) > 0"/>
         <xsl:if test="$isTypePlace">
           <xsl:call-template name="render-batch-process-button">
             <xsl:with-param name="process-name" select="'add-extent-from-geokeywords'"/>

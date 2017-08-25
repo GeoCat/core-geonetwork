@@ -1,10 +1,35 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import com.vividsolutions.jts.util.Assert;
+
 import org.fao.geonet.Constants;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.exceptions.TermNotFoundException;
@@ -31,6 +56,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -38,14 +64,13 @@ import javax.annotation.Nullable;
  * @author Jesse on 2/27/2015.
  */
 public class AllThesaurus extends Thesaurus {
+    public static final String FNAME = "allThesaurus";
+    public static final String SEPARATOR = "@@@";
     static final String TYPE = "external";
     static final String DNAME = "none";
-    public static final String FNAME = "allThesaurus";
     public static final String ALL_THESAURUS_KEY = TYPE + "." + DNAME + "." + FNAME;
     static final String TITLE = "All Keywords";
-
     private static final String URI_CODE_PREFIX = "http://org.fao.geonet.thesaurus.all/";
-    public static final String SEPARATOR = "@@@";
     private final ThesaurusFinder thesaurusFinder;
     private final IsoLanguagesMapper isoLangMapper;
     private final String downloadUrl;
@@ -142,7 +167,7 @@ public class AllThesaurus extends Thesaurus {
 
     @Override
     public synchronized QueryResultsTable performRequest(final String query) throws IOException, MalformedQueryException,
-            QueryEvaluationException, AccessDeniedException {
+        QueryEvaluationException, AccessDeniedException {
         final Map<Thesaurus, QueryResultsTable> allResults = Maps.newIdentityHashMap();
         onThesauri(null, new Function<Thesaurus, Void>() {
             @Nullable
@@ -176,7 +201,7 @@ public class AllThesaurus extends Thesaurus {
 
     @Override
     public synchronized Thesaurus removeElement(KeywordBean keyword) throws MalformedQueryException, QueryEvaluationException,
-            IOException, AccessDeniedException {
+        IOException, AccessDeniedException {
         throw new UnsupportedOperationException();
     }
 
@@ -192,7 +217,7 @@ public class AllThesaurus extends Thesaurus {
 
     @Override
     public synchronized URI updateElement(KeywordBean keyword, boolean replace) throws AccessDeniedException, IOException,
-            MalformedQueryException, QueryEvaluationException, GraphException {
+        MalformedQueryException, QueryEvaluationException, GraphException {
         throw new UnsupportedOperationException();
     }
 
@@ -242,7 +267,7 @@ public class AllThesaurus extends Thesaurus {
 
     @Override
     public synchronized void addRelation(String subject, KeywordRelation related, String relatedSubject) throws AccessDeniedException,
-            IOException, MalformedQueryException, QueryEvaluationException, GraphException {
+        IOException, MalformedQueryException, QueryEvaluationException, GraphException {
         throw new UnsupportedOperationException();
     }
 
@@ -278,7 +303,7 @@ public class AllThesaurus extends Thesaurus {
         final Thesaurus thesaurus = this.thesaurusFinder.getThesaurusByName(decomposedAllUri.thesaurusKey);
 
         return Lists.transform(thesaurus.getRelated(decomposedAllUri.keywordUri, request, languages), new Function<KeywordBean,
-                KeywordBean>() {
+            KeywordBean>() {
             @Nullable
             @Override
             public KeywordBean apply(@Nullable KeywordBean keywordBean) {
@@ -368,7 +393,7 @@ public class AllThesaurus extends Thesaurus {
         try {
             final Iterator<Thesaurus> iterator = thesaurusFinder.getThesauriMap().values().iterator();
             Thesaurus thesaurus = null;
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 thesaurus = iterator.next();
                 if (!AllThesaurus.ALL_THESAURUS_KEY.equals(thesaurus.getKey())) {
                     break;
@@ -405,9 +430,9 @@ public class AllThesaurus extends Thesaurus {
         @Override
         public String toString() {
             return "DecomposedAllUri{" +
-                   "thesaurusKey='" + thesaurusKey + '\'' +
-                   ", keywordUri='" + keywordUri + '\'' +
-                   '}';
+                "thesaurusKey='" + thesaurusKey + '\'' +
+                ", keywordUri='" + keywordUri + '\'' +
+                '}';
         }
     }
 

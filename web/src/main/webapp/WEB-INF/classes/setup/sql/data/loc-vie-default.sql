@@ -16,7 +16,6 @@ INSERT INTO CategoriesDes (iddes, langid, label) VALUES (7,'vie','Photo');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (8,'vie','Audio/Video');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (9,'vie','Directories');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (10,'vie','Other information resources');
-INSERT INTO CategoriesDes (iddes, langid, label) VALUES (11,'vie','Z3950 Servers');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (12,'vie','Registers');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (13,'vie','Physical Samples');
 
@@ -523,4 +522,7 @@ INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (2,'vie','Approved');
 INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (3,'vie','Retired');
 INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (4,'vie','Submitted');
 INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (5,'vie','Rejected');
+
+INSERT INTO SelectionsDes (iddes, langid, label) VALUES (0,'vie','Preferred records');
+INSERT INTO SelectionsDes (iddes, langid, label) VALUES (1,'vie','Watch list');
 

@@ -1,6 +1,30 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel.search;
 
 import com.google.common.io.Resources;
+
 import org.fao.geonet.Constants;
 import org.fao.geonet.util.XslUtil;
 import org.jdom.JDOMException;
@@ -16,6 +40,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+
 import javax.servlet.ServletContext;
 
 /**
@@ -24,19 +49,21 @@ import javax.servlet.ServletContext;
  * All JSON files are combined in one cache (like the client app does).
  */
 public final class JSONLocCacheLoader implements Callable<Map<String, String>> {
-    private final String langCode;
-
     /**
      * The list of files to load.
      */
     private static final List<String> files = Arrays.asList(
-            new String[]{"core", "admin", "editor", "search"});
-
+        new String[]{"core", "admin", "editor", "search"});
+    private final String langCode;
     private ConfigurableApplicationContext applicationContext;
 
     public JSONLocCacheLoader(ConfigurableApplicationContext context, String langCode) {
         this.langCode = langCode;
         this.applicationContext = context;
+    }
+
+    public static String cacheKey(final String langCode) {
+        return "json:" + langCode;
     }
 
     @Override
@@ -57,25 +84,16 @@ public final class JSONLocCacheLoader implements Callable<Map<String, String>> {
         return translations;
     }
 
-    public static String cacheKey(final String langCode) {
-        return "json:" + langCode;
-    }
-
     /**
      * Populate the cache by loading all JSON files.
-     *
-     * @param translation
-     * @param file
-     * @throws IOException
-     * @throws JDOMException
      */
     @SuppressWarnings("unchecked")
     private void addJSONLocalizationFile(Map<String, String> translation, URL file)
-            throws IOException, JDOMException {
+        throws IOException, JDOMException {
         if (file != null) {
             try {
                 JSONObject json =
-                        new JSONObject(Resources.toString(file, Constants.CHARSET));
+                    new JSONObject(Resources.toString(file, Constants.CHARSET));
 
                 Iterator<String> keys = json.keys();
                 while (keys.hasNext()) {

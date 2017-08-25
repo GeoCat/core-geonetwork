@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_schema_manager_service');
 
@@ -20,23 +43,10 @@
 
          var extractNamespaces = function(data) {
            var result = {};
-           var len = data['schemas'].length;
+           var len = data.length;
             for (var i = 0; i < len; i++) {
-              var sc = data['schemas'][i];
-              var name = sc['name'];
-              var nss = sc['namespaces'];
-              var modNs = {};
-              if (typeof nss == 'string') {
-                var nssArray = nss.split(' ');
-                for (var j = 0; j < nssArray.length; j++) {
-                  var nsPair = nssArray[j].split('=');
-                  var prefix = nsPair[0].substring(6);
-                  var namespaceUri = nsPair[1].
-                 substring(1, nsPair[1].length - 1);
-                  modNs[prefix] = namespaceUri;
-                }
-              }
-              result[name] = modNs;
+              var sc = data[i];
+              result[sc.name] = sc.namespaces;
             }
             return result;
          };
@@ -72,12 +82,7 @@
              if (fromCache) {
                defer.resolve(fromCache);
              } else {
-                var url = gnUrlUtils.append('info?_content_type=json',
-                   gnUrlUtils.toKeyValue({
-                 type: 'schemas'
-                   })
-               );
-               $http.get(url, { cache: false }).
+               $http.get('../api/standards', { cache: false }).
                success(function(data) {
                  var nss = extractNamespaces(data);
                  infoCache.put('schemas', nss);
@@ -88,25 +93,15 @@
            },
 
            getCodelist: function(config) {
-             //<request><codelist schema="iso19139" name="gmd:CI_RoleCode"/>
              var defer = $q.defer();
              var fromCache = infoCache.get(config);
              if (fromCache) {
                defer.resolve(fromCache);
              } else {
-               var getPostRequestBody = function() {
-                 var info = config.split('|'),
-                 requestBody = '<request><codelist schema="' + info[0] +
-                 '" name="' + info[1] +
-                 '" /></request>';
-                 return requestBody;
-               };
-
-               $http.post('md.element.info?_content_type=json',
-               getPostRequestBody(), {
-                 headers: {'Content-type': 'application/xml'}
-               }).
-               success(function(data) {
+               var info = config.split('|');
+               $http.get('../api/standards/' + info[0] +
+               '/codelists/' + info[1] + '/details')
+               .success(function(data) {
                  infoCache.put(config, data);
                  defer.resolve(data);
                });
@@ -120,40 +115,20 @@
             * Return a promise.
             */
            getElementInfo: function(config) {
-             //<request>
-             //  <element schema="iso19139"
-             //   name="gmd:geometricObjectType"
-             //   context="gmd:MD_GeometricObjects"
-             //   fullContext="xpath"
-             //   isoType="" /></request>
              var defer = $q.defer();
              var fromCache = infoCache.get(config);
              if (fromCache) {
                defer.resolve(fromCache);
              } else {
-               var getPostRequestBody = function() {
-                 var info = config.split('|');
-                 var requestBody = null;
-
-                 // Check at least element name is defined
-                 // to get information about that element.
-                 if (info[1] !== '') {
-                   requestBody = '<request><element schema="' + info[0] +
-                   '" name="' + info[1] +
-                   '" context="' + (info[2] || '') +
-                   '" fullContext="' + (info[3] || '') +
-                   '" isoType="' + (info[4] || '') + '" /></request>';
-                 }
-                 return requestBody;
-               };
-
-               var requestBody = getPostRequestBody();
-               if (requestBody === null) {
+               var info = config.split('|');
+               if (info.length === 0) {
                  defer.reject({error: 'Invalid config.', config: config});
                } else {
-                 $http.post('md.element.info?_content_type=json', requestBody, {
-                   headers: {'Content-type': 'application/xml'}
-                 }).
+                 $http.get('../api/standards/' + info[0] +
+                 '/descriptors/' + info[1] + '/details?' +
+                 'parent=' + (info[2] || '') +
+                 '&xpath=' + (info[3] || '') +
+                 '&isoType=' + (info[4] || '')).
                  success(function(data) {
                    infoCache.put(config, data);
                    defer.resolve(data);

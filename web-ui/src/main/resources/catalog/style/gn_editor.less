@@ -6,7 +6,6 @@
 @import "gn.less";
 
 body {
-  
 }
 
 .gn-line-height {
@@ -19,8 +18,13 @@ input[type=text], input[type=number], select {
 
 
 .gn-drawmap-panel {
-  table .form-group {
-    width: 150px;
+  table  {
+    .form-group {
+      width: 150px;
+    }
+    .btn-group {
+      margin-left: 15px;
+    }
   }
   .form-group {
     margin-left: 0px;
@@ -39,13 +43,33 @@ input[type=text], input[type=number], select {
    height: 300px;
    width: 100%;
   }
-  
+
   .gn-proj-select {
     width: 250px;
     vertical-align: top;
   }
-  .gn-region-picker {
-    width: 400px;
+  [data-gn-region-picker], [gn-region-picker] {
+    .fa {
+      position: absolute;
+      top: 11px;
+      z-index: 100;
+      right: 10px;
+      &.fa-spinner {
+        right: 25px;
+      }
+      &.fa-times-circle {
+        cursor: pointer;
+      }
+    }
+  }
+  input[type=number] {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  .dropdown-menu {
+    font-size: 13px;
+    text-align: left;
   }
 }
 .gn-geopublisher-panel {
@@ -68,7 +92,18 @@ input[type=text], input[type=number], select {
 
 .gn-editor-container {
   padding: 20px 5px;
-  margin-top: 45px;
+  margin-top: 60px;
+}
+
+@media only screen and (max-width: 815px) {
+  .gn-editor-container {
+    margin-top: 120px;
+  }
+}
+@media only screen and (max-width: 425px) {
+  .gn-editor-container {
+    margin-top: 160px;
+  }
 }
 
 
@@ -93,27 +128,48 @@ input[type=text], input[type=number], select {
   }
 }
 
+.gn-autocomplete-list {
+  position: absolute;
+  margin-top: 35px;
+  width: inherit;
+  z-index: 999;
+
+  /**/
+  .tt-suggestion:hover {
+    color: #fff;
+    background-color: #0097cf;
+  }
+}
+
 form.gn-editor {
   /* Move each sub fieldset to the left */
   @editor-fieldset-padding-left: 5px;
 
   /**
-   * Make space on the following element of a well 
+   * Make space on the following element of a well
    */
   div.well + fieldset, div.well + div {
     padding-top: 10px;
   }
-  
+
   div.well {
     margin-bottom: 0px;
   }
 
   div[data-gn-toggle] {
     position: absolute;
-    left: -4px;
+    right: 3px;
     top: 2px;
     button {
-      padding: 2px;
+      padding: 5px;
+      background-color: @brand-primary;
+      color: white;
+      -webkit-border-radius: 15px;
+      border-width: 0px;
+      i {
+        padding-left: 3px;
+        padding-top: 4px;
+      }
     }
   }
 
@@ -147,11 +203,11 @@ form.gn-editor {
   fieldset fieldset {
     padding-left: @editor-fieldset-padding-left;
   }
-  
+
   .form-group {
     margin-bottom: 0px;
   }
-  
+
   legend {
     margin-bottom: 10px;
   }
@@ -161,12 +217,14 @@ form.gn-editor {
     font-size: 12px;
     min-height: 700px;
   }
-  
+
   .gn-autocomplete-list {
     position: absolute;
     margin-top: 35px;
     width: inherit;
     z-index: 999;
+    max-height: 80vh;
+    overflow: auto;
 
     /**/
     .tt-suggestion:hover {
@@ -174,11 +232,11 @@ form.gn-editor {
       background-color: #0097cf;
     }
   }
-  
+
   .gn-debug {
     display: none;
   }
-  
+
   .control-label {
       color: #6a6a6a;
       font-weight: 200;
@@ -186,26 +244,26 @@ form.gn-editor {
       line-height: 22px;
 
   }
-  
+
   .gn-required > label {
  //   color: #333333;
   }
-  
+
   .gn-move {
 //    .pull-right();
   }
-  
+
   legend > div.gn-move {
     position: absolute;
   }
-  
+
   /* text danger takes priority above colors
    */
   .text-danger label,
   .text-danger legend {
     .text-danger();
   }
-  
+
   .gn-has-xlink {
     label, fieldset > legend {
   //    opacity: .7;
@@ -256,14 +314,14 @@ form.gn-editor {
     margin-top: 0px;
     margin-bottom: 0px;
   }
-  
-  
+
+
   /* Avoid white on white when i:hover
    */
   .btn:hover {
     color: #000;
   }
-  
+
   /**
    * Keyword selector directive
    */
@@ -303,6 +361,7 @@ form.gn-editor {
       padding: 5px;
       border: 1px solid #ebebeb;
       border-radius: 3px;
+      margin-top: 10px;
   }
   .gn-field {
       border-radius: 3px;
@@ -322,7 +381,7 @@ form.gn-editor {
   }
   .show {
       visibility: visible;
-  } 
+  }
   .gn-value .col-xs-8 {
       padding-left: 0px;
   }
@@ -330,7 +389,7 @@ form.gn-editor {
       padding-right: 0px;
   }
 
-  .gn-required > label:after {
+  label.gn-required:after, .gn-required > label:after {
       content: "*";
       font-size: 2.5em;
       margin: 7px 0 0 7px;
@@ -369,7 +428,7 @@ form.gn-tab-inspire {
     }
   }
 }
-.onlinesrc-container {
+.onlinesrc-container, [gn-directory-entry-list-selector] {
   .list-group {
     max-height:50%;
     overflow: auto;
@@ -447,8 +506,85 @@ table.gn-data-store {
   }
 }
 
+.gn-batch-editor {
+  .gn-resultview li.list-group-item {
+    margin-bottom: 0px;
+    padding: 4px;
+  }
+  li.gn-batch-editor-info {
+    margin-top: 11px;
+  }
+  [data-ng-search-form] .gn-top-search .gn-form-any {
+    max-width: 80vw;
+  }
+}
+
 form.gn-tab-xml {
   div[data-gn-toggle] {
     display:none;
+  }
+}
+
+.gn-table {
+  /* Compact gn-fields displayed in table mode.
+  Label and remove control are hidden. */
+  :not(.gn-table-label) div.gn-field {
+    padding: 0px !important;
+    label,
+    .col-sm-1.gn-control {
+      display: none;
+    }
+    .col-sm-9 {
+      width: 100%;
+    }
+  }
+  .gn-table-label {
+    div.gn-field {
+      label,
+      .col-sm-1.gn-control {
+        display: block;
+      }
+      .col-sm-9 {
+        width: 75%;
+      }
+    }
+  }
+}
+
+.skos-btn-icons {
+  text-decoration: none !important;
+  color: @gray;
+  &:hover {
+    color: @brand-success;
+  }
+}
+
+#xmleditor {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  min-height: 800px;
+}
+#gn-directory-container #xmleditor {
+  top: 124px;
+}
+
+.tt-dropdown-menu {
+  border-radius: 0;
+}
+
+.tt-suggestion {
+  font-size: 13px;
+}
+
+.input-group {
+  .tt-dropdown-menu {
+    top: 31px !important;
+    left: 8px !important;
+  }
+  .tt-hint {
+    color: transparent;
   }
 }

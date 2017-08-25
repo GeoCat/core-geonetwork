@@ -1,5 +1,29 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.jdom.Element;
 
 import javax.annotation.Nonnull;
@@ -13,7 +37,8 @@ import java.util.IdentityHashMap;
 import java.util.Set;
 
 /**
- * Encapsulates security information about the user. This is a JPA Embeddable object that is embedded into a {@link User} Entity
+ * Encapsulates security information about the user. This is a JPA Embeddable object that is
+ * embedded into a {@link User} Entity
  *
  * @author Jesse
  */
@@ -43,6 +68,7 @@ public class UserSecurity extends GeonetEntity implements Serializable {
      */
     public
     @Nonnull
+    @JsonIgnore
     UserSecurity setPassword(@Nonnull char[] password) {
         this._password = password == null ? new char[0] : password.clone();
         return this;
@@ -60,9 +86,8 @@ public class UserSecurity extends GeonetEntity implements Serializable {
     }
 
     /**
-     * Get the security notifications. This property used to store arbitrary security related notifications.
-     *
-     * @return
+     * Get the security notifications. This property used to store arbitrary security related
+     * notifications.
      */
     @Column(name = "security", length = 128)
     protected String getSecurityNotificationsString() {
@@ -114,7 +139,8 @@ public class UserSecurity extends GeonetEntity implements Serializable {
      * Merge all data from other security into this security.
      *
      * @param otherSecurity other user to merge data from.
-     * @param mergeNullData if true then also set null values from other security. If false then only merge non-null data
+     * @param mergeNullData if true then also set null values from other security. If false then
+     *                      only merge non-null data
      */
     public void mergeSecurity(UserSecurity otherSecurity, boolean mergeNullData) {
         if (mergeNullData || otherSecurity.getPassword() != null) {
@@ -136,7 +162,8 @@ public class UserSecurity extends GeonetEntity implements Serializable {
 
         UserSecurity that = (UserSecurity) o;
 
-        if (_authType != null ? !_authType.equals(that._authType) : that._authType != null) return false;
+        if (_authType != null ? !_authType.equals(that._authType) : that._authType != null)
+            return false;
         if (_nodeId != null ? !_nodeId.equals(that._nodeId) : that._nodeId != null) return false;
         if (!Arrays.equals(_password, that._password)) return false;
         if (!_securityNotifications.equals(that._securityNotifications)) return false;

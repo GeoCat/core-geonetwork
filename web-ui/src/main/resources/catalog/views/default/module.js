@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
 
   goog.provide('gn_search_default');
@@ -23,6 +46,7 @@
     function($scope, gnSearchSettings) {
       $scope.searchObj = {
         permalink: false,
+        filters: gnSearchSettings.filters,
         params: {
           sortBy: 'popularity',
           from: 1,
@@ -33,10 +57,11 @@
 
 
   module.controller('gnsSearchLatestController', [
-    '$scope',
-    function($scope) {
+    '$scope', 'gnSearchSettings',
+    function($scope, gnSearchSettings) {
       $scope.searchObj = {
         permalink: false,
+        filters: gnSearchSettings.filters,
         params: {
           sortBy: 'changeDate',
           from: 1,
@@ -71,7 +96,6 @@
       var searchMap = gnSearchSettings.searchMap;
 
 
-
       $scope.modelOptions = angular.copy(gnGlobalSettings.modelOptions);
       $scope.modelOptionsForm = angular.copy(gnGlobalSettings.modelOptions);
       $scope.gnWmsQueue = gnWmsQueue;
@@ -79,20 +103,23 @@
       $scope.activeTab = '/home';
       $scope.resultTemplate = gnSearchSettings.resultTemplate;
       $scope.facetsSummaryType = gnSearchSettings.facetsSummaryType;
+      $scope.facetConfig = gnSearchSettings.facetConfig;
+      $scope.facetTabField = gnSearchSettings.facetTabField;
       $scope.location = gnSearchLocation;
       $scope.toggleMap = function () {
         $(searchMap.getTargetElement()).toggle();
+        $('button.gn-minimap-toggle > i').toggleClass('fa-angle-double-left fa-angle-double-right');
       };
       hotkeys.bindTo($scope)
         .add({
             combo: 'h',
-            description: $translate('hotkeyHome'),
+            description: $translate.instant('hotkeyHome'),
             callback: function(event) {
               $location.path('/home');
             }
           }).add({
             combo: 't',
-            description: $translate('hotkeyFocusToSearch'),
+            description: $translate.instant('hotkeyFocusToSearch'),
             callback: function(event) {
               event.preventDefault();
               var anyField = $('#gn-any-field');
@@ -104,21 +131,21 @@
             }
           }).add({
             combo: 'enter',
-            description: $translate('hotkeySearchTheCatalog'),
+            description: $translate.instant('hotkeySearchTheCatalog'),
             allowIn: 'INPUT',
             callback: function() {
               $location.search('tab=search');
             }
             //}).add({
             //  combo: 'r',
-            //  description: $translate('hotkeyResetSearch'),
+            //  description: $translate.instant('hotkeyResetSearch'),
             //  allowIn: 'INPUT',
             //  callback: function () {
             //    $scope.resetSearch();
             //  }
           }).add({
             combo: 'm',
-            description: $translate('hotkeyMap'),
+            description: $translate.instant('hotkeyMap'),
             callback: function(event) {
               $location.path('/map');
             }
@@ -128,6 +155,8 @@
       // TODO: Previous record should be stored on the client side
       $scope.mdView = mdView;
       gnMdView.initMdView();
+
+
       $scope.goToSearch = function (any) {
         $location.path('/search').search({'any': any});
       };
@@ -147,11 +176,23 @@
         gnMdView.removeLocationUuid();
       };
       $scope.nextRecord = function() {
-        // TODO: When last record of page reached, go to next page...
-        $scope.openRecord(mdView.current.index + 1);
+        var nextRecordId = mdView.current.index + 1;
+        if (nextRecordId === mdView.records.length) {
+          // When last record of page reached, go to next page...
+          // Not the most elegant way to do it, but it will
+          // be easier using Solr search components
+          $scope.$broadcast('nextPage');
+        } else {
+          $scope.openRecord(nextRecordId);
+        }
       };
       $scope.previousRecord = function() {
-        $scope.openRecord(mdView.current.index - 1);
+        var prevRecordId = mdView.current.index - 1;
+        if (prevRecordId === -1) {
+          $scope.$broadcast('previousPage');
+        } else {
+          $scope.openRecord(prevRecordId);
+        }
       };
 
       $scope.infoTabs = {
@@ -167,7 +208,7 @@
         }};
 
       // Set the default browse mode for the home page
-      $scope.$watch('searchInfo', function () {
+      $scope.$watch('searchInfo', function (n, o) {
         if (angular.isDefined($scope.searchInfo.facet)) {
           if ($scope.searchInfo.facet['inspireThemes'].length > 0) {
             $scope.browse = 'inspire';
@@ -179,14 +220,38 @@
         }
       });
 
-      $scope.resultviewFns = {
-        addMdLayerToMap: function (link, md) {
+      $scope.$on('layerAddedFromContext', function(e,l) {
+        var md = l.get('md');
+        if(md) {
+          var linkGroup = md.getLinkGroup(l);
+          gnMap.feedLayerWithRelated(l,linkGroup);
+        }
+      });
 
+      $scope.resultviewFns = {
+        addMdLayerToMapSimple: function (link, md) {
           if (gnMap.isLayerInMap(viewerMap,
               link.name, link.url)) {
             return;
           }
-          gnMap.addWmsFromScratch(viewerMap, link.url, link.name, false, md);
+          gnMap.addWmsFromScratch(viewerMap, link.url, link.name, false, md).then(function (layer) {
+            if (layer) {
+              gnMap.feedLayerWithRelated(layer, link.group);
+            }
+          });
+        },
+        // Add to basket first and then trigger add to map
+        addMdLayerToMap: function (link, md) {
+          if (gnMap.isLayerInMap(viewerMap,
+              link.name, link.url)) {
+            return;
+          }
+          gnMap.addWmsFromScratch(viewerMap, link.url, link.name, false, md).
+          then(function(layer) {
+            if(layer) {
+              gnMap.feedLayerWithRelated(layer, link.group);
+            }
+          });
       },
         addAllMdLayersToMap: function (layers, md) {
           angular.forEach(layers, function (layer) {
@@ -199,8 +264,14 @@
       };
 
       // Manage route at start and on $location change
+      // depending on configuration
       if (!$location.path()) {
-        $location.path('/home');
+        var m = gnGlobalSettings.gnCfg.mods;
+        $location.path(
+          m.home.enabled ? '/home' :
+          m.search.enabled ? '/search' :
+          m.map.enabled ? '/map' : 'home'
+        );
       }
       $scope.activeTab = $location.path().
           match(/^(\/[a-zA-Z0-9]*)($|\/.*)/)[1];
@@ -229,24 +300,31 @@
         }
       });
 
+
+
       angular.extend($scope.searchObj, {
         advancedMode: false,
         from: 1,
         to: 30,
+        selectionBucket: 's101',
         viewerMap: viewerMap,
         searchMap: searchMap,
         mapfieldOption: {
           relations: ['within']
         },
+        hitsperpageValues: gnSearchSettings.hitsperpageValues,
+        filters: gnSearchSettings.filters,
         defaultParams: {
           'facet.q': '',
-          resultType: gnSearchSettings.facetsSummaryType || 'details'
+          resultType: gnSearchSettings.facetsSummaryType || 'details',
+          sortBy: gnSearchSettings.sortBy || 'relevance'
         },
         params: {
           'facet.q': '',
-          resultType: gnSearchSettings.facetsSummaryType || 'details'
-        }
-      }, gnSearchSettings.sortbyDefault);
-
+          resultType: gnSearchSettings.facetsSummaryType || 'details',
+          sortBy: gnSearchSettings.sortBy || 'relevance'
+        },
+        sortbyValues: gnSearchSettings.sortbyValues
+      });
     }]);
 })();

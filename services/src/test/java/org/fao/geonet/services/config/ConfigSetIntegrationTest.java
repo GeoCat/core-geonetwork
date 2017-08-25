@@ -1,6 +1,30 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.services.config;
 
 import jeeves.server.context.ServiceContext;
+
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.services.AbstractServiceIntegrationTest;
 import org.jdom.Element;
@@ -12,13 +36,12 @@ import static junit.framework.Assert.assertEquals;
 /**
  * Test updating geonetwork settings via the Config Set service.
  *
- * User: Jesse
- * Date: 10/17/13
- * Time: 7:55 AM
+ * User: Jesse Date: 10/17/13 Time: 7:55 AM
  */
 public class ConfigSetIntegrationTest extends AbstractServiceIntegrationTest {
     @Autowired
     SettingManager _settingManager;
+
     @Test
     public void testExecBatch() throws Exception {
 
@@ -62,7 +85,7 @@ public class ConfigSetIntegrationTest extends AbstractServiceIntegrationTest {
         Element params = new Element("config").addContent(new Element(setting).setText(value));
         new Set().exec(params, serviceContext);
 
-        final String newValue = _settingManager.getValue(setting.replace('.','/'));
+        final String newValue = _settingManager.getValue(setting.replace('.', '/'));
 
         assertEquals(value, newValue);
     }

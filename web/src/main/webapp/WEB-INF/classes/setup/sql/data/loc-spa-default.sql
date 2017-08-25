@@ -16,7 +16,6 @@ INSERT INTO CategoriesDes (iddes, langid, label) VALUES (9,'spa','Directorios');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (8,'spa','Audio/Vídeo');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (10,'spa','Otros recursos de información');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (1,'spa','Mapas & gráficos');
-INSERT INTO CategoriesDes (iddes, langid, label) VALUES (11,'spa','Z3950 Servers');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (12,'spa','Registers');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (13,'spa','Muestras físicas');
 
@@ -523,3 +522,6 @@ INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (2,'spa','Approved');
 INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (3,'spa','Retired');
 INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (4,'spa','Submitted');
 INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (5,'spa','Rejected');
+
+INSERT INTO SelectionsDes (iddes, langid, label) VALUES (0,'spa','Preferred records');
+INSERT INTO SelectionsDes (iddes, langid, label) VALUES (1,'spa','Watch list');

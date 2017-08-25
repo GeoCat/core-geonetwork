@@ -1,14 +1,32 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.web;
 
 import jeeves.constants.Jeeves;
-import jeeves.server.overrides.ConfigurationOverrides;
+
 import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.NodeInfo;
-import org.fao.geonet.constants.Geonet;
-import org.fao.geonet.utils.Xml;
-import org.jdom.Element;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -26,15 +44,16 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
-import javax.annotation.PostConstruct;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import static jeeves.config.springutil.JeevesDelegatingFilterProxy.getApplicationContextFromServletContext;
 
 /**
- * Handles requests where there is no locale and a redirect to a correct (and localized) service is needed.  For example
- * index.html redirects to /srv/eng/home but that redirect should depend on the language of the users browser.
+ * Handles requests where there is no locale and a redirect to a correct (and localized) service is
+ * needed.  For example index.html redirects to /srv/eng/home but that redirect should depend on the
+ * language of the users browser.
  * <p/>
  * Created by Jesse on 12/4/13.
  */
@@ -57,9 +76,10 @@ public class LocaleRedirects {
         SPECIAL_HEADERS = Collections.unmodifiableSet(headers);
     }
 
-    private String _homeRedirectUrl;
+    private String _homeRedirectUrl = "catalog.search";
 
-    private String _defaultLanguage;
+    @Autowired
+    DefaultLanguage defaultLanguage;
 
     @RequestMapping(value = "/home")
     public ModelAndView home(final HttpServletRequest request,
@@ -120,7 +140,7 @@ public class LocaleRedirects {
                         headers.append('&');
                     }
                     headers.append(paramName);
-                    if (!value.isEmpty()){
+                    if (!value.isEmpty()) {
                         headers.append('=').append(value);
                     }
                 }
@@ -140,6 +160,9 @@ public class LocaleRedirects {
     }
 
     private String lang(String langParam, String langCookie, String langHeader) {
+        if (defaultLanguage.isForceDefault()) {
+            return defaultLanguage.getLanguage();
+        }
 
         if (langParam != null) {
             return langParam;
@@ -148,7 +171,7 @@ public class LocaleRedirects {
             return langCookie;
         }
         if (langHeader == null) {
-            return _defaultLanguage;
+            return defaultLanguage.getLanguage();
         }
 
         String userLang = langHeader.split("-|,", 2)[0].toLowerCase();
@@ -184,42 +207,9 @@ public class LocaleRedirects {
         } else if (userLang.matches("^tr")) {
             userLang = "tur";
         } else {
-            userLang = _defaultLanguage;
+            userLang = defaultLanguage.getLanguage();
         }
 
         return userLang;
-    }
-
-
-    @Autowired
-    private ApplicationContext _appContext;
-
-    @PostConstruct
-    public void init() throws BeansException {
-        final String configPath = _appContext.getBean("configPath", String.class);
-        final ServletContext servletContext = _appContext.getBean(ServletContext.class);
-        try {
-            final Element guiConfig = ConfigurationOverrides.DEFAULT.loadXmlFileAndUpdate(configPath + "config-gui.xml", servletContext);
-            final String xpath = "client/@url";
-            this._homeRedirectUrl = Xml.selectString(guiConfig, xpath);
-            if (_homeRedirectUrl == null) {
-                throw new FatalBeanException("No redirect URL was found in " + configPath + "config-gui.xml" + " at xpath: " + xpath);
-            }
-        } catch (Exception e) {
-            throw new FatalBeanException("Error loading guiConfig: " + configPath + "config-gui.xml", e);
-        }
-
-        try {
-            final Element config = ConfigurationOverrides.DEFAULT.loadXmlFileAndUpdate(configPath + "config.xml", servletContext);
-            final String xpath = "default/language";
-            this._defaultLanguage = Xml.selectString(config, xpath);
-            if (_defaultLanguage == null) {
-                _defaultLanguage = Geonet.DEFAULT_LANGUAGE;
-            }
-        } catch (Exception e) {
-            throw new FatalBeanException("Error loading config.xml: " + configPath + "config-gui.xml", e);
-        }
-
-
     }
 }

@@ -1,9 +1,33 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.services.metadata.schema;
 
 import static org.fao.geonet.services.metadata.schema.SchematronServiceAction.*;
 import static org.junit.Assert.*;
 
 import jeeves.server.context.ServiceContext;
+
 import org.fao.geonet.constants.Params;
 import org.fao.geonet.domain.GeonetEntity;
 import org.fao.geonet.domain.Schematron;
@@ -17,8 +41,7 @@ import static org.fao.geonet.domain.Pair.read;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Test SchematronCriteriaGroupServiceIntegration.
- * Created by Jesse on 2/12/14.
+ * Test SchematronCriteriaGroupServiceIntegration. Created by Jesse on 2/12/14.
  */
 public class SchematronCriteriaGroupServiceIntegrationTest extends AbstractSchematronServiceIntegrationTest {
 
@@ -51,7 +74,7 @@ public class SchematronCriteriaGroupServiceIntegrationTest extends AbstractSchem
         loginAsAdmin(context);
 
         Element params = createParams(
-                read(SchematronCriteriaGroupService.PARAM_INCLUDE_CRITERIA, Boolean.TRUE)
+            read(SchematronCriteriaGroupService.PARAM_INCLUDE_CRITERIA, Boolean.TRUE)
         );
 
         Element result = createService(LIST).exec(params, context);
@@ -67,7 +90,7 @@ public class SchematronCriteriaGroupServiceIntegrationTest extends AbstractSchem
         loginAsAdmin(context);
 
         Element params = createParams(
-                read(SchematronCriteriaGroupService.PARAM_INCLUDE_SCHEMATRON, Boolean.TRUE)
+            read(SchematronCriteriaGroupService.PARAM_INCLUDE_SCHEMATRON, Boolean.TRUE)
         );
 
         Element result = createService(LIST).exec(params, context);
@@ -83,8 +106,8 @@ public class SchematronCriteriaGroupServiceIntegrationTest extends AbstractSchem
         loginAsAdmin(context);
 
         Element params = createParams(
-                read(SchematronCriteriaGroupService.PARAM_INCLUDE_SCHEMATRON, Boolean.TRUE),
-                read(SchematronCriteriaGroupService.PARAM_INCLUDE_CRITERIA, Boolean.TRUE)
+            read(SchematronCriteriaGroupService.PARAM_INCLUDE_SCHEMATRON, Boolean.TRUE),
+            read(SchematronCriteriaGroupService.PARAM_INCLUDE_CRITERIA, Boolean.TRUE)
         );
 
         Element result = createService(LIST).exec(params, context);
@@ -100,8 +123,8 @@ public class SchematronCriteriaGroupServiceIntegrationTest extends AbstractSchem
         loginAsAdmin(context);
 
         Element params = createParams(
-                read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId()),
-                read(SchematronCriteriaGroupService.PARAM_INCLUDE_SCHEMATRON, Boolean.TRUE)
+            read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId()),
+            read(SchematronCriteriaGroupService.PARAM_INCLUDE_SCHEMATRON, Boolean.TRUE)
         );
 
         Element result = createService(LIST).exec(params, context);
@@ -121,8 +144,8 @@ public class SchematronCriteriaGroupServiceIntegrationTest extends AbstractSchem
         loginAsAdmin(context);
 
         Element params = createParams(
-                read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group2_Name2_SchematronId2.getId().getName()),
-                read(SchematronCriteriaGroupService.PARAM_INCLUDE_SCHEMATRON, Boolean.TRUE)
+            read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group2_Name2_SchematronId2.getId().getName()),
+            read(SchematronCriteriaGroupService.PARAM_INCLUDE_SCHEMATRON, Boolean.TRUE)
         );
 
         Element result = createService(LIST).exec(params, context);
@@ -142,8 +165,8 @@ public class SchematronCriteriaGroupServiceIntegrationTest extends AbstractSchem
         loginAsAdmin(context);
 
         Element params = createParams(
-                read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group2_Name2_SchematronId2.getId().getName()),
-                read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group2_Name2_SchematronId2.getId().getSchematronId())
+            read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group2_Name2_SchematronId2.getId().getName()),
+            read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group2_Name2_SchematronId2.getId().getSchematronId())
         );
 
         Element result = createService(LIST).exec(params, context);
@@ -154,23 +177,24 @@ public class SchematronCriteriaGroupServiceIntegrationTest extends AbstractSchem
         assertNotGroupNames(result, _group1_Name1_SchematronId1, _group3_Name3_SchemtronId1);
         assertNotSchematronIds(result, _group1_Name1_SchematronId1, _group4_Name2_SchematronId4);
     }
+
     @Test
     public void testExecExists() throws Exception {
         ServiceContext context = createServiceContext();
         loginAsAdmin(context);
 
         Element params = createParams(
-                read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group2_Name2_SchematronId2.getId().getName()),
-                read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group2_Name2_SchematronId2.getId().getSchematronId())
+            read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group2_Name2_SchematronId2.getId().getName()),
+            read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group2_Name2_SchematronId2.getId().getSchematronId())
         );
 
         Element result = createService(EXISTS).exec(params, context);
         assertEquals(Boolean.TRUE.toString(), result.getText());
 
         params = createParams(
-                read(Params.ACTION, EXISTS),
-                read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, Integer.MAX_VALUE),
-                read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group2_Name2_SchematronId2.getId().getSchematronId())
+            read(Params.ACTION, EXISTS),
+            read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, Integer.MAX_VALUE),
+            read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group2_Name2_SchematronId2.getId().getSchematronId())
         );
 
         result = createService(EXISTS).exec(params, context);
@@ -190,8 +214,8 @@ public class SchematronCriteriaGroupServiceIntegrationTest extends AbstractSchem
         loginAsAdmin(context);
 
         Element deleteParams = createParams(
-                read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
-                read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId())
+            read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
+            read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId())
         );
 
         Element result = createService(DELETE).exec(deleteParams, context);
@@ -207,27 +231,27 @@ public class SchematronCriteriaGroupServiceIntegrationTest extends AbstractSchem
         assertSchematronIds(result, _group2_Name2_SchematronId2, _group3_Name3_SchemtronId1, _group4_Name2_SchematronId4);
     }
 
-    @Test (expected = BadParameterEx.class)
+    @Test(expected = BadParameterEx.class)
     public void testExecDeleteBadGroupName() throws Exception {
         ServiceContext context = createServiceContext();
         loginAsAdmin(context);
 
         Element deleteParams = createParams(
-                read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()+"asfasfd"),
-                read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId())
+            read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName() + "asfasfd"),
+            read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId())
         );
 
         createService(DELETE).exec(deleteParams, context);
     }
 
-    @Test (expected = BadParameterEx.class)
+    @Test(expected = BadParameterEx.class)
     public void testExecDeleteBadSchematronId() throws Exception {
         ServiceContext context = createServiceContext();
         loginAsAdmin(context);
 
         Element deleteParams = createParams(
-                read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
-                read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId()+1000)
+            read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
+            read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId() + 1000)
         );
 
         createService(DELETE).exec(deleteParams, context);
@@ -242,10 +266,10 @@ public class SchematronCriteriaGroupServiceIntegrationTest extends AbstractSchem
         final String requirement = SchematronRequirement.REPORT_ONLY.name();
         final int schematronId = _group1_Name1_SchematronId1.getId().getSchematronId();
         Element deleteParams = createParams(
-                read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, newName),
-                read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, schematronId),
-                read(SchematronCriteriaGroupService.PARAM_REQUIREMENT, requirement)
-                );
+            read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, newName),
+            read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, schematronId),
+            read(SchematronCriteriaGroupService.PARAM_REQUIREMENT, requirement)
+        );
 
         Element result = createService(ADD).exec(deleteParams, context);
         assertSuccessfulAdd(result);
@@ -256,8 +280,8 @@ public class SchematronCriteriaGroupServiceIntegrationTest extends AbstractSchem
         assertEquals(5, result.getChildren().size());
 
         listParams = createParams(
-                read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, newName),
-                read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, schematronId)
+            read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, newName),
+            read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, schematronId)
         );
 
         result = createService(LIST).exec(listParams, context);
@@ -278,17 +302,17 @@ public class SchematronCriteriaGroupServiceIntegrationTest extends AbstractSchem
             newRequirement = SchematronRequirement.REQUIRED;
         }
         Element editParams = createParams(
-                read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
-                read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId()),
-                read(SchematronCriteriaGroupService.PARAM_REQUIREMENT, newRequirement)
+            read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
+            read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId()),
+            read(SchematronCriteriaGroupService.PARAM_REQUIREMENT, newRequirement)
         );
 
         Element result = createService(EDIT).exec(editParams, context);
         assertEquals("ok", result.getName());
 
         Element listParams = createParams(
-                read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
-                read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId())
+            read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
+            read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId())
         );
 
         result = createService(LIST).exec(listParams, context);
@@ -306,9 +330,9 @@ public class SchematronCriteriaGroupServiceIntegrationTest extends AbstractSchem
 
         final String newGroupName = "newGroupName";
         Element editParams = createParams(
-                read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
-                read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId()),
-                read(SchematronCriteriaGroupService.PARAM_NEW_GROUP_NAME, newGroupName)
+            read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
+            read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId()),
+            read(SchematronCriteriaGroupService.PARAM_NEW_GROUP_NAME, newGroupName)
 
         );
 
@@ -316,16 +340,16 @@ public class SchematronCriteriaGroupServiceIntegrationTest extends AbstractSchem
         assertEquals("ok", result.getName());
 
         Element listParamsOldName = createParams(
-                read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
-                read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId())
+            read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
+            read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId())
         );
 
         result = createService(EXISTS).exec(listParamsOldName, context);
-        assertEquals(""+false, result.getText());
+        assertEquals("" + false, result.getText());
 
         Element listParamsNewName = createParams(
-                read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, newGroupName),
-                read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId())
+            read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, newGroupName),
+            read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId())
         );
 
         result = createService(LIST).exec(listParamsNewName, context);
@@ -347,10 +371,10 @@ public class SchematronCriteriaGroupServiceIntegrationTest extends AbstractSchem
         }
         final String newGroupName = "newGroupName";
         Element editParams = createParams(
-                read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
-                read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId()),
-                read(SchematronCriteriaGroupService.PARAM_NEW_GROUP_NAME, newGroupName),
-                read(SchematronCriteriaGroupService.PARAM_REQUIREMENT, newRequirement)
+            read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
+            read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId()),
+            read(SchematronCriteriaGroupService.PARAM_NEW_GROUP_NAME, newGroupName),
+            read(SchematronCriteriaGroupService.PARAM_REQUIREMENT, newRequirement)
 
         );
 
@@ -358,16 +382,16 @@ public class SchematronCriteriaGroupServiceIntegrationTest extends AbstractSchem
         assertEquals("ok", result.getName());
 
         Element listParamsOldName = createParams(
-                read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
-                read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId())
+            read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
+            read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId())
         );
 
         result = createService(EXISTS).exec(listParamsOldName, context);
-        assertEquals(""+false, result.getText());
+        assertEquals("" + false, result.getText());
 
         Element listParamsNewName = createParams(
-                read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, newGroupName),
-                read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId())
+            read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, newGroupName),
+            read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId())
         );
 
         result = createService(LIST).exec(listParamsNewName, context);
@@ -385,9 +409,9 @@ public class SchematronCriteriaGroupServiceIntegrationTest extends AbstractSchem
 
 
         Element editParams = createParams(
-                read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
-                read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId()),
-                read(SchematronCriteriaGroupService.PARAM_NEW_SCHEMATRON_ID, newSchematron.getId())
+            read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
+            read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId()),
+            read(SchematronCriteriaGroupService.PARAM_NEW_SCHEMATRON_ID, newSchematron.getId())
 
         );
 
@@ -395,16 +419,16 @@ public class SchematronCriteriaGroupServiceIntegrationTest extends AbstractSchem
         assertEquals("ok", result.getName());
 
         Element listParamsOldName = createParams(
-                read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
-                read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId())
+            read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
+            read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, _group1_Name1_SchematronId1.getId().getSchematronId())
         );
 
         result = createService(EXISTS).exec(listParamsOldName, context);
-        assertEquals(""+false, result.getText());
+        assertEquals("" + false, result.getText());
 
         Element listParamsNewName = createParams(
-                read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
-                read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, newSchematron.getId())
+            read(SchematronCriteriaGroupService.PARAM_GROUP_NAME, _group1_Name1_SchematronId1.getId().getName()),
+            read(SchematronCriteriaGroupService.PARAM_SCHEMATRON_ID, newSchematron.getId())
         );
 
         result = createService(LIST).exec(listParamsNewName, context);

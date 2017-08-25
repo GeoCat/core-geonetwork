@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_thesaurus_controller');
 
@@ -20,9 +43,9 @@
    */
   module.controller('GnThesaurusController', [
     '$scope', '$http', '$rootScope', '$translate',
-    'gnConfig', 'gnSearchManagerService',
+    'gnConfig', 'gnSearchManagerService', 'gnUtilityService',
     function($scope, $http, $rootScope, $translate,
-             gnConfig, gnSearchManagerService) {
+             gnConfig, gnSearchManagerService, gnUtilityService) {
 
       $scope.gnConfig = gnConfig;
       /**
@@ -107,15 +130,17 @@
       searchThesaurusKeyword = function() {
         if ($scope.thesaurusSelected) {
           $scope.recordsRelatedToThesaurus = 0;
-          $http.get('keywords@json?pNewSearch=true&pTypeSearch=1' +
-              '&pThesauri=' + $scope.thesaurusSelected.key +
-                      '&pMode=searchBox' +
-                      '&maxResults=' +
+          $http.get('../api/registries/vocabularies/search?type=CONTAINS' +
+              '&thesaurus=' + $scope.thesaurusSelected.key +
+                      '&uri=*' +
+                      encodeURIComponent($scope.keywordFilter) + '*' +
+                      '&rows=' +
                       ($scope.maxNumberOfKeywords ||
                               defaultMaxNumberOfKeywords) +
-                      '&pKeyword=' + (encodeURI($scope.keywordFilter) || '*')
+                      '&q=' + (encodeURI($scope.keywordFilter) || '*') +
+              '&lang=' + $scope.lang
           ).success(function(data) {
-            $scope.keywords = data[0];
+            $scope.keywords = data;
             gnSearchManagerService.gnSearch({
               summaryOnly: 'true',
               thesaurusIdentifier: $scope.thesaurusSelected.key}).
@@ -183,14 +208,14 @@
         $http.post('thesaurus.update', xml, {
           headers: {'Content-type': 'application/xml'}
         })
-          .success(function(data) {
+            .success(function(data) {
               $scope.thesaurusSelected = null;
               $('#thesaurusModal').modal('hide');
               loadThesaurus();
             })
-          .error(function(data) {
+            .error(function(data) {
               $rootScope.$broadcast('StatusUpdated', {
-                title: $translate('thesaurusCreationError'),
+                title: $translate.instant('thesaurusCreationError'),
                 error: data,
                 timeout: 0,
                 type: 'danger'});
@@ -215,7 +240,7 @@
        */
       uploadThesaurusError = function(e, data) {
         $rootScope.$broadcast('StatusUpdated', {
-          title: $translate('thesaurusUploadError'),
+          title: $translate.instant('thesaurusUploadError'),
           error: data.jqXHR.responseJSON,
           timeout: 0,
           type: 'danger'});
@@ -255,13 +280,13 @@
       $scope.deleteThesaurus = function() {
         $http.get('thesaurus.remove?ref=' +
                   $scope.thesaurusSelected.key)
-          .success(function(data) {
+            .success(function(data) {
               $scope.thesaurusSelected = null;
               loadThesaurus();
             })
-          .error(function(data) {
+            .error(function(data) {
               $rootScope.$broadcast('StatusUpdated', {
-                title: $translate('thesaurusDeleteError'),
+                title: $translate.instant('thesaurusDeleteError'),
                 error: data,
                 timeout: 0,
                 type: 'danger'});
@@ -287,7 +312,8 @@
           thesaurusIdentifier: $scope.thesaurusSelected.key}).
             then(function(data) {
               $rootScope.$broadcast('StatusUpdated', {
-                title: $translate('indexingRecordsRelatedToTheThesaurus'),
+                title:
+                    $translate.instant('indexingRecordsRelatedToTheThesaurus'),
                 timeout: 2
               });
             });
@@ -312,7 +338,7 @@
       searchRelation = function(k) {
         $scope.keywordSelectedRelation = {};
         $.each(relationTypes, function(index, value) {
-          $http.get('thesaurus.keyword.links@json?' +
+          $http.get('thesaurus.keyword.links?_content_type=json&' +
               'request=' + value +
                       '&thesaurus=' + $scope.thesaurusSelected.key +
                       '&id=' + encodeURIComponent(k.uri))
@@ -327,7 +353,23 @@
        * Edit an existing keyword, open the modal, search relations
        */
       $scope.editKeyword = function(k) {
-        $scope.keywordSelected = k;
+        if (k.value['#text']) {
+          $scope.keywordSelected = k;
+        } else {
+          $scope.keywordSelected = {
+            'uri': k.uri,
+            'value': {'@language': $scope.lang, '#text': k.value},
+            'definition': {'@language': $scope.lang, '#text': k.definition},
+            'defaultLang': $scope.lang
+          };
+        }
+        // Add current language labels if not set in keywords
+        if (!$scope.keywordSelected.value['#text']) {
+          $scope.keywordSelected.value['#text'] = '';
+        }
+        if (!$scope.keywordSelected.definition['#text']) {
+          $scope.keywordSelected.definition['#text'] = '';
+        }
         selectedKeywordOldId = k.uri;
         creatingKeyword = false;
         $('#keywordModal').modal();
@@ -341,9 +383,12 @@
         creatingKeyword = true;
         $scope.keywordSuggestedUri = '';
         $scope.keywordSelected = {
-          'uri': $scope.thesaurusSelected.defaultNamespace + '#',
+          'uri': $scope.thesaurusSelected.defaultNamespace +
+              ($scope.thesaurusSelected.defaultNamespace.indexOf('#') === -1 ?
+              '#' : '') +
+              gnUtilityService.randomUuid(),
           'value': {'@language': $scope.lang, '#text': ''},
-          'definition': {'@language': $scope.lang},
+          'definition': {'@language': $scope.lang, '#text': ''},
           'defaultLang': $scope.lang
         };
         if ($scope.isPlaceType()) {
@@ -390,11 +435,11 @@
         $http.post('thesaurus.keyword.add?_content_type=json', buildKeyword(), {
           headers: {'Content-type': 'application/xml'}
         })
-          .success(function(data) {
+            .success(function(data) {
               var response = data[0];
               if (response && response['@message']) {
                 var statusConfig = {
-                  title: $translate('keywordCreationError'),
+                  title: $translate.instant('keywordCreationError'),
                   msg: response['@message'],
                   timeout: 0,
                   type: 'danger'
@@ -407,9 +452,9 @@
                 creatingKeyword = false;
               }
             })
-          .error(function(data) {
+            .error(function(data) {
               $rootScope.$broadcast('StatusUpdated', {
-                title: $translate('keywordCreationError'),
+                title: $translate.instant('keywordCreationError'),
                 error: data,
                 timeout: 0,
                 type: 'danger'});
@@ -423,15 +468,15 @@
         $http.post('thesaurus.keyword.update', buildKeyword(), {
           headers: {'Content-type': 'application/xml'}
         })
-          .success(function(data) {
+            .success(function(data) {
               $scope.keywordSelected = null;
               $('#keywordModal').modal('hide');
               searchThesaurusKeyword();
               selectedKeywordOldId = null;
             })
-          .error(function(data) {
+            .error(function(data) {
               $rootScope.$broadcast('StatusUpdated', {
-                title: $translate('keywordUpdateError'),
+                title: $translate.instant('keywordUpdateError'),
                 error: data,
                 timeout: 0,
                 type: 'danger'});
@@ -445,12 +490,12 @@
         $scope.keywordSelected = k;
         $http.get('thesaurus.keyword.remove?pThesaurus=' + k.thesaurus.key +
             '&id=' + encodeURIComponent(k.uri))
-          .success(function(data) {
+            .success(function(data) {
               searchThesaurusKeyword();
             })
-          .error(function(data) {
+            .error(function(data) {
               $rootScope.$broadcast('StatusUpdated', {
-                title: $translate('keywordDeleteError'),
+                title: $translate.instant('keywordDeleteError'),
                 error: data,
                 timeout: 0,
                 type: 'danger'});
@@ -464,7 +509,8 @@
       $scope.computeKeywordId = function() {
         $scope.keywordSuggestedUri =
             $scope.thesaurusSelected.defaultNamespace +
-            '#' +
+            ($scope.thesaurusSelected.defaultNamespace.indexOf('#') === -1 ?
+            '#' : '') +
             $scope.keywordSelected.value['#text'].replace(/[^\d\w]/gi, '');
       };
 
@@ -521,7 +567,7 @@
           $scope.thesaurus = data[0];
         }).error(function(data) {
           $rootScope.$broadcast('StatusUpdated', {
-            title: $translate('thesaurusListError'),
+            title: $translate.instant('thesaurusListError'),
             error: data,
             timeout: 0,
             type: 'danger'});

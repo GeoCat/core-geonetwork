@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.repository;
 
 
@@ -68,16 +91,16 @@ public class OperationAllowedRepositoryTest extends AbstractOperationsAllowedTes
     @Test
     public void testFindByGroupIdAndMetadataIdAndOperationId() {
         OperationAllowed opAllowedFound = _opAllowRepo.findOneById_GroupIdAndId_MetadataIdAndId_OperationId(_intranetGroup.getId(),
-                _md1.getId(),
-                _viewOp.getId());
+            _md1.getId(),
+            _viewOp.getId());
         assertEquals(_opAllowed4.getId(), opAllowedFound.getId());
 
         opAllowedFound = _opAllowRepo.findOneById_GroupIdAndId_MetadataIdAndId_OperationId(_allGroup.getId(), _md1.getId(),
-                _viewOp.getId());
+            _viewOp.getId());
         assertEquals(_opAllowed1.getId(), opAllowedFound.getId());
 
         opAllowedFound = _opAllowRepo.findOneById_GroupIdAndId_MetadataIdAndId_OperationId(_allGroup.getId(), _md1.getId(),
-                Integer.MAX_VALUE / 2);
+            Integer.MAX_VALUE / 2);
         assertNull(opAllowedFound);
     }
 
@@ -85,7 +108,9 @@ public class OperationAllowedRepositoryTest extends AbstractOperationsAllowedTes
     public void deleteAllByMetadataIdExceptGroupId() {
         System.out.println("deleteAllByMdIdNotGroup");
         assertEquals(4, _opAllowRepo.count());
-        _opAllowRepo.deleteAllByMetadataIdExceptGroupId(_md1.getId(), _allGroup.getId());
+        _opAllowRepo.deleteAllByMetadataIdExceptGroupId(_md1.getId(), new int[]{
+            _allGroup.getId()
+        });
 
         assertEquals(2, _opAllowRepo.count());
         List<OperationAllowed> opAllowedFound = _opAllowRepo.findAll();
@@ -132,7 +157,7 @@ public class OperationAllowedRepositoryTest extends AbstractOperationsAllowedTes
     @Test
     public void testFindAllIds() {
         List<Integer> opAllowedFound = _opAllowRepo.findAllIds(OperationAllowedSpecs.hasOperationId(_viewOp.getId()),
-                OperationAllowedId_.metadataId);
+            OperationAllowedId_.metadataId);
         assertEquals(1, opAllowedFound.size());
         assertTrue(opAllowedFound.contains(_md1.getId()));
     }

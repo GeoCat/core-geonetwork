@@ -1,7 +1,32 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package iso19139;
 
 import com.google.common.base.Optional;
+
 import jeeves.server.context.ServiceContext;
+
 import org.fao.geonet.AbstractCoreIntegrationTest;
 import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.UpdateDatestamp;
@@ -28,12 +53,13 @@ public class UpdateFixedInfoTest extends AbstractServiceIntegrationTest {
     private static final List<Namespace> NAMESPACES = Arrays.asList(SRV, GCO, GMD);
     @Autowired
     private DataManager dataManager;
+
     @Test
     public void testDescriptiveKeywords() throws Exception {
         Element md = Xml.loadFile(UpdateFixedInfoTest.class.getResource("descriptiveKeywordsUpdateFixedInfo.xml"));
         ServiceContext context = createServiceContext();
         final Element updatedXml = dataManager.updateFixedInfo("iso19139", Optional.<Integer>absent(), "test-uuid-123", md, null,
-                UpdateDatestamp.NO, context);
+            UpdateDatestamp.NO, context);
 
         assertEquals(4, Xml.selectNodes(updatedXml, "*//gmd:descriptiveKeywords", NAMESPACES).size());
         assertEquals(6, Xml.selectNodes(updatedXml, "*//gmd:descriptiveKeywords//gmd:keyword", NAMESPACES).size());
@@ -54,12 +80,13 @@ public class UpdateFixedInfoTest extends AbstractServiceIntegrationTest {
         assertEqualsText("zxcen", updatedXml, "*//gmd:descriptiveKeywords[3]//gmd:keyword[2]//gmd:LocalisedCharacterString[@locale = '#EN']", GCO, GMD);
         assertEqualsText("geonetwork.thesaurus.local._none_.geocat.ch", updatedXml, "*//gmd:descriptiveKeywords[3]//gmd:thesaurusName//gmx:Anchor", GCO, GMD);
     }
+
     @Test
     public void testXLinkedDescriptiveKeywords() throws Exception {
         Element md = Xml.loadFile(UpdateFixedInfoTest.class.getResource("descriptiveKeywordsUpdateFixedInfoXLinked.xml"));
         ServiceContext context = createServiceContext();
         final Element updatedXml = dataManager.updateFixedInfo("iso19139", Optional.<Integer>absent(), "test-uuid-123", md, null,
-                UpdateDatestamp.NO, context);
+            UpdateDatestamp.NO, context);
 
         assertEquals(Xml.getString(updatedXml), 4, Xml.selectNodes(updatedXml, "*//gmd:descriptiveKeywords", NAMESPACES).size());
         assertEquals(Xml.getString(updatedXml), 1, Xml.selectNodes(updatedXml, "*//gmd:descriptiveKeywords//gmd:keyword", NAMESPACES).size());
@@ -69,11 +96,11 @@ public class UpdateFixedInfoTest extends AbstractServiceIntegrationTest {
         assertEquals(Xml.getString(updatedXml), 1, Xml.selectNodes(updatedXml, "*//gmd:descriptiveKeywords[4]//gmd:keyword", NAMESPACES).size());
 
         assertEqualsText("local://eng/xml.keyword.get?thesaurus=external.theme.inspire-theme&id=http://rdfdata.eionet.europa.eu/inspirethemes/themes/5&multiple=false&lang=ger,fre,eng,ita&textgroupOnly",
-                updatedXml, "*//gmd:descriptiveKeywords[1]/@xlink:href", XLINK, GCO, GMD);
+            updatedXml, "*//gmd:descriptiveKeywords[1]/@xlink:href", XLINK, GCO, GMD);
         assertEqualsText("local://eng/xml.keyword.get?thesaurus=local._none_.geocat.ch&id=http%3A%2F%2Fgeocat.ch%2Fconcept%231,http%3A%2F%2Fgeocat.ch%2Fconcept%2320&multiple=true&lang=ger,fre,eng,ita&textgroupOnly=",
-                updatedXml, "*//gmd:descriptiveKeywords[2]/@xlink:href", XLINK, GCO, GMD);
+            updatedXml, "*//gmd:descriptiveKeywords[2]/@xlink:href", XLINK, GCO, GMD);
         assertEqualsText("local://eng/xml.keyword.get?thesaurus=external.theme.inspire-service-taxonomy&id=urn%3Ainspire%3Aservice%3Ataxonomy%3AcomGeographicCompressionService&multiple=true&lang=ger,fre,eng,ita&textgroupOnly=",
-                updatedXml, "*//gmd:descriptiveKeywords[3]/@xlink:href", XLINK, GCO, GMD);
+            updatedXml, "*//gmd:descriptiveKeywords[3]/@xlink:href", XLINK, GCO, GMD);
         assertEqualsText("Africa", updatedXml, "*//gmd:descriptiveKeywords[4]//gmd:keyword[1]/gco:CharacterString", GCO, GMD);
     }
 }

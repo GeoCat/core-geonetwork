@@ -1,7 +1,31 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.utils;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
+
 import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.Constants;
 import org.fao.geonet.SystemInfo;
@@ -31,8 +55,7 @@ import static org.junit.Assert.assertSame;
 
 
 /**
- * Test methods in the {@link org.fao.geonet.utils.Xml} utility class
- * Created by Jesse on 2/6/14.
+ * Test methods in the {@link org.fao.geonet.utils.Xml} utility class Created by Jesse on 2/6/14.
  */
 public class XmlTest {
     public static final Namespace GMD = Namespace.getNamespace("gmd", "http://www.isotc211.org/2005/gmd");
@@ -156,11 +179,12 @@ public class XmlTest {
         assertSame(1, actual.size());
         assertSame(charString, actual.get(0));
     }
+
     @Test
     public void testGetXPathExprAttribute() throws Exception {
         final Attribute attribute = TEST_METADATA.getChild("characterSet", GMD)
-                .getChild("MD_CharacterSetCode", GMD)
-                .getAttribute("codeListValue");
+            .getChild("MD_CharacterSetCode", GMD)
+            .getAttribute("codeListValue");
         String xpath = Xml.getXPathExpr(attribute);
 
         final List<?> actual = Xml.selectNodes(TEST_METADATA, xpath, NAMESPACES);

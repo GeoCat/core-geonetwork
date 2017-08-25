@@ -16,7 +16,6 @@ INSERT INTO CategoriesDes (iddes, langid, label) VALUES (7,'rus','Фотогра
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (8,'rus','Аудио/Видео');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (9,'rus','Каталоги/справочники');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (10,'rus','Другие ресурсы');
-INSERT INTO CategoriesDes (iddes, langid, label) VALUES (11,'rus','Z3950 Servers');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (12,'rus','Registers');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (13,'rus','Физические образцы');
 
@@ -523,5 +522,8 @@ INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (2,'rus','Approved');
 INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (3,'rus','Retired');
 INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (4,'rus','Submitted');
 INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (5,'rus','Rejected');
-						
+
+INSERT INTO SelectionsDes (iddes, langid, label) VALUES (0,'rus','Preferred records');
+INSERT INTO SelectionsDes (iddes, langid, label) VALUES (1,'rus','Watch list');
+
 

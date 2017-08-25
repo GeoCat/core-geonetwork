@@ -1,6 +1,30 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel.mef;
 
 import jeeves.server.context.ServiceContext;
+
 import org.fao.geonet.AbstractCoreIntegrationTest;
 import org.fao.geonet.ZipUtil;
 import org.fao.geonet.constants.Params;
@@ -26,9 +50,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Test MEF.
  *
- * User: Jesse
- * Date: 10/15/13
- * Time: 8:53 PM
+ * User: Jesse Date: 10/15/13 Time: 8:53 PM
  */
 public class MEFLibIntegrationTest extends AbstractCoreIntegrationTest {
     @Autowired
@@ -96,6 +118,7 @@ public class MEFLibIntegrationTest extends AbstractCoreIntegrationTest {
         public ImportMetadata invoke() throws Exception {
             return invoke(1);
         }
+
         public ImportMetadata invoke(int iterations) throws Exception {
             assertTrue("iterations must be greater than 0 but was: " + iterations, iterations > 0);
             testClass.loginAsAdmin(context);
@@ -121,7 +144,7 @@ public class MEFLibIntegrationTest extends AbstractCoreIntegrationTest {
                 Element params = new Element("request");
                 if (iterations > 1 && !uuidAction.equalsIgnoreCase(Params.GENERATE_UUID)) {
                     throw new AssertionError("If iterations (the number or times each mef file is imported) is greater than 1"
-                                             + " then uuidAction must be " + Params.GENERATE_UUID);
+                        + " then uuidAction must be " + Params.GENERATE_UUID);
                 }
                 params.addContent(new Element(Params.UUID_ACTION).setText(uuidAction));
 

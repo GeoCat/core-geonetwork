@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_wps_service');
 
@@ -51,10 +74,6 @@
 
       this.WMS_MIMETYPE = 'application/x-ogc-wms';
 
-      this.proxyUrl = function(url) {
-        return gnGlobalSettings.proxyUrl + encodeURIComponent(url);
-      };
-
       /**
        * @ngdoc method
        * @methodOf gn_viewer.service:gnWpsService
@@ -77,8 +96,7 @@
 
         //send request and decode result
         if (gnUrlUtils.isValid(url)) {
-          var proxyUrl = this.proxyUrl(url);
-          return $http.get(proxyUrl, {
+          return $http.get(url, {
             cache: true
           }).then(
               function(response) {
@@ -113,7 +131,7 @@
             function(data) {
               var description = data.processDescription[0];
 
-              var url = me.proxyUrl(uri);
+              var url = uri;
               var request = {
                 name: {
                   localPart: 'Execute',
@@ -213,8 +231,7 @@
       this.getStatus = function(url) {
         var defer = $q.defer();
 
-        var proxyUrl = this.proxyUrl(url);
-        $http.get(proxyUrl, {
+        $http.get(url, {
           cache: true
         }).then(
             function(data) {
@@ -238,8 +255,9 @@
        *
        * @param {object} response excecuteProcess response object.
        * @param {ol.Map} map
+       * @param {ol.layer.Base} parentLayer
        */
-      this.extractWmsLayerFromResponse = function(response, map) {
+      this.extractWmsLayerFromResponse = function(response, map, parentLayer) {
 
         try {
           var ref = response.processOutputs.output[0].reference;
@@ -248,6 +266,7 @@
                 then(function(layers) {
                   layers.map(function(l) {
                     l.set('fromWps', true);
+                    l.set('wpsParent', parentLayer);
                     map.addLayer(l);
                   });
                 });

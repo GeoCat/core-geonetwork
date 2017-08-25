@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_onlinesrc_service');
 
@@ -28,9 +51,10 @@
     '$http',
     '$rootScope',
     '$translate',
+    '$filter',
     'Metadata',
     function(gnBatchProcessing, gnHttp, gnEditor, gnCurrentEdit,
-             $q, $http, $rootScope, $translate, Metadata) {
+             $q, $http, $rootScope, $translate, $filter, Metadata) {
 
       var reload = false;
       var openCb = {};
@@ -40,8 +64,9 @@
        * TODO: Should be the same as in related resource directive
        */
       var protocolIcons = [
-        ['dq', 'fa-certificate'],
-        ['portrayal', 'fa-paint-brush'],
+        ['dq-report', 'fa-certificate'],
+        ['legend', 'fa-paint-brush'],
+        ['fcats', 'fa-table'],
         ['FILE:', 'fa-database'],
         ['OGC:OWS', 'fa-map'],
         ['OGC:WMC', 'fa-map'],
@@ -103,39 +128,6 @@
         return params;
       };
 
-      /**
-       * Parse XML result of md.relations.get service.
-       * Return an array of relations objects
-       */
-      var parseRelations = function(data) {
-
-        var relations = {};
-        if (data === null) {
-          data = {relation: []};
-        } else if (!angular.isArray(data.relation)) {
-          data.relation = [data.relation];
-        }
-        angular.forEach(data.relation, function(rel) {
-          if (angular.isDefined(rel)) {
-            var type = rel['@type'];
-            if (!relations[type]) {
-              relations[type] = [];
-            }
-            rel.type = type;
-            delete rel['@type'];
-
-            if (rel['@subType']) {
-              rel.subType = rel['@subType'];
-              delete rel['@subType'];
-            }
-            if (angular.isString(rel.title) ||
-                type == 'thumbnail') {
-              relations[type].push(rel);
-            }
-          }
-        });
-        return relations;
-      };
 
       var refreshForm = function(scope, data) {
         gnEditor.refreshEditorForm(data);
@@ -158,7 +150,7 @@
           refreshForm(scope, $(data.data));
         }, function(error) {
           $rootScope.$broadcast('StatusUpdated', {
-            title: $translate('runProcessError'),
+            title: $translate.instant('runProcessError'),
             error: error,
             timeout: 0,
             type: 'danger'});
@@ -167,6 +159,7 @@
 
       /**
        * Run a service (not a batch) to add or remove
+       *
        * an onlinesrc.
        * Save the form, launch the service, then refresh
        * the form and reload the onlinesrc list.
@@ -175,12 +168,12 @@
        */
       var runService = function(service, params, scope) {
         return gnEditor.save(false, true)
-        .then(function() {
+            .then(function() {
               gnHttp.callService(service, params).success(function() {
                 refreshForm(scope);
               }).error(function(error) {
                 $rootScope.$broadcast('StatusUpdated', {
-                  title: $translate('runServiceError'),
+                  title: $translate.instant('runServiceError'),
                   error: error,
                   timeout: 0,
                   type: 'danger'});
@@ -222,17 +215,14 @@
 
           var defer = $q.defer();
 
-          gnHttp.callService('getRelations', {
-            fast: false,
-            id: gnCurrentEdit.id
-          }, {
-            method: 'get',
+          $http.get('../api/records/' + gnCurrentEdit.uuid + '/related', {
             headers: {
-              'Content-type': 'application/xml'
+              'Accept': 'application/json'
             }
-          }).success(function(data) {
-            defer.resolve(parseRelations(data));
-          });
+          })
+              .success(function(data) {
+                defer.resolve(data);
+              });
           return defer.promise;
         },
 
@@ -339,10 +329,10 @@
          * @return {string} icon class
          */
         getIconByProtocol: function(p) {
-          if (p['@subtype']) {
+          if (p.type) {
             for (i = 0; i < protocolIcons.length; ++i) {
-              if (p['@subtype'].indexOf(protocolIcons[i][0]) >= 0 ||
-                  p['@subtype'].indexOf(protocolIcons[i][0]) >= 0) {
+              if (p.type.indexOf(protocolIcons[i][0]) >= 0 ||
+                  p.type.indexOf(protocolIcons[i][0]) >= 0) {
                 return protocolIcons[i][1];
               }
             }
@@ -372,7 +362,7 @@
         linkToService: function(params, popupid) {
           var qParams = setParams('dataset-add', params);
           var scope = this;
-          return gnBatchProcessing.runProcessMdXml({
+          return gnBatchProcessing.runProcessMd({
             scopedName: qParams.name,
             uuidref: qParams.uuidDS,
             uuid: qParams.uuidSrv,
@@ -391,7 +381,7 @@
             });
           }, function(error) {
             $rootScope.$broadcast('StatusUpdated', {
-              title: $translate('linkToServiceError'),
+              title: $translate.instant('linkToServiceError'),
               msg: error.statusText,
               timeout: 0,
               type: 'danger'});
@@ -411,21 +401,17 @@
          * @param {string} popupid id of the popup to close after process.
          */
         linkToDataset: function(params, popupid) {
+          // Define if when linking a service with a dataset
+          // a online source element should be added to the dataset
+          // first or not.
+          var isAddingOnlineSrcToDataset = true;
           var qParams = setParams('onlinesrc-add', params);
           var scope = this;
 
-          return gnBatchProcessing.runProcessMdXml({
-            name: qParams.name,
-            desc: qParams.desc,
-            url: qParams.url,
-            uuidref: qParams.uuidSrv,
-            uuid: qParams.uuidDS,
-            protocol: qParams.protocol,
-            process: qParams.process
-          }).then(function() {
+          var addDatasetToServiceFn = function() {
             var qParams = setParams('dataset-add', params);
 
-            runProcess(scope, {
+            return runProcess(scope, {
               scopedName: qParams.name,
               uuidref: qParams.uuidDS,
               uuid: qParams.uuidSrv,
@@ -433,7 +419,31 @@
             }).then(function() {
               closePopup(popupid);
             });
-          });
+          };
+
+          if (isAddingOnlineSrcToDataset) {
+            return gnBatchProcessing.runProcessMd({
+              name: qParams.name,
+              desc: qParams.desc,
+              url: qParams.url,
+              uuidref: qParams.uuidSrv,
+              uuid: qParams.uuidDS,
+              protocol: qParams.protocol,
+              process: qParams.process
+            }).then(addDatasetToServiceFn, function(error) {
+              // Current user may not be able to edit
+              // the targeted dataset. Notify user in this case
+              // that only the service will be updated.
+              $rootScope.$broadcast('StatusUpdated', {
+                title: $translate.instant('linkToServiceError'),
+                msg: $translate.instant('cantAddLinkToDataset'),
+                timeout: 0,
+                type: 'danger'});
+              addDatasetToServiceFn();
+            });
+          } else {
+            return addDatasetToServiceFn();
+          }
         },
 
         /**
@@ -505,7 +515,7 @@
               setParams('onlinesrc-remove', {
                 id: gnCurrentEdit.id,
                 url: onlinesrc.url,
-                name: onlinesrc.name
+                name: $filter('gnLocalized')(onlinesrc.title)
               }));
         },
 
@@ -521,21 +531,21 @@
          */
         removeService: function(onlinesrc) {
           var params = {
-            uuid: onlinesrc['geonet:info'].uuid,
+            uuid: onlinesrc.id,
             uuidref: gnCurrentEdit.uuid
           }, service = this;
 
-          gnBatchProcessing.runProcessMdXml(
+          gnBatchProcessing.runProcessMd(
               setParams('services-remove', params)).
               then(function(data) {
                 $rootScope.$broadcast('StatusUpdated', {
-                  title: $translate('serviceDetachedToCurrentRecord'),
+                  title: $translate.instant('serviceDetachedToCurrentRecord'),
                   timeout: 3
                 });
                 service.reload = true;
               }, function(error) {
                 $rootScope.$broadcast('StatusUpdated', {
-                  title: $translate('removeServiceError'),
+                  title: $translate.instant('removeServiceError'),
                   error: error,
                   timeout: 0,
                   type: 'danger'});
@@ -556,7 +566,7 @@
         removeDataset: function(onlinesrc) {
           var params = {
             uuid: gnCurrentEdit.uuid,
-            uuidref: onlinesrc['geonet:info'].uuid
+            uuidref: onlinesrc.id
           };
           runProcess(this,
               setParams('datasets-remove', params));
@@ -575,7 +585,7 @@
          */
         removeMdLink: function(mode, onlinesrc) {
           var params = {};
-          params[mode + 'Uuid'] = onlinesrc['geonet:info'].uuid;
+          params[mode + 'Uuid'] = onlinesrc.id;
           runProcess(this,
               setParams(mode + '-remove', params));
         },
@@ -595,7 +605,7 @@
           var params = {
             uuid: gnCurrentEdit.uuid,
             uuidref: onlinesrc['@subtype'] ? onlinesrc.url :
-                onlinesrc['geonet:info'].uuid
+                onlinesrc.id
           };
           runProcess(this,
               setParams('fcats-remove', params));
@@ -615,7 +625,7 @@
         removeSibling: function(onlinesrc) {
           var params = {
             uuid: gnCurrentEdit.uuid,
-            uuidref: onlinesrc.uuid
+            uuidref: onlinesrc.id
           };
           runProcess(this,
               setParams('sibling-remove', params));
@@ -668,7 +678,7 @@
           for (var p in protocols) {
             if (protocols.hasOwnProperty(p) && protocols[p].checked === true) {
               // TODO : define default description
-              var key = p + 'Url';
+              var key = p + 'url';
               xml +=
                   this.buildOnLineResource(node[key], protocols[p].label,
                   layerName, title + ' (' + protocols[p].label + ')') +

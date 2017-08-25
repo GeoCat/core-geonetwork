@@ -1,7 +1,31 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.utils.nio;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+
 import org.apache.xml.resolver.CatalogManager;
 import org.apache.xml.resolver.tools.CatalogResolver;
 import org.fao.geonet.Constants;
@@ -21,13 +45,14 @@ import java.nio.file.Path;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
+
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.sax.SAXSource;
 
 /**
-* @author Jesse on 11/4/2014.
-*/
+ * @author Jesse on 11/4/2014.
+ */
 public class NioPathAwareCatalogResolver extends CatalogResolver {
     private static final Map<Object, ResolverRewriteDirective> urlRewriteDirectives = Maps.newHashMap();
     private final Set<Path> catalogPaths = Sets.newHashSet();
@@ -47,6 +72,10 @@ public class NioPathAwareCatalogResolver extends CatalogResolver {
                 }
             }
         }
+    }
+
+    public static void addRewriteDirective(ResolverRewriteDirective urlRewrite) {
+        urlRewriteDirectives.put(urlRewrite.getKey(), urlRewrite);
     }
 
     @Override
@@ -89,9 +118,9 @@ public class NioPathAwareCatalogResolver extends CatalogResolver {
             } catch (URISyntaxException | IllegalArgumentException e) {
                 final Path basePath = IO.toPath(new URI(base));
                 Path parent = basePath.getParent();
-                if(parent == null) {
-                    throw new RuntimeException(basePath.getFileName() + 
-                            " does not have parent");
+                if (parent == null) {
+                    throw new RuntimeException(basePath.getFileName() +
+                        " does not have parent");
                 }
                 resolvedResource = parent.resolve(href);
 
@@ -99,6 +128,9 @@ public class NioPathAwareCatalogResolver extends CatalogResolver {
                     return toPathInputSource(resolvedResource);
                 }
             }
+        } catch (RuntimeException e) {
+            throw e;
+
         } catch (Exception e) {
             // ignore
         }
@@ -110,9 +142,5 @@ public class NioPathAwareCatalogResolver extends CatalogResolver {
         final PathStreamSource pathInputSource = new PathStreamSource(resolvedResource);
         pathInputSource.setSystemId(resolvedResource.toUri().toASCIIString());
         return pathInputSource;
-    }
-
-    public static void addRewriteDirective(ResolverRewriteDirective urlRewrite) {
-        urlRewriteDirectives.put(urlRewrite.getKey(), urlRewrite);
     }
 }

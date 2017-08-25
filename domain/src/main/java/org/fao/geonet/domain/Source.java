@@ -1,8 +1,36 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.entitylistener.SourceEntityListenerManager;
+import org.fao.geonet.repository.LanguageRepository;
 
 import java.util.Map;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CollectionTable;
@@ -44,10 +72,23 @@ public class Source extends Localized {
      * @param name  the name
      * @param local if the source is the local system
      */
-    public Source(String uuid, String name, Map<String,String> translations, boolean local) {
+    public Source(String uuid, String name, Map<String, String> translations, boolean local) {
         this._uuid = uuid;
-        this._name = name;
-        setLabelTranslations(translations);
+        setName(name);
+        if (translations != null && translations.size() != 0) {
+            setLabelTranslations(translations);
+        } else {
+            LanguageRepository langRepository =
+                ApplicationContextHolder.get().getBean(LanguageRepository.class);
+            java.util.List<Language> allLanguages = langRepository.findAll();
+            Map<String, String> labelTranslations = getLabelTranslations();
+            for (Language l : allLanguages) {
+                String label = labelTranslations.get(l.getId());
+                if (label == null) {
+                    getLabelTranslations().put(l.getId(), this.getName());
+                }
+            }
+        }
         this._local = Constants.toYN_EnabledChar(local);
     }
 
@@ -63,7 +104,6 @@ public class Source extends Localized {
 
     /**
      * Set the uuid of the source.
-     *
      *
      * @param uuid the uuid of the source.
      * @return this entity
@@ -85,7 +125,6 @@ public class Source extends Localized {
     /**
      * Set the name of the source.
      *
-     *
      * @param name the name of the source.
      * @return this entity
      */
@@ -95,10 +134,12 @@ public class Source extends Localized {
     }
 
     /**
-     * For backwards compatibility we need the islocal column to be either 'n' or 'y'. This is a workaround to allow this until future
-     * versions of JPA that allow different ways of controlling how types are mapped to the database.
+     * For backwards compatibility we need the islocal column to be either 'n' or 'y'. This is a
+     * workaround to allow this until future versions of JPA that allow different ways of
+     * controlling how types are mapped to the database.
      */
     @Column(name = "isLocal", nullable = false, length = 1)
+    @JsonIgnore
     protected char getIsLocal_JpaWorkaround() {
         return _local;
     }
@@ -118,6 +159,7 @@ public class Source extends Localized {
      * @return true is the source refers to the local geonetwork.
      */
     @Transient
+    @JsonIgnore
     public boolean isLocal() {
         return Constants.toBoolean_fromYNChar(getIsLocal_JpaWorkaround());
     }

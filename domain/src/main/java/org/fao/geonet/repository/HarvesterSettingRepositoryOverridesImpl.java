@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.repository;
 
 import static org.fao.geonet.repository.HarvesterSettingRepository.ID_PREFIX;
@@ -24,27 +47,27 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.collect.Lists;
 
 /**
- * Override delete methods in {@link org.springframework.data.jpa.repository.support.SimpleJpaRepository} so that full subtree
- * is deleted and implement {@link HarvesterSettingRepositoryCustom}.
+ * Override delete methods in {@link org.springframework.data.jpa.repository.support.SimpleJpaRepository}
+ * so that full subtree is deleted and implement {@link HarvesterSettingRepositoryCustom}.
  * <p/>
- * This class is not a typical *Impl because it needs to override the delete methods in
- * {@link org.springframework.data.jpa.repository.support.SimpleJpaRepository}.  In order to do this you have to create a subclass of
- * {@link org.springframework.data.jpa.repository.support.SimpleJpaRepository} (or {@link GeonetRepositoryImpl} which is subclass)
- * and have {@link GeonetRepositoryFactoryBean} return the custom implementation.
+ * This class is not a typical *Impl because it needs to override the delete methods in {@link
+ * org.springframework.data.jpa.repository.support.SimpleJpaRepository}.  In order to do this you
+ * have to create a subclass of {@link org.springframework.data.jpa.repository.support.SimpleJpaRepository}
+ * (or {@link GeonetRepositoryImpl} which is subclass) and have {@link GeonetRepositoryFactoryBean}
+ * return the custom implementation.
  * <p/>
- * An alternative would be to use aspectJ and the around cut-point to modify the behaviour of the method. I decided on this way because
- * it is more common and better understood techniques.
+ * An alternative would be to use aspectJ and the around cut-point to modify the behaviour of the
+ * method. I decided on this way because it is more common and better understood techniques.
  * <p/>
  * <p/>
- * In addition to overriding the delete methods this class also implements the {@link HarvesterSettingRepositoryCustom} interface.  These
- * methods are not in a normal *Impl class because the extra class is not needed and the delete methods call methods in that interface.
+ * In addition to overriding the delete methods this class also implements the {@link
+ * HarvesterSettingRepositoryCustom} interface.  These methods are not in a normal *Impl class
+ * because the extra class is not needed and the delete methods call methods in that interface.
  * <p/>
- * User: Jesse
- * Date: 10/25/13
- * Time: 7:53 AM
+ * User: Jesse Date: 10/25/13 Time: 7:53 AM
  */
 public class HarvesterSettingRepositoryOverridesImpl extends GeonetRepositoryImpl<HarvesterSetting,
-        Integer> implements HarvesterSettingRepositoryCustom {
+    Integer> implements HarvesterSettingRepositoryCustom {
     protected HarvesterSettingRepositoryOverridesImpl(Class<HarvesterSetting> domainClass, EntityManager entityManager) {
         super(domainClass, entityManager);
     }
@@ -118,8 +141,8 @@ public class HarvesterSettingRepositoryOverridesImpl extends GeonetRepositoryImp
                 pathSegments = pathSegments.subList(1, pathSegments.size());
             }
         } else {
-        	// get all settings
-    		currentSettings = findRoots();
+            // get all settings
+            currentSettings = findRoots();
             for (HarvesterSetting currentSetting : currentSettings) {
                 if (currentSetting.getName().equals(firstSegment)) {
                     pathSegments.remove(0);
@@ -131,7 +154,7 @@ public class HarvesterSettingRepositoryOverridesImpl extends GeonetRepositoryImp
 
         for (String childName : pathSegments) {
             List<HarvesterSetting> oldSettings = currentSettings;
-        	currentSettings  = new LinkedList<HarvesterSetting>();
+            currentSettings = new LinkedList<HarvesterSetting>();
             for (HarvesterSetting setting : oldSettings) {
                 List<HarvesterSetting> children = findChildrenByName(setting.getId(), childName);
                 currentSettings.addAll(children);
@@ -196,7 +219,7 @@ public class HarvesterSettingRepositoryOverridesImpl extends GeonetRepositoryImp
 
         return _entityManager.createQuery(query).getResultList();
     }
-    
+
     @Override
     public List<HarvesterSetting> findAllByNames(List<String> names) {
         CriteriaBuilder criteriaBuilder = _entityManager.getCriteriaBuilder();
@@ -204,8 +227,8 @@ public class HarvesterSettingRepositoryOverridesImpl extends GeonetRepositoryImp
 
         Root<HarvesterSetting> root = query.from(HarvesterSetting.class);
         query.select(root);
-        if (CollectionUtils.isNotEmpty(names)) {        	
-        	query.where(root.get(HarvesterSetting_.name).in(names));
+        if (CollectionUtils.isNotEmpty(names)) {
+            query.where(root.get(HarvesterSetting_.name).in(names));
         }
 
         return _entityManager.createQuery(query).getResultList();

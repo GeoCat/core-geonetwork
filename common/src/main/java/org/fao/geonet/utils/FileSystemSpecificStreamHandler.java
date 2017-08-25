@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.utils;
 
 import java.io.IOException;
@@ -12,11 +35,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
- * A file handler for urls that are created by {@link org.fao.geonet.utils.IO#toURL(java.net.URI)} and represent a url to
- * a file.
+ * A file handler for urls that are created by {@link org.fao.geonet.utils.IO#toURL(java.net.URI)}
+ * and represent a url to a file.
  *
-* @author Jesse on 11/18/2014.
-*/
+ * @author Jesse on 11/18/2014.
+ */
 class FileSystemSpecificStreamHandler extends URLStreamHandler {
     @Override
     protected URLConnection openConnection(URL u) throws IOException {
@@ -39,8 +62,8 @@ class FileSystemSpecificStreamHandler extends URLStreamHandler {
                     try {
                         final long size = Files.size(path);
                         if (size > Integer.MAX_VALUE) {
-                            throw new AssertionError(path  + " size is too large for the getContentLength method.  " +
-                                                     "It is greater than Integer.MAX_VALUE: " + size);
+                            throw new AssertionError(path + " size is too large for the getContentLength method.  " +
+                                "It is greater than Integer.MAX_VALUE: " + size);
                         }
                         return (int) size;
                     } catch (IOException e) {

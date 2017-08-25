@@ -7,9 +7,9 @@ var gnHarvestergeonetwork = {
       "@type": "geonetwork",
       "owner": [""],
       "ownerGroup": [""],
+      "ownerUser": [""],
       "site":   {
         "name": "",
-        "translations": {},
         "uuid": "",
         "account":     {
           "use": false,
@@ -65,9 +65,9 @@ var gnHarvestergeonetwork = {
     var body = '<node id="' + h['@id'] + '" '
       + '    type="' + h['@type'] + '">'
       + '  <ownerGroup><id>' + h.ownerGroup[0] + '</id></ownerGroup>'
+      + '  <ownerUser><id>' + h.ownerUser[0] + '</id></ownerUser>' 
       + '  <site>'
       + '    <name>' + h.site.name + '</name>'
-      + $scope.buildTranslations(h)
       + '    <host>' + h.site.host.replace(/&/g, '&amp;') + '</host>'
       + '    <node>' + h.site.node + '</node>'
       + '    <useChangeDateForUpdate>' + h.site.useChangeDateForUpdate + '</useChangeDateForUpdate>'

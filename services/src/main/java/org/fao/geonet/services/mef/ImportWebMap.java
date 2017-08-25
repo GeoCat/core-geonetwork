@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.services.mef;
 
 import java.io.File;
@@ -25,9 +48,11 @@ import org.fao.geonet.exceptions.BadParameterEx;
 import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.mef.Importer;
+import org.fao.geonet.kernel.mef.MEFLib;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.lib.Lib;
 import org.fao.geonet.services.NotInReadOnlyModeService;
+import org.fao.geonet.utils.FilePathChecker;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
 
@@ -49,7 +74,7 @@ public class ImportWebMap extends NotInReadOnlyModeService {
 
 
     @Override
-    public Element serviceSpecificExec(Element params, ServiceContext context)  throws Exception {
+    public Element serviceSpecificExec(Element params, ServiceContext context) throws Exception {
         String mapString = Util.getParam(params, "map_string");
         String mapUrl = Util.getParam(params, "map_url", "");
         String viewerUrl = Util.getParam(params, "map_viewer_url", "");
@@ -57,20 +82,18 @@ public class ImportWebMap extends NotInReadOnlyModeService {
         String mapAbstract = Util.getParam(params, "map_abstract", "");
         String title = Util.getParam(params, "map_title", "");
         String mapFileName = Util.getParam(params, "map_filename", "map-context.ows");
-        if (mapFileName.contains("..")) {
-            throw new BadParameterEx(
-                    "Invalid character '..' found in resource name.",
-                    mapFileName);
-        }
+
+        FilePathChecker.verify(mapFileName);
+
         String topic = Util.getParam(params, "topic", "");
 
-        
-        Map<String,Object> xslParams = new HashMap<String,Object>();
+
+        Map<String, Object> xslParams = new HashMap<String, Object>();
         xslParams.put("viewer_url", viewerUrl);
         xslParams.put("map_url", mapUrl);
         xslParams.put("topic", topic);
         xslParams.put("title", title);
-        xslParams.put("abstract", mapAbstract);        
+        xslParams.put("abstract", mapAbstract);
         xslParams.put("lang", context.getLanguage());
 
         UserSession us = context.getUserSession();
@@ -105,9 +128,9 @@ public class ImportWebMap extends NotInReadOnlyModeService {
         md.add(transformedMd);
 
         // Import record
-        Importer.importRecord(uuid, uuidAction, md, "iso19139", 0, sm.getSiteId(),
-                sm.getSiteName(), null, context,  id,  date, date,  groupId, 
-                MetadataType.METADATA);
+        Importer.importRecord(uuid, MEFLib.UuidAction.parse(uuidAction), md, "iso19139", 0, sm.getSiteId(),
+            sm.getSiteName(), null, context, id, date, date, groupId,
+            MetadataType.METADATA);
 
         // Save the context if no context-url provided
         if (StringUtils.isEmpty(mapUrl)) {

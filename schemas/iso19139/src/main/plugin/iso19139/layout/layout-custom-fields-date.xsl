@@ -1,17 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<!--
+  ~ Copyright (C) 2001-2016 Food and Agriculture Organization of the
+  ~ United Nations (FAO-UN), United Nations World Food Programme (WFP)
+  ~ and United Nations Environment Programme (UNEP)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation; either version 2 of the License, or (at
+  ~ your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but
+  ~ WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~ General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+  ~
+  ~ Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+  ~ Rome - Italy. email: geonetwork@osgeo.org
+  -->
+
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:gmd="http://www.isotc211.org/2005/gmd"
-                xmlns:gts="http://www.isotc211.org/2005/gts"
                 xmlns:gco="http://www.isotc211.org/2005/gco"
-                xmlns:gmx="http://www.isotc211.org/2005/gmx"
-                xmlns:srv="http://www.isotc211.org/2005/srv"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns:gml="http://www.opengis.net/gml"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:gn="http://www.fao.org/geonetwork"
                 xmlns:gn-fn-metadata="http://geonetwork-opensource.org/xsl/functions/metadata"
-                xmlns:gn-fn-iso19139="http://geonetwork-opensource.org/xsl/functions/profiles/iso19139"
+                version="2.0"
                 exclude-result-prefixes="#all">
 
   <!--
@@ -52,7 +69,7 @@
   </xsl:template>
 
   <!-- Date type is handled in next template -->
-  <xsl:template mode="mode-iso19139" match="gmd:dateType" priority="2000"/>
+  <xsl:template mode="mode-iso19139" match="gmd:dateType" priority="4000"/>
 
   <!-- Rendering date type as a dropdown to select type
   and the calendar next to it.
@@ -63,9 +80,10 @@
     <xsl:param name="schema" select="$schema" required="no"/>
     <xsl:param name="labels" select="$labels" required="no"/>
 
+    <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
+    <xsl:variable name="isoType" select="if (../@gco:isoType) then ../@gco:isoType else ''"/>
     <xsl:variable name="labelConfig"
-                  select="gn-fn-metadata:getLabel($schema, name(), $labels)"/>
-
+                  select="gn-fn-metadata:getLabel($schema, name(), $labels, name(..), $isoType, $xpath)"/>
     <xsl:variable name="dateTypeElementRef"
                   select="../gn:element/@ref"/>
 
@@ -85,11 +103,14 @@
           <xsl:with-param name="listOfValues" select="$codelist"/>
           <xsl:with-param name="lang" select="$lang"/>
           <xsl:with-param name="isDisabled" select="ancestor-or-self::node()[@xlink:href]"/>
-          <xsl:with-param name="elementRef" select="../gmd:dateType/gmd:CI_DateTypeCode/gn:element/@ref"/>
+          <xsl:with-param name="elementRef"
+                          select="../gmd:dateType/gmd:CI_DateTypeCode/gn:element/@ref"/>
           <xsl:with-param name="isRequired" select="true()"/>
           <xsl:with-param name="hidden" select="false()"/>
-          <xsl:with-param name="valueToEdit" select="../gmd:dateType/gmd:CI_DateTypeCode/@codeListValue"/>
-          <xsl:with-param name="name" select="concat(../gmd:dateType/gmd:CI_DateTypeCode/gn:element/@ref, '_codeListValue')"/>
+          <xsl:with-param name="valueToEdit"
+                          select="../gmd:dateType/gmd:CI_DateTypeCode/@codeListValue"/>
+          <xsl:with-param name="name"
+                          select="concat(../gmd:dateType/gmd:CI_DateTypeCode/gn:element/@ref, '_codeListValue')"/>
         </xsl:call-template>
 
 
@@ -137,13 +158,16 @@
     <xsl:param name="schema" select="$schema" required="no"/>
     <xsl:param name="labels" select="$labels" required="no"/>
 
+    <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
+    <xsl:variable name="isoType" select="if (../@gco:isoType) then ../@gco:isoType else ''"/>
     <xsl:variable name="labelConfig"
-                  select="gn-fn-metadata:getLabel($schema, name(), $labels, name(..), '', '')"/>
-
+                  select="gn-fn-metadata:getLabel($schema, name(), $labels, name(..), $isoType, $xpath)"/>
     <xsl:variable name="dateTypeElementRef"
                   select="../gn:element/@ref"/>
 
-    <div class="form-group gn-field gn-title gn-required"
+    <xsl:variable name="isRequired" select="gn:element/@min = 1 and gn:element/@max = 1"/>
+
+    <div class="form-group gn-field gn-title {if ($isRequired) then 'gn-required' else ''}"
          id="gn-el-{$dateTypeElementRef}"
          data-gn-field-highlight="">
       <label class="col-sm-2 control-label">

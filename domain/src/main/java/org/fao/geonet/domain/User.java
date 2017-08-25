@@ -1,18 +1,47 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.domain;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.entitylistener.UserEntityListenerManager;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.keygen.KeyGenerators;
+import org.springframework.security.crypto.keygen.StringKeyGenerator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.persistence.*;
+
 import java.util.*;
 
 /**
- * A user entity. A user is used in spring security, controlling access to metadata as well as in the {@link jeeves.server.UserSession}.
+ * A user entity. A user is used in spring security, controlling access to metadata as well as in
+ * the {@link jeeves.server.UserSession}.
  *
  * @author Jesse
  */
@@ -24,10 +53,8 @@ import java.util.*;
 @SequenceGenerator(name = User.ID_SEQ_NAME, initialValue = 100, allocationSize = 1)
 public class User extends GeonetEntity implements UserDetails {
     public static final String NODE_APPLICATION_CONTEXT_KEY = "jeevesNodeApplicationContext_";
-    private static final long serialVersionUID = 2589607276443866650L;
-
     static final String ID_SEQ_NAME = "user_id_seq";
-
+    private static final long serialVersionUID = 2589607276443866650L;
     private int _id;
     private String _username;
     private String _surname;
@@ -41,9 +68,14 @@ public class User extends GeonetEntity implements UserDetails {
     private String _lastLoginDate;
     private Boolean _isEnabled;
 
+    public static String getRandomPassword() {
+        StringKeyGenerator generator = KeyGenerators.string();
+        return generator.generateKey().substring(0, 8);
+    }
+
     /**
-     * Get the userid.   This is a generated value and as such new instances should not have this set as it will simply be ignored
-     * and could result in reduced performance.
+     * Get the userid.   This is a generated value and as such new instances should not have this
+     * set as it will simply be ignored and could result in reduced performance.
      *
      * @return the user id
      */
@@ -54,8 +86,8 @@ public class User extends GeonetEntity implements UserDetails {
     }
 
     /**
-     * Set the userid.   This is a generated value and as such new instances should not have this set as it will simply be ignored
-     * and could result in reduced performance.
+     * Set the userid.   This is a generated value and as such new instances should not have this
+     * set as it will simply be ignored and could result in reduced performance.
      *
      * @param id the userid
      * @return this user object
@@ -90,10 +122,12 @@ public class User extends GeonetEntity implements UserDetails {
     }
 
     /**
-     * Get the user's hashed password.  Actual passwords are not stored only hashes of the passwords.
+     * Get the user's hashed password.  Actual passwords are not stored only hashes of the
+     * passwords.
      */
     @Transient
     @Override
+    @JsonIgnore
     public String getPassword() {
         return new String(getSecurity().getPassword());
     }
@@ -187,7 +221,7 @@ public class User extends GeonetEntity implements UserDetails {
      */
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "UserAddress", joinColumns = @JoinColumn(name = "userid"), inverseJoinColumns = {@JoinColumn(name = "addressid",
-            referencedColumnName = "ID", unique = true)})
+        referencedColumnName = "ID", unique = true)})
     public Set<Address> getAddresses() {
         return _addresses;
     }
@@ -239,8 +273,8 @@ public class User extends GeonetEntity implements UserDetails {
     }
 
     /**
-     * Get the 'kind' of user. Just a sting representing the type or category of the user. It can be customized for a particular
-     * application. An example is GOV or CONTRACTOR.
+     * Get the 'kind' of user. Just a sting representing the type or category of the user. It can be
+     * customized for a particular application. An example is GOV or CONTRACTOR.
      */
     @Column(length = 16)
     public String getKind() {
@@ -248,11 +282,12 @@ public class User extends GeonetEntity implements UserDetails {
     }
 
     /**
-     * Set the 'kind' of user. Just a sting representing the type or category of the user. It can be customized for a particular
-     * application. An example is GOV or CONTRACTOR.
+     * Set the 'kind' of user. Just a sting representing the type or category of the user. It can be
+     * customized for a particular application. An example is GOV or CONTRACTOR.
      *
-     * @param kind the 'kind' of user. Just a sting representing the type or category of the user. It can be customized for a particular
-     *             application. An example is GOV or CONTRACTOR.
+     * @param kind the 'kind' of user. Just a sting representing the type or category of the user.
+     *             It can be customized for a particular application. An example is GOV or
+     *             CONTRACTOR.
      * @return this user object
      */
     public
@@ -385,7 +420,8 @@ public class User extends GeonetEntity implements UserDetails {
      * Merge all data from other user into this user.
      *
      * @param otherUser     other user to merge data from.
-     * @param mergeNullData if true then also set null values from other user. If false then only merge non-null data
+     * @param mergeNullData if true then also set null values from other user. If false then only
+     *                      merge non-null data
      */
     public void mergeUser(User otherUser, boolean mergeNullData) {
         if (mergeNullData || StringUtils.isNotBlank(otherUser.getUsername())) {
@@ -455,12 +491,16 @@ public class User extends GeonetEntity implements UserDetails {
         if (!_email.equals(user._email)) return false;
         if (_kind != null ? !_kind.equals(user._kind) : user._kind != null) return false;
         if (_name != null ? !_name.equals(user._name) : user._name != null) return false;
-        if (_organisation != null ? !_organisation.equals(user._organisation) : user._organisation != null) return false;
+        if (_organisation != null ? !_organisation.equals(user._organisation) : user._organisation != null)
+            return false;
         if (_profile != user._profile) return false;
         if (!_security.equals(user._security)) return false;
-        if (_surname != null ? !_surname.equals(user._surname) : user._surname != null) return false;
-        if (_username != null ? !_username.equals(user._username) : user._username != null) return false;
-        if (_lastLoginDate != null ? !_lastLoginDate.equals(user._lastLoginDate) : user._lastLoginDate != null) return false;
+        if (_surname != null ? !_surname.equals(user._surname) : user._surname != null)
+            return false;
+        if (_username != null ? !_username.equals(user._username) : user._username != null)
+            return false;
+        if (_lastLoginDate != null ? !_lastLoginDate.equals(user._lastLoginDate) : user._lastLoginDate != null)
+            return false;
 
         return true;
     }

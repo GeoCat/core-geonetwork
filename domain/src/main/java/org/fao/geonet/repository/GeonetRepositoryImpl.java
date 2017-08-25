@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.repository;
 
 import org.fao.geonet.domain.GeonetEntity;
@@ -12,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
@@ -31,15 +55,13 @@ import javax.persistence.criteria.Root;
  * @param <T>  The entity type
  * @param <ID> The entity id type
  *             <p/>
- *             User: jeichar
- *             Date: 9/5/13
- *             Time: 11:26 AM
+ *             User: jeichar Date: 9/5/13 Time: 11:26 AM
  */
 public class GeonetRepositoryImpl<T extends GeonetEntity, ID extends Serializable> extends SimpleJpaRepository<T,
-        ID> implements GeonetRepository<T, ID> {
+    ID> implements GeonetRepository<T, ID> {
 
-    protected EntityManager _entityManager;
     private final Class<T> _entityClass;
+    protected EntityManager _entityManager;
 
 
     protected GeonetRepositoryImpl(Class<T> domainClass, EntityManager entityManager) {
@@ -48,6 +70,36 @@ public class GeonetRepositoryImpl<T extends GeonetEntity, ID extends Serializabl
         this._entityClass = domainClass;
     }
 
+    protected static <T extends GeonetEntity> Element findAllAsXml(EntityManager entityManager, Class<T> entityClass,
+                                                                   Specification<T> specification, Pageable pageable) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> query = cb.createQuery(entityClass);
+        Root<T> root = query.from(entityClass);
+
+        if (specification != null) {
+            final Predicate predicate = specification.toPredicate(root, query, cb);
+            query.where(predicate);
+        }
+
+        if (pageable != null) {
+            if (pageable.getSort() != null) {
+                List<Order> orders = SortUtils.sortToJpaOrders(cb, pageable.getSort(), root);
+                query.orderBy(orders);
+            }
+        }
+
+        Element rootEl = new Element(entityClass.getSimpleName().toLowerCase());
+
+        final TypedQuery<T> typedQuery = entityManager.createQuery(query);
+        if (pageable != null) {
+            typedQuery.setFirstResult(pageable.getOffset());
+            typedQuery.setMaxResults(pageable.getPageSize());
+        }
+        for (T t : typedQuery.getResultList()) {
+            rootEl.addContent(t.asXml());
+        }
+        return rootEl;
+    }
 
     public T update(ID id, Updater<T> updater) {
         final T entity = _entityManager.find(this._entityClass, id);
@@ -127,36 +179,5 @@ public class GeonetRepositoryImpl<T extends GeonetEntity, ID extends Serializabl
     public Element findAllAsXml(final Specification<T> specification, final Sort sort) {
         PageRequest request = new PageRequest(0, Integer.MAX_VALUE, sort);
         return findAllAsXml(_entityManager, _entityClass, specification, request);
-    }
-
-    protected static <T extends GeonetEntity> Element findAllAsXml(EntityManager entityManager, Class<T> entityClass,
-                                                                   Specification<T> specification, Pageable pageable) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<T> query = cb.createQuery(entityClass);
-        Root<T> root = query.from(entityClass);
-
-        if (specification != null) {
-            final Predicate predicate = specification.toPredicate(root, query, cb);
-            query.where(predicate);
-        }
-
-        if (pageable != null) {
-            if (pageable.getSort() != null) {
-                List<Order> orders = SortUtils.sortToJpaOrders(cb, pageable.getSort(), root);
-                query.orderBy(orders);
-            }
-        }
-
-        Element rootEl = new Element(entityClass.getSimpleName().toLowerCase());
-
-        final TypedQuery<T> typedQuery = entityManager.createQuery(query);
-        if (pageable != null) {
-            typedQuery.setFirstResult(pageable.getOffset());
-            typedQuery.setMaxResults(pageable.getPageSize());
-        }
-        for (T t : typedQuery.getResultList()) {
-            rootEl.addContent(t.asXml());
-        }
-        return rootEl;
     }
 }

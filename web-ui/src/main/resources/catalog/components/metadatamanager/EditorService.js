@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
   goog.provide('gn_metadata_manager_service');
 
@@ -64,6 +87,21 @@
              }
            }
          };
+         // When adding a new element and the cardinality is 0-1,
+         // then hide the add control.
+         // When an element is removed and the cardinality is 0-1,
+         // then display the add control
+         var checkAddControls = function(element, isRemoved) {
+           var addElement = $(element).next();
+           if (addElement !== undefined) {
+             var addBlock = addElement.get(0);
+             if ($(addBlock).hasClass('gn-add-field') &&
+                 $(addBlock).attr('data-gn-cardinality') === '0-1') {
+               $(addBlock).toggleClass('hidden', isRemoved ? false : true);
+             }
+           }
+         };
+
          // When adding a new element, the down control
          // of the previous element must be enabled and
          // the up control enabled only if the previous
@@ -73,7 +111,7 @@
            if (previousElement !== undefined) {
              var findExp = 'div.gn-move';
              var previousElementCtrl = $(previousElement
-               .find(findExp).get(0)).children();
+             .find(findExp).get(0)).children();
 
              // Up control is enabled if the previous element is
              // not on top.
@@ -87,18 +125,24 @@
            }
          };
          var setStatus = function(status) {
-           gnCurrentEdit.savedStatus = $translate(status.msg);
+           gnCurrentEdit.savedStatus = $translate.instant(status.msg);
            gnCurrentEdit.savedTime = moment();
            gnCurrentEdit.saving = status.saving;
          };
+
+         // Remove XML header
+         var cleanData = function(data) {
+           return data.replace(/<\?xml version="1.0".*\?>\n/, '');
+         };
          return {
            buildEditUrlPrefix: function(service) {
-             var params = [service, '?id=', gnCurrentEdit.id];
+             var params = ['../api/records/',
+               gnCurrentEdit.id, '/', service, '?'];
              gnCurrentEdit.tab ?
              params.push('&currTab=', gnCurrentEdit.tab) :
              params.push('&currTab=', 'default');
-             gnCurrentEdit.displayAttributes &&
-             params.push('&displayAttributes=',
+             gnCurrentEdit.withAttributes &&
+             params.push('&withAttributes=',
              gnCurrentEdit.displayAttributes);
              return params.join('');
            },
@@ -109,7 +153,7 @@
            * This is required while switching tab for example. Update the tab
            * value in the form and trigger save to update the view.
            */
-           save: function(refreshForm, silent) {
+           save: function(refreshForm, silent, terminate) {
              var defer = $q.defer();
              var scope = this;
              if (gnCurrentEdit.saving) {
@@ -121,15 +165,16 @@
              }
 
              gnCurrentEdit.working = true;
-             $http.post(
-             refreshForm ? 'md.edit.save' : 'md.edit.saveonly',
+             $http.post('../api/records/' + gnCurrentEdit.id + '/editor?' +
+             (refreshForm ? '' : '&commit=true') +
+             (terminate ? '&terminate=true' : ''),
              $(gnCurrentEdit.formId).serialize(),
              {
                headers: {'Content-Type':
                  'application/x-www-form-urlencoded'}
              }).success(function(data) {
 
-                var snippet = $(data);
+                var snippet = $(cleanData(data));
                 if (refreshForm) {
                   scope.refreshEditorForm(snippet);
                 }
@@ -158,15 +203,10 @@
                setStatus({msg: 'cancelling', saving: true});
              }
 
-             $http({
-               method: 'GET',
-               url: 'md.edit.cancel@json',
-               params: {
-                 id: gnCurrentEdit.id
-               }
-             }).success(function(data) {
+             $http.delete(
+             '../api/records/' + gnCurrentEdit.id + '/editor'
+             ).success(function(data) {
                setStatus({msg: 'allChangesCanceled', saving: false});
-
                defer.resolve(data);
              }).error(function(error) {
                setStatus({msg: 'cancelChangesError', saving: false});
@@ -223,7 +263,8 @@
                  angular.extend(params, {starteditingsession: 'yes'});
                  gnCurrentEdit.sessionStartTime = moment();
                }
-               gnHttp.callService('edit', params).then(function(data) {
+               $http.get('../api/records/' + gnCurrentEdit.id + '/editor',
+               params).then(function(data) {
                  refreshForm($(data.data));
                });
              }
@@ -246,6 +287,7 @@
              angular.extend(gnCurrentEdit, {
                isService: getInputValue('isService') == 'true',
                isTemplate: getInputValue('template'),
+               mdTitle: getInputValue('title'),
                mdLanguage: getInputValue('language'),
                mdOtherLanguages: getInputValue('otherLanguages'),
                showValidationErrors:
@@ -253,6 +295,7 @@
                uuid: getInputValue('uuid'),
                schema: getInputValue('schema'),
                version: getInputValue('version'),
+               tab: getInputValue('currTab'),
                geoPublisherConfig:
                angular.fromJson(getInputValue('geoPublisherConfig')),
                extent:
@@ -288,12 +331,12 @@
              var attributeAction = attribute ? '&child=geonet:attribute' : '';
 
              var defer = $q.defer();
-             $http.get(this.buildEditUrlPrefix('md.element.add') +
+             $http.put(this.buildEditUrlPrefix('editor/elements') +
              '&ref=' + ref + '&name=' + name + attributeAction)
               .success(function(data) {
                // Append HTML snippet after current element - compile Angular
                var target = $('#gn-el-' + insertRef);
-               var snippet = $(data);
+               var snippet = $(cleanData(data));
 
                if (attribute) {
                  target.replaceWith(snippet);
@@ -309,7 +352,8 @@
                  target[position || 'after'](snippet); // Insert
                  snippet.slideDown(duration, function() {});   // Slide
 
-                 // Adapt the move element
+                 // Adapt the add & move element
+                 checkAddControls(snippet);
                  checkMoveControls(snippet);
                }
                $compile(snippet)(gnCurrentEdit.formScope);
@@ -324,14 +368,13 @@
            addChoice: function(metadataId, ref, parent, name,
            insertRef, position) {
              var defer = $q.defer();
-             // md.elem.add?id=1250&ref=41&name=gmd:presentationForm
-             $http.get(this.buildEditUrlPrefix('md.element.add') +
+             $http.put(this.buildEditUrlPrefix('editor/elements') +
              '&ref=' + ref +
              '&name=' + parent +
              '&child=' + name).success(function(data) {
                // Append HTML snippet after current element - compile Angular
                var target = $('#gn-el-' + insertRef);
-               var snippet = $(data);
+               var snippet = $(cleanData(data));
 
                if (target.hasClass('gn-add-field')) {
                  target.addClass('gn-extra-field');
@@ -340,7 +383,7 @@
                target[position || 'before'](snippet); // Insert
                snippet.slideDown(duration, function() {});   // Slide
 
-               // Adapt the move element
+               checkAddControls(snippet);
                checkMoveControls(snippet);
 
                $compile(snippet)(gnCurrentEdit.formScope);
@@ -354,8 +397,8 @@
              // md.element.remove?id=<metadata_id>&ref=50&parent=41
              // Call service to remove element from metadata record in session
              var defer = $q.defer();
-             $http.get('md.element.remove@json?id=' + gnCurrentEdit.id +
-             '&ref=' + ref + '&parent=' + parent)
+             $http.delete('../api/records/' + gnCurrentEdit.id +
+             '/editor/elements?ref=' + ref + '&parent=' + parent)
               .success(function(data) {
                // For a fieldset, domref is equal to ref.
                // For an input, it may be different because
@@ -403,7 +446,7 @@
                  }
                };
 
-               // Adapt the move element
+               checkAddControls(target.get(0), true);
                checkMoveControls(target.get(0));
 
                target.slideUp(duration, function() { $(this).remove();});
@@ -417,8 +460,8 @@
            },
            removeAttribute: function(metadataId, ref) {
              var defer = $q.defer();
-             $http.get('md.attribute.remove@json?id=' + gnCurrentEdit.id +
-             '&ref=' + ref.replace('COLON', ':'))
+             $http.delete('../api/records/' + gnCurrentEdit.id +
+             '/editor/attributes?ref=' + ref.replace('COLON', ':'))
               .success(function(data) {
                var target = $('#gn-attr-' + ref);
                target.slideUp(duration, function() { $(this).remove();});
@@ -443,7 +486,7 @@
                var switchWithElementCtrl = $(switchWithElement
                 .find(findExp).get(0)).children();
 
-               // For each existing up/down control transfert
+               // For each existing up/down control transfer
                // the hidden class between the two elements.
                angular.forEach(switchWithElementCtrl, function(ctrl, idx) {
                  var ctrl2 = currentElementCtrl[idx];
@@ -459,7 +502,7 @@
                switchWithElement.toggleClass('gn-extra-field', hasClass);
              };
 
-             $http.get(this.buildEditUrlPrefix('md.element.' + direction) +
+             $http.put(this.buildEditUrlPrefix('editor/elements/' + direction) +
              '&ref=' + ref)
               .success(function(data) {
                // Switch with previous element
@@ -489,19 +532,13 @@
              location.href = 'catalog.edit?#/metadata/' +
              md['geonet:info'].id;
            },
-           getRecord: function(id) {
+           getRecord: function(uuid) {
              var defer = $q.defer();
-             // TODO : replace to use new services
-             var url = gnUrlUtils.append('xml.metadata.get',
-             gnUrlUtils.toKeyValue({
-               id: id
-             })
-             );
-             $http.get(url).
-             success(function(data, status) {
+             $http.get('../api/records/' + uuid).
+             success(function(data) {
                defer.resolve(data);
              }).
-             error(function(data, status) {
+             error(function(data) {
                //                TODO handle error
                //                defer.reject(error);
              });

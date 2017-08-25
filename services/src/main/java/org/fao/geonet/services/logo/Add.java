@@ -23,9 +23,11 @@
 
 package org.fao.geonet.services.logo;
 
+import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.domain.responses.StatusResponse;
 import org.fao.geonet.exceptions.BadParameterEx;
 import org.fao.geonet.resources.Resources;
+import org.fao.geonet.utils.FilePathChecker;
 import org.fao.geonet.utils.IO;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -42,58 +44,57 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Controller("admin.logo.upload")
+@Deprecated
 public class Add implements ApplicationContextAware {
-	private volatile Path logoDirectory;
+    private volatile Path logoDirectory;
 
-	private ApplicationContext context;
+    private ApplicationContext context;
 
-	public synchronized void setApplicationContext(ApplicationContext context) {
-		this.context = context;
-	}
+    public synchronized void setApplicationContext(ApplicationContext context) {
+        this.context = context;
+    }
 
-	@RequestMapping(value = "/{lang}/admin.logo.upload",
-			consumes = { MediaType.ALL_VALUE }, 
-			produces = { MediaType.APPLICATION_JSON_VALUE })
-	public @ResponseBody
-	StatusResponse execJSON(@RequestParam("fname") MultipartFile fname)
-			throws Exception {
-		return exec(fname);
-	}
+    @RequestMapping(value = "/{lang}/admin.logo.upload",
+        consumes = {MediaType.ALL_VALUE},
+        produces = {MediaType.APPLICATION_JSON_VALUE})
+    public
+    @ResponseBody
+    StatusResponse execJSON(@RequestParam("fname") MultipartFile fname)
+        throws Exception {
+        return exec(fname);
+    }
 
-	@RequestMapping(value = "/{lang}/admin.logo.upload", produces = {
-			MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
-	public @ResponseBody
-	StatusResponse exec(@RequestParam("fname") MultipartFile fname)
-			throws Exception {
+    @RequestMapping(value = "/{lang}/admin.logo.upload", produces = {
+        MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public
+    @ResponseBody
+    StatusResponse exec(@RequestParam("fname") MultipartFile fname)
+        throws Exception {
 
-		try {
+        try {
             Path logoDir;
             synchronized (this) {
-                if(this.logoDirectory == null) {
+                if (this.logoDirectory == null) {
                     this.logoDirectory = Resources.locateHarvesterLogosDirSMVC(context);
                 }
                 logoDir = this.logoDirectory;
             }
 
-			if (fname.getName().contains("..")) {
-				throw new BadParameterEx(
-						"Invalid character found in resource name.",
-						fname.getName());
-			}
+            FilePathChecker.verify(fname.getName());
 
-			if ("".equals(fname.getName())) {
+			if (StringUtils.isEmpty(fname.getName())) {
 				throw new Exception("Logo name is not defined.");
 			}
 
-			Path serverFile = logoDir.resolve(fname.getOriginalFilename());
-			if (Files.exists(serverFile)) {
+            Path serverFile = logoDir.resolve(fname.getOriginalFilename());
+            if (Files.exists(serverFile)) {
                 IO.deleteFile(serverFile, true, "Deleting server file");
-				serverFile = logoDir.resolve(fname.getOriginalFilename());
-			}
+                serverFile = logoDir.resolve(fname.getOriginalFilename());
+            }
 
             serverFile = Files.createFile(serverFile);
 
-			try (OutputStream stream = Files.newOutputStream(serverFile)) {
+            try (OutputStream stream = Files.newOutputStream(serverFile)) {
 
                 int read;
                 byte[] bytes = new byte[1024];
@@ -104,10 +105,10 @@ public class Add implements ApplicationContextAware {
                     stream.write(bytes, 0, read);
                 }
             }
-		} catch (Exception e) {
-			return new StatusResponse(e.getMessage());
-		}
+        } catch (Exception e) {
+            return new StatusResponse(e.getMessage());
+        }
 
-		return new StatusResponse("Logo added.");
-	}
+        return new StatusResponse("Logo added.");
+    }
 }

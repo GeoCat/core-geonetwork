@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.domain;
 
 import org.fao.geonet.entitylistener.LanguageEntityListenerManager;
@@ -8,9 +31,10 @@ import javax.persistence.*;
 /**
  * The enumeration of all languages available in the system.
  * <p/>
- * Note: The difference between IsoLanguages and Languages seems to be IsoLanguages lists all possible mappings between language codes and
- * Languages are the translations that can be used in the system. For example the languages the UI is translated into, the languages
- * metadata can be written in, the languages the groups, etc... should be translated into.
+ * Note: The difference between IsoLanguages and Languages seems to be IsoLanguages lists all
+ * possible mappings between language codes and Languages are the translations that can be used in
+ * the system. For example the languages the UI is translated into, the languages metadata can be
+ * written in, the languages the groups, etc... should be translated into.
  *
  * @author Jesse
  */
@@ -26,9 +50,8 @@ public class Language extends GeonetEntity {
     char _defaultLanguage = Constants.YN_FALSE;
 
     /**
-     * Get the id of the language. This is a generated value and as such new instances should not have this set as it will simply be
-     * ignored
-     * and could result in reduced performance.
+     * Get the id of the language. This is a generated value and as such new instances should not
+     * have this set as it will simply be ignored and could result in reduced performance.
      *
      * @return the id of the language
      */
@@ -40,9 +63,8 @@ public class Language extends GeonetEntity {
     }
 
     /**
-     * The id of the language. This is a generated value and as such new instances should not have this set as it will simply be
-     * ignored and
-     * could result in reduced performance.
+     * The id of the language. This is a generated value and as such new instances should not have
+     * this set as it will simply be ignored and could result in reduced performance.
      *
      * @param id the id of the language
      */
@@ -51,7 +73,8 @@ public class Language extends GeonetEntity {
     }
 
     /**
-     * Get the name/descriptor of the language. This is not a translated value is primarily for the admin user interface.
+     * Get the name/descriptor of the language. This is not a translated value is primarily for the
+     * admin user interface.
      *
      * @return the language name
      */
@@ -61,7 +84,8 @@ public class Language extends GeonetEntity {
     }
 
     /**
-     * Set the name/descriptor of the language. This is not a translated value is primarily for the admin user interface.
+     * Set the name/descriptor of the language. This is not a translated value is primarily for the
+     * admin user interface.
      *
      * @param name This is not a translated value is primarily for the admin user interface.
      */
@@ -70,8 +94,9 @@ public class Language extends GeonetEntity {
     }
 
     /**
-     * For backwards compatibility we need the isinspire column to be either 'n' or 'y'. This is a workaround to allow this until future
-     * versions of JPA that allow different ways of controlling how types are mapped to the database.
+     * For backwards compatibility we need the isinspire column to be either 'n' or 'y'. This is a
+     * workaround to allow this until future versions of JPA that allow different ways of
+     * controlling how types are mapped to the database.
      */
     @Column(name = "isInspire", length = 1)
     protected char getInspire_JPAWorkaround() {
@@ -79,7 +104,8 @@ public class Language extends GeonetEntity {
     }
 
     /**
-     * Setter for the value actual value that will be in the database. This should not be set by end programmer.
+     * Setter for the value actual value that will be in the database. This should not be set by end
+     * programmer.
      *
      * @param isinspire y or n
      */
@@ -107,8 +133,9 @@ public class Language extends GeonetEntity {
     }
 
     /**
-     * For backwards compatibility we need the isdefault column to be either 'n' or 'y'. This is a workaround to allow this until future
-     * versions of JPA that allow different ways of controlling how types are mapped to the database.
+     * For backwards compatibility we need the isdefault column to be either 'n' or 'y'. This is a
+     * workaround to allow this until future versions of JPA that allow different ways of
+     * controlling how types are mapped to the database.
      */
     @Column(name = "isDefault", length = 1)
     protected char getDefaultLanguage_JPAWorkaround() {

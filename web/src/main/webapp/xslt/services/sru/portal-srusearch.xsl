@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright (C) 2001-2016 Food and Agriculture Organization of the
+  ~ United Nations (FAO-UN), United Nations World Food Programme (WFP)
+  ~ and United Nations Environment Programme (UNEP)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation; either version 2 of the License, or (at
+  ~ your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but
+  ~ WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~ General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+  ~
+  ~ Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+  ~ Rome - Italy. email: geonetwork@osgeo.org
+  -->
+
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
   <xsl:template match="/root">
 
@@ -33,7 +56,6 @@
       </xsl:when>
 
 
-
       <xsl:when test="$op='searchretrieve'">
 
         <xsl:variable name="numrec" select="response/numrec"/>
@@ -63,7 +85,7 @@
                   </zs:recordSchema>
                   <zs:recordPacking>XML</zs:recordPacking>
                   <zs:recordData>
-                    <xsl:call-template name="copyrecord"> </xsl:call-template>
+                    <xsl:call-template name="copyrecord"></xsl:call-template>
                   </zs:recordData>
                   <zs:recordPosition>
                     <xsl:value-of select="../@recordPosition"/>
@@ -103,18 +125,19 @@
         </xsl:for-each>
 
 
-
       </xsl:when>
 
       <xsl:when test="$op='explain'">
 
-        <xsl:comment><xsl:variable name="port" select="gui/env/server/port"/> </xsl:comment>
+        <xsl:comment>
+          <xsl:variable name="port" select="gui/env/server/port"/>
+        </xsl:comment>
         <xsl:variable name="port" select="80"/>
         <xsl:variable name="server" select="'85.10.219.212'"/>
         <xsl:comment>
-							<xsl:variable name="server" select="gui/env/server/host"/>
-							<xsl:variable name="server" select="response/@servername"/>
-						</xsl:comment>
+          <xsl:variable name="server" select="gui/env/server/host"/>
+          <xsl:variable name="server" select="response/@servername"/>
+        </xsl:comment>
 
         <zs:explainResponse xmlns:zs="http://www.loc.gov/zing/srw/">
           <zs:version>1.1</zs:version>
@@ -180,7 +203,7 @@
                 </indexInfo>
                 <schemaInfo>
                   <schema name="xml:meta"
-                    identifier="http://www.iso.org/iso/catalogue_detail.htm?csnumber=32557">
+                          identifier="http://www.iso.org/iso/catalogue_detail.htm?csnumber=32557">
                     <title>ISO 19139</title>
                   </schema>
                 </schemaInfo>
@@ -219,8 +242,6 @@
       </xsl:when>
 
 
-
-
       <xsl:when test="$op='testremotesearch'">
         <xsl:for-each select="response">
           <xsl:call-template name="copyrecord"/>
@@ -230,7 +251,6 @@
         <xsl:call-template name="copyrecord"/>
       </xsl:otherwise>
     </xsl:choose>
-
 
 
   </xsl:template>

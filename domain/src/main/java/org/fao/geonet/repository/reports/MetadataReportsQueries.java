@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.repository.reports;
 
 import org.fao.geonet.domain.*;
@@ -8,6 +31,7 @@ import org.springframework.data.jpa.domain.Specification;
 import javax.annotation.Nonnull;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.*;
+
 import java.util.*;
 
 /**
@@ -30,12 +54,8 @@ public class MetadataReportsQueries {
 
 
     /**
-     * Retrieves the metadata updated during a period of time. Optionally filters metadata in groups.
-     *
-     * @param dateFrom
-     * @param dateTo
-     * @param groups
-     * @return
+     * Retrieves the metadata updated during a period of time. Optionally filters metadata in
+     * groups.
      */
     public List<Metadata> getUpdatedMetadata(ISODate dateFrom, ISODate dateTo, Set<Integer> groups) {
         final CriteriaBuilder cb = _entityManager.getCriteriaBuilder();
@@ -59,12 +79,12 @@ public class MetadataReportsQueries {
             Predicate inGroups = groupOwnerPath.in(groups);
 
             cbQuery.select(metadataRoot)
-                    .where(cb.and(cb.and(ownerPredicate, datePredicate), inGroups));
+                .where(cb.and(cb.and(ownerPredicate, datePredicate), inGroups));
 
         } else {
 
             cbQuery.select(metadataRoot)
-                    .where(cb.and(cb.and(ownerPredicate, datePredicate)));
+                .where(cb.and(cb.and(ownerPredicate, datePredicate)));
         }
 
 
@@ -76,11 +96,6 @@ public class MetadataReportsQueries {
     /**
      * Retrieves created metadata in the period specified, that is not available in ALL group.
      * Optionally filters metadata in groups.
-     *
-     * @param dateFrom
-     * @param dateTo
-     * @param groups
-     * @return
      */
     public List<Metadata> getInternalMetadata(ISODate dateFrom, ISODate dateTo, Set<Integer> groups,
                                               @Nonnull Specification<OperationAllowed> operationAllowedSpecification) {
@@ -114,12 +129,12 @@ public class MetadataReportsQueries {
             Predicate inGroups = groupOwnerPath.in(groups);
 
             cbQuery.select(metadataRoot)
-                    .where(cb.and(cb.not(metadataRoot.get(Metadata_.id).in(subquery)), cb.and(cb.and(ownerPredicate, datePredicate), inGroups)));
+                .where(cb.and(cb.not(metadataRoot.get(Metadata_.id).in(subquery)), cb.and(cb.and(ownerPredicate, datePredicate), inGroups)));
 
         } else {
 
             cbQuery.select(metadataRoot)
-                    .where(cb.and(cb.not(metadataRoot.get(Metadata_.id).in(subquery)), cb.and(cb.and(ownerPredicate, datePredicate))));
+                .where(cb.and(cb.not(metadataRoot.get(Metadata_.id).in(subquery)), cb.and(cb.and(ownerPredicate, datePredicate))));
         }
 
         cbQuery.orderBy(cb.asc(createDate));

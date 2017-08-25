@@ -1,7 +1,31 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.repository;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+
 import org.fao.geonet.domain.*;
 import org.fao.geonet.repository.specification.UserGroupSpecs;
 import org.junit.Test;
@@ -12,6 +36,7 @@ import org.springframework.data.jpa.domain.Specifications;
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -20,8 +45,6 @@ import static junit.framework.Assert.assertNull;
 import static org.junit.Assert.*;
 
 public class UserRepositoryTest extends AbstractSpringDataTest {
-    @PersistenceContext
-    private EntityManager _entityManager;
     @Autowired
     UserGroupRepository _userGroupRepository;
     @Autowired
@@ -30,6 +53,15 @@ public class UserRepositoryTest extends AbstractSpringDataTest {
     GroupRepository _groupRepo;
     @Autowired
     UserRepository _userRepo;
+    @PersistenceContext
+    private EntityManager _entityManager;
+
+    public static User newUser(AtomicInteger inc) {
+        int val = inc.incrementAndGet();
+        User user = new User().setName("name" + val).setUsername("username" + val);
+        user.getSecurity().setPassword("1234567");
+        return user;
+    }
 
     @Test
     public void testNodeIdIsSetOnLoad() {
@@ -42,8 +74,8 @@ public class UserRepositoryTest extends AbstractSpringDataTest {
         // save sets the nodeId
         assertNodeId(user);
         // loading should also set nodeid
-        assertNodeId( _userRepo.findAll().get(0));
-        assertNodeId( _userRepo.findOne(user.getId()));
+        assertNodeId(_userRepo.findAll().get(0));
+        assertNodeId(_userRepo.findOne(user.getId()));
         assertNodeId(_userRepo.findOneByUsername(user.getUsername()));
         assertNodeId(_userRepo.findOneByEmail(user.getEmail()));
         assertNodeId(_userRepo.findAllByProfile(user.getProfile()).get(0));
@@ -160,7 +192,7 @@ public class UserRepositoryTest extends AbstractSpringDataTest {
         _userGroupRepository.save(new UserGroup().setGroup(group1).setUser(reviewerUser).setProfile(Profile.Reviewer));
 
         List<Pair<Integer, User>> found = _userRepo.findAllByGroupOwnerNameAndProfile(Arrays.asList(md1.getId()), null,
-                SortUtils.createSort(User_.name));
+            SortUtils.createSort(User_.name));
 
         assertEquals(2, found.size());
         assertEquals(md1.getId(), found.get(0).one().intValue());
@@ -169,7 +201,7 @@ public class UserRepositoryTest extends AbstractSpringDataTest {
         assertEquals(reviewerUser, found.get(1).two());
 
         found = _userRepo.findAllByGroupOwnerNameAndProfile(Arrays.asList(md1.getId()), null,
-                new Sort(new Sort.Order(Sort.Direction.DESC, User_.name.getName())));
+            new Sort(new Sort.Order(Sort.Direction.DESC, User_.name.getName())));
 
         assertEquals(2, found.size());
         assertEquals(md1.getId(), found.get(0).one().intValue());
@@ -210,14 +242,14 @@ public class UserRepositoryTest extends AbstractSpringDataTest {
         _userGroupRepository.save(new UserGroup().setGroup(group1).setUser(reviewerUser).setProfile(Profile.Reviewer));
 
         List<Integer> found = Lists.transform(_userRepo.findAllUsersInUserGroups(UserGroupSpecs.hasGroupId(group1.getId())),
-                new Function<User, Integer>() {
+            new Function<User, Integer>() {
 
-            @Nullable
-            @Override
-            public Integer apply(@Nullable User input) {
-                return input.getId();
-            }
-        });
+                @Nullable
+                @Override
+                public Integer apply(@Nullable User input) {
+                    return input.getId();
+                }
+            });
 
         assertEquals(2, found.size());
         assertTrue(found.contains(editUser.getId()));
@@ -275,16 +307,8 @@ public class UserRepositoryTest extends AbstractSpringDataTest {
         assertTrue(reviewerUserFound);
     }
 
-
     private User newUser() {
         User user = newUser(_inc);
-        return user;
-    }
-
-    public static User newUser(AtomicInteger inc) {
-        int val = inc.incrementAndGet();
-        User user = new User().setName("name" + val).setUsername("username" + val);
-        user.getSecurity().setPassword("1234567");
         return user;
     }
 

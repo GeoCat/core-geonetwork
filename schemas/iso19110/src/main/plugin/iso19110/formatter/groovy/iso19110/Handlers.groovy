@@ -1,9 +1,32 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package iso19110
 
-import org.fao.geonet.services.metadata.format.groovy.Environment
-import org.fao.geonet.services.metadata.format.groovy.Functions
-import org.fao.geonet.services.metadata.format.groovy.util.NavBarItem
-import org.fao.geonet.services.metadata.format.groovy.util.Summary
+import org.fao.geonet.api.records.formatters.groovy.Environment
+import org.fao.geonet.api.records.formatters.groovy.Functions
+import org.fao.geonet.api.records.formatters.groovy.util.NavBarItem
+import org.fao.geonet.api.records.formatters.groovy.util.Summary
 
 /**
  * @author Jesse on 6/24/2015.
@@ -11,7 +34,7 @@ import org.fao.geonet.services.metadata.format.groovy.util.Summary
 class Handlers extends iso19139.Handlers {
     def iso19139RootPackageEl;
 
-    public Handlers(org.fao.geonet.services.metadata.format.groovy.Handlers handlers, Functions f, Environment env) {
+    public Handlers(org.fao.geonet.api.records.formatters.groovy.Handlers handlers, Functions f, Environment env) {
         super(handlers, f, env);
         rootEl = 'gfc:FC_FeatureCatalogue'
         packageViews = [rootEl]

@@ -1,12 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<!--
+  ~ Copyright (C) 2001-2016 Food and Agriculture Organization of the
+  ~ United Nations (FAO-UN), United Nations World Food Programme (WFP)
+  ~ and United Nations Environment Programme (UNEP)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation; either version 2 of the License, or (at
+  ~ your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but
+  ~ WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~ General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+  ~
+  ~ Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+  ~ Rome - Italy. email: geonetwork@osgeo.org
+  -->
+
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:dc="http://purl.org/dc/elements/1.1/"
-                xmlns:dct="http://purl.org/dc/terms/"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:tr="java:org.fao.geonet.services.metadata.format.SchemaLocalizations"
+                xmlns:tr="java:org.fao.geonet.api.records.formatters.SchemaLocalizations"
                 xmlns:gn-fn-render="http://geonetwork-opensource.org/xsl/functions/render"
-                xmlns:gn-fn-metadata="http://geonetwork-opensource.org/xsl/functions/metadata"
+                version="2.0"
                 exclude-result-prefixes="#all">
 
   <!-- Load the editor configuration to be able
@@ -26,11 +47,13 @@
                 select="/root/simpledc"/>
 
 
-
-
   <!-- Specific schema rendering -->
   <xsl:template mode="getMetadataTitle" match="simpledc">
     <xsl:value-of select="dc:title"/>
+  </xsl:template>
+
+  <xsl:template mode="getMetadataHierarchyLevel" match="simpledc">
+    <xsl:value-of select="'dataset'"/>
   </xsl:template>
 
   <xsl:template mode="getMetadataAbstract" match="simpledc">
@@ -96,11 +119,6 @@
   </xsl:template>
 
 
-
-
-
-
-
   <!-- ########################## -->
   <!-- Render values for text ... -->
   <xsl:template mode="render-value" match="*">
@@ -109,7 +127,9 @@
 
   <!-- ... URL -->
   <xsl:template mode="render-value" match="*[starts-with(., 'http')]">
-    <a href="{.}"><xsl:value-of select="."/></a>
+    <a href="{.}">
+      <xsl:value-of select="."/>
+    </a>
   </xsl:template>
 
   <!-- ... Dates -->
@@ -117,7 +137,8 @@
     <xsl:value-of select="format-date(., $dateFormats/date/for[@lang = $language]/text())"/>
   </xsl:template>
 
-  <xsl:template mode="render-value" match="*[matches(., '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}')]">
+  <xsl:template mode="render-value"
+                match="*[matches(., '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}')]">
     <xsl:value-of select="format-dateTime(., $dateFormats/dateTime/for[@lang = $language]/text())"/>
   </xsl:template>
 

@@ -1,9 +1,33 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.domain;
 
 import javax.persistence.*;
 
 /**
- * Entity to model a metadata file download request: metadata identifier, download date, user, file name, etc.
+ * Entity to model a metadata file download request: metadata identifier, download date, user, file
+ * name, etc.
  *
  * It is related to a {@link org.fao.geonet.domain.MetadataFileUpload} entity.
  *
@@ -12,7 +36,7 @@ import javax.persistence.*;
 @Entity
 @Access(AccessType.PROPERTY)
 @Table(name = "MetadataFileDownloads")
-@SequenceGenerator(name=MetadataFileDownload.ID_SEQ_NAME, initialValue=100, allocationSize=1)
+@SequenceGenerator(name = MetadataFileDownload.ID_SEQ_NAME, initialValue = 100, allocationSize = 1)
 public class MetadataFileDownload {
     static final String ID_SEQ_NAME = "metadata_filedownload_id_seq";
     private int _id;
@@ -32,7 +56,7 @@ public class MetadataFileDownload {
      * @return the id object for this MetadataFileDownload entity.
      */
     @Id
-    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = ID_SEQ_NAME)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = ID_SEQ_NAME)
     public int getId() {
         return _id;
     }
@@ -215,7 +239,6 @@ public class MetadataFileDownload {
     }
 
 
-
     /**
      * Get the user name for this entity.
      *
@@ -248,7 +271,7 @@ public class MetadataFileDownload {
         if (_metadataId != that._metadataId) return false;
         if (!_downloadDate.equals(that._downloadDate)) return false;
         if (!_fileName.equals(that._fileName)) return false;
-       // if (!_metadataUuid.equals(that._metadataUuid)) return false;
+        // if (!_metadataUuid.equals(that._metadataUuid)) return false;
         if (_requesterComments != null ? !_requesterComments.equals(that._requesterComments) : that._requesterComments != null)
             return false;
         if (_requesterMail != null ? !_requesterMail.equals(that._requesterMail) : that._requesterMail != null)

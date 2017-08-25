@@ -1,6 +1,30 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet;
 
 import com.google.common.collect.Lists;
+
 import com.vividsolutions.jts.geom.MultiPolygon;
 
 import jeeves.server.ServiceConfig;
@@ -58,18 +82,15 @@ public class GeonetTestFixture {
 
     private volatile static FileSystemPool.CreatedFs templateFs;
     private volatile static SchemaManager templateSchemaManager;
-    @Autowired
-    private ConfigurableApplicationContext _applicationContext;
+    private static LuceneConfig templateLuceneConfig;
+    private static SearchManager templateSearchManager;
     @Autowired
     protected DirectoryFactory _directoryFactory;
     @Autowired
     protected DataStore dataStore;
-
-
+    @Autowired
+    private ConfigurableApplicationContext _applicationContext;
     private FileSystemPool.CreatedFs currentFs;
-
-    private static LuceneConfig templateLuceneConfig;
-    private static SearchManager templateSearchManager;
 
     public void tearDown() throws IOException {
         IO.setFileSystemThreadLocal(null);
@@ -77,6 +98,7 @@ public class GeonetTestFixture {
             FILE_SYSTEM_POOL.release(currentFs);
         }
     }
+
     public void setup(AbstractCoreIntegrationTest test) throws Exception {
         final Path webappDir = AbstractCoreIntegrationTest.getWebappDir(test.getClass());
         TransformerFactoryFactory.init("de.fzi.dbs.xml.transform.CachingTransformerFactory");
@@ -89,24 +111,24 @@ public class GeonetTestFixture {
 
                     Path templateDataDirectory = templateFs.dataDir;
                     IO.copyDirectoryOrFile(webappDir.resolve("WEB-INF/data"), templateDataDirectory, true, new DirectoryStream
-                            .Filter<Path>() {
+                        .Filter<Path>() {
                         @Override
                         public boolean accept(Path entry) throws IOException {
                             return !entry.toString().contains("schema_plugins") &&
-                                   !entry.getFileName().toString().startsWith(".") &&
-                                   !entry.getFileName().toString().endsWith(".iml") &&
-                                   !entry.toString().contains("metadata_data") &&
-                                   !entry.toString().contains("removed") &&
-                                   !entry.toString().contains("metadata_subversion") &&
-                                   !entry.toString().contains("upload") &&
-                                   !entry.toString().contains("index") &&
-                                   !entry.toString().contains("resources");
+                                !entry.getFileName().toString().startsWith(".") &&
+                                !entry.getFileName().toString().endsWith(".iml") &&
+                                !entry.toString().contains("metadata_data") &&
+                                !entry.toString().contains("removed") &&
+                                !entry.toString().contains("metadata_subversion") &&
+                                !entry.toString().contains("upload") &&
+                                !entry.toString().contains("index") &&
+                                !entry.toString().contains("resources");
                         }
                     });
                     Path schemaPluginsDir = templateDataDirectory.resolve("config/schema_plugins");
                     deploySchema(webappDir, schemaPluginsDir);
                     LanguageDetector.init(AbstractCoreIntegrationTest.getWebappDir(test.getClass()).resolve(_applicationContext.getBean
-                            (LANGUAGE_PROFILES_DIR, String.class)));
+                        (LANGUAGE_PROFILES_DIR, String.class)));
 
                     final GeonetworkDataDirectory geonetworkDataDirectory = _applicationContext.getBean(GeonetworkDataDirectory.class);
                     final ServiceConfig serviceConfig = new ServiceConfig(Lists.<Element>newArrayList());
@@ -138,7 +160,7 @@ public class GeonetTestFixture {
         assertCorrectDataDir();
 
         if (test.resetLuceneIndex()) {
-        _directoryFactory.resetIndex();
+            _directoryFactory.resetIndex();
         }
 
         ServiceContext serviceContext = test.createServiceContext();
@@ -188,7 +210,7 @@ public class GeonetTestFixture {
 
         SchemaManager.registerXmlCatalogFiles(webappDir, schemaPluginsCatalogFile);
         schemaManager.configure(_applicationContext, webappDir, resourcePath,
-                schemaPluginsCatalogFile, schemaPluginsDir, "eng", "iso19139", true);
+            schemaPluginsCatalogFile, schemaPluginsDir, "eng", "iso19139", true);
 
         assertRequiredSchemas(schemaManager);
         SchemaManager template = new SchemaManager();
@@ -230,7 +252,7 @@ public class GeonetTestFixture {
             _applicationContext.getBeanFactory().registerSingleton(initializedString, initializedString);
             SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
             AttributeDescriptor geomDescriptor = new AttributeTypeBuilder().crs(DefaultGeographicCRS.WGS84).binding(MultiPolygon.class)
-                    .buildDescriptor("the_geom");
+                .buildDescriptor("the_geom");
             builder.setName("spatialIndex");
             builder.add(geomDescriptor);
             builder.add(SpatialIndexWriter._IDS_ATTRIBUTE_NAME, String.class);
@@ -275,10 +297,10 @@ public class GeonetTestFixture {
             Xml.loadFile(newSM.getSchemaDir("iso19139").resolve("schematron/criteria-type.xml"));
             Xml.loadFile(thisContextSM.getSchemaDir("iso19139").resolve("schematron/criteria-type.xml"));
 
-            assertEquals("Expected Schemas: " + templateSchemaManager.getSchemas() + "\nActual Schemas: "+ newSM.getSchemas(),
-                    templateSchemaManager.getSchemas().size(), newSM.getSchemas().size());
-            assertEquals("Expected Schemas: " + templateSchemaManager.getSchemas() + "\nActual Schemas: "+ thisContextSM.getSchemas(),
-                    templateSchemaManager.getSchemas().size(), thisContextSM.getSchemas().size());
+            assertEquals("Expected Schemas: " + templateSchemaManager.getSchemas() + "\nActual Schemas: " + newSM.getSchemas(),
+                templateSchemaManager.getSchemas().size(), newSM.getSchemas().size());
+            assertEquals("Expected Schemas: " + templateSchemaManager.getSchemas() + "\nActual Schemas: " + thisContextSM.getSchemas(),
+                templateSchemaManager.getSchemas().size(), thisContextSM.getSchemas().size());
             for (String templateName : templateSchemaManager.getSchemas()) {
                 assertTrue(templateName, newSM.existsSchema(templateName));
                 assertTrue(templateName, thisContextSM.existsSchema(templateName));

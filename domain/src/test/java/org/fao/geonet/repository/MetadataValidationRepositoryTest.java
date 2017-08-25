@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.repository;
 
 import org.fao.geonet.domain.*;
@@ -11,10 +34,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 /**
- * Test the MetadataValidationRepository class
- * User: Jesse
- * Date: 9/4/13
- * Time: 4:01 PM
+ * Test the MetadataValidationRepository class User: Jesse Date: 9/4/13 Time: 4:01 PM
  */
 public class MetadataValidationRepositoryTest extends AbstractSpringDataTest {
 
@@ -22,6 +42,23 @@ public class MetadataValidationRepositoryTest extends AbstractSpringDataTest {
     private MetadataValidationRepository _metadataValidationRepository;
     @Autowired
     private MetadataRepository _metadataRepository;
+
+    public static MetadataValidation newValidation(AtomicInteger inc, MetadataRepository metadataRepository) {
+        int val = inc.incrementAndGet();
+
+        Metadata metadata = metadataRepository.save(MetadataRepositoryTest.newMetadata(inc));
+
+        MetadataValidation validation = new MetadataValidation();
+        MetadataValidationId id = new MetadataValidationId();
+        id.setMetadataId(metadata.getId());
+        id.setValidationType("valType" + val);
+        validation.setId(id);
+        validation.setStatus(val % 2 == 0 ? MetadataValidationStatus.INVALID : MetadataValidationStatus.VALID);
+        validation.setValidationDate(new ISODate());
+        validation.setValid(val % 2 == 1);
+
+        return validation;
+    }
 
     @Test
     public void testFindById_MetadataId() throws Exception {
@@ -61,22 +98,5 @@ public class MetadataValidationRepositoryTest extends AbstractSpringDataTest {
 
     private MetadataValidation newValidation() {
         return newValidation(_inc, _metadataRepository);
-    }
-
-    public static MetadataValidation newValidation(AtomicInteger inc, MetadataRepository metadataRepository) {
-        int val = inc.incrementAndGet();
-
-        Metadata metadata = metadataRepository.save(MetadataRepositoryTest.newMetadata(inc));
-
-        MetadataValidation validation = new MetadataValidation();
-        MetadataValidationId id = new MetadataValidationId();
-        id.setMetadataId(metadata.getId());
-        id.setValidationType("valType" + val);
-        validation.setId(id);
-        validation.setStatus(val % 2 == 0 ? MetadataValidationStatus.INVALID : MetadataValidationStatus.VALID);
-        validation.setValidationDate(new ISODate());
-        validation.setValid(val % 2 == 1);
-
-        return validation;
     }
 }

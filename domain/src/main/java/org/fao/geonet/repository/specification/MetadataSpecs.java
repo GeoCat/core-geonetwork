@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.repository.specification;
 
 import org.fao.geonet.domain.*;
@@ -6,6 +29,7 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
@@ -158,10 +182,12 @@ public final class MetadataSpecs {
     }
 
     /**
-     * Creates a specification for finding all metadata containing a {@link MetadataCategory} with the provided category
+     * Creates a specification for finding all metadata containing a {@link MetadataCategory} with
+     * the provided category
      *
      * @param category the category to use in the search
-     * @return a specification for finding all metadata containing a {@link MetadataCategory} with the provided category
+     * @return a specification for finding all metadata containing a {@link MetadataCategory} with
+     * the provided category
      */
     public static Specification<Metadata> hasCategory(final MetadataCategory category) {
         return new Specification<Metadata>() {
@@ -188,7 +214,7 @@ public final class MetadataSpecs {
         return new Specification<Metadata>() {
             @Override
             public Predicate toPredicate(Root<Metadata> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Path<String> schemaIdAttributePath =  root.get(Metadata_.dataInfo).get(MetadataDataInfo_.schemaId);
+                Path<String> schemaIdAttributePath = root.get(Metadata_.dataInfo).get(MetadataDataInfo_.schemaId);
                 Predicate likeSchemaIdPredicate = cb.like(schemaIdAttributePath, cb.literal("iso19139"));
                 return likeSchemaIdPredicate;
             }

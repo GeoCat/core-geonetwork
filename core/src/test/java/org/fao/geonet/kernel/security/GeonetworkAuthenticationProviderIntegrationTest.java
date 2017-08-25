@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel.security;
 
 import junit.framework.TestCase;
@@ -62,19 +85,14 @@ public class GeonetworkAuthenticationProviderIntegrationTest extends AbstractCor
     }
 
     @Test(expected = UsernameNotFoundException.class)
-    public void testUserNotFound() throws Exception{
+    public void testUserNotFound() throws Exception {
         final User user = userFoundSetup(PasswordEncoding.CURRENT);
 
         _geonetworkAuthenticationProvider.retrieveUser(user.getUsername() + "not", authentication);
     }
 
-    enum PasswordEncoding {
-        UNSALTED, OLD, CURRENT
-    }
     /**
      * Makes dbms find a user.
-     *
-     * @throws Exception
      */
     private User userFoundSetup(PasswordEncoding passwordEncoding) throws Exception {
         final User entity = UserRepositoryTest.newUser(_inc);
@@ -101,16 +119,16 @@ public class GeonetworkAuthenticationProviderIntegrationTest extends AbstractCor
     }
 
     @Test
-    public void testUserFound() throws Exception{
+    public void testUserFound() throws Exception {
         final User user = userFoundSetup(PasswordEncoding.CURRENT);
 
         _geonetworkAuthenticationProvider.retrieveUser(user.getUsername(), authentication);
         TestCase.assertNotNull("User should be found",
-                _geonetworkAuthenticationProvider.retrieveUser(user.getUsername(), authentication));
+            _geonetworkAuthenticationProvider.retrieveUser(user.getUsername(), authentication));
     }
 
     @Test
-    public void testFindUserWithAuthenticationTokenUnsalted() throws Exception{
+    public void testFindUserWithAuthenticationTokenUnsalted() throws Exception {
         final User user = userFoundSetup(PasswordEncoding.UNSALTED);
 
         mockAuthenticationSetup(user);
@@ -120,7 +138,7 @@ public class GeonetworkAuthenticationProviderIntegrationTest extends AbstractCor
     }
 
     @Test
-    public void testFindUserWithAuthenticationTokenOldPasswordHash() throws Exception{
+    public void testFindUserWithAuthenticationTokenOldPasswordHash() throws Exception {
         final User user = userFoundSetup(PasswordEncoding.OLD);
 
         mockAuthenticationSetup(user);
@@ -128,8 +146,9 @@ public class GeonetworkAuthenticationProviderIntegrationTest extends AbstractCor
         final UserDetails userDetails = _geonetworkAuthenticationProvider.retrieveUser(user.getUsername(), authentication);
         TestCase.assertNotNull("User with authentication token should be found", userDetails);
     }
+
     @Test
-    public void testFindUserWithAuthenticationToken() throws Exception{
+    public void testFindUserWithAuthenticationToken() throws Exception {
         final User user = userFoundSetup(PasswordEncoding.CURRENT);
         mockAuthenticationSetup(user);
 
@@ -154,7 +173,6 @@ public class GeonetworkAuthenticationProviderIntegrationTest extends AbstractCor
 
     /**
      * Sets up a mock authentication that can return a password.
-     * @param user
      */
     private void mockAuthenticationSetup(User user) {
         authentication = mock(UsernamePasswordAuthenticationToken.class);
@@ -177,13 +195,17 @@ public class GeonetworkAuthenticationProviderIntegrationTest extends AbstractCor
         final User user = userFoundSetup(PasswordEncoding.CURRENT);
         mockAuthenticationSetup(user);
         TestCase.assertNotNull("Authentication with correct credentials should succeed",
-                _geonetworkAuthenticationProvider.authenticate(authentication));
+            _geonetworkAuthenticationProvider.authenticate(authentication));
     }
 
     @Test(expected = BadCredentialsException.class)
     public void testAuthenticateWithTokenWithWrongCredentials() throws Exception {
         mockAuthenticationSetup(null);
         _geonetworkAuthenticationProvider.authenticate(authentication);
+    }
+
+    enum PasswordEncoding {
+        UNSALTED, OLD, CURRENT
     }
 
 }

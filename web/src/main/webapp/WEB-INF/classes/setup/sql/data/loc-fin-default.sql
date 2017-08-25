@@ -16,7 +16,6 @@ INSERT INTO CategoriesDes (iddes, langid, label) VALUES (7,'fin','Valokuvat');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (8,'fin','Äänitteet / Videot');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (9,'fin','Hakemistot');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (10,'fin','Other information resources');
-INSERT INTO CategoriesDes (iddes, langid, label) VALUES (11,'fin','Z3950 Servers');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (12,'fin','Registers');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (13,'fin','Fyysisiä näytteitä');
 
@@ -523,4 +522,7 @@ INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (2,'fin','Approved');
 INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (3,'fin','Retired');
 INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (4,'fin','Submitted');
 INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (5,'fin','Rejected');
+
+INSERT INTO SelectionsDes (iddes, langid, label) VALUES (0,'fin','Preferred records');
+INSERT INTO SelectionsDes (iddes, langid, label) VALUES (1,'fin','Watch list');
 

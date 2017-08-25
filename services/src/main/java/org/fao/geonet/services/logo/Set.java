@@ -26,11 +26,14 @@ package org.fao.geonet.services.logo;
 import jeeves.interfaces.Service;
 import jeeves.server.ServiceConfig;
 import jeeves.server.context.ServiceContext;
+
+import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.Util;
 import org.fao.geonet.constants.Params;
 import org.fao.geonet.exceptions.BadParameterEx;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.resources.Resources;
+import org.fao.geonet.utils.FilePathChecker;
 import org.fao.geonet.utils.IO;
 import org.jdom.Element;
 
@@ -42,14 +45,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
 import javax.imageio.ImageIO;
 
 /**
  * Set the logo of the current node.
- * 
+ *
  * @author francois
- * 
  */
+@Deprecated
 public class Set implements Service {
     public void init(Path appPath, ServiceConfig params) throws Exception {
     }
@@ -62,12 +66,9 @@ public class Set implements Service {
         String file = Util.getParam(params, Params.FNAME);
         String asFavicon = Util.getParam(params, Params.FAVICON, "0");
 
-        if (file.contains("..")) {
-            throw new BadParameterEx(
-                    "Invalid character found in resource name.", file);
-        }
+        FilePathChecker.verify(file);
 
-        if ("".equals(file)) {
+        if (StringUtils.isEmpty(file)) {
             throw new Exception("Logo name is not defined.");
         }
 
@@ -75,10 +76,10 @@ public class Set implements Service {
         String nodeUuid = settingMan.getSiteId();
 
         try {
-        	Path logoFilePath = harvestingLogoDirectory.resolve(file);
-        	if (!Files.exists(logoFilePath)) {
-        		logoFilePath = context.getAppPath().resolve("images/harvesting/" + file);
-        	}
+            Path logoFilePath = harvestingLogoDirectory.resolve(file);
+            if (!Files.exists(logoFilePath)) {
+                logoFilePath = context.getAppPath().resolve("images/harvesting/" + file);
+            }
             try (InputStream inputStream = Files.newInputStream(logoFilePath)) {
                 BufferedImage source = ImageIO.read(inputStream);
 
@@ -90,8 +91,8 @@ public class Set implements Service {
 
                     if (!file.endsWith(".png")) {
                         try (
-                                OutputStream logoOut = Files.newOutputStream(logo);
-                                OutputStream defLogoOut = Files.newOutputStream(defaultLogo);
+                            OutputStream logoOut = Files.newOutputStream(logo);
+                            OutputStream defLogoOut = Files.newOutputStream(defaultLogo);
                         ) {
                             ImageIO.write(source, "png", logoOut);
                             ImageIO.write(source, "png", defLogoOut);
@@ -106,7 +107,7 @@ public class Set implements Service {
             }
         } catch (Exception e) {
             throw new Exception(
-                    "Unable to move uploaded thumbnail to destination directory. Error: " + e.getMessage());
+                "Unable to move uploaded thumbnail to destination directory. Error: " + e.getMessage());
         }
 
         Element response = new Element("response");
@@ -120,10 +121,10 @@ public class Set implements Service {
         String type = "png";
 
         Image thumb = img.getScaledInstance(width, height,
-                BufferedImage.SCALE_SMOOTH);
+            BufferedImage.SCALE_SMOOTH);
 
         BufferedImage bimg = new BufferedImage(width, height,
-                BufferedImage.TRANSLUCENT);
+            BufferedImage.TRANSLUCENT);
 
         Graphics2D g = bimg.createGraphics();
         g.drawImage(thumb, 0, 0, null);

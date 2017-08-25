@@ -1,20 +1,42 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 (function() {
 
   goog.provide('gn_formfields_directive');
 
   angular.module('gn_formfields_directive', [])
-  /**
-   * @ngdoc directive
-   * @name gn_formfields.directive:gnTypeahead
-   * @restrict A
-   *
-   * @description
-   * It binds a tagsinput to the input for multi select.
-   * By default, the list is shown on click even if the input value is
-   * empty.
-   */
-
-  .directive('gnTypeahead', [function() {
+      /**
+       * @ngdoc directive
+       * @name gn_formfields.directive:gnTypeahead
+       * @restrict A
+       *
+       * @description
+       * It binds a tagsinput to the input for multi select.
+       * By default, the list is shown on click even if the input value is
+       * empty.
+       */
+      .directive('gnTypeahead', [function() {
 
         /**
          * If data are prefetched, get the label from the value
@@ -174,7 +196,7 @@
               field.parent().after(triggerElt);
               var resetElt = $('<span class="close ' +
                   'tagsinput-clear">&times;</span>')
-              .on('click', function() {
+                  .on('click', function() {
                     scope.gnValues = '';
                     scope.$apply();
                   });
@@ -199,11 +221,43 @@
       }])
 
 
-    .directive('groupsCombo', ['$http', function($http) {
+
+
+      .directive('usersCombo', ['$http', function($http) {
         return {
 
           restrict: 'A',
           templateUrl: '../../catalog/components/search/formfields/' +
+              'partials/usersCombo.html',
+          scope: {
+            ownerUser: '=',
+            users: '='
+          },
+
+          link: function(scope, element, attrs) {
+            var url = 'info?_content_type=json&type=users';
+
+            $http.get(url, {cache: true}).success(function(data) {
+              scope.users = data !== 'null' ? data.users : null;
+
+              // Select by default the first group.
+              if ((angular.isUndefined(scope.ownerUser) ||
+                  scope.ownerUser === '') &&
+                  data.users && data.users.length > 0) {
+                scope.ownerUser = data.users[0]['@id'];
+              }
+            });
+          }
+
+        };
+      }])
+
+      .directive('groupsCombo', ['$http', function($http) {
+        return {
+
+          restrict: 'A',
+          templateUrl:
+              '../../catalog/components/search/formfields/' +
               'partials/groupsCombo.html',
           scope: {
             ownerGroup: '=',
@@ -213,43 +267,37 @@
           },
 
           link: function(scope, element, attrs) {
-            var url = 'info?_content_type=json' +
-                '&type=groupsIncludingSystemGroups';
+            var url = '../api/groups?withReservedGroup=true';
             if (attrs.profile) {
-              url = 'info?_content_type=json' +
-                  '&type=groups&profile=' + attrs.profile;
+              url = '../api/groups?profile=' + attrs.profile;
             }
             $http.get(url, {cache: true}).
                 success(function(data) {
-
                   //data-ng-if is not correctly updating groups.
                   //So we do the filter here
                   if (scope.excludeSpecialGroups) {
                     scope.groups = [];
-                    angular.forEach(data.group, function(g) {
-                      if (g['@id'] > 1) {
+                    angular.forEach(data, function(g) {
+                      if (g.id > 1) {
                         scope.groups.push(g);
                       }
                     });
                   } else {
-                    scope.groups = data !== 'null' ? data.group : null;
+                    scope.groups = data;
                   }
 
                   // Select by default the first group.
                   if ((angular.isUndefined(scope.ownerGroup) ||
-                      scope.ownerGroup === '') && data.group) {
-                    scope.ownerGroup = data.group[0]['@id'];
+                      scope.ownerGroup === '') && data) {
+                    scope.ownerGroup = scope.groups[0].id;
                   }
-
-
-
                 });
           }
 
         };
       }])
 
-  .directive('protocolsCombo', ['$http', 'gnSchemaManagerService',
+      .directive('protocolsCombo', ['$http', 'gnSchemaManagerService',
         function($http, gnSchemaManagerService) {
           return {
             restrict: 'A',
@@ -263,8 +311,8 @@
               var config = 'iso19139|gmd:protocol|||';
               gnSchemaManagerService.getElementInfo(config).then(
                   function(data) {
-                    $scope.protocols = data !== 'null' ?
-                        data[0].helper.option : null;
+                    $scope.protocols = data.helper ?
+                        data.helper.option : null;
                   });
             }]
           };
@@ -291,9 +339,9 @@
                 searchFormCtrl.triggerSearch(true);
               };
               hotkeys.bindTo(scope)
-                .add({
+                  .add({
                     combo: 's',
-                    description: $translate('hotkeySortBy'),
+                    description: $translate.instant('hotkeySortBy'),
                     callback: function() {
                       for (var i = 0; i < scope.values.length; i++) {
                         if (scope.values[i].sortBy === scope.params.sortBy) {
@@ -396,7 +444,7 @@
    * empty.
    */
 
-  .directive('gnRegionMultiselect',
+      .directive('gnRegionMultiselect',
       ['gnRegionService',
         function(gnRegionService) {
           return {
@@ -502,7 +550,7 @@
    * The schema used to retrieve the element info is based on
    * the gnCurrentEdit object or 'iso19139' if not defined.
    */
-  .directive('schemaInfoCombo', ['$http', 'gnSchemaManagerService',
+      .directive('schemaInfoCombo', ['$http', 'gnSchemaManagerService',
         'gnCurrentEdit',
         function($http, gnSchemaManagerService,
                  gnCurrentEdit) {
@@ -527,7 +575,7 @@
                 }
                 // Search default value
                 angular.forEach(scope.infos, function(h) {
-                  if (h['default'] == 'true') {
+                  if (h.isDefault === true) {
                     defaultValue = h.code;
                   }
                 });
@@ -550,44 +598,22 @@
                   });
 
               var init = function() {
-                var schema = gnCurrentEdit.schema || 'iso19139';
+                var schema = attrs['schema'] ||
+                    gnCurrentEdit.schema || 'iso19139';
                 var config = schema + '|' + attrs['gnSchemaInfo'] + '|||';
 
                 scope.type = attrs['schemaInfoCombo'];
                 if (scope.type == 'codelist') {
                   gnSchemaManagerService.getCodelist(config).then(
                       function(data) {
-                        if (data !== 'null') {
-                          scope.infos = [];
-                          angular.copy(data[0].entry, scope.infos);
-                        } else {
-                          scope.infos = data[0].entry;
-                        }
-
+                        scope.infos = data.entry;
                         addBlankValueAndSetDefault();
                       });
                 }
                 else if (scope.type == 'element') {
                   gnSchemaManagerService.getElementInfo(config).then(
                       function(data) {
-                        if (data !== 'null') {
-                          scope.infos = [];
-                          // Helper element may be embbeded in an option
-                          // property when attributes are defined
-                          angular.forEach(data[0].helper.option ||
-                              data[0].helper,
-                              function(h) {
-                                scope.infos.push({
-                                  code: h['@value'],
-                                  label: h['#text'],
-                                  description: h['@title'] || '',
-                                  'default': h['@default'] == '' ?
-                                     'true' : 'false'
-                                });
-                              });
-                        } else {
-                          scope.infos = null;
-                        }
+                        scope.infos = data.helper ? data.helper.option : null;
                         addBlankValueAndSetDefault();
                       });
                 }
@@ -623,7 +649,7 @@
    *  - metadata
    *  - subtemplate
    */
-  .directive('gnRecordtypesCombo', ['$http', function($http) {
+      .directive('gnRecordtypesCombo', ['$http', function($http) {
         return {
 
           restrict: 'A',
@@ -635,11 +661,10 @@
 
           link: function(scope, element, attrs) {
             scope.recordTypes = [
-              {key: 'METADATA', value: 'n'},
-              {key: 'TEMPLATE', value: 'y'},
-              {key: 'SUB_TEMPLATE', value: 's'}
+              {key: 'METADATA', value: 'METADATA'},
+              {key: 'TEMPLATE', value: 'TEMPLATE'},
+              {key: 'SUB_TEMPLATE', value: 'SUB_TEMPLATE'}
             ];
-
           }
         };
       }])
@@ -655,7 +680,7 @@
    * @description
    * The `gnBboxInput` directive provides an input widget for bounding boxes.
    */
-  .directive('gnBboxInput', [
+      .directive('gnBboxInput', [
         'gnMap',
         'ngeoDecorateInteraction',
         function(gnMap, goDecoI) {
@@ -676,7 +701,7 @@
           return {
             restrict: 'AE',
             scope: {
-              crs: '=',
+              crs: '=?',
               value: '=',
               map: '='
             },
@@ -684,7 +709,7 @@
                 'partials/bboxInput.html',
 
             link: function(scope, element, attrs) {
-              scope.crs = scope.crs || 'EPSG:4326';
+              var crs = scope.crs || 'EPSG:4326';
               scope.extent = extentFromValue(scope.value);
 
               var style = new ol.style.Style({
@@ -697,10 +722,6 @@
                 })
               });
 
-              var dragboxInteraction = new ol.interaction.DragBox({
-                style: style
-              });
-              scope.map.addInteraction(dragboxInteraction);
 
               // Create overlay to show bbox
               var layer = new ol.layer.Vector({
@@ -711,7 +732,12 @@
                 updateWhileAnimating: true,
                 updateWhileInteracting: true
               });
-              scope.map.addLayer(layer);
+
+              var dragboxInteraction = new ol.interaction.DragBox({
+                className: 'gnbbox-dragbox'
+              });
+              scope.map.addInteraction(dragboxInteraction);
+              layer.setMap(scope.map);
 
               var clearMap = function() {
                 layer.getSource().clear();
@@ -735,7 +761,7 @@
                 var coordinates, geom, f;
                 coordinates = gnMap.getPolygonFromExtent(scope.extent);
                 geom = new ol.geom.Polygon(coordinates)
-              .transform(scope.crs, scope.map.getView().getProjection());
+                    .transform(crs, scope.map.getView().getProjection());
                 f = new ol.Feature();
                 f.setGeometry(geom);
                 layer.getSource().addFeature(f);
@@ -744,8 +770,8 @@
               dragboxInteraction.on('boxend', function() {
                 dragboxInteraction.active = false;
                 var g = dragboxInteraction.getGeometry().clone();
-                var geom = g.clone()
-              .transform(scope.map.getView().getProjection(), scope.crs);
+                var geom = g.transform(scope.map.getView().getProjection(),
+                    crs);
                 var extent = geom.getExtent();
                 scope.extent = extent.map(function(coord) {
                   return Math.round(coord * 10000) / 10000;

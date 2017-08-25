@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel.search;
 
 import java.io.IOException;
@@ -13,24 +36,29 @@ import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.packed.PackedInts.Reader;
 
 /**
- * TODO: it may be relevant to use
- * http://lucene.apache.org/core/4_9_0/analyzers-common/org/apache/lucene/collation/CollationKeyAnalyzer.html
+ * TODO: it may be relevant to use http://lucene.apache.org/core/4_9_0/analyzers-common/org/apache/lucene/collation/CollationKeyAnalyzer.html
  * instead ?
  */
 public class CaseInsensitiveFieldComparatorSource extends FieldComparatorSource {
 
-    private static final CaseInsensitiveFieldComparatorSource languageInsensitiveInstance         = new CaseInsensitiveFieldComparatorSource(null);
+    private static final CaseInsensitiveFieldComparatorSource languageInsensitiveInstance = new CaseInsensitiveFieldComparatorSource(null);
     private String searchLang;
 
     /**
-     * @param searchLang if non-null then it will be attempted to translate each field before sorting
+     * @param searchLang if non-null then it will be attempted to translate each field before
+     *                   sorting
      */
     public CaseInsensitiveFieldComparatorSource(String searchLang) {
         this.searchLang = searchLang;
     }
+
+    public static CaseInsensitiveFieldComparatorSource languageInsensitiveInstance() {
+        return languageInsensitiveInstance;
+    }
+
     @Override
     public FieldComparator<String> newComparator(String fieldname, int numHits, int sortPos, boolean reversed)
-            throws IOException {
+        throws IOException {
 
         return new CaseInsensitiveFieldComparator(numHits, searchLang, fieldname);
     }
@@ -53,10 +81,10 @@ public class CaseInsensitiveFieldComparatorSource extends FieldComparatorSource 
                 return 0;
             }
         };
-        private String[]     values;
-        private SortedDocValues currentReaderValues;
         private final String field;
-        private String       bottom;
+        private String[] values;
+        private SortedDocValues currentReaderValues;
+        private String bottom;
         private String searchLang;
         private Collator collator;
         private SortedDocValues shadowValues;
@@ -84,7 +112,7 @@ public class CaseInsensitiveFieldComparatorSource extends FieldComparatorSource 
             } else if (val2 == null) {
                 return -1;
             }
-            
+
             return this.collator.compare(val1, val2);
         }
 
@@ -92,6 +120,7 @@ public class CaseInsensitiveFieldComparatorSource extends FieldComparatorSource 
             // LUCENE49FIX
             // Used for deep paging we don't use.
         }
+
         public int compareTop(int doc) throws IOException {
             // LUCENE49FIX
             // Used for deep paging we don't use.
@@ -116,11 +145,11 @@ public class CaseInsensitiveFieldComparatorSource extends FieldComparatorSource 
             String term = null;
 
             int ord = shadowValues.getOrd(doc);
-            if(ord != -1) {
+            if (ord != -1) {
                 term = shadowValues.lookupOrd(ord).utf8ToString().trim();
             }
 
-            if(term == null || term.isEmpty()) {
+            if (term == null || term.isEmpty()) {
                 ord = currentReaderValues.getOrd(doc);
                 if (ord != -1) {
                     term = currentReaderValues.lookupOrd(ord).utf8ToString().trim();
@@ -134,7 +163,7 @@ public class CaseInsensitiveFieldComparatorSource extends FieldComparatorSource 
         @Override
         public void copy(int slot, int doc) {
             String val = readerValue(doc);
-            if(val != null) {
+            if (val != null) {
                 values[slot] = val;
             }
         }
@@ -146,13 +175,13 @@ public class CaseInsensitiveFieldComparatorSource extends FieldComparatorSource 
 
         @Override
         public FieldComparator<String> setNextReader(AtomicReaderContext context) throws IOException {
-          currentReaderValues = FieldCache.DEFAULT.getTermsIndex(context.reader(), field);
+            currentReaderValues = FieldCache.DEFAULT.getTermsIndex(context.reader(), field);
 
-          if(searchLang != null) {
-              this.shadowValues = FieldCache.DEFAULT.getTermsIndex(context.reader(), LuceneConfig.multilingualSortFieldName(field, searchLang));
-          } else {
-              this.shadowValues = EMPTY_TERMS;
-          }
+            if (searchLang != null) {
+                this.shadowValues = FieldCache.DEFAULT.getTermsIndex(context.reader(), LuceneConfig.multilingualSortFieldName(field, searchLang));
+            } else {
+                this.shadowValues = EMPTY_TERMS;
+            }
             return this;
         }
 
@@ -160,8 +189,5 @@ public class CaseInsensitiveFieldComparatorSource extends FieldComparatorSource 
         public String value(int slot) {
             return values[slot];
         }
-    }
-    public static CaseInsensitiveFieldComparatorSource languageInsensitiveInstance() {
-        return languageInsensitiveInstance;
     }
 }

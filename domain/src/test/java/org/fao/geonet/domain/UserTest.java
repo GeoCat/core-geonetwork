@@ -1,9 +1,34 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.domain;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+
 import junit.framework.Assert;
+
 import org.fao.geonet.repository.AbstractSpringDataTest;
 import org.fao.geonet.repository.UserRepositoryTest;
 import org.jdom.Element;
@@ -12,6 +37,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.annotation.Nullable;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -21,10 +47,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Test user methods.
- * User: Jesse
- * Date: 10/6/13
- * Time: 9:30 PM
+ * Test user methods. User: Jesse Date: 10/6/13 Time: 9:30 PM
  */
 public class UserTest extends AbstractSpringDataTest {
     private AtomicInteger _inc = new AtomicInteger();
@@ -46,19 +69,19 @@ public class UserTest extends AbstractSpringDataTest {
         final String zip2 = "zip2";
 
         user.getAddresses().add(
-                new Address()
-                        .setAddress(add1)
-                        .setCity(city1)
-                        .setCountry(country1)
-                        .setState(state1)
-                        .setZip(zip1));
+            new Address()
+                .setAddress(add1)
+                .setCity(city1)
+                .setCountry(country1)
+                .setState(state1)
+                .setZip(zip1));
         user.getAddresses().add(
-                new Address()
-                        .setAddress(add2)
-                        .setCity(city2)
-                        .setCountry(country2)
-                        .setState(state2)
-                        .setZip(zip2));
+            new Address()
+                .setAddress(add2)
+                .setCity(city2)
+                .setCountry(country2)
+                .setState(state2)
+                .setZip(zip2));
         String email1 = "email1@c2c.com";
         String email2 = "email2@c2c.com";
         user.getEmailAddresses().add("invalidEmail");
@@ -70,7 +93,7 @@ public class UserTest extends AbstractSpringDataTest {
 
         Element xml = user.asXml();
 
-        assertEquals(""+user.getId(), xml.getChildText("id"));
+        assertEquals("" + user.getId(), xml.getChildText("id"));
 
         final Element security = xml.getChild(User_.security.getName());
         assertNull(security.getChild(UserSecurity_.password.getName()));
@@ -85,7 +108,7 @@ public class UserTest extends AbstractSpringDataTest {
             @Nullable
             @Override
             public String apply(@Nullable Object input) {
-                return ((Element)input).getTextTrim();
+                return ((Element) input).getTextTrim();
             }
         });
         Assert.assertEquals(3, emailAddresses.size());
@@ -145,7 +168,7 @@ public class UserTest extends AbstractSpringDataTest {
 
         assertTrue(authNames.contains(Profile.RegisteredUser.name()));
         assertTrue(authNames.contains(Profile.Guest.name()));
-        assertTrue(authNames.contains(User.NODE_APPLICATION_CONTEXT_KEY+nodeId));
+        assertTrue(authNames.contains(User.NODE_APPLICATION_CONTEXT_KEY + nodeId));
 
     }
 

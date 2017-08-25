@@ -16,7 +16,6 @@ INSERT INTO CategoriesDes (iddes, langid, label) VALUES (7,'ger','Photo');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (8,'ger','Audio/Video');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (9,'ger','Verzeichnisse');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (10,'ger','Andere Resourcen');
-INSERT INTO CategoriesDes (iddes, langid, label) VALUES (11,'ger','Z3950 Servers');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (12,'ger','Registers');
 INSERT INTO CategoriesDes (iddes, langid, label) VALUES (13,'ger','Physischen Proben');
 
@@ -523,5 +522,8 @@ INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (2,'ger','Approved');
 INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (3,'ger','Retired');
 INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (4,'ger','Submitted');
 INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (5,'ger','Rejected');
+
+INSERT INTO SelectionsDes (iddes, langid, label) VALUES (0,'ger','Preferred records');
+INSERT INTO SelectionsDes (iddes, langid, label) VALUES (1,'ger','Watch list');
 
 

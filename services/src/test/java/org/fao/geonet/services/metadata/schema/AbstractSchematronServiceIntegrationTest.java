@@ -1,9 +1,34 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.services.metadata.schema;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+
 import jeeves.interfaces.Service;
 import jeeves.server.ServiceConfig;
+
 import org.fao.geonet.Constants;
 import org.fao.geonet.constants.Params;
 import org.fao.geonet.domain.SchematronCriteriaGroup;
@@ -19,6 +44,7 @@ import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,9 +64,9 @@ public abstract class AbstractSchematronServiceIntegrationTest extends AbstractS
     @Autowired
     SchematronRepository _schematronRepository;
     @Autowired
-    private SchematronCriteriaGroupRepository _schematronCriteriaGroupRepository;
-    @Autowired
     SchematronCriteriaRepository _schematronCriteriaRepository;
+    @Autowired
+    private SchematronCriteriaGroupRepository _schematronCriteriaGroupRepository;
 
     @Before
     public void addTestData() {
@@ -69,13 +95,13 @@ public abstract class AbstractSchematronServiceIntegrationTest extends AbstractS
         final List<?> schematronIds = selectSchematronIds(result);
         assertEquals(groups.length, schematronIds.size());
         for (SchematronCriteriaGroup group : groups) {
-            assertTrue(schematronIds.contains(""+group.getId().getSchematronId()));
+            assertTrue(schematronIds.contains("" + group.getId().getSchematronId()));
         }
     }
 
     private List<?> selectSchematronIds(Element result) throws JDOMException {
         return Lists.transform(Xml.selectNodes(result, "record/id/schematronid/text()"), new Function<Object,
-                Object>() {
+            Object>() {
             @Nullable
             @Override
             public Object apply(@Nullable Object input) {
@@ -104,7 +130,7 @@ public abstract class AbstractSchematronServiceIntegrationTest extends AbstractS
     protected void assertNotSchematronIds(Element result, SchematronCriteriaGroup... groups) throws JDOMException {
         final List<?> schematronIds = selectSchematronIds(result);
         for (SchematronCriteriaGroup group : groups) {
-            assertFalse(schematronIds.contains(""+group.getId().getSchematronId()));
+            assertFalse(schematronIds.contains("" + group.getId().getSchematronId()));
         }
     }
 

@@ -1,7 +1,32 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.services.metadata.schema;
 
 import jeeves.server.context.ServiceContext;
+
 import net.arnx.jsonic.JSON;
+
 import org.fao.geonet.domain.Schematron;
 import org.fao.geonet.domain.SchematronRequirement;
 import org.fao.geonet.kernel.SchemaManager;
@@ -13,6 +38,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.util.List;
+
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -61,20 +87,20 @@ public class SchematronCriteriaTypeServiceTest extends AbstractServiceIntegratio
         assertEqualsText(XPATH.toString(), schemas, "iso19139/criteriaTypes/type[1]/type");
         assertEqualsText("Keyword", schemas, "iso19139/criteriaTypes/type[1]/name");
         assertEquals(resultAsString, 1, Xml.selectNumber(schemas, "count(iso19139/criteriaTypes/type[type = '" +
-                                                                 ALWAYS_ACCEPT.name() + "'])").intValue());
+            ALWAYS_ACCEPT.name() + "'])").intValue());
         assertEquals(resultAsString, 0, Xml.selectNumber(schemas, "count(iso19139/criteriaTypes/type[type = '" +
-                                                                 ALWAYS_ACCEPT.name() + "']/value)").intValue());
+            ALWAYS_ACCEPT.name() + "']/value)").intValue());
         assertTrue(resultAsString, 0 < Xml.selectNumber(schemas, "count(iso19139/criteriaTypes/type[type = '" +
-                                                                GROUP.name() + "'])").intValue());
+            GROUP.name() + "'])").intValue());
         assertEquals(resultAsString, 1, Xml.selectNumber(schemas, "count(iso19139/criteriaTypes/type[upper-case(name) = '" +
-                                                                XPATH.name() + "'])").intValue());
+            XPATH.name() + "'])").intValue());
 
         assertTrue(resultAsString, 0 < Xml.selectNumber(schemas, "count(iso19139/schematron)").intValue());
         assertEquals(resultAsString, 1, Xml.selectNumber(schemas, "count(iso19139/schematron[1]/file)").intValue());
         assertEquals(resultAsString, 1, Xml.selectNumber(schemas, "count(iso19139/schematron[1]/id)").intValue());
         assertEquals(resultAsString,
-                Xml.selectNumber(schemas, "count(iso19139/schematron)").intValue(),
-                Xml.selectNumber(schemas, "count(iso19139/schematron/title)").intValue());
+            Xml.selectNumber(schemas, "count(iso19139/schematron)").intValue(),
+            Xml.selectNumber(schemas, "count(iso19139/schematron/title)").intValue());
         assertEquals(resultAsString, 1, Xml.selectNumber(schemas, "count(iso19139/schematron[1]/rulename)").intValue());
         assertTrue(resultAsString, 0 < Xml.selectNumber(schemas, "count(iso19139/schematron[1]/label)").intValue());
         assertEquals(resultAsString, 1, Xml.selectNumber(schemas, "count(iso19139/schematron[1]/schemaname)").intValue());
@@ -91,7 +117,7 @@ public class SchematronCriteriaTypeServiceTest extends AbstractServiceIntegratio
                 if (remote != null) {
                     checkForJSFunction(engine, remote, "selectRecordArray");
                     checkForJSFunction(engine, remote, "selectLabelFunction");
-                    if (typeahead.getChild("selectTokensFunction") != null ) {
+                    if (typeahead.getChild("selectTokensFunction") != null) {
                         checkForJSFunction(engine, remote, "selectTokensFunction");
                     }
                     checkForJSFunction(engine, remote, "selectValueFunction");
@@ -118,11 +144,11 @@ public class SchematronCriteriaTypeServiceTest extends AbstractServiceIntegratio
         final Element schemaEl = typeEl.getParentElement().getParentElement();
         String name = schemaEl.getName() + "/" + typeEl.getChild("name").getText();
         final Element function = remote.getChild(functionName);
-        assertNotNull (name + " criteria-types missing element: " + functionName, function);
+        assertNotNull(name + " criteria-types missing element: " + functionName, function);
         try {
             engine.eval("var x = function " + function.getText()); // check that no exception is thrown:
         } catch (ScriptException e) {
-            throw new AssertionError(functionName + " in " + name + " does not compile due to: '"+e.getMessage()+"'\n\n"+function.getText());
+            throw new AssertionError(functionName + " in " + name + " does not compile due to: '" + e.getMessage() + "'\n\n" + function.getText());
         }
     }
 
@@ -132,7 +158,7 @@ public class SchematronCriteriaTypeServiceTest extends AbstractServiceIntegratio
         Schematron schematron = new Schematron();
         schematron.setSchemaName(schemaName);
         schematron.setFile(schemaManager.getSchemaDir(schemaName) + File.separator + "schematron" + File.separator
-                           + "schematron-rules-geonetwork.sch");
+            + "schematron-rules-geonetwork.sch");
         repo.save(schematron);
     }
 }

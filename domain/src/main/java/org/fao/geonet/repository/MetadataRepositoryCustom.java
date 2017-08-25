@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.repository;
 
 import org.fao.geonet.domain.ISODate;
@@ -12,6 +35,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -22,16 +46,16 @@ import javax.annotation.Nullable;
  */
 public interface MetadataRepositoryCustom {
     /**
-     * Return an object that contains functions for calculating several different statistical calculations (related to the metadata)
-     * based on the data in the database.
+     * Return an object that contains functions for calculating several different statistical
+     * calculations (related to the metadata) based on the data in the database.
      *
      * @return an object for performing statistic calculation queries.
      */
     MetadataStatisticsQueries getMetadataStatistics();
 
     /**
-     * Return an object that contains functions for calculating several different statistical calculations (related to the metadata)
-     * based on the data in the database.
+     * Return an object that contains functions for calculating several different statistical
+     * calculations (related to the metadata) based on the data in the database.
      *
      * @return an object for performing statistic calculation queries.
      */
@@ -45,22 +69,17 @@ public interface MetadataRepositoryCustom {
      * This is just short for repository.findOne(Integer.parseInt(id))
      *
      * @param id the id in string form instead of integer.
-     * @return
      */
     @Nullable
     Metadata findOne(@Nonnull String id);
 
     /**
-     * Find the list of Metadata Ids and changes dates for the metadata.
-     * <p>
-     * When constructing sort objects use the MetaModel objects:
-     * <ul>
-     * <li><code>new Sort(Metadata_.id.getName())</code></li>
-     * <li><code>new Sort(Sort.Direction.ASC, Metadata_.id.getName())</code></li>
-     * </ul>
-     * </p>
+     * Find the list of Metadata Ids and changes dates for the metadata. <p> When constructing sort
+     * objects use the MetaModel objects: <ul> <li><code>new Sort(Metadata_.id.getName())</code></li>
+     * <li><code>new Sort(Sort.Direction.ASC, Metadata_.id.getName())</code></li> </ul> </p>
      *
-     * @param pageable if non-null then control which subset of the results to return (and how to sort the results).
+     * @param pageable if non-null then control which subset of the results to return (and how to
+     *                 sort the results).
      * @return List of &lt;MetadataId, changeDate&gt;
      */
     @Nonnull
@@ -90,5 +109,10 @@ public interface MetadataRepositoryCustom {
      * @return a map of metadataId -> SourceInfo
      */
     Map<Integer, MetadataSourceInfo> findAllSourceInfo(Specification<Metadata> spec);
+
+    /**
+     * Load only the basic info for a metadata. Used in harvesters, mostly.
+     */
+    List<SimpleMetadata> findAllSimple(String harvestUuid);
 
 }

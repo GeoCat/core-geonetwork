@@ -1,6 +1,30 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.kernel.search.index;
 
 import com.google.common.io.Files;
+
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.IntField;
@@ -33,13 +57,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assume.assumeTrue;
 
 /**
- * Test {@link org.fao.geonet.kernel.search.index.LuceneIndexLanguageTracker}
- * Created by Jesse on 3/11/14.
+ * Test {@link org.fao.geonet.kernel.search.index.LuceneIndexLanguageTracker} Created by Jesse on
+ * 3/11/14.
  */
 public class LuceneIndexLanguageTrackerTest {
     private static final String LANG = "eng";
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
+
     @Test
     public void testResetWaitsForAllReadersToClose() throws Exception {
         FSDirectoryFactory directoryFactory = new FSDirectoryFactory();
@@ -83,7 +108,7 @@ public class LuceneIndexLanguageTrackerTest {
         tryingToReset[0] = true;
         tracker.reset(500);
 
-        while(!done[0]) {
+        while (!done[0]) {
             Thread.sleep(100);
         }
         if (error[0] != null) {
@@ -128,7 +153,7 @@ public class LuceneIndexLanguageTrackerTest {
 
     @Test
     public void testCanResetWhenFileIsLockedByProcess() throws Exception {
-        assumeTrue( System.getProperty( "os.name" ).toLowerCase().contains( "windows" ) );
+        assumeTrue(System.getProperty("os.name").toLowerCase().contains("windows"));
 
         GeonetworkDataDirectory datadir = Mockito.mock(GeonetworkDataDirectory.class);
         final File root = folder.getRoot();
@@ -183,24 +208,24 @@ public class LuceneIndexLanguageTrackerTest {
         List<Closeable> openFile = new ArrayList<Closeable>();
 
         for (File file : Files.fileTreeTraverser().postOrderTraversal(folder.getRoot())) {
-                if (file.isFile()) {
-                    final RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
-                    final FileChannel channel = randomAccessFile.getChannel();
-                    final MappedByteBuffer map = channel.map(FileChannel.MapMode.READ_WRITE, 0, file.length());
-                    openFile.add(channel);
-                    openFile.add(randomAccessFile);
-                }
+            if (file.isFile()) {
+                final RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
+                final FileChannel channel = randomAccessFile.getChannel();
+                final MappedByteBuffer map = channel.map(FileChannel.MapMode.READ_WRITE, 0, file.length());
+                openFile.add(channel);
+                openFile.add(randomAccessFile);
+            }
         }
         try {
-        tracker.reset(1);
-        tracker.reset(1);
+            tracker.reset(1);
+            tracker.reset(1);
 
 
-        final IndexAndTaxonomy acquire2 = tracker.acquire(LANG, -1);
-        assertEquals(0, acquire2.indexReader.numDocs());
-        acquire2.indexReader.releaseToNRTManager();
+            final IndexAndTaxonomy acquire2 = tracker.acquire(LANG, -1);
+            assertEquals(0, acquire2.indexReader.numDocs());
+            acquire2.indexReader.releaseToNRTManager();
 
-        addDocumentAndAssertCorrectlyAdded(tracker).indexReader.releaseToNRTManager();
+            addDocumentAndAssertCorrectlyAdded(tracker).indexReader.releaseToNRTManager();
         } finally {
             for (Closeable closeable : openFile) {
                 closeable.close();
@@ -228,16 +253,11 @@ public class LuceneIndexLanguageTrackerTest {
     }
 
     /**
-     * This test has 3 thread.
-     * <ul>
-     *     <li>Main thread: responsible for calling reset() on tracker</li>
-     *     <li>Open reader thread: Will try to open a new reader AFTER reset() has been called.  It should not be able to until reset finishes</li>
-     *     <li>
-     *         Close reader thread: Will wait until both reset() has been called and acquire has been called before closing reader.
-     *         It checks that both are blocked before closing reader to ensure correct behaviour.
-     *     </li>
-     * </ul>
-     * @throws Exception
+     * This test has 3 thread. <ul> <li>Main thread: responsible for calling reset() on tracker</li>
+     * <li>Open reader thread: Will try to open a new reader AFTER reset() has been called.  It
+     * should not be able to until reset finishes</li> <li> Close reader thread: Will wait until
+     * both reset() has been called and acquire has been called before closing reader. It checks
+     * that both are blocked before closing reader to ensure correct behaviour. </li> </ul>
      */
     @Test(timeout = 30000)
     public void testCantOpenNewReaderDuringReset() throws Exception {
@@ -310,7 +330,7 @@ public class LuceneIndexLanguageTrackerTest {
         tracker.reset(TimeUnit.MINUTES.toMillis(10));
         resetFinished[0] = true;
 
-        while(!done[0]) {
+        while (!done[0]) {
             Thread.sleep(100);
         }
 

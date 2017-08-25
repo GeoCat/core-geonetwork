@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2001-2016 Food and Agriculture Organization of the
+ * United Nations (FAO-UN), United Nations World Food Programme (WFP)
+ * and United Nations Environment Programme (UNEP)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+ * Rome - Italy. email: geonetwork@osgeo.org
+ */
+
 package org.fao.geonet.guiservices.versioning;
 
 
@@ -6,22 +29,23 @@ import org.tmatesoft.svn.core.*;
 import java.util.*;
 
 /**
- * Converts {@link org.tmatesoft.svn.core.SVNLogEntry} objects to {@link org.fao.geonet.guiservices.versioning.MetadataAction} objects. One {@link org.tmatesoft.svn.core.SVNLogEntry}
- * may result in many {@link org.fao.geonet.guiservices.versioning.MetadataAction} objects. Adds each {@link org.fao.geonet.guiservices.versioning.MetadataAction} to the
- * containing list which is returnable by the getMetadataActionList() method.
+ * Converts {@link org.tmatesoft.svn.core.SVNLogEntry} objects to {@link
+ * org.fao.geonet.guiservices.versioning.MetadataAction} objects. One {@link
+ * org.tmatesoft.svn.core.SVNLogEntry} may result in many {@link org.fao.geonet.guiservices.versioning.MetadataAction}
+ * objects. Adds each {@link org.fao.geonet.guiservices.versioning.MetadataAction} to the containing
+ * list which is returnable by the getMetadataActionList() method.
  */
 public class MyLogEntryHandler implements ISVNLogEntryHandler {
 
     private final List<MetadataAction> metadataActionList = new ArrayList<MetadataAction>();
 
     /**
-     * Handles a {@link org.tmatesoft.svn.core.SVNLogEntry} passed to it. Converts a {@link org.tmatesoft.svn.core.SVNLogEntry} object to
-     * {@link org.fao.geonet.guiservices.versioning.MetadataAction} object(s) and adds it/these to list.
+     * Handles a {@link org.tmatesoft.svn.core.SVNLogEntry} passed to it. Converts a {@link
+     * org.tmatesoft.svn.core.SVNLogEntry} object to {@link org.fao.geonet.guiservices.versioning.MetadataAction}
+     * object(s) and adds it/these to list.
      *
-     * @param logEntry a {@link org.tmatesoft.svn.core.SVNLogEntry} object
-     *                 that represents per revision information
-     *                 (committed paths, log message, etc.)
-     *
+     * @param logEntry a {@link org.tmatesoft.svn.core.SVNLogEntry} object that represents per
+     *                 revision information (committed paths, log message, etc.)
      */
     @Override
     public void handleLogEntry(final SVNLogEntry logEntry) {
@@ -34,8 +58,8 @@ public class MyLogEntryHandler implements ISVNLogEntryHandler {
     /**
      * Create list because the relation between MetadataAction and SVNLogEntry may be many-to-one.
      *
-     * @param logEntry The {@link org.tmatesoft.svn.core.SVNLogEntry} to be converted to the returnable list.
-     *
+     * @param logEntry The {@link org.tmatesoft.svn.core.SVNLogEntry} to be converted to the
+     *                 returnable list.
      * @return {@link java.util.List}<{@link org.fao.geonet.guiservices.versioning.MetadataAction}>
      */
     private List<MetadataAction> createMetadataActions(final SVNLogEntry logEntry) {
@@ -96,9 +120,9 @@ public class MyLogEntryHandler implements ISVNLogEntryHandler {
                 ma.setId(id);
                 list.add(ma);
 
-            // If SVNLogEntry seems to contain info about more than one metadata (more than one different ID)...
-            // then create a new MetadataAction with the existing properties.
-            // also do the same when more than one subject had the modify action.
+                // If SVNLogEntry seems to contain info about more than one metadata (more than one different ID)...
+                // then create a new MetadataAction with the existing properties.
+                // also do the same when more than one subject had the modify action.
             } else if (!id.equals(previousId) || (action == 'M' && !subjectsAreSame(changedPaths))) {
                 MetadataAction newMetadataAction = new MetadataAction(ma);
                 newMetadataAction.setId(id);
@@ -119,7 +143,7 @@ public class MyLogEntryHandler implements ISVNLogEntryHandler {
             if (subject == null) {
                 subject = currentSubject;
             } else {
-            allAreSame = allAreSame && subject.compareTo(currentSubject) == 0;
+                allAreSame = allAreSame && subject.compareTo(currentSubject) == 0;
             }
             if (!allAreSame) {
                 return allAreSame;
@@ -181,7 +205,8 @@ public class MyLogEntryHandler implements ISVNLogEntryHandler {
     /**
      * Returns the List that contains MetadataActions.
      *
-     * @return {@link java.util.List}<{@link org.fao.geonet.guiservices.versioning.MetadataAction}> where may be 0 or more {@link org.fao.geonet.guiservices.versioning.MetadataAction} objects.
+     * @return {@link java.util.List}<{@link org.fao.geonet.guiservices.versioning.MetadataAction}>
+     * where may be 0 or more {@link org.fao.geonet.guiservices.versioning.MetadataAction} objects.
      */
     public final List<MetadataAction> getMetadataActionList() {
         return metadataActionList;
