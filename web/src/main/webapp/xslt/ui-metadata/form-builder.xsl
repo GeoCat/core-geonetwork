@@ -743,7 +743,7 @@
 
                     If only one choice, make a simple button
               -->
-              <xsl:when test="$qualifiedName = 'gfc:code' and $schema='iso19110'">
+              <xsl:when test="count($editorConfig/editor/fieldsWithAnchorOption[name = $qualifiedName]) > 0">
 
                 <div class="btn-group">
                   <button type="button" class="btn btn-default dropdown-toggle fa fa-plus gn-add" data-toggle="dropdown" title="{$i18n/addA} {$label}">
