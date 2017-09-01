@@ -84,4 +84,39 @@ public class ISO19110SchemaPlugin
     public Map<String, Namespace> getCswTypeNames() {
         return allTypenames;
     }
+
+    @Override
+    /**
+     * Used when added a new element in the metadata editor
+     * to do custom processing related to the SchemaPlugin.
+     *
+     * When adding an gmx:Anchor to an element, due to the
+     * following code gets also a gco:CharacterString in EditLib:
+     *
+     *  } else if (isISOPlugin &&
+     *  type.getElementList().contains(
+     *  isoPlugin.getBasicTypeCharacterStringName()) &&
+     *  !hasSuggestion) {
+     *    // expand element which have no suggestion
+     *    // and have a gco:CharacterString substitute.
+     *    // gco:CharacterString is the default.
+     *    if (Log.isDebugEnabled(Geonet.EDITORFILLELEMENT)) {
+     *    Log.debug(Geonet.EDITORFILLELEMENT, "####   - Requested expansion of an OR element having gco:CharacterString
+     *      substitute and no suggestion: " + element.getName());
+     *    }
+     *    Element child = isoPlugin.createBasicTypeCharacterString();
+     *    element.addContent(child);
+     *
+     *
+     *  This method removes the gco:CharacterString if gmx:Anchor is present
+     *
+     * @param el
+     */
+    public void processElementToAdd(String childName, Element el) {
+        if (childName.equals("gmx:Anchor")) {
+            if (el.getChild("CharacterString", ISO19139Namespaces.GCO) != null) {
+                el.removeChild("CharacterString", ISO19139Namespaces.GCO);
+            }
+        }
+    }
 }

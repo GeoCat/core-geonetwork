@@ -25,6 +25,7 @@ package org.fao.geonet.kernel.schema;
 
 import com.google.common.collect.ImmutableSet;
 
+import org.jdom.Element;
 import org.jdom.Namespace;
 
 import java.util.ArrayList;
@@ -80,5 +81,15 @@ public abstract class SchemaPlugin implements CSWPlugin {
 
     public Set<Namespace> getNamespaces() {
         return allNamespaces;
+    }
+
+    /**
+     * Used when added a new element in the metadata editor
+     * to do custom processing related to the SchemaPlugin.
+     *
+     * @param el
+     */
+    public void processElementToAdd(String childName, Element el) {
+
     }
 }
