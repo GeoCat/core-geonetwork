@@ -23,15 +23,27 @@
 
 package org.fao.geonet.api.records.formatters;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Sets;
 import com.google.common.io.Files;
 
 import com.itextpdf.text.Image;
 
+import jeeves.server.context.ServiceContext;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.fao.geonet.constants.Geonet;
+import org.fao.geonet.kernel.setting.SettingManager;
+import org.fao.geonet.lib.Lib;
+import org.fao.geonet.utils.AbstractHttpRequest;
+import org.fao.geonet.utils.GeonetHttpRequestFactory;
 import org.fao.geonet.utils.Log;
+import org.springframework.http.client.ClientHttpRequest;
+import org.springframework.http.client.ClientHttpResponse;
 import org.xhtmlrenderer.extend.FSImage;
 import org.xhtmlrenderer.extend.ReplacedElement;
 import org.xhtmlrenderer.extend.ReplacedElementFactory;
@@ -48,14 +60,18 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 
 public class ImageReplacedElementFactory implements ReplacedElementFactory {
     private static Set<String> imgFormatExts = null;
     private final ReplacedElementFactory superFactory;
     private String baseURL;
+    private ServiceContext serviceContext;
 
-    public ImageReplacedElementFactory(String baseURL, ReplacedElementFactory superFactory) {
+    public ImageReplacedElementFactory(ServiceContext context, String baseURL, ReplacedElementFactory superFactory) {
+        this.serviceContext = context;
         this.superFactory = superFactory;
         this.baseURL = baseURL;
     }
@@ -128,11 +144,25 @@ public class ImageReplacedElementFactory implements ReplacedElementFactory {
     private ReplacedElement loadImage(LayoutContext layoutContext, BlockBox box, UserAgentCallback userAgentCallback,
                                       int cssWidth, int cssHeight, String url, float scaleFactor) {
         InputStream input = null;
-        try {
-            Log.error(Geonet.GEONETWORK, "URL -> " + url.toString());
+        Log.info(Geonet.GEONETWORK, "Retrieving image... URL -> " + url.toString());
+        final GeonetHttpRequestFactory requestFactory = serviceContext.getBean(GeonetHttpRequestFactory.class);
+        HttpGet get = new HttpGet(url);
 
-            input = new URL(url).openStream();
+        try (ClientHttpResponse response = requestFactory.execute(get,
+            new Function<HttpClientBuilder, Void>() {
+                @Nullable
+                @Override
+                public Void apply(@Nonnull HttpClientBuilder httpClientBuilder) {
+                    SettingManager settingManager = serviceContext.getBean(SettingManager.class);
+                    Lib.net.setupProxy(settingManager, httpClientBuilder, get.getURI().getHost());
+                    httpClientBuilder.setRetryHandler(new DefaultHttpRequestRetryHandler());
+                    return null;
+                }
+            })){
+            input = response.getBody();
             byte[] bytes = IOUtils.toByteArray(input);
+            input.close();
+
             Image image = Image.getInstance(bytes);
 
             image.scaleAbsolute(image.getPlainWidth() * scaleFactor, image.getPlainHeight() * scaleFactor);
@@ -157,9 +187,7 @@ public class ImageReplacedElementFactory implements ReplacedElementFactory {
                 return new EmptyReplacedElement(cssWidth, cssHeight);
             }
         } finally {
-            if (input != null) {
-                IOUtils.closeQuietly(input);
-            }
+            IOUtils.closeQuietly(input);
         }
     }
 

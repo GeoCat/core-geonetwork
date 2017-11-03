@@ -546,7 +546,7 @@ public class FormatterApi extends AbstractFormatService implements ApplicationLi
             XslUtil.setNoScript();
             ITextRenderer renderer = new ITextRenderer();
             String siteUrl = context.getBean(SettingManager.class).getSiteURL(lang);
-            renderer.getSharedContext().setReplacedElementFactory(new ImageReplacedElementFactory(siteUrl, renderer.getSharedContext()
+            renderer.getSharedContext().setReplacedElementFactory(new ImageReplacedElementFactory(context, siteUrl, renderer.getSharedContext()
                 .getReplacedElementFactory()));
             renderer.getSharedContext().setDotsPerPixel(13);
             renderer.setDocumentFromString(htmlContent, siteUrl);

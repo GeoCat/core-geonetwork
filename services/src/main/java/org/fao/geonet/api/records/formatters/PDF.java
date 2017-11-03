@@ -62,7 +62,8 @@ public class PDF implements Service {
         try (OutputStream os = Files.newOutputStream(tempFile)) {
             ITextRenderer renderer = new ITextRenderer();
             String siteUrl = context.getBean(SettingManager.class).getSiteURL(context);
-            renderer.getSharedContext().setReplacedElementFactory(new ImageReplacedElementFactory(siteUrl, renderer.getSharedContext().getReplacedElementFactory()));
+            renderer.getSharedContext().setReplacedElementFactory(new ImageReplacedElementFactory(context, siteUrl,
+                renderer.getSharedContext().getReplacedElementFactory()));
             renderer.setDocumentFromString(htmlContent, siteUrl);
             renderer.layout();
             renderer.createPDF(os);
