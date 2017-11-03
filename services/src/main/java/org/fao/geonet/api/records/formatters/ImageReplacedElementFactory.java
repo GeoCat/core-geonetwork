@@ -171,7 +171,7 @@ public class ImageReplacedElementFactory implements ReplacedElementFactory {
 
             return new ITextImageElement(fsImage);
         } catch (Exception e) {
-            Log.error(Geonet.GEONETWORK, "Error writing metadata to PDF", e);
+            Log.error(Geonet.GEONETWORK, "Error writing metadata to PDF. Image URL " + url, e);
 
             try {
                 return superFactory.createReplacedElement(layoutContext, box, userAgentCallback, cssWidth, cssHeight);
