@@ -30,6 +30,7 @@ import com.itextpdf.text.Image;
 import jeeves.server.context.ServiceContext;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -149,6 +150,12 @@ public class ImageReplacedElementFactory implements ReplacedElementFactory {
                     SettingManager settingManager = serviceContext.getBean(SettingManager.class);
                     Lib.net.setupProxy(settingManager, httpClientBuilder, get.getURI().getHost());
                     httpClientBuilder.setRetryHandler(new DefaultHttpRequestRetryHandler());
+                    RequestConfig.Builder config = RequestConfig.custom()
+                        .setConnectTimeout(1000)
+                        .setConnectionRequestTimeout(3000)
+                        .setSocketTimeout(5000);
+                    RequestConfig requestConfig = config.build();
+                    httpClientBuilder.setDefaultRequestConfig(requestConfig);
                     return null;
                 }
             })
