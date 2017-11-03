@@ -26,23 +26,18 @@ package org.fao.geonet.api.records.formatters;
 import com.google.common.base.Function;
 import com.google.common.collect.Sets;
 import com.google.common.io.Files;
-
 import com.itextpdf.text.Image;
-
 import jeeves.server.context.ServiceContext;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.lib.Lib;
-import org.fao.geonet.utils.AbstractHttpRequest;
 import org.fao.geonet.utils.GeonetHttpRequestFactory;
 import org.fao.geonet.utils.Log;
-import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
 import org.xhtmlrenderer.extend.FSImage;
 import org.xhtmlrenderer.extend.ReplacedElement;
@@ -55,14 +50,12 @@ import org.xhtmlrenderer.pdf.ITextImageElement;
 import org.xhtmlrenderer.render.BlockBox;
 import org.xhtmlrenderer.simple.extend.FormSubmissionListener;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Set;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
+import java.io.InputStream;
+import java.net.URLEncoder;
+import java.util.Set;
 
 public class ImageReplacedElementFactory implements ReplacedElementFactory {
     private static Set<String> imgFormatExts = null;
@@ -158,11 +151,10 @@ public class ImageReplacedElementFactory implements ReplacedElementFactory {
                     httpClientBuilder.setRetryHandler(new DefaultHttpRequestRetryHandler());
                     return null;
                 }
-            })){
+            })
+        ) {
             input = response.getBody();
             byte[] bytes = IOUtils.toByteArray(input);
-            input.close();
-
             Image image = Image.getInstance(bytes);
 
             image.scaleAbsolute(image.getPlainWidth() * scaleFactor, image.getPlainHeight() * scaleFactor);
