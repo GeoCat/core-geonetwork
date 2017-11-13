@@ -138,7 +138,7 @@ public class ImageReplacedElementFactory implements ReplacedElementFactory {
     private ReplacedElement loadImage(LayoutContext layoutContext, BlockBox box, UserAgentCallback userAgentCallback,
                                       int cssWidth, int cssHeight, String url, float scaleFactor) {
         InputStream input = null;
-        Log.info(Geonet.GEONETWORK, "Retrieving image... URL -> " + url.toString());
+        Log.error(Geonet.GEONETWORK, "Retrieving image... URL -> " + url.toString());
         final GeonetHttpRequestFactory requestFactory = serviceContext.getBean(GeonetHttpRequestFactory.class);
         HttpGet get = new HttpGet(url);
 
