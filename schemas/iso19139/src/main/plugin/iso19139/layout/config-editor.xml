@@ -105,6 +105,14 @@
     <for name="gmd:referenceSystemInfo" addDirective="data-gn-crs-selector"/>
 
 
+    <!-- Example of data-gn-field-upload-div directive:
+
+    <for name="gmd:supplementalInformation" use="data-gn-field-upload-div">
+      <directiveAttributes
+        data-link-href="eval#gmx:Anchor/@xlink:href" />
+    </for> -->
+
+
     <!--
     Enable the following to use subtemplates for extent type.
     <for name="gmd:extent" addDirective="data-gn-directory-entry-selector">
