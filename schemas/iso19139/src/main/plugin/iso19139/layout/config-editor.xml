@@ -106,11 +106,12 @@
 
 
     <!-- Example of data-gn-field-upload-div directive:
+          data-allow-modify-xlink="true": allows to modify the xlink href (defaults to false)
 
-    <for name="gmd:supplementalInformation" use="data-gn-field-upload-div">
-      <directiveAttributes
-        data-link-href="eval#gmx:Anchor/@xlink:href" />
-    </for> -->
+        <for name="gmd:supplementalInformation" use="data-gn-field-upload-div">
+          <directiveAttributes data-allow-modify-xlink="true" data-link-href="eval#gmx:Anchor/@xlink:href" />
+        </for>
+    -->
 
 
     <!--

@@ -27,20 +27,24 @@
   var module = angular.module('gn_field_upload_directive', []);
 
   /**
-   *  Create a widget to handle editing of Anchor fields, that require to upload files to the metadata and link them.
+   *  Create a widget to handle editing of Anchor fields, that require to
+   *  upload files to the metadata and link them.
    *
-   *  Files are stored in the metadata store, the same way as when adding online resources.
+   *  Files are stored in the metadata store, the same way as
+   *  when adding online resources.
    *
    *  Format of the xml snippet created:
    *
    *  <gmd:supplementalInformation>
-   *    <gmx:Anchor xlink:href="http://localhost:8080/geonetwork/srv/api/records/cde2f47f-4a3f-4da1-8918-9923e7d372f1/attachments/report2019.docx">
+   *    <gmx:Anchor xlink:href="http://localhost:8080/geonetwork/srv/api/
+   *    records/cde2f47f-4a3f-4da1-8918-9923e7d372f1/attachments/report2019.docx">
    *        Report 2019</gmx:Anchor>
    *  </gmd:supplementalInformation>
    */
-  module.directive('gnFieldUploadDiv', ['$http', 'gnFileStoreService', 'gnCurrentEdit', 'gnSchemaManagerService',
-    '$rootScope', '$translate',
-    function($http, gnFileStoreService, gnCurrentEdit, gnSchemaManagerService, $rootScope, $translate) {
+  module.directive('gnFieldUploadDiv', ['$http', 'gnFileStoreService',
+    'gnCurrentEdit', 'gnSchemaManagerService', '$rootScope', '$translate',
+    function($http, gnFileStoreService, gnCurrentEdit,
+             gnSchemaManagerService, $rootScope, $translate) {
 
       return {
         restrict: 'A',
@@ -51,19 +55,20 @@
           label: '@label',
           elementName: '@',
           ref: '@',
-          parentRef: '@',
-          linkHref: '@'
+          parentRef: '@'
         },
         templateUrl: '../../catalog/components/edit/fieldupload/partials/' +
             'fieldupload.html',
         link: function(scope, element, attrs) {
-          scope.readonly = false;
-          scope.fileAvailable = (scope.value !== '') && (scope.linkHref !== '');
+          // Has a reference to a file in the metadata store?
+          scope.fileAvailable = false;
           scope.gnCurrentEdit = gnCurrentEdit;
+          // Can modify the xlink (for external links)?
+          scope.allowModifyXlink = attrs.allowModifyXlink == 'true';
+          scope.linkHref = attrs.linkHref;
 
-
-          scope.xmlSnippetRef = scope.parentRef.replace("_", "_X") +
-            "_replace";
+          scope.xmlSnippetRef = scope.parentRef.replace('_', '_X') +
+            '_replace';
 
           var buildXmlSnippet = function() {
             var anchorElement = 'gmx:Anchor';
@@ -86,18 +91,19 @@
               '<' + anchorElement + ' xlink:href="' + scope.linkHref + '">' +
               scope.value + '</' + anchorElement + '>' +
               '</' + scope.elementName + '>';
-
-            console.log("scope.xmlSnippet: " + scope.xmlSnippet);
           };
 
-          var linkFileToField = function (link) {
+          var linkFileToField = function(link) {
+
+            var fileName = link.id.split('/').splice(2).join('/');
+
             scope.fileAvailable = true;
             scope.link = link;
-            scope.link.name = scope.link.id.split('/').splice(2).join('/');
+            scope.link.name = fileName;
             scope.linkHref = link.url;
 
             if (scope.value === '') {
-              scope.value = decodeURIComponent(link.id.split('/').splice(2).join('/'));
+              scope.value = decodeURIComponent(fileName);
             }
 
             buildXmlSnippet();
@@ -142,15 +148,24 @@
 
 
           var isFileFromMetataStore = function(url) {
-            return (url.match(".*/api/records/(.*)/attachments/.*") != null);
+            return (url.match('.*/api/records/(.*)/attachments/.*') != null);
           };
+
+
+          scope.hasToDisplayFileChooser = function() {
+            return !(scope.fileAvailable ||
+              (!scope.fileAvailable &&
+                !scope.allowModifyXlink &&
+                (scope.linkHref != '')));
+          };
+
 
           scope.removeFile = function(file) {
             var url = file.url;
 
             if (isFileFromMetataStore(url)) {
               // A thumbnail from the filestore
-              gnFileStoreService.delete({url: url}).then(function () {
+              gnFileStoreService.delete({url: url}).then(function() {
                 // then remove from record
                 scope.linkHref = '';
                 scope.fileAvailable = false;
@@ -161,6 +176,8 @@
               scope.linkHref = '';
               scope.fileAvailable = false;
               buildXmlSnippet();
+
+              $scope.$apply();
             }
 
           };
@@ -172,14 +189,15 @@
 
             if (scope.fileAvailable && isFileFromMetataStore(scope.linkHref)) {
               // Retrieve the file if it's a file stored in the metadata store
-              gnFileStoreService.get(scope.uuid, '').then(function (data) {
+              gnFileStoreService.get(scope.uuid, '').then(function(data) {
                 var files = data.data;
                 scope.fileAvailable = false;
 
-                for(var i = 0; i < files.length; i++) {
+                for (var i = 0; i < files.length; i++) {
                   if (files[i].url == scope.linkHref) {
                     scope.link = files[i];
-                    scope.link.name = scope.link.id.split('/').splice(2).join('/');
+                    scope.link.name =
+                      files[i].id.split('/').splice(2).join('/');
                     scope.fileAvailable = true;
                     break;
                   }
@@ -189,12 +207,18 @@
               scope.link = {
                 url: scope.linkHref,
                 name: scope.linkHref
-              }
+              };
             }
           });
 
 
           scope.$watch('value', function(newValue, oldValue) {
+            if (newValue !== oldValue) {
+              buildXmlSnippet();
+            }
+          });
+
+          scope.$watch('linkHref', function(newValue, oldValue) {
             if (newValue !== oldValue) {
               buildXmlSnippet();
             }
