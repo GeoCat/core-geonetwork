@@ -514,6 +514,16 @@
       <artifactId>schema-dublin-core</artifactId>
       <version>${gn.schemas.version}</version>
     </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>schema-iso19139.nl.geografie.1.3.1</artifactId>
+      <version>${gn.schemas.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>schema-iso19139.nl.services.1.2.1</artifactId>
+      <version>${gn.schemas.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
@@ -744,6 +754,16 @@
                   <targetPath>${basedir}/src/main/webapp/WEB-INF/data/config/schema_plugins
                   </targetPath>
                 </resource>
+                <resource>
+                  <directory>${project.basedir}/../schemas/iso19139.nl.geografie.1.3.1/src/main/plugin</directory>
+                  <targetPath>${basedir}/src/main/webapp/WEB-INF/data/config/schema_plugins
+                  </targetPath>
+                </resource>
+                <resource>
+                  <directory>${project.basedir}/../schemas/iso19139.nl.services.1.2.1/src/main/plugin</directory>
+                  <targetPath>${basedir}/src/main/webapp/WEB-INF/data/config/schema_plugins
+                  </targetPath>
+                </resource>
                 <!-- Copy the documentation in the webapp. -->
                 <resource>
                   <directory>${project.basedir}/../docs/manuals/target/doc</directory>
@@ -930,7 +950,7 @@
 
   <properties>
     <geonetwork.version>${project.version}</geonetwork.version>
-    <geonetwork.subversion>SNAPSHOT</geonetwork.subversion>
+    <geonetwork.subversion>0</geonetwork.subversion>
     <geonetwork.webapp.dir>${basedir}/src/main/webapp</geonetwork.webapp.dir>
     <geonetwork.webapp.js.dir>${geonetwork.webapp.dir}/scripts</geonetwork.webapp.js.dir>
     <geonetwork.build.dir>${project.build.directory}/${project.build.finalName}
