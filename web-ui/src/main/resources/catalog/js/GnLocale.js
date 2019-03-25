@@ -77,6 +77,7 @@
              }]);
 
              */
+
             var localPrefix = value.split('|')[0];
             var localValue = value.split('|')[1];
             return localPrefix + gnLangs.getIso2Lang(lang) +
@@ -88,6 +89,7 @@
         var allPromises = [];
 
         options.locales.push('custom');
+        options.locales.push('/../../catalog/views/dutch/locales/{{lang}}-core.json');
 
         angular.forEach(options.locales, function(value, index) {
           var langUrl = buildUrl(options.prefix, options.key,

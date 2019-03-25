@@ -25,9 +25,13 @@
          xsi:noNamespaceSchemaLocation="../../../../../../web/src/main/webapp/WEB-INF/wro-sources.xsd">
   <require pathOnDisk="web-ui/src/main/resources">
     <jsSource webappPath="/catalog/js/"/>
-    <jsSource webappPath="/catalog/views/"/>
+    <jsSource webappPath="/catalog/views/default/"/>
+    <jsSource webappPath="/catalog/views/api/"/>
+    <jsSource webappPath="/catalog/views/dutch/"/>
     <jsSource webappPath="/catalog/components/"/>
-    <cssSource webappPath="/catalog/views/"/>
+    <cssSource webappPath="/catalog/views/default/"/>
+    <cssSource webappPath="/catalog/views/dutch/"/>
+    <cssSource webappPath="/catalog/views/api/"/>
     <cssSource webappPath="/catalog/style/"/>
     <cssSource webappPath="/catalog/lib/bootstrap-table/dist"/>
   </require>

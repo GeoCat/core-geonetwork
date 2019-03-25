@@ -949,6 +949,8 @@
   </profiles>
 
   <properties>
+    <language.default>dut</language.default>
+    <language.forceDefault>true</language.forceDefault>
     <geonetwork.version>${project.version}</geonetwork.version>
     <geonetwork.subversion>0</geonetwork.subversion>
     <geonetwork.webapp.dir>${basedir}/src/main/webapp</geonetwork.webapp.dir>
