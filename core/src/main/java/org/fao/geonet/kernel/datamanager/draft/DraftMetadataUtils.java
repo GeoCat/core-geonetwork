@@ -28,23 +28,7 @@ import jeeves.server.context.ServiceContext;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.io.RuntimeIOException;
 import org.fao.geonet.constants.Geonet;
-import org.fao.geonet.domain.AbstractMetadata;
-import org.fao.geonet.domain.Group;
-import org.fao.geonet.domain.ISODate;
-import org.fao.geonet.domain.Metadata;
-import org.fao.geonet.domain.MetadataCategory;
-import org.fao.geonet.domain.MetadataDataInfo;
-import org.fao.geonet.domain.MetadataDraft;
-import org.fao.geonet.domain.MetadataFileUpload;
-import org.fao.geonet.domain.MetadataHarvestInfo;
-import org.fao.geonet.domain.MetadataSourceInfo;
-import org.fao.geonet.domain.MetadataStatus;
-import org.fao.geonet.domain.MetadataStatusId;
-import org.fao.geonet.domain.MetadataType;
-import org.fao.geonet.domain.OperationAllowed;
-import org.fao.geonet.domain.Pair;
-import org.fao.geonet.domain.ReservedOperation;
-import org.fao.geonet.domain.StatusValue;
+import org.fao.geonet.domain.*;
 import org.fao.geonet.kernel.AccessManager;
 import org.fao.geonet.kernel.UpdateDatestamp;
 import org.fao.geonet.kernel.datamanager.IMetadataManager;
@@ -198,9 +182,17 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
      */
     @Override
     public int rateMetadata(final int metadataId, final String ipAddress, final int rating) throws Exception {
-        final int newRating = ratingByIpRepository.averageRating(metadataId);
 
         if (metadataDraftRepository.exists(metadataId)) {
+            // Save rating for this IP
+            MetadataRatingByIp ratingEntity = new MetadataRatingByIp();
+            ratingEntity.setRating(rating);
+            ratingEntity.setId(new MetadataRatingByIpId(metadataId, ipAddress));
+
+            ratingByIpRepository.save(ratingEntity);
+
+            final int newRating = ratingByIpRepository.averageRating(metadataId);
+
             metadataDraftRepository.update(metadataId, new Updater<MetadataDraft>() {
                 @Override
                 public void apply(MetadataDraft entity) {
