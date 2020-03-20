@@ -13,3 +13,7 @@
 [submodule "schemas/iso19115-3.2018"]
 	path = schemas/iso19115-3.2018
 	url = https://github.com/metadata101/iso19115-3.2018
+[submodule "schemas/iso19139.ca.HNAP"]
+	path = schemas/iso19139.ca.HNAP
+	url = https://github.com/metadata101/iso19139.ca.HNAP.git
+	branch = 3.10.x

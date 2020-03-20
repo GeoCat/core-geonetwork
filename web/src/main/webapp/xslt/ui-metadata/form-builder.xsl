@@ -202,8 +202,53 @@
                 <xsl:variable name="tooltip"
                               select="concat($schema, '|', name(.), '|', name(..), '|', $xpath)"></xsl:variable>
 
+                <xsl:if test="$metadataLanguage != ''">
+                  <xsl:message>metadataLanguage = <xsl:copy-of select="$metadataLanguage"/> </xsl:message>
+                  <xsl:variable name="main3LetterLangCode" select="java-xsl-util:threeCharLangCode(substring($metadataLanguage,0,2))"/>
+                  <xsl:message>metadataLanguage 3letter = <xsl:copy-of select="$main3LetterLangCode"/> </xsl:message>
+                  <xsl:variable name="langs2" select="$value/values/value/@lang"/>
+                  <xsl:message>langs2 = <xsl:copy-of select="$langs2"/> </xsl:message>
+
+                  <xsl:variable name="mainLanguageAlreadyThere" select="boolean($value/values/value/@lang= $main3LetterLangCode)"/>
+                  <xsl:message>mainLanguageAlreadyThere = <xsl:copy-of select="$mainLanguageAlreadyThere"/> </xsl:message>
+                  <xsl:variable name="mainLanguageAlreadyThere2" select="boolean($value/values/value/@lang= 'fra')"/>
+                  <xsl:message>mainLanguageAlreadyThere2 = <xsl:copy-of select="$mainLanguageAlreadyThere2"/> </xsl:message>
+
+                  <xsl:if test="not($mainLanguageAlreadyThere)">
+                    <!-- the document's main language is NOT in $values, so we need to add it-->
+                    <xsl:message>Need to add value for  = <xsl:copy-of select="$main3LetterLangCode"/> </xsl:message>
+                    <xsl:message>editInfo = <xsl:copy-of select="$editInfo"/> </xsl:message>
+                    <xsl:message>directiveAttributes = <xsl:copy-of select="$directiveAttributes"/> </xsl:message>
+                    <xsl:message>parentEditInfo = <xsl:copy-of select="$parentEditInfo"/> </xsl:message>
+                    <xsl:message>. = <xsl:copy-of select="./gco:CharacterString"/> </xsl:message>
+
+
+                    <xsl:call-template name="render-form-field">
+                      <xsl:with-param name="name" select="$editInfo/@ref"/>
+                      <xsl:with-param name="lang" select="'eng'"/>
+                      <xsl:with-param name="value" select="./gco:CharacterString"/>
+                      <xsl:with-param name="type" select="$type"/>
+                      <xsl:with-param name="directiveAttributes" select="$directiveAttributes"/>
+                      <xsl:with-param name="tooltip" select="$tooltip"/>
+                      <xsl:with-param name="isRequired" select="$isRequired"/>
+                      <xsl:with-param name="isReadOnly" select="$isReadOnly"/>
+                      <xsl:with-param name="isDisabled" select="$isDisabled"/>
+                      <xsl:with-param name="editInfo" select="$editInfo"/>
+                      <xsl:with-param name="parentEditInfo" select="$parentEditInfo"/>
+
+                      <xsl:with-param name="checkDirective"
+                                      select="boolean('true')"/>
+                    </xsl:call-template>
+
+                  </xsl:if>
+                </xsl:if>
+
+
                 <!-- Preserve order of the languages as defined in the record. -->
                 <xsl:for-each select="$value/values/value">
+                  <xsl:message>making form field value - <xsl:copy-of select="$value"/> </xsl:message>
+
+
                   <xsl:if test="@lang != ''">
                     <xsl:call-template name="render-form-field">
                       <xsl:with-param name="name" select="@ref"/>
