@@ -47,18 +47,7 @@ import org.fao.geonet.api.processing.report.SimpleMetadataProcessingReport;
 import org.fao.geonet.api.records.attachments.Store;
 import org.fao.geonet.api.records.attachments.StoreUtils;
 import org.fao.geonet.constants.Geonet;
-import org.fao.geonet.domain.AbstractMetadata;
-import org.fao.geonet.domain.ISODate;
-import org.fao.geonet.domain.Metadata;
-import org.fao.geonet.domain.MetadataCategory;
-import org.fao.geonet.domain.MetadataResource;
-import org.fao.geonet.domain.MetadataResourceVisibility;
-import org.fao.geonet.domain.MetadataType;
-import org.fao.geonet.domain.Pair;
-import org.fao.geonet.domain.Profile;
-import org.fao.geonet.domain.ReservedGroup;
-import org.fao.geonet.domain.ReservedOperation;
-import org.fao.geonet.domain.UserGroup;
+import org.fao.geonet.domain.*;
 import org.fao.geonet.domain.utils.ObjectJSONUtils;
 import org.fao.geonet.events.history.RecordCreateEvent;
 import org.fao.geonet.events.history.RecordImportedEvent;
@@ -78,10 +67,8 @@ import org.fao.geonet.kernel.search.SearchManager;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.kernel.setting.Settings;
 import org.fao.geonet.lib.Lib;
-import org.fao.geonet.repository.MetadataDraftRepository;
-import org.fao.geonet.repository.MetadataRepository;
-import org.fao.geonet.repository.Updater;
-import org.fao.geonet.repository.UserGroupRepository;
+import org.fao.geonet.repository.*;
+import org.fao.geonet.repository.specification.GroupSpecs;
 import org.fao.geonet.repository.specification.UserGroupSpecs;
 import org.fao.geonet.utils.FilePathChecker;
 import org.fao.geonet.utils.IO;
@@ -131,6 +118,7 @@ import static org.fao.geonet.api.ApiParams.API_CLASS_RECORD_OPS;
 import static org.fao.geonet.api.ApiParams.API_CLASS_RECORD_TAG;
 import static org.fao.geonet.api.ApiParams.API_PARAM_RECORD_UUID;
 import static org.fao.geonet.api.ApiParams.API_PARAM_RECORD_UUIDS_OR_SELECTION;
+import static org.springframework.data.jpa.domain.Specifications.not;
 import static org.springframework.data.jpa.domain.Specifications.where;
 
 @RequestMapping(value = { "/{portal}/api/records", "/{portal}/api/" + API.VERSION_0_1 + "/records" })
@@ -177,6 +165,9 @@ public class MetadataInsertDeleteApi {
 
     @Autowired
     private UserGroupRepository userGroupRepository;
+
+    @Autowired
+    private GroupRepository groupRepository;
 
     @Autowired
     private IMetadataManager metadataManager;
@@ -296,7 +287,8 @@ public class MetadataInsertDeleteApi {
             @ApiParam(value = API_PARAM_RECORD_XSL, required = false, defaultValue = "_none_") @RequestParam(required = false, defaultValue = "_none_") final String transformWith,
             @ApiParam(value = API_PARAM_FORCE_SCHEMA, required = false) @RequestParam(required = false) String schema,
             @ApiParam(value = "(experimental) Add extra information to the record.", required = false) @RequestParam(required = false) final String extra,
-            HttpServletRequest request) throws Exception {
+            HttpServletRequest request,
+            HttpSession httpSession) throws Exception {
         if (url == null && xml == null && serverFolder == null) {
             throw new IllegalArgumentException(
                     String.format("XML fragment or a URL or a server folder MUST be provided."));
@@ -311,7 +303,11 @@ public class MetadataInsertDeleteApi {
                 throw new IllegalArgumentException(
                         String.format("XML fragment is invalid. Error is %s", ex.getMessage()));
             }
-            Pair<Integer, String> pair = loadRecord(metadataType, element, uuidProcessing, group, category,
+
+            UserSession user = ApiUtils.getUserSession(httpSession);
+            String mdGroup = defaultMetadataImportGroup(user, group);
+
+            Pair<Integer, String> pair = loadRecord(metadataType, element, uuidProcessing, mdGroup, category,
                     rejectIfInvalid, publishToAll, transformWith, schema, extra, request);
             report.addMetadataInfos(pair.one(), String.format("Metadata imported from XML with UUID '%s'", pair.two()));
 
@@ -539,13 +535,18 @@ public class MetadataInsertDeleteApi {
             @ApiParam(value = API_PARAM_RECORD_XSL, required = false, defaultValue = "_none_") @RequestParam(required = false, defaultValue = "_none_") final String transformWith,
             @ApiParam(value = API_PARAM_FORCE_SCHEMA, required = false) @RequestParam(required = false) String schema,
             @ApiParam(value = "(experimental) Add extra information to the record.", required = false) @RequestParam(required = false) final String extra,
-            HttpServletRequest request) throws Exception {
+            HttpServletRequest request,
+            HttpSession httpSession) throws Exception {
         if (file == null) {
             throw new IllegalArgumentException(String.format("A file MUST be provided."));
         }
         SimpleMetadataProcessingReport report = new SimpleMetadataProcessingReport();
         if (file != null) {
             ServiceContext context = ApiUtils.createServiceContext(request);
+
+            UserSession user = ApiUtils.getUserSession(httpSession);
+            String mdGroup = defaultMetadataImportGroup(user, group);
+
             for (MultipartFile f : file) {
                 if (MEFLib.isValidArchiveExtensionForMEF(f.getOriginalFilename())) {
                     Path tempFile = Files.createTempFile("mef-import", ".zip");
@@ -556,7 +557,7 @@ public class MetadataInsertDeleteApi {
 
                         List<String> ids = MEFLib.doImport(version == MEFLib.Version.V1 ? "mef" : "mef2",
                                 uuidProcessing, transformWith, settingManager.getSiteId(), metadataType, category,
-                                group, rejectIfInvalid, assignToCatalog, context, tempFile);
+                            mdGroup, rejectIfInvalid, assignToCatalog, context, tempFile);
                         if (ids.isEmpty()) {
                             //we could have used a finer-grained error handling inside the MEFLib import call (MEF MD file processing)
                             //This is a catch-for-call for the case when there is no record is imported, to notify the user the import is not successful.
@@ -892,5 +893,39 @@ public class MetadataInsertDeleteApi {
 
         dataManager.indexMetadata(id.get(0), true, null);
         return Pair.read(Integer.valueOf(id.get(0)), uuid);
+    }
+
+
+    private String defaultMetadataImportGroup(UserSession user, String group) {
+        String mdGroup = group;
+
+        if (StringUtils.isEmpty(mdGroup)) {
+            if (user.getProfile() != Profile.Administrator) {
+                final Specifications<UserGroup> spec = where(UserGroupSpecs.hasProfile(Profile.Editor))
+                    .and(UserGroupSpecs.hasUserId(user.getUserIdAsInt()));
+
+                final List<UserGroup> userGroups = userGroupRepository.findAll(spec);
+
+                if (userGroups.size() == 0) {
+                    throw new SecurityException(
+                        String.format("Can't assign metadata group owner - user MUST be an Editor in a group"));
+                } else {
+                    mdGroup = userGroups.get(0).getGroup().getId() + "";
+                }
+            } else {
+                final Specifications<Group> spec =  where(not(GroupSpecs.isReserved()));
+                final List<Group> mdDefaultGroups = groupRepository.findAll(spec);
+
+                if (!mdDefaultGroups.isEmpty()) {
+                    mdGroup = mdDefaultGroups.get(0).getId() + "";
+                } else {
+                    throw new BadParameterEx(
+                        "Can't assign metadata group owner - specify a valid group owner");
+                }
+
+            }
+        }
+
+        return mdGroup;
     }
 }
