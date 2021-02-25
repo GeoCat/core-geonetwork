@@ -24,9 +24,11 @@ package org.fao.geonet.kernel.security;
 
 import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.domain.User;
+import org.fao.geonet.kernel.security.service.LoginAttemptService;
 import org.fao.geonet.repository.UserRepository;
 import org.fao.geonet.util.PasswordUtil;
 import org.fao.geonet.utils.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -37,9 +39,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+
+@Service("userDetailsService")
+@Transactional
 public class GeonetworkAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider
     implements UserDetailsService {
+
+    @Autowired
+    private LoginAttemptService loginAttemptService;
+
+    @Autowired
+    private HttpServletRequest request;
 
     private boolean checkUserNameOrEmail = false;
 
@@ -50,6 +64,7 @@ public class GeonetworkAuthenticationProvider extends AbstractUserDetailsAuthent
     public void setCheckUserNameOrEmail(boolean checkUserNameOrEmail) {
         this.checkUserNameOrEmail = checkUserNameOrEmail;
     }
+
 
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails,
@@ -81,6 +96,11 @@ public class GeonetworkAuthenticationProvider extends AbstractUserDetailsAuthent
             PasswordEncoder encoder = applicationContext.getBean(PasswordEncoder.class);
             UserRepository userRepository = applicationContext.getBean(UserRepository.class);
 
+            String ip = getClientIP();
+            if (loginAttemptService.isBlocked(username, ip)) {
+                throw new RuntimeException("blocked");
+            }
+
             // Only check user with local db user (ie. authtype is '')
             User user = userRepository.findOneByUsernameAndSecurityAuthTypeIsNullOrEmpty(username);
             if (user == null && checkUserNameOrEmail) {
@@ -107,7 +127,21 @@ public class GeonetworkAuthenticationProvider extends AbstractUserDetailsAuthent
     @Override
     public UserDetails loadUserByUsername(String username)
         throws UsernameNotFoundException {
+
+        String ip = getClientIP();
+        if (loginAttemptService.isBlocked(username, ip)) {
+            throw new RuntimeException("blocked");
+        }
+
         return retrieveUser(username, null);
     }
 
+
+    private String getClientIP() {
+        String xfHeader = request.getHeader("X-Forwarded-For");
+        if (xfHeader == null){
+            return request.getRemoteAddr();
+        }
+        return xfHeader.split(",")[0];
+    }
 }

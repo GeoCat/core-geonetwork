@@ -120,7 +120,11 @@
         <ref bean="geonetworkAuthenticationProvider"/>
       </list>
     </constructor-arg>
+
+    <property name="authenticationEventPublisher" ref="defaultAuthenticationEventPublisher" />
   </bean>
+
+  <bean id="defaultAuthenticationEventPublisher" class="org.springframework.security.authentication.DefaultAuthenticationEventPublisher" />
 
   <bean id="securityContextRepository"
         class='org.springframework.security.web.context.HttpSessionSecurityContextRepository'>
@@ -345,6 +349,16 @@
         id="updateTimestampListener">
   </bean>
 
+  <!-- This bean locks for a period of time the login attempts after a certain number of invalid login attempts -->
+  <bean class="org.fao.geonet.kernel.security.service.LoginAttemptService"
+        id="loginAttemptService">
+    <constructor-arg name="maxInvalidAttempts" value="5" />
+    <constructor-arg name="lockDuration" value="10" />
+    <constructor-arg name="lockTimeUnit" value="MINUTES" />
+    <constructor-arg name="lockStrategy">
+      <value type="org.fao.geonet.kernel.security.service.LoginAttemptService.LOCK_STRATEGY">USERNAME_AND_IP</value>
+    </constructor-arg>
+  </bean>
 
   <bean id="csrfFilter" class="org.springframework.security.web.csrf.CsrfFilter">
     <constructor-arg>
