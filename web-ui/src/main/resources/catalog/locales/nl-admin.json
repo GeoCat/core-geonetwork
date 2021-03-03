@@ -370,8 +370,6 @@
     "fees": "Vergoedingen",
     "ifRecordExistAppendPrivileges": "Als een record reeds bestaat (geharvest uit een andere bron), dan worden onderstaande privileges toegevoegd.",
     "ifRecordExistAppendPrivilegesHelp": "Only applies on update and if action on UUID collision is set to overwrite record. If enabled, privileges are not removed on update. So if you want to reset privileges, you need to remove those records first and trigger the harvester again.",
-    "filesystem-beforeScript": "Script draaien voor harvest",
-    "filesystem-beforeScriptHelp": "Kan gebruikt worden om 'rsync' of soortgelijk uit te voeren. Voert niets uit indien niet ingevuld.",
     "filesystem-checkFileLastModifiedForUpdate": "Werk item bij, alleen als het externe bestand is bijgewerkt",
     "filesystem-checkFileLastModifiedForUpdateHelp": "Werk catalogusbestand bij, alleen als het bestand is bijgewerkt",
     "filesystem-directory": "Collectie xml fragmenten",

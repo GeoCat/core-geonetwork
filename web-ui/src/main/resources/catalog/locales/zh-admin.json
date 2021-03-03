@@ -344,8 +344,6 @@
     "exportLogAsZIP": "导出（ZIP）",
     "facetIndicatorHelp": "记录的统计信息是根据缓存配置定义的，只能表示最常见的值。",
     "fees": "费用",
-    "filesystem-beforeScript": "收割前运行的脚本",
-    "filesystem-beforeScriptHelp": "可以用来做rsync或类似的事情。如果空，则不运行。",
     "filesystem-checkFileLastModifiedForUpdate": "如果文件更新只更新目录记录",
     "filesystem-checkFileLastModifiedForUpdateHelp": "如果文件更新只更新目录记录",
     "filesystem-directory": "目录",

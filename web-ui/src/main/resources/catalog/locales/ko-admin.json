@@ -370,8 +370,6 @@
     "fees": "수수료",
     "ifRecordExistAppendPrivileges": "If record exist (eg. already harvested from another source), append privileges defined below.",
     "ifRecordExistAppendPrivilegesHelp": "Only applies on update and if action on UUID collision is set to overwrite record. If enabled, privileges are not removed on update. So if you want to reset privileges, you need to remove those records first and trigger the harvester again.",
-    "filesystem-beforeScript": "수집 전 실행할 스크립트",
-    "filesystem-beforeScriptHelp": "rsyn 또는 유사한 스크립트를 사용할 수 있습니다. 비어있으면 아무것도 실행하지 않습니다.",
     "filesystem-checkFileLastModifiedForUpdate": "파일이 업데이트된 경우에만 카탈로그 레코드 갱신",
     "filesystem-checkFileLastModifiedForUpdateHelp": "파일이 업데이트된 경우에만 카탈로그 레코드 갱신",
     "filesystem-directory": "디렉토리",

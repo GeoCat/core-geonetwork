@@ -370,8 +370,6 @@
     "fees": "Gebühren",
     "ifRecordExistAppendPrivileges": "Ist ein Eintrag vorhanden (z. B. bereits von einer anderen Quelle geharvested), füge die unten definierten Berechtigungen hinzu.",
     "ifRecordExistAppendPrivilegesHelp": "Gilt nur bei Aktualisierung und wenn die Aktion bei UUID-Kollision so eingestellt ist, dass der Datensatz überschrieben wird. Wenn aktiviert, werden Berechtigungen beim Update nicht entfernt. Wenn du Berechtigungen zurücksetzen möchtest, müssen diese Datensätze zuerst entfernt werden und dann den Harvester nochmal starten.",
-    "filesystem-beforeScript": "Skript, das vor dem Harvesting ausgeführt wird",
-    "filesystem-beforeScriptHelp": "Kann verwendet werden, um eine rsync oder ähnliches auszuführen. Läuft nicht, wenn leer.",
     "filesystem-checkFileLastModifiedForUpdate": "Aktualisierte Datensätze",
     "filesystem-checkFileLastModifiedForUpdateHelp": "Datensätze im Katalog nur dann aktualisieren, wenn Datei aktualisiert wurde.",
     "filesystem-directory": "Verzeichnis",

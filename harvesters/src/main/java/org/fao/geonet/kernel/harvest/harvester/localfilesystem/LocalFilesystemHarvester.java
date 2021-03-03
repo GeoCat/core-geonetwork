@@ -1,5 +1,5 @@
 //=============================================================================
-//===	Copyright (C) 2001-2009 Food and Agriculture Organization of the
+//===	Copyright (C) 2001-2021 Food and Agriculture Organization of the
 //===	United Nations (FAO-UN), United Nations World Food Programme (WFP)
 //===	and United Nations Environment Programme (UNEP)
 //===
@@ -22,7 +22,6 @@
 //==============================================================================
 package org.fao.geonet.kernel.harvest.harvester.localfilesystem;
 
-import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,7 +30,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.Logger;
 import org.fao.geonet.domain.AbstractMetadata;
 import org.fao.geonet.domain.ISODate;
@@ -72,7 +70,6 @@ public class LocalFilesystemHarvester extends AbstractHarvester<HarvestResult, L
         harvesterSettingsManager.add("id:" + siteId, "recordType", params.recordType);
         harvesterSettingsManager.add("id:" + siteId, "nodelete", params.nodelete);
         harvesterSettingsManager.add("id:" + siteId, "checkFileLastModifiedForUpdate", params.checkFileLastModifiedForUpdate);
-        harvesterSettingsManager.add("id:" + siteId, "beforeScript", params.beforeScript);
     }
 
     @Override
@@ -214,25 +211,7 @@ public class LocalFilesystemHarvester extends AbstractHarvester<HarvestResult, L
     @Override
     public void doHarvest(Logger l) throws Exception {
         log.debug("LocalFilesystem doHarvest: top directory is " + params.directoryname + ", recurse is " + params.recurse);
-        runBeforeScript();
         Path directory = IO.toPath(params.directoryname);
         this.result = align(directory);
     }
-
-    private void runBeforeScript() throws IOException, InterruptedException {
-		if (StringUtils.isEmpty(params.beforeScript)) {
-			return;
-		}
-		log.info("Running the before script: " + params.beforeScript);
-        List<String> args = new ArrayList<String>(Arrays.asList(params.beforeScript.split(" ")));
-        Process process = new ProcessBuilder(args).
-				redirectError(ProcessBuilder.Redirect.INHERIT).
-				redirectOutput(ProcessBuilder.Redirect.INHERIT).
-				start();
-		int result = process.waitFor();
-		if ( result != 0 ) {
-			log.warning("The beforeScript failed with exit value=" + Integer.toString(result));
-			throw new RuntimeException("The beforeScript returned an error: " + Integer.toString(result));
-		}
-	}
 }

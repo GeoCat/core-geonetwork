@@ -1,5 +1,5 @@
 //=============================================================================
-//===	Copyright (C) 2001-2009 Food and Agriculture Organization of the
+//===	Copyright (C) 2001-2021 Food and Agriculture Organization of the
 //===	United Nations (FAO-UN), United Nations World Food Programme (WFP)
 //===	and United Nations Environment Programme (UNEP)
 //===
@@ -41,7 +41,6 @@ public class LocalFilesystemParams extends AbstractParams {
     public boolean checkFileLastModifiedForUpdate;
     public boolean nodelete;
     public String recordType;
-    public String beforeScript;
 
     @Override
     public String getIcon() {
@@ -88,7 +87,6 @@ public class LocalFilesystemParams extends AbstractParams {
         String checkFileLastModifiedForUpdateString = Util.getParam(site, "checkFileLastModifiedForUpdate", "true");
         checkFileLastModifiedForUpdate = (checkFileLastModifiedForUpdateString.equals("on") || checkFileLastModifiedForUpdateString.equals("true"));
         recordType = Util.getParam(site, "recordType", "n");
-        beforeScript = Util.getParam(site, "beforeScript", "");
     }
 
     public LocalFilesystemParams copy() {
@@ -100,7 +98,6 @@ public class LocalFilesystemParams extends AbstractParams {
         copy.nodelete = nodelete;
         copy.checkFileLastModifiedForUpdate = checkFileLastModifiedForUpdate;
         copy.recordType = recordType;
-        copy.beforeScript = beforeScript;
         return copy;
     }
 }

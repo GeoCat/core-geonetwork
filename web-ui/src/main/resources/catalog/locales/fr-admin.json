@@ -370,8 +370,6 @@
     "fees": "Honnoraires",
     "ifRecordExistAppendPrivileges": "Si une fiche existe (par exemple, car moissonnée depuis un autre catalogue), ajouter les privilèges définis ci-dessous",
     "ifRecordExistAppendPrivilegesHelp": "Ne s'applique que sur les mises à jour et si l'action en cas de collision est écraser la ficher. Si activé, les privilèges ne sont pas supprimés lors de la mise à jour. Si vous souhaitez réinitialiser les privilèges, vous devez supprimer ces fiches et relancer le moissonneur.",
-    "filesystem-beforeScript": "Script à exécuter avant le moissonnage",
-    "filesystem-beforeScriptHelp": "Peut être utiliser pour exécuter rsync ou une commande similaire. N'exécute rien si elle vide.",
     "filesystem-checkFileLastModifiedForUpdate": "Mettre à jour les fiches dans le catalogue uniquement si la date du fichier a été modifiée",
     "filesystem-checkFileLastModifiedForUpdateHelp": "Mettre à jour les fiches dans le catalogue uniquement si la date du fichier a été modifiée",
     "filesystem-directory": "Répertoire",

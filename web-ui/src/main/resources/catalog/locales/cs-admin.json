@@ -370,8 +370,6 @@
     "fees": "Poplatky",
     "ifRecordExistAppendPrivileges": "Pokud existuje záznam (např. Již byl shromážděn z jiného zdroje), připojte níže uvedená oprávnění.",
     "ifRecordExistAppendPrivilegesHelp": "Platí pouze pro aktualizaci a pokud je akce při kolizi UUID nastavena na přepsání záznamu. Pokud je povoleno, oprávnění nebudou při aktualizaci odstraněna. Pokud tedy chcete resetovat oprávnění, musíte nejprve odstranit tyto záznamy a znovu spustit sběrač dat.",
-    "filesystem-beforeScript": "Skript, který chcete spustit před sběrem dat",
-    "filesystem-beforeScriptHelp": "Může být použit pro provedení rsync nebo něčeho podobného. Nespouštěje nic, pokud je prázdné.",
     "filesystem-checkFileLastModifiedForUpdate": "Aktualizovat katalogový záznam až po aktualizaci souboru",
     "filesystem-checkFileLastModifiedForUpdateHelp": "Aktualizovat katalogový záznam pouze po aktualizaci souboru",
     "filesystem-directory": "Adresář",

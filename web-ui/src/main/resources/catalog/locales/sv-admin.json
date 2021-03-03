@@ -370,8 +370,6 @@
     "fees": "Avgifter",
     "ifRecordExistAppendPrivileges": "Om posten redan finns (t.ex. skördats från en annan källa) ska följande  behörigheter läggas till.",
     "ifRecordExistAppendPrivilegesHelp": "Gäller endast vid uppdatering och om åtgärd vid UUID-konflikt är inställd för att skriva över posten. Om det är aktiverat tas inte behörigheter bort vid uppdatering. Om du vill återställa behörigheterna måste du ta bort dessa poster först och trigga skördaren igen.",
-    "filesystem-beforeScript": "Skript att köra innan skördning",
-    "filesystem-beforeScriptHelp": "Kan användas för att köra en rsync eller liknande. Om ospecificerat körs inget.",
     "filesystem-checkFileLastModifiedForUpdate": "Uppdatera katalogposten endast om filen var uppdaterad",
     "filesystem-checkFileLastModifiedForUpdateHelp": "Uppdatera katalogposten endast om filen var uppdaterad",
     "filesystem-directory": "Katalog",
