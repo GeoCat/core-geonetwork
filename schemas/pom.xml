@@ -55,6 +55,15 @@
 
   <!-- used by add-schema.sh -->
   <profiles>
+    <profile>
+      <id>schema-iso19139.ca.HNAP</id>
+      <activation>
+        <file><exists>iso19139.ca.HNAP</exists></file>
+      </activation>
+      <modules>
+        <module>iso19139.ca.HNAP</module>
+      </modules>
+    </profile>
   </profiles>
 
   <properties>

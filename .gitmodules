@@ -10,3 +10,7 @@
 [submodule "docs/manuals"]
 	path = docs/manuals
 	url = https://github.com/geonetwork/doc.git
+[submodule "schemas/iso19139.ca.HNAP"]
+	path = schemas/iso19139.ca.HNAP
+	url = https://github.com/GeoCat/iso19139.ca.HNAP.git
+	branch = 3.12.x-resource-panel
