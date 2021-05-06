@@ -238,12 +238,15 @@
                                   'gn-required' : params.linkType.fields.desc.required}"
                  data-ng-if="key === 'desc' &&
                              !params.linkType.fields.desc.hidden">
+              <div class="col-sm-12">
               <label id="gn-addonlinesrc-description-label"
-                     for="gn-addonlinesrc-description-single-textarea"
-                     class="col-sm-2 control-label"
-                     data-translate="">description</label>
+                       class=" control-label"
+                       data-translate=""
+                       data-gn-field-tooltip="{{schema}}|{{params.linkType.fields.desc.tooltip}}">description</label>
+              </div>
+
+              <div class="col-sm-9" data-ng-if="!params.linkType.fields.desc.directive">
               <div id="gn-addonlinesrc-description-single-row"
-                   class="col-sm-9"
                    data-ng-if="!isFieldMultilingual('desc')">
               <textarea rows="3"
                         id="gn-addonlinesrc-description-single-textarea"
@@ -256,7 +259,6 @@
                         name="description"/>
               </div>
               <div id="gn-addonlinesrc-description-multilingual-row"
-                   class="col-sm-9"
                    data-ng-if="isFieldMultilingual('desc')"
                    gn-multilingual-field="{{mdOtherLanguages}}"
                    data-main-language="{{mdLang}}"
@@ -271,6 +273,13 @@
                         placeholder="description"
                         data-gn-field-tooltip="{{schema}}|{{params.linkType.fields.desc.tooltip}}"
                         name="description"/>
+              </div>
+              </div>
+              <div data-ng-if="params.linkType.fields.desc.directive === 'gn-multientry-combiner-online-resources-description'">
+                <div data-gn-multientry-combiner-online-resources-description="{{params.linkType.fields.desc.directiveConfig}}"
+                     class="col-sm-12 col-xs-12 gn-value nopadding-in-table"
+                     data-label="description" data-ng-required="params.linkType.fields.desc.required" >
+                </div>
               </div>
 
               <div class="col-sm-1 gn-control"></div>
