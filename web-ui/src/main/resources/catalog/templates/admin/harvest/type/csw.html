@@ -21,6 +21,17 @@
       <p class="help-block" data-translate="">csw-capabilitiesUrlHelp</p>
     </div>
 
+    <hr/>
+    <div id="gn-harvest-settings-csw-remote-process-row" >
+      <label class="control-label">
+        <input id="gn-harvest-settings-gn-remote-process-checkbox"
+               type="checkbox"
+               data-ng-model="harvesterSelected.options.remoteHarvesterApi"/>
+        <span id="gn-harvest-settings-gn-remote-process-label" data-translate="">csw-remoteHarvesterApi</span>
+      </label>
+      <p class="help-block" data-translate="">csw-remoteHarvesterApiHelp</p>
+    </div>
+
     <fieldset id="gn-harvest-settings-csw-basic-service-criteria-row" class="form-horizontal cswCriteriaInfo">
       <legend id="gn-harvest-settings-csw-basic-service-criteria-title" data-translate="">harvesterFilter</legend>
 
@@ -75,7 +86,7 @@
 
 
     <hr/>
-    <div id="gn-harvest-settings-csw-xpath-filter-title-row">
+    <div id="gn-harvest-settings-csw-xpath-filter-title-row" data-ng-if="harvesterSelected.options.remoteHarvesterApi !== true">
       <label id="gn-harvest-settings-csw-xpath-filter-title-label" class="control-label col-lg-4" data-translate="">xpathFilter</label>
       <div class="col-lg-8">
         <input id="gn-harvest-settings-csw-xpath-filter-title-input"
@@ -96,7 +107,7 @@
 
     <div id="gn-harvest-settings-csw-advanced-authentication-row" data-gn-harvester-account="harvesterSelected"/>
 
-    <div id="gn-harvest-settings-csw-advanced-duplicate-row">
+    <div id="gn-harvest-settings-csw-advanced-duplicate-row" data-ng-if="harvesterSelected.options.remoteHarvesterApi !== true">
       <label class="control-label">
         <input id="gn-harvest-settings-csw-advanced-duplicate-checkbox"
                type="checkbox"
@@ -106,11 +117,13 @@
       <p class="help-block" data-translate="">csw-rejectDuplicateResourceHelp</p>
     </div>
 
-    <div id="gn-harvest-settings-csw-advanced-category-row" data-gn-category="harvesterSelected.categories[0]['@id']" data-lang="{{lang}}"
+    <div id="gn-harvest-settings-csw-advanced-category-row"
+         data-ng-if="harvesterSelected.options.remoteHarvesterApi !== true"
+         data-gn-category="harvesterSelected.categories[0]['@id']" data-lang="{{lang}}"
          data-label="csw-category"/>
 
 
-    <div id="gn-harvest-settings-csw-advanced-validate-row">
+    <div id="gn-harvest-settings-csw-advanced-validate-row" data-ng-if="harvesterSelected.options.remoteHarvesterApi !== true">
       <label id="gn-harvest-settings-csw-advanced-validate-label" class="control-label">
         <span data-translate="">harvesterValidate</span>
       </label>
@@ -118,7 +131,7 @@
       <p class="help-block" data-translate="">harvesterValidateHelp</p>
     </div>
 
-    <div id="gn-harvest-settings-csw-advanced-batchEdits-row">
+    <div id="gn-harvest-settings-csw-advanced-batchEdits-row" data-ng-if="harvesterSelected.options.remoteHarvesterApi !== true">
       <label id="gn-harvest-settings-csw-advanced-batchEdits-label" class="control-label">
         <span data-translate="">harvesterBatchEdits</span>
       </label>
@@ -129,7 +142,7 @@
       <p class="help-block" data-translate="">harvesterBatchEditsHelp</p>
     </div>
 
-    <div id="gn-harvest-settings-csw-advanced-xsl-row">
+    <div id="gn-harvest-settings-csw-advanced-xsl-row" data-ng-if="harvesterSelected.options.remoteHarvesterApi !== true">
       <label id="gn-harvest-settings-csw-advanced-xsl-label" class="control-label" data-translate="">applyXSLToRecord</label>
       <div id="gn-harvest-settings-csw-advanced-xsl-list" data-gn-import-xsl="harvesterSelected.site.xslfilter"/>
 

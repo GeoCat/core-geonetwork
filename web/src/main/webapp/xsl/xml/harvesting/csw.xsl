@@ -31,7 +31,11 @@
   </xsl:template>
 
 
-  <xsl:template match="*" mode="options"/>
+  <xsl:template match="*" mode="options">
+    <remoteHarvesterApi>
+      <xsl:value-of select="remoteHarvesterApi/value"/>
+    </remoteHarvesterApi>
+  </xsl:template>
 
 
   <xsl:template match="*" mode="searches">

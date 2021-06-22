@@ -31,7 +31,7 @@
               <span data-ng-show="h.info.running" class="pull-right">
                 <i class="fa fa-spinner fa-spin fa-2x"/>
               </span>
-              <span>{{ 'lastRun' | translate }}: {{ h.info.lastRun | gnFromNow }}</span><br>
+              <span data-ng-if="">{{ 'lastRun' | translate }}: {{ h.info.lastRun | gnFromNow }}</span><br>
               <span data-ng-if="h.info.result.total">{{ 'harvesterRecords' | translate }}: {{h.info.result.total}}</span>
             </p>
           </a>

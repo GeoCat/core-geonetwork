@@ -33,7 +33,8 @@ var gnHarvestercsw = {
         "every" : "0 0 0 ? * *",
         "oneRunOnly" : false,
         "overrideUuid": "SKIP",
-        "status" : "active"
+        "status" : "active",
+        "remoteHarvesterApi": false
       },
       "ifRecordExistAppendPrivileges": false,
       "privileges" : [ {
@@ -116,6 +117,7 @@ var gnHarvestercsw = {
       + '    <overrideUuid>' + h.options.overrideUuid + '</overrideUuid>'
       + '    <every>' + h.options.every + '</every>'
       + '    <status>' + h.options.status + '</status>'
+      + '    <remoteHarvesterApi>' + h.options.remoteHarvesterApi + '</remoteHarvesterApi>'
       + '  </options>'
       + '  <content>'
       + '    <validate>' + h.content.validate + '</validate>'

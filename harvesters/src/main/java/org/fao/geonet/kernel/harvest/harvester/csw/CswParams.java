@@ -51,6 +51,8 @@ public class CswParams extends AbstractParams {
 
     public Integer hopCount;
 
+    public boolean remoteHarvesterApi;
+
     /**
      * The filter is a process (see schema/process folder) which depends on the schema. It could be
      * composed of parameter which will be sent to XSL transformation using the following syntax :
@@ -82,6 +84,7 @@ public class CswParams extends AbstractParams {
 
         Element site = node.getChild("site");
         Element filters = node.getChild("filters");
+        Element options = node.getChild("options");
 
         capabUrl = Util.getParam(site, "capabilitiesUrl", "");
         rejectDuplicateResource = Util.getParam(site, "rejectDuplicateResource", false);
@@ -91,6 +94,7 @@ public class CswParams extends AbstractParams {
         xpathFilter = Util.getParam(site, "xpathFilter", "");
         outputSchema = Util.getParam(site, "outputSchema", outputSchema);
         icon = Util.getParam(site, "icon", "default.gif");
+        remoteHarvesterApi = Util.getParam(options, "remoteHarvesterApi", false);
 
         if (filters != null) {
             @SuppressWarnings("unchecked")
@@ -112,6 +116,7 @@ public class CswParams extends AbstractParams {
 
         Element site = node.getChild("site");
         Element filters = node.getChild("filters");
+        Element options = node.getChild("options");
 
         capabUrl = Util.getParam(site, "capabilitiesUrl", capabUrl);
         rejectDuplicateResource = Util.getParam(site, "rejectDuplicateResource", rejectDuplicateResource);
@@ -120,6 +125,7 @@ public class CswParams extends AbstractParams {
         xpathFilter = Util.getParam(site, "xpathFilter", "");
         xslfilter = Util.getParam(site, "xslfilter", "");
         outputSchema = Util.getParam(site, "outputSchema", outputSchema);
+        remoteHarvesterApi = Util.getParam(options, "remoteHarvesterApi", remoteHarvesterApi);
 
         icon = Util.getParam(site, "icon", icon);
 
@@ -150,6 +156,7 @@ public class CswParams extends AbstractParams {
         copy.xpathFilter = xpathFilter;
         copy.xslfilter = xslfilter;
         copy.outputSchema = outputSchema;
+        copy.remoteHarvesterApi = remoteHarvesterApi;
 
         copy.eltFilters = eltFilters;
         copy.bboxFilter = bboxFilter;

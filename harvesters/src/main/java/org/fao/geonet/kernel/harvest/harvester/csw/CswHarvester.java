@@ -24,9 +24,13 @@
 package org.fao.geonet.kernel.harvest.harvester.csw;
 
 import org.fao.geonet.Logger;
+import org.fao.geonet.client.RemoteHarvesterApiClient;
+import org.fao.geonet.client.RemoteHarvesterApiClientException;
+import org.fao.geonet.kernel.harvest.Common;
 import org.fao.geonet.kernel.harvest.harvester.AbstractHarvester;
 import org.fao.geonet.kernel.harvest.harvester.HarvestResult;
 import org.jdom.Element;
+import org.quartz.SchedulerException;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -59,6 +63,7 @@ public class CswHarvester extends AbstractHarvester<HarvestResult, CswParams> {
         harvesterSettingsManager.add("id:" + siteId, "xpathFilter", params.xpathFilter);
         harvesterSettingsManager.add("id:" + siteId, "xslfilter", params.xslfilter);
         harvesterSettingsManager.add("id:" + siteId, "outputSchema", params.outputSchema);
+        harvesterSettingsManager.add("id:" + optionsId, "remoteHarvesterApi", params.remoteHarvesterApi);
 
         //--- store dynamic filter nodes
         String filtersID = harvesterSettingsManager.add(path, "filters", "");
@@ -90,7 +95,46 @@ public class CswHarvester extends AbstractHarvester<HarvestResult, CswParams> {
      * @throws Exception
      */
     public void doHarvest(Logger log) throws Exception {
-        Harvester h = new Harvester(cancelMonitor, log, context, params);
-        result = h.harvest(log);
+        if (!params.remoteHarvesterApi) {
+            Harvester h = new Harvester(cancelMonitor, log, context, params);
+            result = h.harvest(log);
+        } else {
+            RemoteHarvester h = new RemoteHarvester(cancelMonitor, log, context, params);
+            result = h.harvest(log);
+
+            String processId = ((CswRemoteHarvestResult) result).processId;
+
+            new Thread() {
+                @Override
+                public void run() {
+                    super.run();
+
+                    String url = settingManager.getValue(RemoteHarvesterApiClient.SETTING_REMOTE_HARVESTER_API);
+                    RemoteHarvesterApiClient remoteHarvesterApiClient = new RemoteHarvesterApiClient(url);
+                    boolean check = true;
+                    while (check) {
+
+                        try {
+                            String progress = remoteHarvesterApiClient.retrieveProgress(processId);
+
+                            try {
+                                Thread.sleep(10 * 1000);
+                            } catch (InterruptedException e) {
+                                log.error(e);
+                            }
+
+                            //CswHarvester.this.stop(Common.Status.ACTIVE);
+                            //check = false;
+
+                        } catch (Exception ex) {
+                            // TODO: Handle
+                            ex.printStackTrace();
+                        }
+
+
+                    }
+                }
+            }.start();
+        }
     }
 }
