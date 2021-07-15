@@ -54,6 +54,7 @@ import org.fao.geonet.kernel.harvest.Common.OperResult;
 import org.fao.geonet.kernel.harvest.Common.Status;
 import org.fao.geonet.kernel.harvest.harvester.csw.CswHarvester;
 import org.fao.geonet.kernel.harvest.harvester.csw.CswParams;
+import org.fao.geonet.kernel.harvest.harvester.csw2.CswHarvester2;
 import org.fao.geonet.kernel.setting.HarvesterSettingsManager;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.kernel.setting.Settings;
@@ -724,11 +725,7 @@ public abstract class AbstractHarvester<T extends HarvestResult, P extends Abstr
                 } finally {
                     cancelMonitor.set(false);
 
-                    if (getParams() instanceof CswParams) {
-                        if (!(((CswParams) getParams()).remoteHarvesterApi)) {
-                            running = false;
-                        }
-                    } else {
+                    if (!(this instanceof CswHarvester2)) {
                         running = false;
                     }
 

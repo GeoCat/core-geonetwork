@@ -30,6 +30,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.api.ApiParams;
 import org.fao.geonet.client.RemoteHarvesterApiClient;
+import org.fao.geonet.client.RemoteHarvesterStatus;
+import org.fao.geonet.kernel.harvest.HarvestManager;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -40,6 +42,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 @RequestMapping(value = {
@@ -52,8 +58,55 @@ public class RemoteHarvestersApi {
     @Autowired
     SettingManager settingManager;
 
+    @Autowired
+    HarvestManager harvestManager;
+
     @io.swagger.v3.oas.annotations.Operation(
-        summary = "Assign harvester records to a new source",
+        summary = "Retrieve the status progress of a list of harvesters",
+        description = ""
+//        authorizations = {
+//            @Authorization(value = "basicAuth")
+//        })
+    )
+    @RequestMapping(
+        value = "/progress",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        method = RequestMethod.GET
+    )
+    @PreAuthorize("hasAuthority('UserAdmin')")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Harvester progress status"),
+        @ApiResponse(responseCode = "404", description = ApiParams.API_RESPONSE_RESOURCE_NOT_FOUND),
+        @ApiResponse(responseCode = "403", description = ApiParams.API_RESPONSE_NOT_ALLOWED_ONLY_USER_ADMIN)
+    })
+    @ResponseBody
+    public List<RemoteHarvesterStatus> progress(
+        @Parameter(
+            description = "The harvester processes identifiers"
+        )
+        String[] id
+    ) throws Exception {
+        String url = settingManager.getValue(RemoteHarvesterApiClient.SETTING_REMOTE_HARVESTER_API);
+        if (StringUtils.isEmpty(url)) {
+            throw new Exception("Remote harvester API endpoint is not configured. Configure it in the Settings page.");
+        }
+
+        List<RemoteHarvesterStatus> statuses = new ArrayList<>();
+
+        RemoteHarvesterApiClient client = new RemoteHarvesterApiClient(url);
+
+        for(int i = 0; i < id.length; i++) {
+
+            //harvestManager.getHarvester()
+            statuses.add(client.retrieveProgress(id[i]));
+        }
+
+        return statuses;
+    }
+
+
+    @io.swagger.v3.oas.annotations.Operation(
+        summary = "Retrieve the status progress of a harvester",
         description = ""
 //        authorizations = {
 //            @Authorization(value = "basicAuth")
@@ -84,8 +137,8 @@ public class RemoteHarvestersApi {
         }
 
         RemoteHarvesterApiClient client = new RemoteHarvesterApiClient(url);
-        String harvesterProcessStatus = client.retrieveProgress(processId);
+        RemoteHarvesterStatus harvesterProcessStatus = client.retrieveProgress(processId);
 
-        return new HttpEntity<>(harvesterProcessStatus);
+        return new HttpEntity<>(harvesterProcessStatus.getState());
     }
 }

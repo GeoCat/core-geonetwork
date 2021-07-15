@@ -21,11 +21,15 @@
 //===	Rome - Italy. email: geonetwork@osgeo.org
 //==============================================================================
 
-package org.fao.geonet.kernel.harvest.harvester.csw;
+package org.fao.geonet.kernel.harvest.harvester.csw2;
 
 import org.fao.geonet.Logger;
+import org.fao.geonet.client.RemoteHarvesterApiClient;
+import org.fao.geonet.client.RemoteHarvesterStatus;
+import org.fao.geonet.kernel.harvest.Common;
 import org.fao.geonet.kernel.harvest.harvester.AbstractHarvester;
 import org.fao.geonet.kernel.harvest.harvester.HarvestResult;
+import org.fao.geonet.kernel.harvest.harvester.csw.CswRemoteHarvestResult;
 import org.jdom.Element;
 
 import java.sql.SQLException;
@@ -34,11 +38,11 @@ import java.util.List;
 /**
  * Harvest metadata from other catalogues using the CSW protocol
  */
-public class CswHarvester extends AbstractHarvester<HarvestResult, CswParams> {
+public class CswHarvester2 extends AbstractHarvester<HarvestResult, CswParams2> {
 
     @Override
-    protected CswParams createParams() {
-        return new CswParams(dataMan);
+    protected CswParams2 createParams() {
+        return new CswParams2(dataMan);
     }
 
     /**
@@ -47,18 +51,17 @@ public class CswHarvester extends AbstractHarvester<HarvestResult, CswParams> {
      * @param path
      * @param siteId
      * @param optionsId
-     * @throws java.sql.SQLException
+     * @throws SQLException
      */
-    protected void storeNodeExtra(CswParams params, String path, String siteId, String optionsId) throws SQLException {
+    protected void storeNodeExtra(CswParams2 params, String path, String siteId, String optionsId) throws SQLException {
 
         harvesterSettingsManager.add("id:" + siteId, "capabUrl", params.capabUrl);
         harvesterSettingsManager.add("id:" + siteId, "icon", params.icon);
-        harvesterSettingsManager.add("id:" + siteId, "rejectDuplicateResource", params.rejectDuplicateResource);
         harvesterSettingsManager.add("id:" + siteId, "queryScope", params.queryScope);
         harvesterSettingsManager.add("id:" + siteId, "hopCount", params.hopCount);
-        harvesterSettingsManager.add("id:" + siteId, "xpathFilter", params.xpathFilter);
         harvesterSettingsManager.add("id:" + siteId, "xslfilter", params.xslfilter);
         harvesterSettingsManager.add("id:" + siteId, "outputSchema", params.outputSchema);
+        harvesterSettingsManager.add("id:" + optionsId, "remoteHarvesterNestedServices", params.remoteHarvesterNestedServices);
 
         //--- store dynamic filter nodes
         String filtersID = harvesterSettingsManager.add(path, "filters", "");
@@ -90,7 +93,61 @@ public class CswHarvester extends AbstractHarvester<HarvestResult, CswParams> {
      * @throws Exception
      */
     public void doHarvest(Logger log) throws Exception {
-        Harvester h = new Harvester(cancelMonitor, log, context, params);
-        result = h.harvest(log);
+        RemoteHarvester h = new RemoteHarvester(cancelMonitor, log, context, params);
+        String processId = "";
+
+        try {
+            result = h.harvest(log);
+
+            processId = ((CswRemoteHarvestResult) result).processId;
+        } catch (Exception ex) {
+            log.error(ex);
+            running = false;
+
+            throw ex;
+        }
+
+        final String harvesterProcessId = processId;
+
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+
+                String url = settingManager.getValue(RemoteHarvesterApiClient.SETTING_REMOTE_HARVESTER_API);
+                RemoteHarvesterApiClient remoteHarvesterApiClient = new RemoteHarvesterApiClient(url);
+                boolean check = true;
+                while (check) {
+
+                    try {
+                        RemoteHarvesterStatus harvesterStatus = remoteHarvesterApiClient.retrieveProgress(harvesterProcessId);
+
+                        if (!harvesterStatus.getState().equals("RECORDS_RECEIVED") &&
+                            !harvesterStatus.getState().equals("ERROR")) {
+                            try {
+                                Thread.sleep(10 * 1000);
+                            } catch (InterruptedException e) {
+                                log.error(e);
+                            }
+                        } else {
+                            CswHarvester2.this.stop(Common.Status.ACTIVE);
+                            check = false;
+                        }
+                    } catch (Exception ex) {
+                        // TODO: Handle
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        }.start();
+    }
+
+    public Element getResult() {
+        Element resultEl = super.getResult();
+        if (result != null) {
+            resultEl.addContent(new Element("processID").setText(((CswRemoteHarvestResult) result).processId));
+        }
+
+        return resultEl;
     }
 }

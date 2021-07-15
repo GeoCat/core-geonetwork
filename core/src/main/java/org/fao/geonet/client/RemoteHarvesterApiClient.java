@@ -88,13 +88,13 @@ public class RemoteHarvesterApiClient {
     }
 
 
-    public String retrieveProgress(String processId) throws RemoteHarvesterApiClientException {
+    public RemoteHarvesterStatus retrieveProgress(String processId) throws RemoteHarvesterApiClientException {
         String harvesterProgressUrl = url + String.format("/getstatus/%s", processId);
 
         ClientHttpResponse httpResponse = null;
         HttpGet getMethod = null;
 
-        String harvesterStatus = "";
+        RemoteHarvesterStatus harvesterStatus = null;
 
         try {
             getMethod = new HttpGet(harvesterProgressUrl);
@@ -112,17 +112,17 @@ public class RemoteHarvesterApiClient {
                     httpResponse.getStatusText());
 
 
-                throw new Exception(message);
+                throw new RemoteHarvesterApiClientException(message);
             } else {
-
                 /*
-
-                {"processID":"54c1329f-7bc6-4e4a-89f5-a44a709fd5ae","url":"http://geoservices.wallonie.be/metawal/csw-inspire","longTermTag":"fcfbda28-3ac1-4bc3-a9cd-5d4f29ed88a8","state":"DETERMINING_WORK","createTimeUTC":"2021-06-22T12:43:49.533Z","lastUpdateUTC":"2021-06-22T12:43:50.152Z","endpoints":[]}
+                {"processID":"54c1329f-7bc6-4e4a-89f5-a44a709fd5ae","url":"http://geoservices.wallonie.be/metawal/csw-inspire",
+                 "longTermTag":"fcfbda28-3ac1-4bc3-a9cd-5d4f29ed88a8","state":"DETERMINING_WORK",
+                  "createTimeUTC":"2021-06-22T12:43:49.533Z","lastUpdateUTC":"2021-06-22T12:43:50.152Z","endpoints":[]}
                  */
                 String response = IOUtils.toString(httpResponse.getBody(), "UTF-8");
-                JsonObject jsonObject = new JsonParser().parse(response).getAsJsonObject();
 
-                //harvesterStatus = jsonObject.get("processID").getAsString();
+                Gson gson = new Gson();
+                harvesterStatus = gson.fromJson(response, RemoteHarvesterStatus.class);
             }
         } catch (Exception ex) {
             throw new RemoteHarvesterApiClientException(ex.getMessage());

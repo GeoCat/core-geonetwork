@@ -21,18 +21,17 @@
 //===	Rome - Italy. email: geonetwork@osgeo.org
 //==============================================================================
 
-package org.fao.geonet.kernel.harvest.harvester.csw;
+package org.fao.geonet.kernel.harvest.harvester.csw2;
 
 
 import jeeves.server.context.ServiceContext;
 import org.apache.commons.lang.StringUtils;
-
-import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.Logger;
 import org.fao.geonet.client.RemoteHarvesterApiClient;
 import org.fao.geonet.client.RemoteHarvesterConfiguration;
 import org.fao.geonet.kernel.harvest.harvester.HarvestError;
 import org.fao.geonet.kernel.harvest.harvester.IHarvester;
+import org.fao.geonet.kernel.harvest.harvester.csw.CswRemoteHarvestResult;
 import org.fao.geonet.kernel.setting.SettingManager;
 
 import java.util.LinkedList;
@@ -43,7 +42,7 @@ class RemoteHarvester implements IHarvester<CswRemoteHarvestResult> {
     private final AtomicBoolean cancelMonitor;
 
     private Logger log;
-    private CswParams params;
+    private CswParams2 params;
     private ServiceContext context;
 
     /**
@@ -52,7 +51,7 @@ class RemoteHarvester implements IHarvester<CswRemoteHarvestResult> {
     private List<HarvestError> errors = new LinkedList<HarvestError>();
 
 
-    public RemoteHarvester(AtomicBoolean cancelMonitor, Logger log, ServiceContext context, CswParams params) {
+    public RemoteHarvester(AtomicBoolean cancelMonitor, Logger log, ServiceContext context, CswParams2 params) {
         this.cancelMonitor = cancelMonitor;
         this.log = log;
         this.context = context;
@@ -83,14 +82,14 @@ class RemoteHarvester implements IHarvester<CswRemoteHarvestResult> {
         RemoteHarvesterConfiguration remoteHarvesterConfiguration = new RemoteHarvesterConfiguration();
         remoteHarvesterConfiguration.setUrl(params.capabUrl);
         remoteHarvesterConfiguration.setLongTermTag(params.getUuid());
-        remoteHarvesterConfiguration.setLookForNestedDiscoveryService(false);
+        remoteHarvesterConfiguration.setLookForNestedDiscoveryService(params.remoteHarvesterNestedServices);
 
 
         RemoteHarvesterApiClient remoteHarvesterApiClient = new RemoteHarvesterApiClient(url);
         result.processId = remoteHarvesterApiClient.startHarvest(remoteHarvesterConfiguration);
 
 
-        remoteHarvesterApiClient.retrieveProgress(result.processId);
+        //remoteHarvesterApiClient.retrieveProgress(result.processId);
 
         return result;
     }

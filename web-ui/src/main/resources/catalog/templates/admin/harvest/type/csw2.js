@@ -1,10 +1,10 @@
 // This is not that much elegant and should be replaced by some kind
 // of Angular module.
-var gnHarvestercsw = {
+var gnHarvestercsw2 = {
   createNew : function() {
     return {
       "@id" : "",
-      "@type" : "csw",
+      "@type" : "csw2",
       "owner" : [],
       "ownerGroup" : [],
       "ownerUser": [""],
@@ -18,22 +18,17 @@ var gnHarvestercsw = {
           "password" : []
         },
         "capabilitiesUrl" : "http://",
-        "xpathFilter" : "",
         "rejectDuplicateResource" : false,
-        "xslfilter": [],
         "outputSchema": "http://www.isotc211.org/2005/gmd",
         "queryScope": "local",
         "hopCount": 2
-      },
-      "content" : {
-        "validate" : "NOVALIDATION",
-        "batchEdits" : ""
       },
       "options" : {
         "every" : "0 0 0 ? * *",
         "oneRunOnly" : false,
         "overrideUuid": "SKIP",
-        "status" : "active"
+        "status" : "active",
+        "remoteHarvesterNestedServices": false
       },
       "ifRecordExistAppendPrivileges": false,
       "privileges" : [ {
@@ -44,7 +39,6 @@ var gnHarvestercsw = {
           "@name" : "dynamic"
         } ]
       } ],
-      "categories" : [],
       "info" : {
         "lastRun" : [],
         "running" : false
@@ -95,7 +89,6 @@ var gnHarvestercsw = {
       + '  <ownerUser><id>' + h.ownerUser[0] + '</id></ownerUser>'
       + '  <site>'
       + '    <name>' + h.site.name + '</name>'
-      + '    <rejectDuplicateResource>' + h.site.rejectDuplicateResource + '</rejectDuplicateResource>'
       + '    <capabilitiesUrl>' + h.site.capabilitiesUrl.replace(/&/g, '&amp;') + '</capabilitiesUrl>'
       + '    <icon>' + h.site.icon + '</icon>'
       + '    <account>'
@@ -103,8 +96,6 @@ var gnHarvestercsw = {
       + '      <username>' + h.site.account.username + '</username>'
       + '      <password>' + h.site.account.password + '</password>'
       + '    </account>'
-      + '    <xpathFilter>' + h.site.xpathFilter + '</xpathFilter>'
-      + '    <xslfilter>' + h.site.xslfilter + '</xslfilter>'
       + '    <outputSchema>' + h.site.outputSchema + '</outputSchema>'
       + '    <queryScope>' + h.site.queryScope + '</queryScope>'
       + '    <hopCount>' + h.site.hopCount + '</hopCount>'
@@ -116,13 +107,9 @@ var gnHarvestercsw = {
       + '    <overrideUuid>' + h.options.overrideUuid + '</overrideUuid>'
       + '    <every>' + h.options.every + '</every>'
       + '    <status>' + h.options.status + '</status>'
+      + '    <remoteHarvesterNestedServices>' + h.options.remoteHarvesterNestedServices + '</remoteHarvesterNestedServices>'
       + '  </options>'
-      + '  <content>'
-      + '    <validate>' + h.content.validate + '</validate>'
-      + '    <batchEdits><![CDATA[' + (h.content.batchEdits == '' ? '[]' : h.content.batchEdits) + ']]></batchEdits>'
-      + '  </content>'
-      + $scope.buildResponseGroup(h)
-      + $scope.buildResponseCategory(h) + '</node>';
+      + $scope.buildResponseGroup(h) + '</node>';
     return body;
   }
 };

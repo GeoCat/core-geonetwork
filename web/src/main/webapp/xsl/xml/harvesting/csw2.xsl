@@ -10,18 +10,9 @@
     <icon>
       <xsl:value-of select="icon/value"/>
     </icon>
-    <rejectDuplicateResource>
-      <xsl:value-of select="rejectDuplicateResource/value"/>
-    </rejectDuplicateResource>
     <hopCount>
       <xsl:value-of select="hopCount/value"/>
     </hopCount>
-    <xpathFilter>
-      <xsl:value-of select="xpathFilter/value"/>
-    </xpathFilter>
-    <xslfilter>
-      <xsl:value-of select="xslfilter/value"/>
-    </xslfilter>
     <queryScope>
       <xsl:value-of select="queryScope/value"/>
     </queryScope>
@@ -31,7 +22,11 @@
   </xsl:template>
 
 
-  <xsl:template match="*" mode="options" />
+  <xsl:template match="*" mode="options">
+    <remoteHarvesterNestedServices>
+      <xsl:value-of select="remoteHarvesterNestedServices/value"/>
+    </remoteHarvesterNestedServices>
+  </xsl:template>
 
 
   <xsl:template match="*" mode="searches">

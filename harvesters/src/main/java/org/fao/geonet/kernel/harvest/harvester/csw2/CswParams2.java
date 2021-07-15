@@ -21,7 +21,7 @@
 //===	Rome - Italy. email: geonetwork@osgeo.org
 //==============================================================================
 
-package org.fao.geonet.kernel.harvest.harvester.csw;
+package org.fao.geonet.kernel.harvest.harvester.csw2;
 
 import org.fao.geonet.Util;
 import org.fao.geonet.exceptions.BadInputEx;
@@ -35,7 +35,7 @@ import java.util.List;
 /**
  *
  */
-public class CswParams extends AbstractParams {
+public class CswParams2 extends AbstractParams {
 
     public String capabUrl;
 
@@ -43,13 +43,12 @@ public class CswParams extends AbstractParams {
 
     public String outputSchema;
 
-    public boolean rejectDuplicateResource;
-
     public String queryScope;
 
-    public String xpathFilter;
-
     public Integer hopCount;
+
+
+    public boolean remoteHarvesterNestedServices;
 
     /**
      * The filter is a process (see schema/process folder) which depends on the schema. It could be
@@ -69,7 +68,7 @@ public class CswParams extends AbstractParams {
         return icon;
     }
 
-    public CswParams(DataManager dm) {
+    public CswParams2(DataManager dm) {
         super(dm);
     }
 
@@ -85,13 +84,12 @@ public class CswParams extends AbstractParams {
         Element options = node.getChild("options");
 
         capabUrl = Util.getParam(site, "capabilitiesUrl", "");
-        rejectDuplicateResource = Util.getParam(site, "rejectDuplicateResource", false);
         queryScope = Util.getParam(site, "queryScope", "local");
         hopCount = Util.getParam(site, "hopCount", 2);
         xslfilter = Util.getParam(site, "xslfilter", "");
-        xpathFilter = Util.getParam(site, "xpathFilter", "");
         outputSchema = Util.getParam(site, "outputSchema", outputSchema);
         icon = Util.getParam(site, "icon", "default.gif");
+        remoteHarvesterNestedServices = Util.getParam(options, "remoteHarvesterNestedServices", false);
 
         if (filters != null) {
             @SuppressWarnings("unchecked")
@@ -116,12 +114,11 @@ public class CswParams extends AbstractParams {
         Element options = node.getChild("options");
 
         capabUrl = Util.getParam(site, "capabilitiesUrl", capabUrl);
-        rejectDuplicateResource = Util.getParam(site, "rejectDuplicateResource", rejectDuplicateResource);
         queryScope = Util.getParam(site, "queryScope", queryScope);
         hopCount = Util.getParam(site, "hopCount", hopCount);
-        xpathFilter = Util.getParam(site, "xpathFilter", "");
         xslfilter = Util.getParam(site, "xslfilter", "");
         outputSchema = Util.getParam(site, "outputSchema", outputSchema);
+        remoteHarvesterNestedServices = Util.getParam(options, "remoteHarvesterNestedServices", remoteHarvesterNestedServices);
 
         icon = Util.getParam(site, "icon", icon);
 
@@ -140,18 +137,17 @@ public class CswParams extends AbstractParams {
      *
      * @return
      */
-    public CswParams copy() {
-        CswParams copy = new CswParams(dm);
+    public CswParams2 copy() {
+        CswParams2 copy = new CswParams2(dm);
         copyTo(copy);
 
         copy.capabUrl = capabUrl;
         copy.icon = icon;
-        copy.rejectDuplicateResource = rejectDuplicateResource;
         copy.queryScope = queryScope;
         copy.hopCount = hopCount;
-        copy.xpathFilter = xpathFilter;
         copy.xslfilter = xslfilter;
         copy.outputSchema = outputSchema;
+        copy.remoteHarvesterNestedServices = remoteHarvesterNestedServices;
 
         copy.eltFilters = eltFilters;
         copy.bboxFilter = bboxFilter;
