@@ -300,7 +300,7 @@
             scope.disabled = scope.disabled ? true : false;
             scope.selectedGroup = null;
             scope.$watch('selectedGroup', function(n, o) {
-              if (n && n.id) {
+              if (n && (n.hasOwnProperty('id') || n.hasOwnProperty('@id'))) {
                 scope.ownerGroup = scope.selectedGroup['@id'] || scope.selectedGroup.id;
               }
             });
@@ -322,7 +322,7 @@
 
                 if (optional) {
                   scope.groups.unshift({
-                    id: 'undefined',
+                    id: undefined,
                     name: ''
                   });
                 }
