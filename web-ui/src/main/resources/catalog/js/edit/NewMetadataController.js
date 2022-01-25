@@ -62,21 +62,6 @@
         $scope.preferredTemplate = gnConfig['system.metadatacreate.preferredTemplate'];
       });
 
-      // Check if the ownerGroup is a valid user group for editing
-      $scope.$watchCollection('groups', function(n, o){
-        if ((n != o) && ($scope.ownerGroup)) {
-            var groupFound = _.find(n, function(v) {
-              if (v.id == $scope.ownerGroup) {
-                return true;
-              }
-            });
-
-            if (!angular.isDefined(groupFound)) {
-              $scope.ownerGroup = null;
-            }
-        }
-      });
-
       // A map of icon to use for each types
       var icons = {
         featureCatalog: 'fa-table',
