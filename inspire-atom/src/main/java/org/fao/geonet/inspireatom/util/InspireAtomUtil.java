@@ -254,7 +254,7 @@ public class InspireAtomUtil {
     }
 
     public static Map<String, String> retrieveServiceMetadataWithAtomFeeds(final DataManager dataManager,
-                                                                           final List<AbstractMetadata> iso19139Metadata,
+                                                                           final List<? extends AbstractMetadata> iso19139Metadata,
                                                                            final String atomProtocol)
         throws Exception {
 
@@ -281,7 +281,7 @@ public class InspireAtomUtil {
     }
 
     private static Map<String, String> processAtomFeedsInternal(DataManager dataManager,
-                                                                List<AbstractMetadata> iso19139Metadata, String type,
+                                                                List<? extends AbstractMetadata> iso19139Metadata, String type,
                                                                 String atomProtocol) throws Exception {
 
         Map<String, String> metadataAtomFeeds = new HashMap<String, String>();

@@ -20,29 +20,34 @@
 //===	Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
 //===	Rome - Italy. email: geonetwork@osgeo.org
 //==============================================================================
-package org.fao.geonet.services.inspireatom;
+package org.fao.geonet.inspireatom.harvester.report;
 
-import org.fao.geonet.inspireatom.harvester.InspireAtomHarvester;
-import org.fao.geonet.inspireatom.harvester.report.InspireAtomHarvesterReport;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+/**
+ * Inspire remote atom harvester report.
+ */
+@XmlRootElement(name = "feeds")
+public class InspireAtomHarvesterReport {
+    String error;
+    List<InspireAtomHarvesterReportFeedEntry> feeds = new ArrayList<>();
 
-@Controller
-@RequestMapping(value = "/{portal}/api/remoteatom")
-public class AtomHarvester {
+    public List<InspireAtomHarvesterReportFeedEntry> getFeeds() {
+        return feeds;
+    }
 
-    @Autowired
-    InspireAtomHarvester inspireAtomHarvester;
+    public void setFeeds(List<InspireAtomHarvesterReportFeedEntry> feeds) {
+        this.feeds = feeds;
+    }
 
-    @RequestMapping(value = "/harvest")
-    @PreAuthorize("hasAuthority('Administrator')")
-    @ResponseBody
-    public InspireAtomHarvesterReport harvest() throws Exception {
-        InspireAtomHarvesterReport report = inspireAtomHarvester.harvest();
-        return report;
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
 }
+

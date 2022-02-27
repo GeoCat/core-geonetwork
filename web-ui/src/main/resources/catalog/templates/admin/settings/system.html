@@ -230,23 +230,23 @@
                               </p>
 
                               <p><span data-translate="">inspireatom-totalprocessed</span>
-                                {{loadTplReport.length}}</p>
+                                {{loadTplReport.feeds.length}}</p>
 
                               <p data-translate="">inspireatom-harvestedfeeds</p>
 
                               <ul class="icons-ul">
-                                <li data-ng-repeat="record in loadTplReport"
-                                    ng-if="record['@status'] == 'ok'">
-                                  {{record['@uuid']}} - {{record['@feed']}}
+                                <li data-ng-repeat="record in loadTplReport.feeds"
+                                    ng-if="record['status'] == 'ok'">
+                                  {{record['uuid']}} - {{record['feed']}}
                                 </li>
                               </ul>
 
                               <p data-translate="">inspireatom-errors</p>
 
                               <ul class="icons-ul">
-                                <li data-ng-repeat="record in loadTplReport"
-                                    ng-if="record['@status'] == 'error'">
-                                  {{record['@uuid']}} - {{record['@error']}}
+                                <li data-ng-repeat="record in loadTplReport.feeds"
+                                    ng-if="record['status'] == 'error'">
+                                  {{record['uuid']}} - {{record['error']}}
                                 </li>
                               </ul>
                             </div>

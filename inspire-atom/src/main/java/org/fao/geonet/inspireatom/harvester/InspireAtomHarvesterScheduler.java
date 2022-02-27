@@ -97,7 +97,7 @@ public class InspireAtomHarvesterScheduler {
         if (scheduler.getListenerManager().getJobListener(
             InspireAtomHarvesterJobListener.ATOM_HARVESTER_JOB_CONFIGURATION_LISTENER) == null) {
             scheduler.getListenerManager().addJobListener(
-                new InspireAtomHarvesterJobListener(new InspireAtomHarvester(gc)), jobGroupEquals(ATOM_HARVESTER_GROUP_NAME));
+                new InspireAtomHarvesterJobListener(new InspireAtomHarvester()), jobGroupEquals(ATOM_HARVESTER_GROUP_NAME));
         }
 
         Log.info(Geonet.ATOM, "ATOM feed harvester scheduled");

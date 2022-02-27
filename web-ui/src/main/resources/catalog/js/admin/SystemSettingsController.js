@@ -493,7 +493,7 @@
        * Execute Atom feed harvester
        */
       $scope.executeAtomHarvester = function() {
-        return $http.get('atomharvester?_content_type=json').success(function(data) {
+        return $http.get('../api/remoteatom/harvest').success(function(data) {
           $scope.loadTplReport = data;
 
           $('#atomHarvesterModal').modal();
