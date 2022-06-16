@@ -216,9 +216,12 @@ class Harvester extends BaseAligner<OgcWxSParams> implements IHarvester<HarvestR
 
 
         // Try to load capabilities document
+        String serviceType = params.ogctype.substring(0, 3);
+        String version = params.ogctype.substring(3);
+        boolean isSos = "SOS".equals(serviceType);
         this.capabilitiesUrl = getBaseUrl(params.url) +
-            "SERVICE=" + params.ogctype.substring(0, 3) +
-            "&VERSION=" + params.ogctype.substring(3) +
+            "SERVICE=" +  serviceType +
+            (isSos ? "" : ("&VERSION=" + version)) +
             "&REQUEST=" + GETCAPABILITIES
         ;
 
@@ -332,7 +335,7 @@ class Harvester extends BaseAligner<OgcWxSParams> implements IHarvester<HarvestR
         }
 
 
-        final String schema = dataMan.autodetectSchema(md, null);
+        String schema = dataMan.autodetectSchema(md, null);
         if (schema == null) {
             log.warning("Skipping metadata with unknown schema.");
             result.unknownSchema++;
@@ -396,6 +399,7 @@ class Harvester extends BaseAligner<OgcWxSParams> implements IHarvester<HarvestR
             importXsl = importXsl.resolve(importXslFile);
             log.info("Applying custom import XSL " + importXsl.getFileName());
             md = Xml.transform(md, importXsl);
+            schema = dataMan.autodetectSchema(md, null);
         }
 
 
@@ -458,7 +462,7 @@ class Harvester extends BaseAligner<OgcWxSParams> implements IHarvester<HarvestR
 
         try {
             md = Xml.transform(capa, styleSheet, xsltParams);
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             String message = String.format(
                 "Failed to convert GetCapabilities '%s' to metadata record. Error is: '%s'. Service response is: %s.",
                 this.capabilitiesUrl, e.getMessage(), Xml.getString(capa));
@@ -792,6 +796,19 @@ class Harvester extends BaseAligner<OgcWxSParams> implements IHarvester<HarvestR
                         resolve("OGC" + params.ogctype.substring(0, 3) + "GetCapabilitiesLayer-to-19139.xsl");
 
                     xml = Xml.transform(capa, styleSheet, param);
+
+                    // Apply custom transformation if requested
+                    Path importXsl = context.getAppPath().resolve(Geonet.Path.IMPORT_STYLESHEETS);
+                    String importXslFile = params.getImportXslt();
+                    if (importXslFile != null && !importXslFile.equals("none")) {
+                        if (!importXslFile.endsWith("xsl")) {
+                            importXslFile = importXslFile + ".xsl";
+                        }
+                        importXsl = importXsl.resolve(importXslFile);
+                        log.info("Applying custom import XSL " + importXsl.getFileName());
+                        xml = Xml.transform(xml, importXsl);
+                    }
+
                     if (log.isDebugEnabled()) {
                         log.debug("  - Layer loaded using GetCapabilities document.");
                     }

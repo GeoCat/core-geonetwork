@@ -266,9 +266,7 @@ public class MetadataSharingApi {
 
         //--- in case of owner, privileges for groups 0,1 and GUEST are disabled
         //--- and are not sent to the server. So we cannot remove them
-        UserSession us = ApiUtils.getUserSession(session);
-        boolean isAdmin = Profile.Administrator == us.getProfile();
-        if (!isAdmin && !accessManager.hasReviewPermission(context, Integer.toString(metadata.getId()))) {
+        if (!accessManager.hasReviewPermission(context, Integer.toString(metadata.getId()))) {
             skipAllReservedGroup = true;
         }
 
@@ -398,6 +396,9 @@ public class MetadataSharingApi {
         HttpServletRequest request) throws Exception {
         if (privileges != null) {
 
+            Locale locale = languageUtils.parseAcceptLanguage(request.getLocales());
+            ResourceBundle messages = ResourceBundle.getBundle("org.fao.geonet.api.Messages", locale);
+
             boolean sharingChanges = false;
 
             boolean allowPublishInvalidMd = sm.getValueAsBool(Settings.METADATA_WORKFLOW_ALLOW_PUBLISH_INVALID_MD);
@@ -449,7 +450,7 @@ public class MetadataSharingApi {
                         // For privileges to ALL group, check if it's allowed or not to publish invalid metadata
                         if ((p.getGroup() == ReservedGroup.all.getId())) {
                             try {
-                                    checkCanPublishToAllGroup(context, dataMan, metadata,
+                                    checkCanPublishToAllGroup(context, dataMan, messages, metadata,
                                         allowPublishInvalidMd, allowPublishNonApprovedMd);
                             } catch (Exception ex) {
                                 // If building a report of the sharing, annotate the error and continue
@@ -824,7 +825,7 @@ public class MetadataSharingApi {
                 report, dataManager, accessManager,
                 serviceContext, listOfUpdatedRecords, metadataUuid, session);
             dataManager.flush();
-            dataManager.indexMetadata(String.valueOf(metadata.getId()), true);
+            dataManager.indexMetadata(listOfUpdatedRecords);
 
         } catch (Exception exception) {
             report.addError(exception);
@@ -872,13 +873,25 @@ public class MetadataSharingApi {
                 Vector<OperationAllowedId> sourcePriv =
                     retrievePrivileges(serviceContext, String.valueOf(metadata.getId()), sourceUsr, sourceGrp);
 
+                // Let's not reassign to the reserved groups.
+                // If the request is to reassign to reserved group then ignore the request and
+                // use the source group.
+                Integer groupIdentifierUsed = groupIdentifier;
+                if (ReservedGroup.isReserved(groupIdentifier)) {
+                    groupIdentifierUsed = sourceGrp;
+                    report.addMetadataInfos(metadata, String.format(
+                        "Reserved group '%s' on metadata '%s' is not allowed. Group owner will not be changed.",
+                        groupIdentifier, metadata.getUuid()
+                    ));
+                }
+
                 // -- Set new privileges for new owner from privileges of the old
                 // -- owner, if none then set defaults
                 if (sourcePriv.size() == 0) {
                     dataManager.copyDefaultPrivForGroup(
                         serviceContext,
                         String.valueOf(metadata.getId()),
-                        String.valueOf(groupIdentifier),
+                        String.valueOf(groupIdentifierUsed),
                         false);
                     report.addMetadataInfos(metadata, String.format(
                         "No privileges for user '%s' on metadata '%s', so setting default privileges",
@@ -894,15 +907,15 @@ public class MetadataSharingApi {
                         }
                         dataManager.setOperation(serviceContext,
                             metadata.getId(),
-                            groupIdentifier,
+                            groupIdentifierUsed,
                             priv.getOperationId());
                     }
                 }
 
                 Long metadataId = Long.valueOf(metadata.getId());
                 ApplicationContext context = ApplicationContextHolder.get();
-                if (!Objects.equals(groupIdentifier, sourceGrp)) {
-                    Group newGroup = groupRepository.findById(groupIdentifier).get();
+                if (!Objects.equals(groupIdentifierUsed, sourceGrp)) {
+                    Group newGroup = groupRepository.findById(groupIdentifierUsed).get();
                     Group oldGroup = sourceGrp == null ? null : groupRepository.findById(sourceGrp).get();
                     new RecordGroupOwnerChangeEvent(metadataId,
                         ApiUtils.getUserSession(session).getUserIdAsInt(),
@@ -917,7 +930,7 @@ public class MetadataSharingApi {
                 // -- set the new owner into the metadata record
                 dataManager.updateMetadataOwner(metadata.getId(),
                     String.valueOf(userIdentifier),
-                    String.valueOf(groupIdentifier));
+                    String.valueOf(groupIdentifierUsed));
                 report.addMetadataId(metadata.getId());
                 report.incrementProcessedRecords();
                 listOfUpdatedRecords.add(metadata.getId() + "");
@@ -934,7 +947,7 @@ public class MetadataSharingApi {
      * @return
      * @throws Exception
      */
-    private void checkCanPublishToAllGroup(ServiceContext context, DataManager dm, AbstractMetadata metadata,
+    private void checkCanPublishToAllGroup(ServiceContext context, DataManager dm, ResourceBundle messages, AbstractMetadata metadata,
                                            boolean allowPublishInvalidMd, boolean allowPublishNonApprovedMd) throws Exception {
         MetadataValidationRepository metadataValidationRepository = context.getBean(MetadataValidationRepository.class);
         IMetadataValidator validator = context.getBean(IMetadataValidator.class);
@@ -953,7 +966,7 @@ public class MetadataSharingApi {
                 (metadataValidationRepository.count(MetadataValidationSpecs.isInvalidAndRequiredForMetadata(metadata.getId())) > 0);
 
             if (isInvalid) {
-                throw new Exception("The metadata " + metadata.getUuid() + " it's not valid, can't be published.");
+                throw new Exception(String.format(messages.getString("api.metadata.share.errorMetadataNotValid"), metadata.getUuid()));
             }
         }
 
@@ -964,7 +977,7 @@ public class MetadataSharingApi {
                 boolean isApproved = statusId.equals(StatusValue.Status.APPROVED);
 
                 if (!isApproved) {
-                    throw new Exception("The metadata " + metadata.getUuid() + " it's not approved, can't be published.");
+                    throw new Exception(String.format(messages.getString("api.metadata.share.errorMetadataNotApproved"), metadata.getUuid()));
                 }
             }
         }
@@ -987,18 +1000,12 @@ public class MetadataSharingApi {
         ApplicationContext appContext = ApplicationContextHolder.get();
         ServiceContext context = ApiUtils.createServiceContext(request);
 
+        if (!accessManager.hasReviewPermission(context, Integer.toString(metadata.getId()))) {
+            Locale locale = languageUtils.parseAcceptLanguage(request.getLocales());
+            ResourceBundle messages = ResourceBundle.getBundle("org.fao.geonet.api.Messages", locale);
 
-        //--- in case of owner, privileges for groups 0,1 and GUEST are disabled
-        //--- and are not sent to the server. So we cannot remove them
-        UserSession us = ApiUtils.getUserSession(session);
-        boolean isAdmin = Profile.Administrator == us.getProfile();
-        boolean isMdGroupReviewer = accessManager.getReviewerGroups(us).contains(metadata.getSourceInfo().getGroupOwner());
-        boolean isReviewOperationAllowedOnMdForUser = accessManager.hasReviewPermission(context, Integer.toString(metadata.getId()));
-        boolean isPublishForbiden = !isMdGroupReviewer && !isAdmin && !isReviewOperationAllowedOnMdForUser;
-        if (isPublishForbiden) {
-
-            throw new Exception(String.format("User not allowed to publish the metadata %s. You need to be administrator, or reviewer of the metadata group or reviewer with edit privilege on the metadata.",
-                    metadataUuid));
+            throw new Exception(String.format(messages.getString("api.metadata.share.ErrorUserNotAllowedToPublish"),
+                metadataUuid, messages.getString(accessManager.getReviewerRule()) ));
 
         }
 
@@ -1045,9 +1052,6 @@ public class MetadataSharingApi {
             final AccessManager accessMan = appContext.getBean(AccessManager.class);
             final IMetadataUtils metadataRepository = appContext.getBean(IMetadataUtils.class);
 
-            UserSession us = ApiUtils.getUserSession(session);
-            boolean isAdmin = Profile.Administrator == us.getProfile();
-
             ServiceContext context = ApiUtils.createServiceContext(request);
 
             List<String> listOfUpdatedRecords = new ArrayList<>();
@@ -1060,7 +1064,7 @@ public class MetadataSharingApi {
                     report.addNotEditableMetadataId(metadata.getId());
                 } else {
                     boolean skipAllReservedGroup = false;
-                    if (!isAdmin && accessMan.hasReviewPermission(context, Integer.toString(metadata.getId()))) {
+                    if (!accessMan.hasReviewPermission(context, Integer.toString(metadata.getId()))) {
                         skipAllReservedGroup = true;
                     }
 
