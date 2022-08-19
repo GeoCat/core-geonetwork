@@ -51,6 +51,13 @@
     <for name="gmd:specificUsage" use="textarea"/>
     <for name="gmd:userNote" use="textarea"/>
     <for name="gmd:useLimitation" use="textarea"/>
+
+    <!--<for name="gmd:useLimitation"
+         use="data-gn-keyword-picker-div">
+      <directiveAttributes data-thesaurus-key="external.theme.httpinspireeceuropaeumetadatacodelistLimitationsOnPublicAccess-LimitationsOnPublicAccess"/>
+    </for>-->
+
+
     <!-- Example configuration to use thesaurus to populate a CharacterString field
     (including multilingual fields).
 

@@ -583,6 +583,7 @@
        }]);
 
 
+
   /**
    * @ngdoc directive
    * @name gn_thesaurus.directive:gnKeywordPicker
@@ -799,6 +800,157 @@
             if (scope.conceptIdElement) {
               scope.conceptIdElement.remove();
             }
+          });
+        }
+      };
+    }]);
+
+
+  module.directive('gnKeywordPickerDiv', [
+    'gnThesaurusService', '$compile', '$translate', '$timeout', 'gnCurrentEdit', 'gnLangs', 'gnTopicCategoryService',
+    function(gnThesaurusService, $compile, $translate, $timeout, gnCurrentEdit, gnLangs, gnTopicCategoryService) {
+      return {
+        restrict: 'A',
+        replace: true,
+        transclude: true,
+        scope: {
+          value: '@gnKeywordPickerDiv',
+          label: '@label',
+          ref: '@ref',
+          required: '@required'
+        },
+        templateUrl: '../../catalog/components/thesaurus/' +
+          'partials/keywordselector2.html',
+        link: function(scope, element, attrs) {
+          var schema = gnCurrentEdit.schema;
+
+          scope.gnCurrentEdit = gnCurrentEdit;
+          scope.schema = schema;
+          scope.maxTags = 1;
+          scope.selected = [];
+          scope.initialKeywords = [];
+
+          scope.name = attrs.name;
+          scope.thesaurusKey = attrs.thesaurusKey || '';
+          scope.orderById = attrs.orderById || 'false';
+          scope.max = gnThesaurusService.DEFAULT_NUMBER_OF_RESULTS;
+
+          if (scope.value) {
+            scope.initialKeywords.push(scope.value);
+          }
+
+          var init = function() {
+            scope.$watch('selected', updateValue);
+
+            // Init autocompleter
+            initTagsInput();
+          };
+
+          // Init typeahead and tag input
+          var initTagsInput = function() {
+            var id = '#tagsinput' + scope.ref;
+            $timeout(function() {
+              try {
+                $(id).tagsinput({
+                  itemValue: 'label',
+                  itemText: 'label',
+                  maxTags: scope.maxTags
+                });
+
+                // Add selection to the list of tags
+                angular.forEach(scope.initialKeywords, function(keyword) {
+                  gnThesaurusService.getKeywords(keyword,
+                    scope.thesaurusKey, gnLangs.current, 1, 'MATCH')
+                    .then(function(listOfKeywords) {
+                      for (var i = 0; i < listOfKeywords.length; i++) {
+                        $(id).tagsinput('add', listOfKeywords[i]);
+                        scope.selected.push(listOfKeywords[i]);
+                      }
+                    });
+                });
+
+
+                var field = $(id).tagsinput('input');
+                field.attr('placeholder',
+                  $translate.instant('searchOrTypeKeyword'));
+
+                var searchLanguage = gnCurrentEdit.allLanguages.code2iso['#' + attrs.lang] ||
+                  gnCurrentEdit.mdLanguage ||
+                  scope.lang;
+                var keywordsAutocompleter =
+                  gnThesaurusService.getKeywordAutocompleter({
+                    thesaurusKey: scope.thesaurusKey,
+                    lang: searchLanguage,
+                    outputLang: gnCurrentEdit.allLanguages && gnCurrentEdit.allLanguages.iso ?
+                      gnCurrentEdit.allLanguages.iso.join(',') :
+                      (gnCurrentEdit.mdLanguage || scope.lang),
+                    orderById: scope.orderById
+                  });
+
+                // Init typeahead
+                field.typeahead({
+                  minLength: 0,
+                  highlight: true
+                }, {
+                  name: 'keyword',
+                  displayKey: function (data) {
+                    return data.props.values[searchLanguage] || data.props.value;
+                  },
+                  limit: Infinity,
+                  source: keywordsAutocompleter.ttAdapter(),
+                  templates: {
+                    suggestion: function (data) {
+                      var def = data.props.definitions[searchLanguage];
+                      var text = '<p>' + data.props.values[searchLanguage] + '';
+                      return text + '</p>';
+                    }
+                    // header: '<h4>' + scope.thesaurusKey + '</h4>'
+                  }
+                }).bind('typeahead:selected',
+                  $.proxy(function(obj, keyword) {
+                    // Add to tags
+                    this.tagsinput('add', keyword);
+
+                    // Update selection and snippet
+                    angular.copy(this.tagsinput('items'), scope.selected);
+                    updateValue();
+                    scope.$apply();
+
+                    // Clear typeahead
+                    this.tagsinput('input').typeahead('val', '');
+
+                    // Force prefect to update items to exclude
+                    keywordsAutocompleter.initialize(true);
+                  }, $(id))
+                );
+
+                $(id).on('itemRemoved', function() {
+                  angular.copy($(this)
+                    .tagsinput('items'), scope.selected);
+                  updateValue();
+                  scope.$apply();
+
+                  // Force prefect to update items to exclude
+                  keywordsAutocompleter.initialize(true);
+                });
+
+              } catch (e) {
+                console.warn('No tagsinput for ' + id +
+                  ', error: ' + e.message);
+              }
+            });
+          };
+
+          var updateValue = function() {
+            if (scope.selected.length > 0) {
+              scope.value = scope.selected[0].label;
+            } else {
+              scope.value = '';
+            }
+          };
+
+          scope.$watch('thesaurusKey', function(newValue) {
+            init();
           });
         }
       };
