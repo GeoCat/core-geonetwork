@@ -528,6 +528,9 @@
               post: function(scope, element, attrs) {
                 scope.clearFormOnProtocolChange = !(attrs.clearFormOnProtocolChange == "false"); //default to true (old behavior)
                 scope.popupid = attrs['gnPopupid'];
+                $(scope.popupid).on('hidden.bs.modal', function(){
+                  scope.$broadcast('onlineSrcDialogHidden', {"popupid": scope.popupid});
+                });
 
                 scope.config = null;
                 scope.linkType = null;
@@ -906,6 +909,7 @@
                       scope.params.desc= '';
                       initMultilingualFields();
                     }
+                    scope.$broadcast('onlineSrcDialogInited', {"popupid": scope.popupid});
                   };
                   function loadConfigAndInit(withInit) {
                     gnSchemaManagerService.getEditorAssociationPanelConfig(

@@ -600,15 +600,32 @@
       return {
         restrict: 'A',
         scope: {
-             fauxMultilingual: '@fauxMultilingual' // we are doing our own multi-lingual support
+          fauxMultilingual: '@fauxMultilingual', // we are doing our own multi-lingual support
+          resetValue: "@?" //value to set when we receive the `resetValue` event.
         },
         link: function(scope, element, attrs) {
+          // customId is a property used to identify the input elements created by this instance of
+          // the ThesaurusDirective. We can use it later in the resetValue event handler to retrieve
+          // only these autocomplete inputs in case the DOM structure doesn't fit with what is expected.
+          scope.customId = Date.now();
+          element.attr('customId', scope.customId);
+
           scope.thesaurusKey = attrs.thesaurusKey || '';
           scope.orderById = attrs.orderById || 'false';
           scope.max = gnThesaurusService.DEFAULT_NUMBER_OF_RESULTS;
           scope.fauxMultilingual = scope.fauxMultilingual==="true"; //default false
 
+          // respond to a parent asking me to reset
+          scope.$on('resetValue', function (event, data) {
 
+            setTimeout(function () {
+              element.parent().parent().find('input.tt-input[customId="' + scope.customId + '"]').each(function (index, item) {
+                var itemJQ = $(item);
+                itemJQ.typeahead('val', angular.isDefined(scope.resetValue) ? scope.resetValue : '');
+                itemJQ.triggerHandler('input'); //tell angular about value change
+              });
+            });
+          });
 
           var displayDefinition = attrs.displayDefinition || '';
           var numberOfSuggestions = attrs.numberOfSuggestions || 20;
@@ -807,8 +824,8 @@
 
 
   module.directive('gnKeywordPickerDiv', [
-    'gnThesaurusService', '$compile', '$translate', '$timeout', 'gnCurrentEdit', 'gnLangs', 'gnTopicCategoryService',
-    function(gnThesaurusService, $compile, $translate, $timeout, gnCurrentEdit, gnLangs, gnTopicCategoryService) {
+    'gnThesaurusService', '$compile', '$translate', '$timeout', 'gnCurrentEdit', 'gnLangs',
+    function(gnThesaurusService, $compile, $translate, $timeout, gnCurrentEdit, gnLangs) {
       return {
         restrict: 'A',
         replace: true,
@@ -967,6 +984,260 @@
               for(var v in scope.values) {
                 scope.values[v].value = '';
               }
+            }
+          };
+
+          scope.$watch('thesaurusKey', function(newValue) {
+            init();
+          });
+        }
+      };
+    }]);
+
+  module.directive('gnKeywordPickerFixed', [
+    'gnThesaurusService', '$compile', '$translate', '$timeout', 'gnCurrentEdit', 'gnLangs',
+    function(gnThesaurusService, $compile, $translate, $timeout, gnCurrentEdit, gnLangs) {
+      return {
+        restrict: 'A',
+        scope: {
+          fauxMultilingual: '@fauxMultilingual', // we are doing our own multi-lingual support
+          resetValue: "@?" //value to set when we receive the `resetValue` event.
+        },
+        link: function(scope, element, attrs) {
+          // customId is a property used to identify the input elements created by this instance of
+          // the ThesaurusDirective. We can use it later in the resetValue event handler to retrieve
+          // only these autocomplete inputs in case the DOM structure doesn't fit with what is expected.
+          scope.customId = Date.now();
+          element.attr('customId', scope.customId);
+
+          scope.thesaurusKey = attrs.thesaurusKey || '';
+          scope.orderById = attrs.orderById || 'false';
+          scope.max = gnThesaurusService.DEFAULT_NUMBER_OF_RESULTS;
+          scope.fauxMultilingual = scope.fauxMultilingual==="true"; //default false
+
+          scope.maxTags = 1;
+          scope.selected = [];
+          scope.initialKeywords = [];
+          scope.element = element;
+
+          // respond to a parent asking me to reset
+          scope.$on('resetValue', function (event, data) {
+
+            setTimeout(function () {
+              element.parent().parent().find('input.tt-input[customId="' + scope.customId + '"]').each(function (index, item) {
+                var itemJQ = $(item);
+                itemJQ.typeahead('val', angular.isDefined(scope.resetValue) ? scope.resetValue : '');
+                itemJQ.triggerHandler('input'); //tell angular about value change
+              });
+            });
+          });
+
+
+          scope.name = attrs.name;
+          scope.thesaurusKey = attrs.thesaurusKey || '';
+          scope.orderById = attrs.orderById || 'false';
+
+          scope.values = {};
+
+          /*try {
+            // JSON: multilingual element
+            var jsonValues = JSON.parse(scope.value);
+
+            for(var k in jsonValues) {
+              var l = gnCurrentEdit.allLanguages.code2iso['#' + k];
+              scope.values[l] = jsonValues[k];
+            }
+
+            var mainLanguage = gnCurrentEdit.allLanguages.iso2code[gnCurrentEdit.mdLanguage].replace('#', '');
+            scope.initialKeywords.push(jsonValues[mainLanguage].value);
+
+            scope.isMultilingual = true;
+          } catch (e) {
+            scope.values[gnCurrentEdit.mdLanguage] = {'ref': scope.ref.replace('_', ''), 'value': scope.value};
+            scope.initialKeywords.push(scope.value);
+            scope.isMultilingual = false;
+          }*/
+
+          var init = function() {
+            scope.$watch('selected', updateValue);
+
+            // Init autocompleter
+            initTagsInput();
+          };
+
+          // Init typeahead and tag input
+          var initTagsInput = function() {
+            $timeout(function() {
+              try {
+                element.tagsinput({
+                  itemValue: function(item) {
+                    var l = attrs.lang; //$(scope.element).attr('lang');
+
+                    return item.props.values[l] || item.props.values[gnCurrentEdit.allLanguages.code2iso['#' + attrs.lang] ] ;
+                  },
+                  itemText: function(item) {
+                    var l = attrs.lang; //$(scope.element).attr('lang');
+
+                    return item.props.values[l] || item.props.values[gnCurrentEdit.allLanguages.code2iso['#' + attrs.lang] ] ;
+                  },
+                  maxTags: scope.maxTags
+                });
+
+                // Add selection to the list of tags
+                angular.forEach(scope.initialKeywords, function(keyword) {
+                  gnThesaurusService.getKeywords(keyword,
+                    scope.thesaurusKey, gnLangs.current, 1, 'MATCH')
+                    .then(function(listOfKeywords) {
+                      for (var i = 0; i < listOfKeywords.length; i++) {
+                        $(id).tagsinput('add', listOfKeywords[i]);
+                        scope.selected.push(listOfKeywords[i]);
+                      }
+                    });
+                });
+
+
+                var field = element.tagsinput('input');
+                field.typeahead('destroy');
+                field.attr('placeholder',
+                  $translate.instant('searchOrTypeKeyword'));
+
+                var searchLanguage = gnCurrentEdit.allLanguages.code2iso['#' + attrs.lang] ||
+                  gnLangs.current ||
+                  gnCurrentEdit.mdLanguage;
+                var keywordsAutocompleter =
+                  gnThesaurusService.getKeywordAutocompleter({
+                    thesaurusKey: scope.thesaurusKey,
+                    lang: searchLanguage,
+                    outputLang: gnCurrentEdit.allLanguages && gnCurrentEdit.allLanguages.iso ?
+                      gnCurrentEdit.allLanguages.iso.join(',') :
+                      (gnCurrentEdit.mdLanguage || scope.lang),
+                    orderById: scope.orderById
+                  });
+
+                // Init typeahead
+                field.typeahead({
+                  minLength: 0,
+                  highlight: true
+                }, {
+                  name: 'keyword',
+                  displayKey: function (data) {
+                    return data.props.values[searchLanguage] || data.props.value;
+                  },
+                  limit: Infinity,
+                  source: keywordsAutocompleter.ttAdapter(),
+                  templates: {
+                    suggestion: function (data) {
+                      var def = data.props.definitions[searchLanguage];
+                      var text = '<p>' + data.props.values[searchLanguage] + '';
+                      return text + '</p>';
+                    }
+                    // header: '<h4>' + scope.thesaurusKey + '</h4>'
+                  }
+                }).bind('typeahead:selected',
+                  $.proxy(function(obj, keyword) {
+                    var inputs = $(obj.currentTarget).parent().parent().parent().find('input[lang]');
+                    if ((scope.fauxMultilingual) && inputs.size() > 0) {
+                      for (var i = 0; i < inputs.size(); i++) {
+                        var input = inputs.get(i);
+                        var lang = input.getAttribute('lang');
+                        var value = keyword.props.values[gnCurrentEdit.allLanguages.code2iso['#' + lang]];
+                        if (value) {
+                          $(input).typeahead('val', value);
+
+                          // Add to tags
+                          $(input).tagsinput('add', keyword);
+
+                          angular.copy(this.tagsinput('items'), scope.selected);
+                          updateValue();
+                          scope.$apply();
+
+                          // Clear typeahead
+                          $(input).tagsinput('input').typeahead('val', '');
+
+                          // this makes sure that angular knows the value has changed
+                          $(input).triggerHandler('input');
+                        }
+                        // If no value for the language, value is not set.
+                      }
+                    } else {
+                      // Add to tags
+                      this.tagsinput('add', keyword);
+
+                      // Update selection and snippet
+                      angular.copy(this.tagsinput('items'), scope.selected);
+                      updateValue();
+                      scope.$apply();
+
+                      // Clear typeahead
+                      this.tagsinput('input').typeahead('val', '');
+
+                      // this makes sure that angular knows the value has changed
+                      $(this).triggerHandler('input');
+                    }
+
+                    // Force prefect to update items to exclude
+                    keywordsAutocompleter.initialize(true);
+                  }, $(element))
+                );
+
+                $(element).on('itemRemoved', function() {
+                  var inputs = $(element).parent().parent().parent().find('input[lang]');
+
+                  if ((scope.fauxMultilingual) && inputs.size() > 0) {
+                    angular.copy([], scope.selected);
+
+                    for (var i = 0; i < inputs.size(); i++) {
+                      var input = inputs.get(i);
+
+                      updateValue();
+                      scope.$apply();
+
+                      // Clear typeahead
+                      $(input).tagsinput('input').typeahead('val', '');
+
+                      // this makes sure that angular knows the value has changed
+                      $(input).triggerHandler('input');
+
+                      // If no value for the language, value is not set.
+                    }
+                  } else {
+                    angular.copy($(this)
+                      .tagsinput('items'), scope.selected);
+                    updateValue();
+                    scope.$apply();
+                  }
+
+
+
+                  // Force prefect to update items to exclude
+                  keywordsAutocompleter.initialize(true);
+                });
+
+              } catch (e) {
+                console.warn('No tagsinput for ' + id +
+                  ', error: ' + e.message);
+              }
+            });
+          };
+
+          var updateValue = function() {
+            /*if (scope.selected.length > 0) {
+              for(var v in scope.selected[0].props.values) {
+                scope.values[v].value = scope.selected[0].props.values[v] ||
+                  scope.selected[0].props.values[gnCurrentEdit.mdLanguage];
+              }
+            } else {
+              for(var v in scope.values) {
+                scope.values[v].value = '';
+              }
+            }*/
+
+            var elementEl = angular.element( scope.element);
+
+            if (scope.selected.length > 0) {
+              elementEl.parent().addClass("gn-maxtags");
+            } else {
+              elementEl.parent().removeClass("gn-maxtags");
             }
           };
 
