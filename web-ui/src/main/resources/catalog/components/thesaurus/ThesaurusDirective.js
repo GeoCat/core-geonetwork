@@ -833,10 +833,26 @@
           scope.name = attrs.name;
           scope.thesaurusKey = attrs.thesaurusKey || '';
           scope.orderById = attrs.orderById || 'false';
-          scope.max = gnThesaurusService.DEFAULT_NUMBER_OF_RESULTS;
 
-          if (scope.value) {
+          scope.values = {};
+
+          try {
+            // JSON: multilingual element
+            var jsonValues = JSON.parse(scope.value);
+
+            for(var k in jsonValues) {
+              var l = gnCurrentEdit.allLanguages.code2iso['#' + k];
+              scope.values[l] = jsonValues[k];
+            }
+
+            var mainLanguage = gnCurrentEdit.allLanguages.iso2code[gnCurrentEdit.mdLanguage].replace('#', '');
+            scope.initialKeywords.push(jsonValues[mainLanguage].value);
+
+            scope.isMultilingual = true;
+          } catch (e) {
+            scope.values[gnCurrentEdit.mdLanguage] = {'ref': scope.ref.replace('_', ''), 'value': scope.value};
             scope.initialKeywords.push(scope.value);
+            scope.isMultilingual = false;
           }
 
           var init = function() {
@@ -875,8 +891,8 @@
                   $translate.instant('searchOrTypeKeyword'));
 
                 var searchLanguage = gnCurrentEdit.allLanguages.code2iso['#' + attrs.lang] ||
-                  gnCurrentEdit.mdLanguage ||
-                  scope.lang;
+                  gnLangs.current ||
+                  gnCurrentEdit.mdLanguage;
                 var keywordsAutocompleter =
                   gnThesaurusService.getKeywordAutocompleter({
                     thesaurusKey: scope.thesaurusKey,
@@ -943,9 +959,14 @@
 
           var updateValue = function() {
             if (scope.selected.length > 0) {
-              scope.value = scope.selected[0].label;
+              for(var v in scope.selected[0].props.values) {
+                scope.values[v].value = scope.selected[0].props.values[v] ||
+                  scope.selected[0].props.values[gnCurrentEdit.mdLanguage];
+              }
             } else {
-              scope.value = '';
+              for(var v in scope.values) {
+                scope.values[v].value = '';
+              }
             }
           };
 
