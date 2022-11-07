@@ -30,7 +30,6 @@
     <jsSource webappPath="/catalog/templates/"/>
     <cssSource webappPath="/catalog/views/"/>
     <cssSource webappPath="/catalog/style/"/>
-    <cssSource webappPath="/catalog/lib/bootstrap-table/dist"/>
   </require>
   <declarative name="lib" pathOnDisk="web-ui/src/main/resources">
     <jsSource webappPath="/catalog/lib/modernizr.js" minimize="false"/>
@@ -99,6 +98,8 @@
     <jsSource webappPath="/catalog/lib/geohash.js"/>
     <jsSource webappPath="/catalog/lib/xml2json/xml2json.min.js" minimize="false"/>
     <jsSource webappPath="/catalog/lib/dom-to-image/dom-to-image.min.js" minimize="false"/>
+
+    <cssSource webappPath="/catalog/lib/bootstrap-table/dist/bootstrap-table.min.css" />
   </declarative>
   <!-- Same as previous + olcesium -->
   <declarative name="lib3d" pathOnDisk="web-ui/src/main/resources">
@@ -171,5 +172,7 @@
     <jsSource webappPath="/catalog/lib/geohash.js"/>
     <jsSource webappPath="/catalog/lib/xml2json/xml2json.min.js" minimize="false"/>
     <jsSource webappPath="/catalog/lib/dom-to-image/dom-to-image.min.js" minimize="false"/>
+
+    <cssSource webappPath="/catalog/lib/bootstrap-table/dist/bootstrap-table.min.css" />
   </declarative>
 </sources>
