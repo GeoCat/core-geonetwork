@@ -2,19 +2,11 @@ package org.fao.geonet.kernel.url;
 
 import jeeves.server.context.ServiceContext;
 import org.fao.geonet.AbstractCoreIntegrationTest;
-import org.fao.geonet.domain.AbstractMetadata;
-import org.fao.geonet.domain.Link;
-import org.fao.geonet.domain.LinkStatus;
-import org.fao.geonet.domain.Metadata;
-import org.fao.geonet.domain.MetadataLink;
-import org.fao.geonet.domain.MetadataType;
+import org.fao.geonet.domain.*;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.datamanager.IMetadataManager;
-import org.fao.geonet.repository.LinkRepository;
-import org.fao.geonet.repository.LinkStatusRepository;
-import org.fao.geonet.repository.MetadataLinkRepository;
-import org.fao.geonet.repository.MetadataRepository;
-import org.fao.geonet.repository.SourceRepository;
+import org.fao.geonet.kernel.setting.SettingManager;
+import org.fao.geonet.repository.*;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -28,11 +20,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -46,7 +34,6 @@ import static org.mockito.Mockito.mock;
 
 public class UrlAnalyzerTest extends AbstractCoreIntegrationTest {
 
-
     private static final int TEST_OWNER = 42;
 
     @Autowired
@@ -54,6 +41,9 @@ public class UrlAnalyzerTest extends AbstractCoreIntegrationTest {
 
     @Autowired
     private SchemaManager schemaManager;
+
+    @Autowired
+    private SettingManager settingManager;
 
     @Autowired
     private MetadataRepository metadataRepository;
@@ -77,6 +67,7 @@ public class UrlAnalyzerTest extends AbstractCoreIntegrationTest {
     private EntityManager entityManager;
 
     private ServiceContext context;
+
 
     @Before
     public void setUp() throws Exception {
@@ -102,11 +93,11 @@ public class UrlAnalyzerTest extends AbstractCoreIntegrationTest {
         SimpleJpaRepository metadataLinkRepository = new SimpleJpaRepository<MetadataLink, Integer>(MetadataLink.class, entityManager);
         List<MetadataLink> metadataLinkList = metadataLinkRepository.findAll();
         assertEquals(
-                metadataLinkList.stream().map(x -> x.getLink().getId()).collect(Collectors.toSet()),
-                linkRepository.findAll().stream().map(Link::getId).collect(Collectors.toSet()));
+            metadataLinkList.stream().map(x -> x.getLink().getId()).collect(Collectors.toSet()),
+            linkRepository.findAll().stream().map(Link::getId).collect(Collectors.toSet()));
         assertEquals(
-                metadataLinkList.stream().map(x -> x.getMetadataId()).collect(Collectors.toSet()),
-                Collections.singleton(md.getId()));
+            metadataLinkList.stream().map(x -> x.getMetadataId()).collect(Collectors.toSet()),
+            Collections.singleton(md.getId()));
     }
 
 
@@ -125,11 +116,11 @@ public class UrlAnalyzerTest extends AbstractCoreIntegrationTest {
         SimpleJpaRepository metadataLinkRepository = new SimpleJpaRepository<MetadataLink, Integer>(MetadataLink.class, entityManager);
         List<MetadataLink> metadataLinkList = metadataLinkRepository.findAll();
         assertEquals(
-                metadataLinkList.stream().map(x -> x.getLink().getId()).collect(Collectors.toSet()),
-                linkRepository.findAll().stream().map(Link::getId).collect(Collectors.toSet()));
+            metadataLinkList.stream().map(x -> x.getLink().getId()).collect(Collectors.toSet()),
+            linkRepository.findAll().stream().map(Link::getId).collect(Collectors.toSet()));
         assertEquals(
-                metadataLinkList.stream().map(x -> x.getMetadataId()).collect(Collectors.toSet()),
-                Stream.of(mdOne.getId(), mdTwo.getId()).collect(Collectors.toSet()));
+            metadataLinkList.stream().map(x -> x.getMetadataId()).collect(Collectors.toSet()),
+            Stream.of(mdOne.getId(), mdTwo.getId()).collect(Collectors.toSet()));
         assertEquals(12, metadataLinkList.size());
     }
 
@@ -138,7 +129,7 @@ public class UrlAnalyzerTest extends AbstractCoreIntegrationTest {
         Element mdAsXml = getMdAsXml();
         AbstractMetadata md = insertMetadataInDb(mdAsXml);
         Xml.selectElement(mdAsXml, ".//gmd:abstract/gco:CharacterString")
-                .setText("http://temporary_ressource_when_network_switch.org je répète http://temporary_ressource_when_network_switch.org");
+            .setText("http://temporary_ressource_when_network_switch.org je répète http://temporary_ressource_when_network_switch.org");
         UrlAnalyzer toTest = createToTest();
 
         toTest.processMetadata(mdAsXml, md);
@@ -237,7 +228,7 @@ public class UrlAnalyzerTest extends AbstractCoreIntegrationTest {
         List<LinkStatus> allStatus = statusRepository.findAll();
         assertEquals(6, allStatus.size());
         assertEquals(Stream.of("200", "406", "418").collect(Collectors.toSet()),
-                allStatus.stream().map(LinkStatus::getStatusValue).collect(Collectors.toSet()));
+            allStatus.stream().map(LinkStatus::getStatusValue).collect(Collectors.toSet()));
 
         toTest.urlChecker = mockUrlChecker;
         Mockito.when(mockUrlChecker.getUrlStatus(eq("http://apps.titellus.net/geonetwork/srv/api/records/da165110-88fd-11da-a88f-000d939bc5d8/attachments/thumbnail_s.gif"))).thenReturn(new LinkStatus().setStatusValue("200").setStatusInfo("OK").setFailing(false));
@@ -254,13 +245,14 @@ public class UrlAnalyzerTest extends AbstractCoreIntegrationTest {
         assertEquals(12, allStatus.size());
         Map<String, Long> grouped = allStatus.stream().map(LinkStatus::getStatusValue).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
         assertEquals(6L, grouped.get("200").longValue());
-        assertEquals(1L,grouped.get("406").longValue());
+        assertEquals(1L, grouped.get("406").longValue());
         assertEquals(5L, grouped.get("418").longValue());
     }
 
     private UrlAnalyzer createToTest() {
         UrlAnalyzer toTest = new UrlAnalyzer();
         toTest.schemaManager = schemaManager;
+        toTest.settingManager = settingManager;
         toTest.metadataRepository = metadataRepository;
         toTest.linkRepository = linkRepository;
         toTest.linkStatusRepository = linkStatusRepository;
@@ -275,27 +267,27 @@ public class UrlAnalyzerTest extends AbstractCoreIntegrationTest {
 
         Metadata metadata = new Metadata();
         metadata.setDataAndFixCR(element)
-                .setUuid(UUID.randomUUID().toString());
+            .setUuid(UUID.randomUUID().toString());
         metadata.getDataInfo()
-                .setRoot(element.getQualifiedName())
-                .setSchemaId(schemaManager.autodetectSchema(element))
-                .setType(MetadataType.METADATA)
-                .setPopularity(1000);
+            .setRoot(element.getQualifiedName())
+            .setSchemaId(schemaManager.autodetectSchema(element))
+            .setType(MetadataType.METADATA)
+            .setPopularity(1000);
         metadata.getSourceInfo()
-                .setOwner(TEST_OWNER)
-                .setSourceId(sourceRepository.findAll().get(0).getUuid());
+            .setOwner(TEST_OWNER)
+            .setSourceId(sourceRepository.findAll().get(0).getUuid());
         metadata.getHarvestInfo()
-                .setHarvested(false);
+            .setHarvested(false);
 
         AbstractMetadata dbInsertedMetadata = dataManager.insertMetadata(
-                context,
-                metadata,
-                element,
-                true,
-                false,
-                NO,
-                false,
-                false);
+            context,
+            metadata,
+            element,
+            true,
+            false,
+            NO,
+            false,
+            false);
 
         return dbInsertedMetadata;
     }

@@ -25,19 +25,14 @@ package org.fao.geonet.api.records.formatters.cache;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Sets;
-import com.google.common.jimfs.Configuration;
-import com.google.common.jimfs.Jimfs;
-
+import org.fao.geonet.AbstractCoreIntegrationTest;
 import org.fao.geonet.api.records.formatters.FormatType;
 import org.fao.geonet.api.records.formatters.FormatterWidth;
 import org.fao.geonet.kernel.GeonetworkDataDirectory;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
-import java.nio.file.FileSystem;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -48,31 +43,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashSet;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-public class FilesystemStoreTest {
+public class FilesystemStoreTest extends AbstractCoreIntegrationTest {
 
 
-    private FileSystem fileSystem;
+    @Autowired
     private FilesystemStore store;
+    @Autowired
     private GeonetworkDataDirectory geonetworkDataDirectory;
 
-    @Before
-    public void setUp() throws Exception {
-        createDataDir();
-        initStore();
-
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        fileSystem.close();
-        store.close();
-    }
 
     @Test
     public void testGet() throws Exception {
@@ -349,17 +329,4 @@ public class FilesystemStoreTest {
         }
         return count[0];
     }
-
-    private void initStore() throws SQLException, ClassNotFoundException {
-        this.store = new FilesystemStore();
-        this.store.setTesting(true);
-        store.setGeonetworkDataDir(geonetworkDataDirectory);
-    }
-
-    private void createDataDir() {
-        this.geonetworkDataDirectory = Mockito.mock(GeonetworkDataDirectory.class);
-        this.fileSystem = Jimfs.newFileSystem("blarg", Configuration.unix());
-        Mockito.when(geonetworkDataDirectory.getHtmlCacheDir()).thenReturn(fileSystem.getPath("/html"));
-    }
-
 }

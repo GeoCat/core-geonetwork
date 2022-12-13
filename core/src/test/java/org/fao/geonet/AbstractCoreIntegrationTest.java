@@ -32,22 +32,12 @@ import jeeves.server.context.ServiceContext;
 import jeeves.server.dispatchers.ServiceManager;
 import jeeves.server.sources.ServiceRequest;
 import org.fao.geonet.constants.Geonet;
-import org.fao.geonet.domain.ISODate;
-import org.fao.geonet.domain.MetadataType;
-import org.fao.geonet.domain.Pair;
-import org.fao.geonet.domain.Profile;
-import org.fao.geonet.domain.Source;
-import org.fao.geonet.domain.SourceType;
-import org.fao.geonet.domain.User;
+import org.fao.geonet.domain.*;
 import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.GeonetworkDataDirectory;
 import org.fao.geonet.kernel.mef.Importer;
 import org.fao.geonet.kernel.mef.MEFLib;
-import org.fao.geonet.repository.AbstractSpringDataTest;
-import org.fao.geonet.repository.GroupRepository;
-import org.fao.geonet.repository.SourceRepository;
-import org.fao.geonet.repository.UserGroupRepository;
-import org.fao.geonet.repository.UserRepository;
+import org.fao.geonet.repository.*;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
@@ -55,6 +45,8 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.mock.web.MockHttpSession;
@@ -62,6 +54,9 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
+import org.testcontainers.elasticsearch.ElasticsearchContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -96,6 +91,7 @@ import static org.springframework.security.core.authority.AuthorityUtils.createA
     inheritLocations = true,
     locations = {"classpath:core-repository-test-context.xml"}
 )
+@Testcontainers
 public abstract class AbstractCoreIntegrationTest extends AbstractSpringDataTest {
     @Autowired
     protected ConfigurableApplicationContext _applicationContext;
@@ -109,6 +105,9 @@ public abstract class AbstractCoreIntegrationTest extends AbstractSpringDataTest
     protected UserGroupRepository _userGroupRepo;
     @Autowired
     protected GroupRepository _groupRepo;
+
+    @Container
+    private static ElasticsearchContainer elasticsearchContainer = new GeoNetworkElasticsearchContainer();
 
     protected static Element createServiceConfigParam(String name, String value) {
         return new Element("param")
@@ -138,9 +137,19 @@ public abstract class AbstractCoreIntegrationTest extends AbstractSpringDataTest
         }
     }
 
+    @BeforeAll
+    public final void beforeAll() throws Exception {
+        elasticsearchContainer.start();
+    }
+
     @Before
     public final void setup() throws Exception {
         testFixture.setup(this);
+    }
+
+    @AfterAll
+    public final void afterAll() throws Exception {
+        elasticsearchContainer.stop();
     }
 
     @After
