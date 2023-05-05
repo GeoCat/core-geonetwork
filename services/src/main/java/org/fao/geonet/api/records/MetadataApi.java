@@ -29,6 +29,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import jeeves.constants.Jeeves;
+import jeeves.server.ServiceConfig;
 import jeeves.server.context.ServiceContext;
 import jeeves.services.ReadWriteController;
 import org.apache.commons.io.FileUtils;
@@ -52,6 +53,10 @@ import org.fao.geonet.kernel.GeonetworkDataDirectory;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.kernel.mef.MEFLib;
+import org.fao.geonet.kernel.search.LuceneSearcher;
+import org.fao.geonet.kernel.search.MetaSearcher;
+import org.fao.geonet.kernel.search.SearchManager;
+import org.fao.geonet.kernel.search.SearcherType;
 import org.fao.geonet.lib.Lib;
 import org.fao.geonet.repository.MetadataRepository;
 import org.fao.geonet.utils.Log;
@@ -63,25 +68,16 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.fao.geonet.api.ApiParams.*;
 import static org.fao.geonet.kernel.mef.MEFLib.Version.Constants.MEF_V1_ACCEPT_TYPE;
@@ -116,6 +112,9 @@ public class MetadataApi {
 
     @Autowired
     GeonetworkDataDirectory dataDirectory;
+
+    @Autowired
+    private SearchManager searchManager;
 
     private ApplicationContext context;
 
@@ -646,6 +645,44 @@ public class MetadataApi {
 
     }
 
+    @ApiOperation(
+        value = "Verifies if the metadata title is in use.",
+        nickname = "checkMetadataTitleDuplicated")
+    @PostMapping(value = "/{metadataUuid:.+}/checkDuplicatedTitle",
+        produces = {
+            MediaType.APPLICATION_JSON_VALUE
+        })
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('Editor')")
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Return if the title is duplicated or not."),
+        @ApiResponse(code = 403, message = ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_VIEW)
+    })
+    @ResponseBody
+    public ResponseEntity<Boolean> checkMetadataTitleDuplicated(
+        @ApiParam(value = API_PARAM_RECORD_UUID,
+            required = true)
+        @PathVariable
+        String metadataUuid,
+        @ApiParam(value = "Metadata title to check",
+            required = true)
+        @RequestBody String title,
+        HttpServletRequest request
+    )
+        throws Exception {
+        try {
+            ApiUtils.canViewRecord(metadataUuid, request);
+        } catch (SecurityException e) {
+            Log.debug(API.LOG_MODULE_NAME, e.getMessage(), e);
+            throw new NotAllowedException(ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_VIEW);
+        }
+
+        try (ServiceContext serviceContext = ApiUtils.createServiceContext(request)) {
+            Set<String> uuidsWithSameTitle = retrieveMetadataUuidsFromTitle(serviceContext, title, metadataUuid);
+
+            return ResponseEntity.ok(!uuidsWithSameTitle.isEmpty());
+        }
+    }
 
     private boolean isIncludedAttributeTable(RelatedResponse.Fcat fcat) {
         return fcat != null
@@ -654,5 +691,37 @@ public class MetadataApi {
             && fcat.getItem().get(0).getFeatureType() != null
             && fcat.getItem().get(0).getFeatureType().getAttributeTable() != null
             && fcat.getItem().get(0).getFeatureType().getAttributeTable().getElement() != null;
+    }
+
+    /**
+     * Retrieves the list of metadata uuids that have the same dataset identifier.
+     *
+     * @param serviceContext        ServiceContext.
+     * @param metadataTitle         Metadata title to check.
+     * @param metadataUuidToExclude Metadata identifier to exclude from the search.
+     * @return  A list of metadata uuids that have the same metadata title.
+     */
+    private Set<String> retrieveMetadataUuidsFromTitle(ServiceContext serviceContext,
+                                                       String metadataTitle,
+                                                       String metadataUuidToExclude) {
+
+        List<String> keywordsList = new ArrayList<String>();
+        Element request = new Element(Jeeves.Elem.REQUEST);
+        request.addContent(new Element("title").setText(metadataTitle));
+        request.addContent(new Element("fast").setText("true"));
+        // perform the search and return the results read from the index
+
+        try (MetaSearcher searcher = searchManager.newSearcher(SearcherType.LUCENE, Geonet.File.SEARCH_LUCENE)) {
+            ServiceConfig serviceConfig = new ServiceConfig();
+            serviceConfig.setValue(Geonet.SearchConfig.SEARCH_IGNORE_PORTAL_FILTER_OPTION, "true");
+
+            searcher.search(serviceContext, request, serviceConfig);
+
+            Map<Integer, AbstractMetadata> allMdInfo = ((LuceneSearcher) searcher).getAllMdInfo(serviceContext, searcher.getSize());
+        } catch (Exception ex) {
+            Log.error(Geonet.ATOM, ex.getMessage(), ex);
+        }
+
+        return null;
     }
 }
