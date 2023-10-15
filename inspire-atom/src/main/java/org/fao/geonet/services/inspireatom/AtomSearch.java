@@ -22,6 +22,8 @@
 //==============================================================================
 package org.fao.geonet.services.inspireatom;
 
+import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -30,8 +32,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jeeves.server.context.ServiceContext;
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.search.SearchHit;
 import org.fao.geonet.api.ApiUtils;
 import org.fao.geonet.api.tools.i18n.LanguageUtils;
 import org.fao.geonet.constants.Geonet;
@@ -61,6 +61,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static org.fao.geonet.kernel.search.EsFilterBuilder.buildPermissionsFilter;
 import static org.fao.geonet.kernel.search.EsSearchManager.FIELDLIST_CORE;
@@ -176,14 +177,14 @@ public class AtomSearch {
 
         // Loop over the results and retrieve feeds to add in results
         // First element in results (pos=0) is the summary, ignore it
-        for (SearchHit hit : result.getHits().getHits()) {
-            String id = hit.getSourceAsMap().get(Geonet.IndexFieldNames.ID).toString();
+        for (Hit hit : (List<Hit>) result.hits().hits()) {
+            String id = objectMapper.convertValue(hit.source(), Map.class).get(Geonet.IndexFieldNames.ID).toString();
             InspireAtomFeed feed = service.findByMetadataId(Integer.parseInt(id));
             if (feed != null) {
                 Element feedEl = Xml.loadString(feed.getAtom(), false);
                 feeds.addContent((Content) feedEl.clone());
             } else {
-                Log.debug(Geonet.ATOM, String.format("No feed available for %s", hit.getId()));
+                Log.debug(Geonet.ATOM, String.format("No feed available for %s", hit.id()));
             }
         }
         return feeds;
