@@ -40,7 +40,13 @@ If you are using python3:
 4. Optional: Preview online help:
    
    ```bash
-   mkdocs serve --config-file help.yml  
+   mkdocs serve --config-file help.yml
+   ```
+   
+5. To update things in the future:
+   
+   ```bash
+   pip install -U -r requirements.txt
    ```
 
 ### VirtualEnv
