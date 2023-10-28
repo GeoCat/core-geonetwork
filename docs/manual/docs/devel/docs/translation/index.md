@@ -32,40 +32,40 @@ Specific ***pandoc*** extensions are used to match the capabilities of ***mkdocs
 The differences differences in markdown requires pre/post processing of markdown and html files. These steps are automated in the ***translate*** python script (check comments for details). Supporting additional ***mkdocs*** features requires updating this script.
 
 1. Install [mkdocs_translate](https://github.com/jodygarnett/translate) python script:
-   
-   ```
-   pip3 install git+https://github.com/jodygarnett/translate.git
-   ```
+    
+    ```bash
+    pip3 install git+https://github.com/jodygarnett/translate.git
+    ```
 
 2. To translate provide environmental variable with Deepl authentication key:
 
-   ```
-   cd core-geonetwork/docs
-   mkdir target
-   export DEEPL_AUTH="xxxxxxxx-xxx-...-xxxxx:fx"
-   ```
+    ```bash
+    cd core-geonetwork/docs
+    mkdir target
+    export DEEPL_AUTH="xxxxxxxx-xxx-...-xxxxx:fx"
+    ```
 
 3. And translate a file:
 
-   ``` bash
-   mkdocs_translate french manual/docs/contributing/style-guide.md
-   ```
+    ```bash
+    mkdocs_translate french manual/docs/contributing/style-guide.md
+    ```
    
 4. To test each stage individually:
 
-   ```
-   mkdocs_translate internal-html manual/docs/contributing/style-guide.md
-   mkdocs_translate internal-document target/contributing/style-guide.html target/contributing/style-guide.fr.html
-   mkdocs_translate internal-markdown target/contributing/style-guide.fr.html
+    ```
+    mkdocs_translate internal-html manual/docs/contributing/style-guide.md
+    mkdocs_translate internal-document target/contributing/style-guide.html target/contributing/style-guide.fr.html
+    mkdocs_translate internal-markdown target/contributing/style-guide.fr.html
 
-   cp target/contributing/style-guide.fr.md manual/docs/contributing/style-guide.fr.md
-   ```
+    cp target/contributing/style-guide.fr.md manual/docs/contributing/style-guide.fr.md
+    ```
 
 5. To test markdown / html round trip:
 
-   ```
-   mkdocs_translate convert manual/docs/contributing/style-guide.md
-   mkdocs_translate markdown target/contributing/style-guide.html
+    ```
+    mkdocs_translate convert manual/docs/contributing/style-guide.md
+    mkdocs_translate markdown target/contributing/style-guide.html
 
-   diff manual/docs/contributing/style-guide.md target/contributing/style-guide.md
-   ```
+    diff manual/docs/contributing/style-guide.md target/contributing/style-guide.md
+    ```

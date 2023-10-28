@@ -20,8 +20,8 @@ theme:
   name: material
   language: en
   custom_dir: overrides
-  logo: assets/geonetwork-logo.svg
-  favicon: assets/geonetwork-logo.png
+  logo: assets/images/geonetwork-logo.svg
+  favicon: assets/images/geonetwork-logo.png
   icon:
     repo: fontawesome/brands/github
   palette:
@@ -213,6 +213,8 @@ nav:
     - 'Map page':
       - help/map/index.md
       - help/map/visualize/index.md
+    - 'Reference':
+      - help/reference/index.md
   - 'User Guide':
     - user-guide/index.md
     - user-guide/quick-start/index.md
