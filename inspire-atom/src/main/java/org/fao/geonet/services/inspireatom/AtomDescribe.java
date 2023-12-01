@@ -1,5 +1,5 @@
 //=============================================================================
-//===	Copyright (C) 2001-2010 Food and Agriculture Organization of the
+//===	Copyright (C) 2001-2023 Food and Agriculture Organization of the
 //===	United Nations (FAO-UN), United Nations World Food Programme (WFP)
 //===	and United Nations Environment Programme (UNEP)
 //===
@@ -27,33 +27,29 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jeeves.interfaces.Service;
-import jeeves.server.ServiceConfig;
 import jeeves.server.context.ServiceContext;
-
+import org.apache.commons.lang3.StringUtils;
+import org.fao.geonet.GeonetContext;
 import org.fao.geonet.api.ApiUtils;
+import org.fao.geonet.api.exception.FeatureNotEnabledException;
+import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.ReservedOperation;
+import org.fao.geonet.exceptions.MetadataNotFoundEx;
 import org.fao.geonet.guiapi.search.XsltResponseWriter;
 import org.fao.geonet.inspireatom.InspireAtomService;
-import org.fao.geonet.kernel.setting.SettingManager;
-import org.fao.geonet.kernel.setting.Settings;
-import org.fao.geonet.repository.InspireAtomFeedRepository;
-import org.fao.geonet.utils.Log;
-import org.fao.geonet.Util;
-import org.apache.commons.lang.StringUtils;
-import org.fao.geonet.GeonetContext;
-import org.fao.geonet.constants.Geonet;
-import org.fao.geonet.exceptions.MetadataNotFoundEx;
 import org.fao.geonet.inspireatom.util.InspireAtomUtil;
 import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.setting.SettingManager;
+import org.fao.geonet.kernel.setting.Settings;
 import org.fao.geonet.lib.Lib;
+import org.fao.geonet.repository.InspireAtomFeedRepository;
+import org.fao.geonet.utils.Log;
 import org.jdom.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.nio.file.Path;
 
 import static org.springframework.http.HttpStatus.OK;
 
@@ -70,32 +66,27 @@ import static org.springframework.http.HttpStatus.OK;
 @RestController
 public class AtomDescribe {
 
-    @Autowired
-    InspireAtomService service;
-
-    @Autowired
-    SettingManager sm;
-
-    @Autowired
-    DataManager dm;
-
-    @Autowired
-    InspireAtomFeedRepository inspireAtomFeedRepository;
-
     /**
      * Dataset identifier param name
      **/
-    private final static String DATASET_IDENTIFIER_CODE_PARAM = "spatial_dataset_identifier_code";
-
+    private static final String DATASET_IDENTIFIER_CODE_PARAM = "spatial_dataset_identifier_code";
     /**
      * Dataset namespace param name
      **/
-    private final static String DATASET_IDENTIFIER_NS_PARAM = "spatial_dataset_identifier_namespace";
-
+    private static final String DATASET_IDENTIFIER_NS_PARAM = "spatial_dataset_identifier_namespace";
     /**
      * Service identifier param name
      **/
-    private final static String SERVICE_IDENTIFIER = "fileIdentifier";
+    private static final String SERVICE_IDENTIFIER = "fileIdentifier";
+
+    @Autowired
+    InspireAtomService service;
+    @Autowired
+    SettingManager sm;
+    @Autowired
+    DataManager dm;
+    @Autowired
+    InspireAtomFeedRepository inspireAtomFeedRepository;
 
     @io.swagger.v3.oas.annotations.Operation(
         summary = "Describe resource",
@@ -109,25 +100,24 @@ public class AtomDescribe {
         @ApiResponse(responseCode = "204", description = "Not authenticated.")
     })
     @ResponseStatus(OK)
-    @ResponseBody
     public Element describeResource(
         @Parameter(
             description = "fileIdentifier",
             required = false)
         @RequestParam(defaultValue = "")
-            String fileIdentifier,
+        String fileIdentifier,
         @Parameter(
             description = "spatial_dataset_identifier_code",
             required = false)
-        @RequestParam(defaultValue = "")
-            String spatial_dataset_identifier_code,
+        @RequestParam(defaultValue = "", name = "spatial_dataset_identifier_code")
+        String spatialDatasetIdentifierCode,
         @Parameter(
             description = "spatial_dataset_identifier_namespace",
             required = false)
-        @RequestParam(defaultValue = "")
-            String spatial_dataset_identifier_namespace,
+        @RequestParam(defaultValue = "", name = "spatial_dataset_identifier_namespace")
+        String spatialDatasetIdentifierNamespace,
         @Parameter(hidden = true)
-            HttpServletRequest request
+        HttpServletRequest request
     ) throws Exception {
         ServiceContext context = ApiUtils.createServiceContext(request);
 
@@ -135,12 +125,12 @@ public class AtomDescribe {
 
         if (!inspireEnable) {
             Log.info(Geonet.ATOM, "Inspire is disabled");
-            throw new Exception("Inspire is disabled");
+            throw new FeatureNotEnabledException("Inspire is disabled");
         }
 
         Element response =
             StringUtils.isEmpty(fileIdentifier)
-                ? processDatasetFeed(spatial_dataset_identifier_code, spatial_dataset_identifier_namespace, context)
+                ? processDatasetFeed(spatialDatasetIdentifierCode, spatialDatasetIdentifierNamespace, context)
                 : processServiceFeed(fileIdentifier, context);
 
         return new XsltResponseWriter(null, "atom-describe")
