@@ -32,6 +32,8 @@
   <bean id="Harvest" class="org.fao.geonet.component.harvester.csw.Harvest"/>
   <bean id="HarvestManager" class="org.fao.geonet.kernel.harvest.HarvestManagerImpl"/>
 
+  <bean id="GeonetworkClient" class="org.fao.geonet.kernel.harvest.harvester.geonet40.GeoNetworkApiClient"/>
+
   <!-- The id of the beans is the same as the type in the harvester settings table and thus should not be changed -->
   <bean id="geonetwork" class="org.fao.geonet.kernel.harvest.harvester.geonet.GeonetHarvester"
         scope="prototype"/>
@@ -64,5 +66,8 @@
         class="org.fao.geonet.kernel.harvest.harvester.simpleurl.SimpleUrlHarvester"
         scope="prototype"/>
   <bean id="database" class="org.fao.geonet.kernel.harvest.harvester.database.DatabaseHarvester"
+        scope="prototype"/>
+  <bean id="geonetwork40"
+        class="org.fao.geonet.kernel.harvest.harvester.geonet40.Geonet40Harvester"
         scope="prototype"/>
 </beans>
