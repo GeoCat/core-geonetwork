@@ -678,7 +678,6 @@
                 //   });
                 // }
                 // Add each WMS layer to the map
-                scope.layers = scope.gnCurrentEdit.layerConfig;
                 angular.forEach(scope.gnCurrentEdit.layerConfig, function (layer) {
                   scope.map.addLayer(
                     new ol.layer.Tile({
