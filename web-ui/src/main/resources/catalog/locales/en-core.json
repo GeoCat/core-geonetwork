@@ -187,6 +187,7 @@
     "sortBy-dateStampDesc": "last updates",
     "sortBy-createDateDesc": "new records",
     "sortBy-resourceTitleObject.default.sort": "title (ascending)",
+    "sortBy-resourceTitleObject.${searchLang}.keyword": "title (ascending)",
     "sortBy-resourceTitleObject.default.sortDesc": "title (descending)",
     "sortBy-relevance": "relevancy",
     "sortBy-ratingDesc": "rating",
