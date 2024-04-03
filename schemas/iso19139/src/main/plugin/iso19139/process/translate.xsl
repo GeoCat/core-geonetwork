@@ -28,6 +28,7 @@
 -->
 <xsl:stylesheet xmlns:gmd="http://www.isotc211.org/2005/gmd"
                 xmlns:gco="http://www.isotc211.org/2005/gco"
+                xmlns:gmx="http://www.isotc211.org/2005/gmx"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -116,14 +117,14 @@
     eg. keywords from thesaurus have to be translated from the thesaurus
     eg. add config-editor exclusion ? -->
     <xsl:template
-            match="*[gco:CharacterString and ($translateAll or concat('/', string-join(current()/ancestor-or-self::*[name() != 'root']/name(), '/')) = $fieldsToTranslate)]"
+            match="*[(gco:CharacterString or gmx:Anchor) and ($translateAll or concat('/', string-join(current()/ancestor-or-self::*[name() != 'root']/name(), '/')) = $fieldsToTranslate)]"
             priority="2">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:if test="not(@xsi:type)">
                 <xsl:attribute name="xsi:type">mdb:PT_FreeText_PropertyType</xsl:attribute>
             </xsl:if>
-            <xsl:copy-of select="gco:CharacterString"/>
+            <xsl:copy-of select="gco:CharacterString|gmx:Anchor"/>
             <xsl:call-template name="translate"/>
         </xsl:copy>
     </xsl:template>
@@ -145,7 +146,7 @@
                     <gmd:LocalisedCharacterString locale="{$langId}">
                         <xsl:value-of select="if(not($translateOnlyEmptyText)
                                                  or ($translateOnlyEmptyText and $currentTranslation = ''))
-                                              then translation:translate($node/gco:CharacterString, lower-case($mainLanguage2code), @code2)
+                                              then translation:translate($node/(gco:CharacterString|gmx:Anchor), lower-case($mainLanguage2code), @code2)
                                               else $currentTranslation"/>
                     </gmd:LocalisedCharacterString>
                 </gmd:textGroup>
