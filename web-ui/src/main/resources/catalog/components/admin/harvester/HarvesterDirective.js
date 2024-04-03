@@ -150,7 +150,7 @@
           scope.xpathExamples = [
             {
               xpath:
-                "/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:title",
+                "/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title",
               schema: "iso19139"
             },
             {
@@ -165,7 +165,7 @@
             },
             {
               xpath:
-                "/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:title",
+                "/mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title",
               schema: "iso19115-3"
             },
             {
