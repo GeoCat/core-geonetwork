@@ -203,6 +203,7 @@
           params.sort = [];
           sortBy.split(",", -1).forEach(function (value, idx) {
             if (value != "relevance") {
+              var sort = {};
               sort[getFieldName(mappingFields, value)] = orders[idx] || "asc";
               params.sort.push(sort);
             }
