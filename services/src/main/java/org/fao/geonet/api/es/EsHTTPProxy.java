@@ -142,6 +142,11 @@ public class EsHTTPProxy {
     @Value("${es.proxy.headers:content-type,content-encoding,transfer-encoding,x-elastic-product}")
     private String[] proxyHeadersAllowedList;
 
+    /**
+     * Ignore list of headers handled by proxy implementation directly.
+     */
+    private String[] proxyHeadersIgnoreList =  {"Content-Length"};
+
     @Autowired
     private EsRestClient client;
 
@@ -605,7 +610,7 @@ public class EsHTTPProxy {
                 }
 
                 // copy headers from the remote server's response to the response to send to the client
-                copyHeadersFromConnectionToResponse(response, connectionWithFinalHost, "Content-Length");
+                copyHeadersFromConnectionToResponse(response, connectionWithFinalHost, proxyHeadersIgnoreList);
 
                 if (!contentType.split(";")[0].equals("application/json")) {
                     addPermissions = false;
@@ -752,13 +757,16 @@ public class EsHTTPProxy {
     private void copyHeadersFromConnectionToResponse(HttpServletResponse response, HttpURLConnection uc, String... ignoreList) {
         Map<String, List<String>> map = uc.getHeaderFields();
         for (String headerName : map.keySet()) {
-            if (isInIgnoreList(headerName, ignoreList)) {
+            if (headerName == null) {
+                continue;
+            }
+            if (Arrays.stream(ignoreList).anyMatch(headerName::equalsIgnoreCase)) {
                 // Ignore list reflects headers that are handled by ESHTTPProxy directly
                 continue;
             }
-            if (!isHeaderInAllowList(headerName,proxyHeadersAllowedList)) {
+            if (Arrays.stream(proxyHeadersAllowedList).anyMatch(headerName::equalsIgnoreCase)) {
                 // Allow list is provided as a configuration option and may need to be adjusted
-                // as Elasticserach API changes over time.
+                // as Elasticsearch API changes over time.
                 continue;
             }
             // concatenate all values from the header
@@ -766,45 +774,13 @@ public class EsHTTPProxy {
             StringBuilder sBuilder = new StringBuilder();
             valuesList.forEach(sBuilder::append);
 
-            // add header to HttpServletResponse object
-            if (headerName != null) {
-                if ("Transfer-Encoding".equalsIgnoreCase(headerName) && "chunked".equalsIgnoreCase(sBuilder.toString())) {
-                    // do not write this header because Tomcat already assembled the chunks itself
-                    continue;
-                }
-                response.addHeader(headerName, sBuilder.toString());
+            if ("Transfer-Encoding".equalsIgnoreCase(headerName) && "chunked".equalsIgnoreCase(sBuilder.toString())) {
+                // do not write this header + value because Tomcat already assembled the chunks itself
+                continue;
             }
+            // add header to HttpServletResponse object
+            response.addHeader(headerName, sBuilder.toString());
         }
-    }
-
-    /**
-     * Helper function to detect if a specific header is in allow list.
-     *
-     * @return true: allowed, false: not allowed
-     */
-    private boolean isHeaderInAllowList(String headerName, String[] allowedList) {
-        if (headerName == null) return false;
-
-        for (String allowedHeader : allowedList) {
-            if (allowedHeader.equalsIgnoreCase(headerName))
-                return true;
-        }
-        return false;
-    }
-
-    /**
-     * Helper function to detect if a specific header is in a given ignore list
-     *
-     * @return true: in, false: not in
-     */
-    private boolean isInIgnoreList(String headerName, String[] ignoreList) {
-        if (headerName == null) return false;
-
-        for (String headerToIgnore : ignoreList) {
-            if (headerName.equalsIgnoreCase(headerToIgnore))
-                return true;
-        }
-        return false;
     }
 
     /**
