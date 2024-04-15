@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2001-2023 Food and Agriculture Organization of the
+ * Copyright (C) 2018-204 Food and Agriculture Organization of the
  * United Nations (FAO-UN), United Nations World Food Programme (WFP)
  * and United Nations Environment Programme (UNEP)
  *
@@ -98,6 +98,11 @@ import java.util.zip.GZIPOutputStream;
 @Tag(name = "search",
     description = "Proxy for Elasticsearch catalog search operations")
 @Controller
+/**
+ * Proxy from GeoNetwork {@code /{portal}}/api} to Elasticsearch service.
+ *
+ * The portal and privileges are included the search provided by the user.
+ */
 public class EsHTTPProxy {
     public static final String[] _validContentTypes = {
         "application/json", "text/plain"
@@ -133,6 +138,9 @@ public class EsHTTPProxy {
 
     @Value("${es.password}")
     private String password;
+
+    @Value("${es.proxy.headers:content-type,content-encoding,transfer-encoding,x-elastic-product}")
+    private String[] proxyHeadersAllowedList;
 
     @Autowired
     private EsRestClient client;
@@ -744,24 +752,44 @@ public class EsHTTPProxy {
     private void copyHeadersFromConnectionToResponse(HttpServletResponse response, HttpURLConnection uc, String... ignoreList) {
         Map<String, List<String>> map = uc.getHeaderFields();
         for (String headerName : map.keySet()) {
+            if (isInIgnoreList(headerName, ignoreList)) {
+                // Ignore list reflects headers that are handled by ESHTTPProxy directly
+                continue;
+            }
+            if (!isHeaderInAllowList(headerName,proxyHeadersAllowedList)) {
+                // Allow list is provided as a configuration option and may need to be adjusted
+                // as Elasticserach API changes over time.
+                continue;
+            }
+            // concatenate all values from the header
+            List<String> valuesList = map.get(headerName);
+            StringBuilder sBuilder = new StringBuilder();
+            valuesList.forEach(sBuilder::append);
 
-            if (!isInIgnoreList(headerName, ignoreList)) {
-
-                // concatenate all values from the header
-                List<String> valuesList = map.get(headerName);
-                StringBuilder sBuilder = new StringBuilder();
-                valuesList.forEach(sBuilder::append);
-
-                // add header to HttpServletResponse object
-                if (headerName != null) {
-                    if ("Transfer-Encoding".equalsIgnoreCase(headerName) && "chunked".equalsIgnoreCase(sBuilder.toString())) {
-                        // do not write this header because Tomcat already assembled the chunks itself
-                        continue;
-                    }
-                    response.addHeader(headerName, sBuilder.toString());
+            // add header to HttpServletResponse object
+            if (headerName != null) {
+                if ("Transfer-Encoding".equalsIgnoreCase(headerName) && "chunked".equalsIgnoreCase(sBuilder.toString())) {
+                    // do not write this header because Tomcat already assembled the chunks itself
+                    continue;
                 }
+                response.addHeader(headerName, sBuilder.toString());
             }
         }
+    }
+
+    /**
+     * Helper function to detect if a specific header is in allow list.
+     *
+     * @return true: allowed, false: not allowed
+     */
+    private boolean isHeaderInAllowList(String headerName, String[] allowedList) {
+        if (headerName == null) return false;
+
+        for (String allowedHeader : allowedList) {
+            if (allowedHeader.equalsIgnoreCase(headerName))
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -780,8 +808,8 @@ public class EsHTTPProxy {
     }
 
     /**
-     * Copy client's headers in the request to send to the final host
-     * Trick the host by hiding the proxy indirection and keep useful headers information
+     * Copy client's headers in the request to send to the final host.
+     * Trick the host by hiding the proxy indirection and keep useful headers information.
      *
      * @param uc Contains now headers from client request except Host
      */
