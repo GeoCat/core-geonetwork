@@ -22,7 +22,7 @@
  */
 package org.fao.geonet.translations.libretranslate;
 
-public class LibreTranslateClientException extends Exception{
+public class LibreTranslateClientException extends Exception {
     public LibreTranslateClientException(String message) {
         super(message);
     }
