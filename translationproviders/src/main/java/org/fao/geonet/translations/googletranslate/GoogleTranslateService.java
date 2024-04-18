@@ -26,9 +26,6 @@ package org.fao.geonet.translations.googletranslate;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.kernel.setting.Settings;
 import org.fao.geonet.translations.ITranslationService;
-import org.fao.geonet.translations.libretranslate.LibreTranslateClient;
-import org.fao.geonet.translations.libretranslate.LibreTranslateClientException;
-import org.fao.geonet.translations.libretranslate.LibreTranslateResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
