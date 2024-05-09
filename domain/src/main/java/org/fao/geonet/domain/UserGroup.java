@@ -26,6 +26,7 @@ package org.fao.geonet.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.fao.geonet.entitylistener.UserGroupEntityListenerManager;
+import org.hibernate.envers.Audited;
 import org.jdom.Element;
 
 import javax.persistence.*;
@@ -33,6 +34,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.IdentityHashMap;
 import java.util.Objects;
+
+import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 
 /**
  * The mapping between user, the groups a user is a part of and the profiles the user has for each
@@ -44,7 +47,8 @@ import java.util.Objects;
 @Access(AccessType.PROPERTY)
 @Table(name = UserGroupNamedQueries.TABLE_NAME)
 @EntityListeners(UserGroupEntityListenerManager.class)
-public class UserGroup extends GeonetEntity implements Serializable {
+@Audited(withModifiedFlag=true)
+public class UserGroup extends AuditTable<String> implements Serializable {
     private UserGroupId _id = new UserGroupId();
     private Group _group;
     private User _user;

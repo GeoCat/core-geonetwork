@@ -69,4 +69,8 @@
         class="org.springframework.orm.jpa.JpaTransactionManager">
     <property name="entityManagerFactory" ref="entityManagerFactory"/>
   </bean>
+
+  <bean id="auditingProvider" class="org.fao.geonet.auditable.UsernameAuditorAware"/>
+
+  <jpa:auditing auditor-aware-ref="auditingProvider" set-dates="true"/>
 </beans>

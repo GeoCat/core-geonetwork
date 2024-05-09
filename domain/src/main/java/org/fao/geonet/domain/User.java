@@ -28,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.entitylistener.UserEntityListenerManager;
 import org.fao.geonet.domain.converter.BooleanToYNConverter;
+import org.hibernate.envers.Audited;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,6 +40,8 @@ import javax.annotation.Nullable;
 import javax.persistence.*;
 
 import java.util.*;
+
+import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 
 /**
  * A user entity. A user is used in spring security, controlling access to metadata as well as in
@@ -52,7 +55,8 @@ import java.util.*;
 @Cacheable
 @EntityListeners(value = {UserEntityListenerManager.class})
 @SequenceGenerator(name = User.ID_SEQ_NAME, initialValue = 100, allocationSize = 1)
-public class User extends GeonetEntity implements UserDetails {
+@Audited(targetAuditMode = NOT_AUDITED, withModifiedFlag=true)
+public class User extends AuditTable<String> implements UserDetails {
     public static final String TABLE_NAME = "Users";
     public static final String ID_COLUMN_NAME = "id";
     public static final String LAST_LOGIN_DATE_COLUMN_NAME = "lastLoginDate";

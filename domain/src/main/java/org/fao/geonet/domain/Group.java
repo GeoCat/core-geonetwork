@@ -23,8 +23,6 @@
 
 package org.fao.geonet.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +54,9 @@ import javax.persistence.Transient;
 import org.fao.geonet.domain.converter.BooleanToYNConverter;
 
 import org.fao.geonet.entitylistener.GroupEntityListenerManager;
+import org.hibernate.envers.Audited;
+
+import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 
 /**
  * An entity representing group of users. Groups in conjunction with {@link Operation}s control what
@@ -71,7 +72,8 @@ import org.fao.geonet.entitylistener.GroupEntityListenerManager;
 @Access(AccessType.PROPERTY)
 @EntityListeners(GroupEntityListenerManager.class)
 @SequenceGenerator(name = Group.ID_SEQ_NAME, initialValue = 100, allocationSize = 1)
-public class Group extends Localized implements Serializable {
+@Audited(targetAuditMode = NOT_AUDITED, withModifiedFlag=true)
+public class Group extends AuditTableLocalized<String> implements Serializable {
     static final String ID_SEQ_NAME = "group_id_seq";
 
     private int _id;
