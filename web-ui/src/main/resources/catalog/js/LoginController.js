@@ -41,11 +41,11 @@
   module.controller('GnLoginController',
       ['$scope', '$http', '$rootScope', '$translate',
        '$location', '$window', '$timeout',
-       'gnUtilityService', 'gnConfig', 'gnGlobalSettings',
+       'gnUtilityService', 'gnConfigService', 'gnConfig', 'gnGlobalSettings',
        'vcRecaptchaService', 'gnUrlUtils', '$q', 'gnLangs',
        function($scope, $http, $rootScope, $translate,
            $location, $window, $timeout,
-               gnUtilityService, gnConfig, gnGlobalSettings,
+               gnUtilityService, gnConfigService, gnConfig, gnGlobalSettings,
                vcRecaptchaService, gnUrlUtils, $q, gnLangs) {
           $scope.formAction = '../../signin#' +
          $location.path();
@@ -56,13 +56,24 @@
           $scope.userToRemind = null;
           $scope.changeKey = null;
 
-          $scope.recaptchaEnabled =
-         gnConfig['system.userSelfRegistration.recaptcha.enable'];
-          $scope.recaptchaKey =
-         gnConfig['system.userSelfRegistration.recaptcha.publickey'];
-          $scope.resolveRecaptcha = false;
+         gnConfigService.loadPromise.then(function(settings) {
+           $scope.recaptchaEnabled =
+             gnConfig['system.userSelfRegistration.recaptcha.enable'];
+           $scope.recaptchaKey =
+             gnConfig['system.userSelfRegistration.recaptcha.publickey'];
 
-          var redirect = gnUtilityService.getUrlParameter('redirect');
+           // take the bigger of the two values
+           $scope.passwordMinLength =
+             Math.max(gnConfig['system.security.passwordEnforcement.minLength'], 6);
+           $scope.passwordMaxLength =
+             Math.max(gnConfig['system.security.passwordEnforcement.maxLength'], 6);
+           $scope.passwordPattern =
+             gnConfig['system.security.passwordEnforcement.pattern'];
+         });
+
+         $scope.resolveRecaptcha = false;
+
+         var redirect = gnUtilityService.getUrlParameter('redirect');
 
           if ((redirect) && gnUrlUtils.urlIsSameOrigin(redirect)) {
             $scope.redirectUrl = redirect;
@@ -76,13 +87,7 @@
           $scope.isShowLoginAsLink = gnGlobalSettings.isShowLoginAsLink;
          $scope.isUserProfileUpdateEnabled = gnGlobalSettings.isUserProfileUpdateEnabled;
 
-         // take the bigger of the two values
-         $scope.passwordMinLength =
-           Math.max(gnConfig['system.security.passwordEnforcement.minLength'], 6);
-         $scope.passwordMaxLength =
-           Math.max(gnConfig['system.security.passwordEnforcement.maxLength'], 6);
-         $scope.passwordPattern =
-           gnConfig['system.security.passwordEnforcement.pattern'];
+
 
           function initForm() {
            if ($window.location.pathname.indexOf('new.password') !== -1) {
