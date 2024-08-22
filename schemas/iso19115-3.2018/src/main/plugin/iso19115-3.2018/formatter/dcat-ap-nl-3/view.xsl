@@ -10,6 +10,7 @@
                 exclude-result-prefixes="#all">
 
   <xsl:import href="../eu-dcat-ap/eu-dcat-ap-core.xsl"/>
+  <xsl:import href="../eu-dcat-ap-hvd/eu-dcat-ap-hvd-core.xsl"/>
 
   <!--
   https://joinup.ec.europa.eu/collection/semic-support-centre/solution/dcat-application-profile-data-portals-europe/release/300
