@@ -699,7 +699,7 @@
             <field xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:contactInfo/cit:CI_Contact/cit:address/cit:CI_Address/cit:electronicMailAddress"/>
           </section>
 
-          <section name="publisher" forEach="/mdb:MD_Metadata/mdb:contact[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='pointOfContact']">
+          <section name="publisher" forEach="/mdb:MD_Metadata/mdb:contact[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='publisher']">
             <field xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:name"/>
             <field xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:contactInfo/cit:CI_Contact/cit:address/cit:CI_Address/cit:electronicMailAddress"/>
           </section>
@@ -964,7 +964,7 @@
             <field xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:contactInfo/cit:CI_Contact/cit:address/cit:CI_Address/cit:electronicMailAddress"/>
           </section>
 
-          <section name="publisher" forEach="/mdb:MD_Metadata/mdb:contact[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='pointOfContact']">
+          <section name="publisher" forEach="/mdb:MD_Metadata/mdb:identificationInfo/*/mri:pointOfContact[cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue='publisher']">
             <field xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:name"/>
             <field xpath="cit:CI_Responsibility/cit:party/cit:CI_Organisation/cit:contactInfo/cit:CI_Contact/cit:address/cit:CI_Address/cit:electronicMailAddress"/>
           </section>
