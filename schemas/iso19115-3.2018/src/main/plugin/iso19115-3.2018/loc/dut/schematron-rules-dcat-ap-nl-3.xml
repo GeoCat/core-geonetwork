@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2001-2016 Food and Agriculture Organization of the
+  ~ United Nations (FAO-UN), United Nations World Food Programme (WFP)
+  ~ and United Nations Environment Programme (UNEP)
+  ~
+  ~ This program is free software; you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation; either version 2 of the License, or (at
+  ~ your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but
+  ~ WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~ General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+  ~
+  ~ Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
+  ~ Rome - Italy. email: geonetwork@osgeo.org
+  -->
+
+<strings>
+
+  <dataset.title>Titel van de bron ontbreekt</dataset.title>
+  <dataset.abstract>Samenvatting ontbreekt</dataset.abstract>
+  <metadata.language>De taal van de metadata moet Nederlands of Engels zijn</metadata.language>
+  <dataset.language>De taal van de bron moet Nederlands of Engels zijn</dataset.language>
+
+  <metadata.contact.organisationName>Verantwoordelijke organisatie metadata ontbreekt</metadata.contact.organisationName>
+  <metadata.contact.email>Verantwoordelijke organisatie metadata e-mail ontbreekt</metadata.contact.email>
+  <metadata.contact.role>Verantwoordelijke organisatie metadata rol ontbreekt</metadata.contact.role>
+
+  <dataset.contact.organisationName>Verantwoordelijke organisatie bron ontbreekt</dataset.contact.organisationName>
+  <dataset.contact.email>Verantwoordelijke organisatie bron e-mail ontbreekt</dataset.contact.email>
+  <dataset.contact.role>Verantwoordelijke organisatie bron rol ontbreekt</dataset.contact.role>
+
+  <dataset.creator.organisationName>Verantwoordelijke organisatie bron ontbreekt</dataset.creator.organisationName>
+  <dataset.creator.email>Verantwoordelijke organisatie bron e-mail ontbreekt</dataset.creator.email>
+
+  <dataset.status>Status ontbreekt</dataset.status>
+  <dataset.updateFrequency>Herzieningsfrequentie ontbreekt</dataset.updateFrequency>
+  <dataset.license>Juridische toegangs beperkingen ontbreekt</dataset.license>
+  <dataset.accessRights>Toegangsrechten ontbreekt</dataset.accessRights>
+  <dataset.dataTheme>Categorie van de dataset ontbreekt</dataset.dataTheme>
+
+  <distribution.link>Databronnen linkage ontbreekt</distribution.link>
+  <distribution.protocol>Databronnen protocol ontbreekt</distribution.protocol>
+  <distribution.description>Databronnen omschrijving ontbreekt</distribution.description>
+</strings>

@@ -111,6 +111,11 @@
     editing information is used.
     In view mode, always set to false.
     -->
+
+    <xsl:variable name="elementCondition" select="gn-fn-metadata:getLabel($schema, name(), $labels, name(..),$isoType, $xpath)/condition" />
+
+
+<!--
     <xsl:variable name="isRequired" as="xs:boolean">
       <xsl:choose>
         <xsl:when
@@ -119,6 +124,40 @@
           <xsl:value-of select="true()"/>
         </xsl:when>
         <xsl:when test="gn-fn-metadata:getLabel($schema, name(), $labels, name(..),$isoType, $xpath)/condition = 'mandatory'">
+          <xsl:value-of select="true()"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="false()"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+-->
+
+    <xsl:variable name="isRequired" as="xs:boolean">
+      <xsl:choose>
+        <xsl:when test="$elementCondition = 'mandatory'">
+          <xsl:value-of select="true()"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="false()"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:variable name="isOptional" as="xs:boolean">
+      <xsl:choose>
+        <xsl:when test="$elementCondition = 'optional'">
+          <xsl:value-of select="true()"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="false()"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:variable name="isConditional" as="xs:boolean">
+      <xsl:choose>
+        <xsl:when test="$elementCondition = 'conditional'">
           <xsl:value-of select="true()"/>
         </xsl:when>
         <xsl:otherwise>
@@ -198,7 +237,7 @@
       <xsl:otherwise>
 
         <div
-          class="form-group gn-field gn-{substring-after(name(), ':')} {if ($isRequired) then 'gn-required' else ''} {if ($label/condition) then concat('gn-', $label/condition) else ''} {if ($isFirst) then '' else 'gn-extra-field'}"
+          class="form-group gn-field gn-{substring-after(name(), ':')} {if ($isRequired) then 'gn-required' else if ($isOptional) then 'gn-optional' else if ($isConditional) then 'gn-conditional' else ''} {if ($label/condition) then concat('gn-', $label/condition) else ''} {if ($isFirst) then '' else 'gn-extra-field'}"
           id="gn-el-{$editInfo/@ref}"
           data-gn-field-highlight="">
           <label
@@ -382,6 +421,11 @@
 
     <xsl:variable name="hasXlink" select="@xlink:href"/>
 
+    <xsl:variable name="name" select="name()"/>
+
+    <xsl:variable name="siblingCount" select="count(preceding-sibling::*[name() = $name]) + count(following-sibling::*[name() = $name])" />
+    <xsl:variable name="isRequired" select="contains($cls, 'gn-required')" />
+
     <fieldset id="{concat('gn-el-', if ($editInfo) then $editInfo/@ref else generate-id())}"
               data-gn-field-highlight=""
               class="{if ($hasXlink) then 'gn-has-xlink' else ''} gn-{substring-after(name(), ':')}">
@@ -404,7 +448,7 @@
 
         <xsl:value-of select="$label"/>&#160;
 
-        <xsl:if test="$editInfo and not($isDisabled)">
+        <xsl:if test="$editInfo and not($isDisabled) and (($isRequired) and ($siblingCount > 0)) ">
           <xsl:call-template name="render-boxed-element-control">
             <xsl:with-param name="editInfo" select="$editInfo"/>
           </xsl:call-template>

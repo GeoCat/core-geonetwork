@@ -569,29 +569,6 @@
     </xsl:call-template>
   </xsl:template>
 
-  <!-- Sextant / Template adding nilReason attribut with withheld value
-  for some protocols. -->
-  <xsl:template match="cit:linkage" priority="10">
-    <xsl:choose>
-      <xsl:when test="
-				contains(lower-case(string(../cit:protocol/gco:CharacterString)), 'db') or
-				contains(lower-case(string(../cit:protocol/gco:CharacterString)), 'copyfile') or
-				contains(lower-case(string(../cit:protocol/gco:CharacterString)), 'file')">
-        <cit:linkage gco:nilReason="withheld">
-          <xsl:apply-templates select="@*"/>
-          <xsl:copy-of select="./*" />
-        </cit:linkage>
-      </xsl:when>
-      <xsl:otherwise>
-        <cit:linkage >
-          <xsl:apply-templates select="@*"/>
-          <xsl:copy-of select="./*" />
-        </cit:linkage>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-
   <xsl:template match="mri:descriptiveKeywords[not(*/mri:thesaurusName)]" priority="10">
     <xsl:variable name="name" select="name()"/>
     <xsl:variable name="freeTextKeywordBlockType"
@@ -620,6 +597,16 @@
     </xsl:if>
   </xsl:template>
 
+  <xsl:template match="mdb:MD_Metadata/mdb:identificationInfo/*/mri:citation/*/cit:identifier/mcc:MD_Identifier/mcc:code" priority="200">
+    <xsl:copy>
+      <xsl:copy-of select="@*" />
+
+      <xsl:variable name="metadataIdentifier" select="//mdb:metadataIdentifier/*/mcc:code" />
+      <xsl:variable name="prefix" select="java:getSettingValue('metadata/resourceIdentifierPrefix')" />
+
+      <gcx:Anchor xlink:href="{concat($prefix, $metadataIdentifier)}"><xsl:value-of select="$metadataIdentifier" /></gcx:Anchor>
+    </xsl:copy>
+  </xsl:template>
 
 
   <!-- Remove empty DQ elements, empty transfer options. -->

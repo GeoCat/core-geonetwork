@@ -46,12 +46,10 @@
   <xsl:template mode="mode-iso19115-3.2018" match="*[cit:CI_Date]" priority="2000">
     <xsl:param name="schema" select="$schema" required="no"/>
     <xsl:param name="labels" select="$labels" required="no"/>
-    <xsl:param name="overrideLabel" select="''" required="no"/>
 
     <xsl:apply-templates mode="mode-iso19115-3.2018" select="*/cit:*">
       <xsl:with-param name="schema" select="$schema"/>
       <xsl:with-param name="labels" select="$labels"/>
-      <xsl:with-param name="overrideLabel" select="$overrideLabel"/>
     </xsl:apply-templates>
   </xsl:template>
 
@@ -63,23 +61,12 @@
   -->
   <xsl:template mode="mode-iso19115-3.2018"
                 priority="2000"
-                match="cit:CI_Date/cit:date[../cit:dateType]">
+                match="cit:CI_Date1111/cit:date[../cit:dateType]">
     <xsl:param name="schema" select="$schema" required="no"/>
     <xsl:param name="labels" select="$labels" required="no"/>
-    <xsl:param name="overrideLabel" select="''" required="no"/>
 
-    <xsl:variable name="labelConfig" as="node()?">
-      <xsl:choose>
-        <xsl:when test="$overrideLabel != ''">
-          <element>
-            <label><xsl:value-of select="$overrideLabel"/></label>
-          </element>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="gn-fn-metadata:getLabel($schema, name(), $labels)"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
+    <xsl:variable name="labelConfig"
+                  select="gn-fn-metadata:getLabel($schema, name(), $labels)"/>
 
     <xsl:variable name="dateTypeElementRef"
                   select="../gn:element/@ref"/>
@@ -150,9 +137,13 @@
   -->
   <xsl:template mode="mode-iso19115-3.2018"
                 priority="2000"
-                match="*[(gco:Date|gco:DateTime) and not(../cit:dateType)]">
+                match="*[(gco:Date|gco:DateTime)]">
     <xsl:param name="schema" select="$schema" required="no"/>
     <xsl:param name="labels" select="$labels" required="no"/>
+    <xsl:param name="overrideLabel" select="''" required="no"/>
+
+    <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
+    <xsl:variable name="tooltip" select="concat($schema, '|', name(.), '|', name(..), '|', $xpath)"/>
 
     <xsl:variable name="labelConfig"
                   select="gn-fn-metadata:getLabel($schema, name(), $labels)"/>
@@ -164,10 +155,13 @@
          id="gn-el-{$dateTypeElementRef}"
          data-gn-field-highlight="">
       <label class="col-sm-2 control-label">
-        <xsl:value-of select="$labelConfig/label"/>
+        <xsl:value-of select="if ($overrideLabel != '')
+                              then $overrideLabel
+                              else $labelConfig/label"/>
       </label>
       <div class="col-sm-9 gn-value">
         <div data-gn-date-picker="{gco:Date|gco:DateTime}"
+             data-gn-field-tooltip="{$tooltip}"
              data-label=""
              data-element-name="{name(gco:Date|gco:DateTime)}"
              data-element-ref="{concat('_X', gn:element/@ref)}"

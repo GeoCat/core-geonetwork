@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <skos:ConceptScheme xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/ConditionsApplyingToAccessAndUse">
+    <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/" xml:lang="en">Conditions Applying To Access and Use</dc:title>
+    <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/" xml:lang="nl">Voorwaarden voor toegang en gebruik</dc:title>
+    <dcterms:issued xmlns:dcterms="http://purl.org/dc/terms/">2024-06-24T15:53:10</dcterms:issued>
+    <dcterms:modified xmlns:dcterms="http://purl.org/dc/terms/">2024-06-24T15:53:10</dcterms:modified>
+  </skos:ConceptScheme>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/ConditionsApplyingToAccessAndUse/noConditionsApply">
+    <skos:prefLabel xml:lang="en">no conditions to access and use</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">No conditions apply to access and use.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">geen voorwaarden</skos:prefLabel>
+    <skos:scopeNote xml:lang="nl">Geen voorwaarden voor toegang en gebruik.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/ConditionsApplyingToAccessAndUse" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/ConditionsApplyingToAccessAndUse/conditionsUnknown">
+    <skos:prefLabel xml:lang="en">conditions to access and use unknown</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">The conditions applying to access and use are unknown.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">voorwaarden niet bekend</skos:prefLabel>
+    <skos:scopeNote xml:lang="nl">De voorwaarden voor toegang en gebruik zijn niet bekend.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/ConditionsApplyingToAccessAndUse" />
+  </skos:Concept>
+</rdf:RDF>
+

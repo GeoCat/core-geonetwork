@@ -1024,3 +1024,33 @@ gn-bounding-polygon {
     border-radius: 50% !important;
   }
 }
+
+// DCAT-AP-NL 3 template customisations
+form.gn-opendata {
+  /* Hide mandatory asterisk symbol */
+  /*.gn-required > label:after {
+    display: none;
+  }*/
+  legend.gn-required:after {
+    display: none;
+  }
+
+  /* Do not display remove control ... */
+  fieldset.gn-identificationInfo,
+  fieldset.gn-distributionResource,
+  fieldset.gn-metadata {
+    /* Do not display remove control ... */
+    a.btn[data-gn-click-and-spin^="remove"] {
+      display: none !important;
+    }
+
+    /* ... but keep it for dates and removable blocks  */
+    .gn-date a.btn[data-gn-click-and-spin^="remove"],
+    legend a.btn[data-gn-click-and-spin^="remove"] {
+      display: block !important;
+    }
+  }
+
+  fieldset.gn-spatialInfo {
+  }
+}

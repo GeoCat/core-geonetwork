@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <skos:ConceptScheme xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess">
+    <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/" xml:lang="nl">Beperkingen op publieke toegang</dc:title>
+    <dcterms:issued xmlns:dcterms="http://purl.org/dc/terms/">2018-12-03</dcterms:issued>
+    <dcterms:modified xmlns:dcterms="http://purl.org/dc/terms/">2018-12-03</dcterms:modified>
+  </skos:ConceptScheme>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/a  ">
+    <skos:prefLabel xml:lang="en" />
+    <skos:prefLabel xml:lang="nl">-- INSPIRE Codelijst Beperkingen op publieke toegang</skos:prefLabel>
+    <skos:scopeNote xml:lang="en" />
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1a">
+    <skos:prefLabel xml:lang="en">public access limited according to Article 13(1)(a) of the INSPIRE Directive</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Publieke toegang beperkt ivm afbreuk van het vertrouwelijke karakter van handelingen van overheidsinstanties, indien deze vertrouwelijkheid bij wet is voorzien</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Public access to spatial data sets and services would adversely affect the confidentiality of the proceedings of public authorities, where such confidentiality is provided for by law.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1b">
+    <skos:prefLabel xml:lang="en">public access limited according to Article 13(1)(b) of the INSPIRE Directive</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Publieke toegang beperkt ivm afbreuk van internationale betrekkingen, openbare veiligheid of nationale defensie</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Public access to spatial data sets and services would adversely affect international relations, public security or national defence.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1c">
+    <skos:prefLabel xml:lang="en">public access limited according to Article 13(1)(c) of the INSPIRE Directive</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Publieke toegang beperkt ivm afbreuk van de rechtsgang, de mogelijkheid voor een persoon een eerlijk proces te krijgen of de mogelijkheid voor een overheid om een onderzoek van strafrechtelijke of disciplinaire aard in te stellen</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Public access to spatial data sets and services would adversely affect the course of justice, the ability of any person to receive a fair trial or the ability of a public authority to conduct an enquiry of a criminal or disciplinary nature.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d">
+    <skos:prefLabel xml:lang="en">public access limited according to Article 13(1)(d) of the INSPIRE Directive</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Publieke toegang beperkt ivm afbreuk van de vertrouwelijkheid van commerciële of industriële informatie, wanneer deze vertrouwelijkheid in de nationale of de communautaire wetgeving geboden wordt om een gewettigd economisch belang te beschermen, met inbegrip van het algemeen belang dat met statistische en fiscale geheimhouding is gediend</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Public access to spatial data sets and services would adversely affect the confidentiality of commercial or industrial information, where such confidentiality is provided for by national or Community law to protect a legitimate economic interest, including the public interest in maintaining statistical confidentiality and tax secrecy.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1e">
+    <skos:prefLabel xml:lang="en">public access limited according to Article 13(1)(e) of the INSPIRE Directive</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Publieke toegang beperkt ivm afbreuk van intellectuele-eigendomsrechten</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Public access to spatial data sets and services would adversely affect intellectual property rights.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1f">
+    <skos:prefLabel xml:lang="en">public access limited according to Article 13(1)(f) of the INSPIRE Directive</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Publieke toegang beperkt ivm afbreuk van de vertrouwelijkheid van persoonsgegevens en/of -dossiers met betrekking tot een natuurlijk persoon wanneer die persoon niet heeft ingestemd met bekendmaking van de informatie aan het publiek, wanneer in deze vertrouwelijkheid is voorzien in het nationaal of het Gemeenschapsrecht</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Public access to spatial data sets and services would adversely affect the confidentiality of personal data and/or files relating to a natural person where that person has not consented to the disclosure of the information to the public, where such confidentiality is provided for by national or Community law.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1g">
+    <skos:prefLabel xml:lang="en">public access limited according to Article 13(1)(g) of the INSPIRE Directive</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Publieke toegang beperkt ivm afbreuk van de belangen of de bescherming van diegene die de verzochte informatie op vrijwillige basis heeft verstrekt zonder daartoe wettelijk verplicht te zijn of te kunnen worden, tenzij die persoon ermee heeft ingestemd dat de betrokken informatie wordt vrijgegeven</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Public access to spatial data sets and services would adversely affect the interests or protection of any person who supplied the information requested on a voluntary basis without being under, or capable of being put under, a legal obligation to do so, unless that person has consented to the release of the information concerned.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1h">
+    <skos:prefLabel xml:lang="en">public access limited according to Article 13(1)(h) of the INSPIRE Directive</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Publieke toegang beperkt ivm afbreuk van de bescherming van het milieu waarop die informatie betrekking heeft, zoals de habitat van zeldzame soorten</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Public access to spatial data sets and services would adversely affect the protection of the environment to which such information relates, such as the location of rare species.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/noLimitations">
+    <skos:prefLabel xml:lang="en">no limitations to public access</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Geen beperkingen voor publieke toegang</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">There are no limitations on public access to spatial data sets and services.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/ConditionsApplyingToAccessAndUse">
+    <skos:prefLabel xml:lang="nl">-- INSPIRE Codelijst Beperkingen voor toegang en gebruik</skos:prefLabel>
+    <skos:scopeNote xml:lang="nl" />
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/ConditionsApplyingToAccessAndUse" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/ConditionsApplyingToAccessAndUse/noConditionsApply">
+    <skos:prefLabel xml:lang="en">no conditions to access and use</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Er zijn geen condities voor toegang en gebruik</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">No conditions apply to access and use.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/ConditionsApplyingToAccessAndUse" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/ConditionsApplyingToAccessAndUse/conditionsUnknown">
+    <skos:prefLabel xml:lang="en">Conditions to access and use unknown</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Condities zijn onbekend</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">The conditions applying to access and use are unknown.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/ConditionsApplyingToAccessAndUse" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org">
+    <skos:prefLabel xml:lang="en" />
+    <skos:prefLabel xml:lang="nl">-- Codelijst Data Licenties Nederlands profiel</skos:prefLabel>
+    <skos:scopeNote xml:lang="en" />
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/publicdomain/mark/1.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Open data (publiek domein)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Geen beperkingen</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/publicdomain/zero/1.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Open data (CCO)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Geen beperkingen</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by/3.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Open data (CC-BY versie 3.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Naamsvermelding verplicht, organisatienaam</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by/4.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Open data (CC-BY  versie 4.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Naamsvermelding verplicht, organisatienaam</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by-sa/3.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden (CC-by-sa versie 3.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Gelijk Delen, Naamsvermelding verplicht, organisatienaam</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by-sa/4.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden (CC-by-sa versie 4.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Gelijk Delen, Naamsvermelding verplicht, organisatienaam</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by-nc/3.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden (CC-by-nc versie 3.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Niet Commercieel, Naamsvermelding verplicht, organisatienaam</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by-nc/4.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden (CC-by-nc versie 4.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Niet Commercieel, Naamsvermelding verplicht, organisatienaam</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden (CC-by-nc-sa versie 3.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Niet Commercieel, Gelijk Delen, Naamsvermelding verplicht, organisatienaam</skos:prefLabel>
+    <skos:prefLabel rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden (CC-by-nc-sa versie 4.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Niet Commercieel, Gelijk Delen, Naamsvermelding verplicht, organisatienaam</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by-nd/3.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden (CC-by-nd versie 3.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Geen Afgeleide Werken, Naamsvermelding verplicht, organisatienaam</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by-nd/4.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden (CC-by-nd versie 4.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Geen Afgeleide Werken, Naamsvermelding verplicht, organisatienaam</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by-nc-nd/3.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden (CC-by-nc-nd versie 3.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Niet Commercieel, Geen Afgeleide Werken, Naamsvermelding verplicht, organisatienaam</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by-nc-nd/4.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden (CC-by-nc-nd versie 4.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Niet Commercieel, Geen Afgeleide Werken, Naamsvermelding verplicht, organisatienaam</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/Verwijzing naar een geldige URL van de licentie">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden Geogedeeld</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Geo Gedeeld licentie</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+</rdf:RDF>
+

@@ -7,11 +7,12 @@
   xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/2.0"
   xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
   xmlns:mrs="http://standards.iso.org/iso/19115/-3/mrs/1.0"
-  xmlns:gts="http://www.isotc211.org/2005/gts"
+  xmlns:lan="http://standards.iso.org/iso/19115/-3/lan/1.0"
   xmlns:gml="http://www.opengis.net/gml/3.2"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:gn="http://www.fao.org/geonetwork"
   xmlns:gn-fn-metadata="http://geonetwork-opensource.org/xsl/functions/metadata"
+  xmlns:gn-fn-iso19115-3.2018="http://geonetwork-opensource.org/xsl/functions/profiles/iso19115-3.2018"
   xmlns:java-xsl-util="java:org.fao.geonet.util.XslUtil"
   xmlns:saxon="http://saxon.sf.net/"
   extension-element-prefixes="saxon"
@@ -21,6 +22,7 @@
   <!-- Readonly elements -->
   <xsl:template mode="mode-iso19115-3.2018"
                 match="mdb:metadataIdentifier/mcc:MD_Identifier/mcc:code|
+                       mdb:MD_Metadata/mdb:identificationInfo/*/mri:citation/*/cit:identifier/mcc:MD_Identifier/mcc:code|
                        mdb:dateInfo/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode = 'revision']/cit:date|
                        mdb:dateInfo/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode = 'revision']/cit:dateType"
                 priority="2000">
@@ -66,6 +68,60 @@
   </xsl:template>
 
 
+  <xsl:template mode="mode-iso19115-3.2018" priority="2000" match="lan:language[*/@codeList]">
+    <xsl:param name="schema" select="$schema" required="no"/>
+    <xsl:param name="labels" select="$labels" required="no"/>
+    <xsl:param name="codelists" select="$codelists" required="no"/>
+    <xsl:param name="overrideLabel" select="''" required="no"/>
+
+    <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
+    <xsl:variable name="isoType" select="if (../@gco:isoType) then ../@gco:isoType else ''"/>
+    <xsl:variable name="elementName" select="name()"/>
+    <xsl:variable name="labelConfig">
+      <xsl:choose>
+        <xsl:when test="$overrideLabel != ''">
+          <element>
+            <label><xsl:value-of select="$overrideLabel"/></label>
+          </element>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:copy-of select="gn-fn-metadata:getLabel($schema, name(), $labels, name(..), '', $xpath)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:variable name="listOfValues">
+      <entries>
+
+        <entry>
+          <code>dut</code>
+          <label>Nederlands</label>
+        </entry>
+        <entry>
+          <code>eng</code>
+          <label>Engels</label>
+        </entry>
+
+      </entries>
+    </xsl:variable>
+
+    <xsl:call-template name="render-element">
+      <xsl:with-param name="label" select="$labelConfig/*"/>
+      <xsl:with-param name="value" select="*/@codeListValue"/>
+      <xsl:with-param name="cls" select="local-name()"/>
+      <xsl:with-param name="xpath" select="$xpath"/>
+      <xsl:with-param name="type" select="gn-fn-iso19115-3.2018:getCodeListType(name(), $editorConfig)"/>
+      <xsl:with-param name="name"
+                      select="if ($isEditing) then concat(*/gn:element/@ref, '_codeListValue') else ''"/>
+      <xsl:with-param name="editInfo" select="*/gn:element"/>
+      <xsl:with-param name="parentEditInfo" select="gn:element"/>
+      <xsl:with-param name="listOfValues"
+                      select="$listOfValues/entries"/>
+      <xsl:with-param name="isFirst"
+                      select="count(preceding-sibling::*[name() = $elementName]) = 0"/>
+    </xsl:call-template>
+
+  </xsl:template>
 
   <!-- Set CRS system type before the CRS -->
   <xsl:template mode="mode-iso19115-3.2018"
@@ -278,7 +334,7 @@
     <xsl:call-template name="render-boxed-element">
       <xsl:with-param name="label"
         select="gn-fn-metadata:getLabel($schema, name(), $labels, name(..), $isoType, $xpath)/label"/>
-      <xsl:with-param name="editInfo" select="gn:element"/>
+      <xsl:with-param name="editInfo" select="../gn:element"/>
       <xsl:with-param name="cls" select="local-name()"/>
       <xsl:with-param name="subTreeSnippet">
         <div gn-draw-bbox="" data-hleft="{gex:westBoundLongitude/gco:Decimal}"
