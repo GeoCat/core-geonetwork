@@ -116,10 +116,8 @@
     <entry key="annually">ANNUAL</entry>
     <entry key="irregular">IRREG</entry>
     <entry key="unknown">UNKNOWN</entry>
-    <!--
-    <entry key="asNeeded"></entry>
-    <entry key="notPlanned"></entry>
-    -->
+    <entry key="asNeeded">AS_NEEDED</entry>
+    <entry key="notPlanned">NOT_PLANNED</entry>
   </xsl:variable>
 
   <xsl:template mode="iso19115-3-to-dcat"
