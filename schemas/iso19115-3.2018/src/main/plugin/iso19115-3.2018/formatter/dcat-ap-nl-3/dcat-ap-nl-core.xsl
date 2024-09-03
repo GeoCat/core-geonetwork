@@ -17,6 +17,6 @@
   <xsl:import href="../eu-dcat-ap/eu-dcat-ap-core.xsl"/>
   <xsl:import href="../eu-dcat-ap-hvd/eu-dcat-ap-hvd-core.xsl"/>
   <xsl:import href="./dcat-ap-nl-core-lineage.xsl"/>
-
+  <xsl:import href="./dcat-ap-nl-core-distribution.xsl"/>
 
 </xsl:stylesheet>

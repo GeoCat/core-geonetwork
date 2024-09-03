@@ -39,7 +39,19 @@
                   select="$isoStatusToDublinCore[@key = current()/*/@codeListValue]"/>
 
     <adms:status>
-      <skos:Concept rdf:about="{concat($europaPublicationStatus, $dcStatus)}" />
+      <skos:Concept rdf:about="{concat($europaPublicationStatus, $dcStatus)}">
+        <xsl:variable name="codelistKey"
+                      select="*/@codeListValue"/>
+        <xsl:variable name="parentName"
+                      select="local-name(*)"/>
+
+        <xsl:for-each select="$languages/@iso3code">
+          <xsl:variable name="codelistTranslation"
+                        select="tr:codelist-value-label(tr:create('iso19115-3.2018', current()), $parentName, $codelistKey)"/>
+
+          <skos:prefLabel xml:lang="{current()}"><xsl:value-of select="$codelistTranslation"/></skos:prefLabel>
+        </xsl:for-each>
+      </skos:Concept>
     </adms:status>
   </xsl:template>
 
