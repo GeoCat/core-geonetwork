@@ -45,7 +45,7 @@
         <xsl:variable name="parentName"
                       select="local-name(*)"/>
 
-        <xsl:for-each select="$languages/@iso3code">
+        <xsl:for-each select="$languages/@iso2code">
           <xsl:variable name="codelistTranslation"
                         select="tr:codelist-value-label(tr:create('iso19115-3.2018', current()), $parentName, $codelistKey)"/>
 
