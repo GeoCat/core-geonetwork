@@ -171,7 +171,7 @@ public class BatchEditsServiceTest extends AbstractServiceIntegrationTest {
         BatchEditParameter[] listOfupdates = new BatchEditParameter[]{
             new BatchEditParameter(
                 "/mdb:distributionInfo/mrd:MD_Distribution",
-                "<gn_add><mrd:distributor xmlns:mrd=\"http://standards.iso.org/iso/19115/-3/mrd/1.0\"/></gn_add>"
+                "<gn_create><mrd:distributor xmlns:mrd=\"http://standards.iso.org/iso/19115/-3/mrd/1.0\"/></gn_create>"
             )
         };
 
@@ -202,7 +202,7 @@ public class BatchEditsServiceTest extends AbstractServiceIntegrationTest {
         final String uuid = "db07463b-6769-401e-944b-f22e2e3bcc26";
         BatchEditParameter[] listOfupdates = new BatchEditParameter[]{
             new BatchEditParameter(
-                "/mdb:MD_Metadata/mdb:metadataScope/mdb:MD_MetadataScope/mdb:resourceScope/@codeListValue",
+                "/mdb:MD_Metadata/mdb:metadataScope/*/mdb:resourceScope/*/@codeListValue",
                 "newScope"
             )
         };
@@ -225,14 +225,14 @@ public class BatchEditsServiceTest extends AbstractServiceIntegrationTest {
         Element xml = Xml.loadString(updatedRecord.getData(), false);
 
         List attr = org.fao.geonet.utils.Xml.selectNodes(xml,
-            "./mdb:metadataScope/mdb:MD_MetadataScope/mdb:resourceScope/@codeListValue",
+            "./mdb:metadataScope/*/mdb:resourceScope/*/@codeListValue",
             xml.getAdditionalNamespaces());
         Assert.assertEquals("newScope", ((Attribute) attr.get(0)).getValue());
 
 
         listOfupdates = new BatchEditParameter[]{
             new BatchEditParameter(
-                "/mdb:MD_Metadata/mdb:metadataScope/mdb:MD_MetadataScope/mdb:resourceScope/@codeListValue",
+                "/mdb:MD_Metadata/mdb:metadataScope/*/mdb:resourceScope/*/@codeListValue",
                 "<gn_replace>anotherNewScope</gn_replace>"
             )
         };
@@ -250,7 +250,7 @@ public class BatchEditsServiceTest extends AbstractServiceIntegrationTest {
         xml = Xml.loadString(updatedRecord.getData(), false);
 
         attr = org.fao.geonet.utils.Xml.selectNodes(xml,
-            "./mdb:metadataScope/mdb:MD_MetadataScope/mdb:resourceScope/@codeListValue",
+            "./mdb:metadataScope/*/mdb:resourceScope/*/@codeListValue",
             xml.getAdditionalNamespaces());
         Assert.assertEquals("anotherNewScope", ((Attribute) attr.get(0)).getValue());
     }
@@ -296,7 +296,7 @@ public class BatchEditsServiceTest extends AbstractServiceIntegrationTest {
         BatchEditParameter[] listOfupdates = new BatchEditParameter[]{
             new BatchEditParameter(
                 "/mdb:MD_Metadata/mdb:metadataScope/mdb:MD_MetadataScope/mdb:resourceScope/@newAttribute",
-                "<gn_add>value</gn_add>"
+                "<gn_create>value</gn_create>"
             )
         };
 
@@ -329,7 +329,7 @@ public class BatchEditsServiceTest extends AbstractServiceIntegrationTest {
         BatchEditParameter[] listOfupdates = new BatchEditParameter[]{
             new BatchEditParameter(
                 "/mdb:MD_Metadata/mdb:metadataScope/@gco:nilReason",
-                "<gn_add>withheld</gn_add>"
+                "<gn_create>withheld</gn_create>"
             )
         };
 
@@ -389,8 +389,8 @@ public class BatchEditsServiceTest extends AbstractServiceIntegrationTest {
         // XPath has no match and same type as fragment, element is created
         BatchEditParameter[] listOfupdates = new BatchEditParameter[]{
             new BatchEditParameter(
-                "/mdb:distributionInfo/mrd:MD_Distribution/mrd:distributor[1]",
-                "<gn_add><mrd:distributor xmlns:mrd=\"http://standards.iso.org/iso/19115/-3/mrd/1.0\"><mrd:MD_Distributor/></mrd:distributor></gn_add>"
+                "/mdb:distributionInfo/mrd:MD_Distribution/mrd:distributor",
+                "<gn_create><mrd:distributor xmlns:mrd=\"http://standards.iso.org/iso/19115/-3/mrd/1.0\"><mrd:MD_Distributor/></mrd:distributor></gn_create>"
             )
         };
 
