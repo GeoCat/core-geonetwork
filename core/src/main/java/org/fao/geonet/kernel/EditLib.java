@@ -499,12 +499,8 @@ public class EditLib {
         boolean isUpdated = false;
         try {
             final boolean isValueXml = value.isXml();
-            final boolean isDeleteMode = value.getNodeValue() != null &&
-                value.getNodeValue().getName()
-                    .startsWith(SpecialUpdateTags.DELETE);
-            final boolean isCreateMode = value.getNodeValue() != null &&
-                value.getNodeValue().getName()
-                    .equals(SpecialUpdateTags.CREATE);
+            final boolean isDeleteMode = SpecialUpdateTags.DELETE.equals(value.getMode());
+            final boolean isCreateMode = SpecialUpdateTags.CREATE.equals(value.getMode());
 
             LOGGER_ADD_ELEMENT.debug("Inserting at location {} the snippet or value {}", xpathProperty, value);
 
@@ -582,8 +578,7 @@ public class EditLib {
                                 if (parent != null) {
                                     Element matchingNode = ((Element) propNode);
                                     // Remove only matching node
-                                    if (value.getNodeValue().getName()
-                                        .equals(SpecialUpdateTags.DELETE)) {
+                                    if (SpecialUpdateTags.DELETE.equals(value.getMode())) {
                                         parent.removeContent(parent.indexOf(matchingNode));
                                     }
                                 }
@@ -1819,7 +1814,7 @@ public class EditLib {
          */
         String REPLACE = "gn_replace";
         /**
-         * Add to the target.
+         * Add to the target (or set value for an attribute).
          */
         String ADD = "gn_add";
         /**
