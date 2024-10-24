@@ -240,11 +240,31 @@
                             and exists(mdb:contentInfo/*/mrc:featureCatalogue)"
                     as="xs:boolean"/>
 
+      <xsl:variable name="isMapDigital"
+                    select="count(mdb:identificationInfo/*/mri:citation/*/cit:presentationForm[*/@codeListValue = 'mapDigital']) > 0"/>
+      <xsl:variable name="isStatic"
+                    select="count(mdb:distributionInfo/*/mrd:distributionFormat/*/mrd:formatSpecificationCitation/*/cit:title/*[contains(., 'PDF') or contains(., 'PNG') or contains(., 'JPEG')]) > 0"/>
+      <xsl:variable name="isInteractive"
+                    select="count(mdb:distributionInfo/*/mrd:distributionFormat/*/mrd:formatSpecificationCitation/*/cit:title/*[contains(., 'OGC:WMC') or contains(., 'OGC:OWS-C')]) > 0"/>
+      <xsl:variable name="isPublishedWithWMCProtocol"
+                    select="count(mdb:distributionInfo/*/mrd:transferOptions/*/mrd:onLine/*/cit:protocol[starts-with(gco:CharacterString, 'OGC:WMC')]) > 0"/>
+
       <xsl:if test="$isOnlyFeatureCatalog">
         <resourceType>featureCatalog</resourceType>
       </xsl:if>
 
       <xsl:choose>
+        <xsl:when test="$isMapDigital and
+                            ($isStatic or $isInteractive or $isPublishedWithWMCProtocol)">
+          <xsl:choose>
+            <xsl:when test="$isStatic">
+              <resourceType>map-static</resourceType>
+            </xsl:when>
+            <xsl:when test="$isInteractive or $isPublishedWithWMCProtocol">
+              <resourceType>map-interactive</resourceType>
+            </xsl:when>
+          </xsl:choose>
+        </xsl:when>
         <xsl:when test="$isDataset">
           <resourceType>dataset</resourceType>
         </xsl:when>
@@ -434,7 +454,7 @@
 
         <xsl:for-each select="$overviews">
           <overview type="object">{
-            "url": "<xsl:value-of select="if (local-name() = 'FileName') then @src else normalize-space(.)"/>"
+            "url": "<xsl:value-of select="if (local-name() = 'FileName') then util:escapeForJson(@src) else util:escapeForJson(normalize-space(.))"/>"
             <xsl:if test="normalize-space(../../mcc:fileDescription) != ''">,
               "nameObject":
               <xsl:value-of select="gn-fn-index:add-multilingual-field('name', ../../mcc:fileDescription, $allLanguages, true())"/>
