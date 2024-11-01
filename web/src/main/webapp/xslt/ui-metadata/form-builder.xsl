@@ -106,6 +106,8 @@
 
     <xsl:variable name="isoType" select="if (../@gco:isoType) then ../@gco:isoType else ''"/>
 
+    <xsl:variable name="elementCondition" select="gn-fn-metadata:getLabel($schema, name(), $labels, name(..),$isoType, $xpath)/condition" />
+
     <!-- Required status is defined in parent element for
     some profiles like ISO19139. If not set, the element
     editing information is used.
@@ -113,12 +115,15 @@
     -->
     <xsl:variable name="isRequired" as="xs:boolean">
       <xsl:choose>
+        <xsl:when test="$elementCondition = 'mandatory'">
+          <xsl:value-of select="true()"/>
+        </xsl:when>
+        <xsl:when test="$elementCondition = 'optional'">
+          <xsl:value-of select="false()"/>
+        </xsl:when>
         <xsl:when
           test="($parentEditInfo and $parentEditInfo/@min = 1 and $parentEditInfo/@max = 1) or
           (not($parentEditInfo) and $editInfo and $editInfo/@min = 1 and $editInfo/@max = 1)">
-          <xsl:value-of select="true()"/>
-        </xsl:when>
-        <xsl:when test="gn-fn-metadata:getLabel($schema, name(), $labels, name(..),$isoType, $xpath)/condition = 'mandatory'">
           <xsl:value-of select="true()"/>
         </xsl:when>
         <xsl:otherwise>
@@ -1770,6 +1775,14 @@
                 <xsl:choose>
                   <xsl:when test="@use != ''">
                     <xsl:copy-of select="@use|directiveAttributes"/>
+
+                    <xsl:if test="@xpath != ''">
+                      <saxon:call-template name="{concat('evaluate-', $schema)}">
+                        <xsl:with-param name="base" select="$base"/>
+                        <xsl:with-param name="in"
+                                        select="concat('/', @xpath)"/>
+                      </saxon:call-template>
+                    </xsl:if>
                   </xsl:when>
                   <xsl:when test="@del != ''">
                     <xsl:attribute name="remove" select="'true'"/>
