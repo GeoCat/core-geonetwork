@@ -533,7 +533,7 @@
                </dct:MediaTypeOrExtent>
             </dct:format>
             <dcat:compressFormat>
-               <dct:MediaType rdf:about="https://publications.europa.eu/resource/authority/file-type/ZIP"/>
+               <dct:MediaType rdf:about="http://publications.europa.eu/resource/authority/file-type/ZIP"/>
             </dcat:compressFormat>
          </dcat:Distribution>
       </dcat:distribution>

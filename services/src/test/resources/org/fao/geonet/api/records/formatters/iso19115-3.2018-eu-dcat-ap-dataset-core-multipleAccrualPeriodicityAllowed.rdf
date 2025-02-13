@@ -399,7 +399,15 @@
       <dct:LicenseDocument rdf:about="http://publications.europa.eu/resource/authority/licence/CATOSL_1_1"/>
     </dct:license>
     <dct:license>
-      <dct:LicenseDocument rdf:about="http://publications.europa.eu/resource/authority/licence/CC_BY_4_0"/>
+      <dct:LicenseDocument rdf:about="https://publications.europa.eu/resource/authority/licence/CC_BY_4_0">
+         <dct:type>
+             <skos:Concept rdf:about="http://purl.org/adms/licencetype/Attribution">
+                 <skos:notation>Attribution</skos:notation>
+                 <skos:prefLabel xml:lang="en">Attribution</skos:prefLabel>
+                 <skos:inScheme rdf:resource="http://purl.org/adms/licencetype/1.0"/>
+             </skos:Concept>
+         </dct:type>
+      </dct:LicenseDocument>
     </dct:license>
     <dct:rights>
       <dct:RightsStatement>
@@ -561,7 +569,7 @@
           </dct:MediaTypeOrExtent>
         </dct:format>
         <dcat:compressFormat>
-          <dct:MediaType rdf:about="https://publications.europa.eu/resource/authority/file-type/ZIP"/>
+          <dct:MediaType rdf:about="http://publications.europa.eu/resource/authority/file-type/ZIP"/>
         </dcat:compressFormat>
       </dcat:Distribution>
     </dcat:distribution>
