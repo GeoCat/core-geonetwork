@@ -33,7 +33,7 @@
 
 
         </dct:title>
-        <dct:title xml:lang="eng">INSPIRE - Protected site in Walloon region (BE) - Download
+        <dct:title xml:lang="en">INSPIRE - Protected site in Walloon region (BE) - Download
             service</dct:title>
         <dct:description xml:lang="fr">Ce service de téléchargement ATOM Feed donne accès aux couches de données du thème INSPIRE
                "Sites protégés" au sein du territoire wallon (Belgique).
@@ -76,7 +76,7 @@
 
 
         </dct:title>
-    <dct:title xml:lang="eng">INSPIRE - Protected site in Walloon region (BE) - Download
+    <dct:title xml:lang="en">INSPIRE - Protected site in Walloon region (BE) - Download
             service</dct:title>
     <dct:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2017-11-15</dct:issued>
     <dct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">http://geodata.wallonie.be/id/3dbe0017-a71f-4923-9b44-fdb5afef5778</dct:identifier>
