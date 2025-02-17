@@ -45,11 +45,11 @@
         <xsl:variable name="parentName"
                       select="local-name(*)"/>
 
-        <xsl:for-each select="$languages/@iso2code">
+        <xsl:for-each select="$languages">
           <xsl:variable name="codelistTranslation"
-                        select="tr:codelist-value-label(tr:create('iso19115-3.2018', current()), $parentName, $codelistKey)"/>
+                        select="tr:codelist-value-label(tr:create('iso19115-3.2018', current()/@iso3code), $parentName, $codelistKey)"/>
 
-          <skos:prefLabel xml:lang="{current()}"><xsl:value-of select="$codelistTranslation"/></skos:prefLabel>
+          <skos:prefLabel xml:lang="{current()/@iso2code}"><xsl:value-of select="$codelistTranslation"/></skos:prefLabel>
         </xsl:for-each>
       </skos:Concept>
     </adms:status>
