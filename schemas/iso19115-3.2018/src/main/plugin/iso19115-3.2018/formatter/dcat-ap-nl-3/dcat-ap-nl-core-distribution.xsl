@@ -246,6 +246,18 @@
 
             <xsl:if test="$isCopyingDatasetInfoToDistribution">
               <!--
+              RDF Property:	dcterms:LinguisticSystem
+              Resources defined by the Library of Congress (ISO 639-1, ISO 639-2) SHOULD be used.
+
+              If a ISO 639-1 (two-letter) code is defined for language, then its corresponding IRI SHOULD be used; if no ISO 639-1 code is defined, then IRI corresponding to the ISO 639-2 (three-letter) code SHOULD be used.
+
+              Usage note:	Repeat this property if the resource is available in multiple languages.
+              -->
+              <xsl:apply-templates mode="iso19115-3-to-dcat"
+                                   select="ancestor::mdb:MD_Metadata/mdb:identificationInfo/*/mri:defaultLocale"/>
+
+              <!--
+              [mco:useConstraints]
               RDF Property:	dcterms:license
               Definition:	A legal document under which the distribution is made available.
               Range:	dcterms:LicenseDocument
@@ -256,9 +268,6 @@
               for a Distribution of that Dataset SHOULD be avoided as this can create legal conflicts.
               See also guidance at 9. License and rights statements.
               -->
-              <xsl:apply-templates mode="iso19115-3-to-dcat"
-                                   select="ancestor::mdb:MD_Metadata/mdb:identificationInfo/*/mri:resourceConstraints/*[mco:useConstraints]"/>
-
               <!--
               RDF Property:	dcterms:accessRights
               Definition:	A rights statement that concerns how the distribution is accessed.
@@ -266,7 +275,7 @@
               Usage note:	Information about licenses and rights MAY be provided for the Distribution. See also guidance at 9. License and rights statements.
               -->
               <xsl:apply-templates mode="iso19115-3-to-dcat"
-                                   select="ancestor::mdb:MD_Metadata/mdb:identificationInfo/*/mri:resourceConstraints/*[mco:accessConstraints]"/>
+                                   select="ancestor::mdb:MD_Metadata/mdb:identificationInfo/*/mri:resourceConstraints/*"/>
 
               <!--
               RDF Property:	dcterms:rights

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <skos:ConceptScheme xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://geostandaarden.nl/waardelijst/metadata/license">
+    <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/" xml:lang="nl">Beperkingen op publieke toegang</dc:title>
+    <dcterms:issued xmlns:dcterms="http://purl.org/dc/terms/">2018-12-03</dcterms:issued>
+    <dcterms:modified xmlns:dcterms="http://purl.org/dc/terms/">2018-12-03</dcterms:modified>
+  </skos:ConceptScheme>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/publicdomain/mark/1.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Open data (publiek domein)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Open data (publiek domein) - http://creativecommons.org/publicdomain/zero/1.0/deed.nl</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/publicdomain/zero/1.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Open data (CCO)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Open data (CCO) - http://creativecommons.org/publicdomain/zero/1.0/deed.nl</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by/3.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Open data (CC-BY versie 3.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Open data (CC-BY versie 3.0) - http://creativecommons.org/licenses/by/3.0/deed.nl</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by/4.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Open data (CC-BY  versie 4.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Open data (CC-BY  versie 4.0) - http://creativecommons.org/licenses/by/4.0/deed.nl</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by-sa/3.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden (CC-by-sa versie 3.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Gebruiksvoorwaarden (CC-by-sa versie 3.0) - http://creativecommons.org/licenses/by-sa/3.0/deed.nl</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by-sa/4.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden (CC-by-sa versie 4.0) - http://creativecommons.org/licenses/by-sa/4.0/deed.nl</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Gebruiksvoorwaarden (CC-by-sa versie 4.0)</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by-nc/3.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden (CC-by-nc versie 3.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Gebruiksvoorwaarden (CC-by-nc versie 3.0) - http://creativecommons.org/licenses/by-nc/3.0/deed.nl</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by-nc/4.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden (CC-by-nc versie 4.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Gebruiksvoorwaarden (CC-by-nc versie 4.0) - http://creativecommons.org/licenses/by-nc/4.0/deed.nl</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden (CC-by-nc-sa versie 3.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Gebruiksvoorwaarden (CC-by-nc-sa versie 3.0) - http://creativecommons.org/licenses/by-nc-sa/3.0/deed.nl</skos:prefLabel>
+    <skos:prefLabel rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden (CC-by-nc-sa versie 4.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Gebruiksvoorwaarden (CC-by-nc-sa versie 4.0) - http://creativecommons.org/licenses/by-nc-sa/4.0/deed.nl</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by-nd/3.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden (CC-by-nd versie 3.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Gebruiksvoorwaarden (CC-by-nd versie 3.0) - http://creativecommons.org/licenses/by-nd/3.0/deed.nl</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by-nd/4.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden (CC-by-nd versie 4.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Gebruiksvoorwaarden (CC-by-nd versie 4.0) - http://creativecommons.org/licenses/by-nd/4.0/deed.nl</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by-nc-nd/3.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden (CC-by-nc-nd versie 3.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Gebruiksvoorwaarden (CC-by-nc-nd versie 3.0) - http://creativecommons.org/licenses/by-nc-nd/3.0/deed.nl</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://creativecommons.org/licenses/by-nc-nd/4.0/deed.nl">
+    <skos:scopeNote xml:lang="nl">Gebruiksvoorwaarden (CC-by-nc-nd versie 4.0)</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Gebruiksvoorwaarden (CC-by-nc-nd versie 4.0) - http://creativecommons.org/licenses/by-nc-nd/4.0/deed.nl</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://geostandaarden.nl/waardelijst/metadata/license" />
+  </skos:Concept>
+</rdf:RDF>
+

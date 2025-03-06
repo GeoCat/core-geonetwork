@@ -15,10 +15,12 @@
                 exclude-result-prefixes="#all">
 
   <xsl:import href="./dcat-ap-nl-utils.xsl" />
-  <xsl:import href="../eu-dcat-ap/eu-dcat-ap-core.xsl"/>
+  <xsl:import href="../eu-geodcat-ap/eu-geodcat-ap-core.xsl"/>
   <xsl:import href="../eu-dcat-ap-hvd/eu-dcat-ap-hvd-core.xsl"/>
+  <xsl:import href="./dcat-ap-nl-core-access-and-use.xsl"/>
   <xsl:import href="./dcat-ap-nl-core-lineage.xsl"/>
   <xsl:import href="./dcat-ap-nl-core-distribution.xsl"/>
+  <xsl:import href="./dcat-ap-nl-core-contact.xsl"/>
 
   <xsl:variable name="isMappingResourceConstraintsToEuVocabulary"
                 as="xs:boolean"
