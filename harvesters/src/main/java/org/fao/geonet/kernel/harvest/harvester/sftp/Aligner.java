@@ -133,6 +133,10 @@ public class Aligner extends BaseAligner<SftpParams> {
                 try {
                     Element md = Xml.loadString(fileContent, false);
 
+                    if (!params.xslfilter.isEmpty() && !params.xslfilter.startsWith("schema:")) {
+                        md = HarvesterUtil.processMetadata(null, md, processName, processParams);
+                    }
+
                     String schema = metadataSchemaUtils.autodetectSchema(md, null);
                     String uuid = metadataUtils.extractUUID(schema, md);
                     String modified = metadataUtils.extractDateModified(schema, md);
@@ -250,7 +254,7 @@ public class Aligner extends BaseAligner<SftpParams> {
         // If the xslfilter process changes the metadata uuid,
         // use that uuid (newMdUuid) for the new metadata to add to the catalogue.
         String newMdUuid = null;
-        if (!params.xslfilter.isEmpty()) {
+        if (!params.xslfilter.isEmpty() && params.xslfilter.startsWith("schema:")) {
             md = HarvesterUtil.processMetadata(metadataSchemaUtils.getSchema(schema), md, processName, processParams);
             schema = metadataSchemaUtils.autodetectSchema(md);
             // Get new uuid if modified by XSLT process
@@ -341,7 +345,7 @@ public class Aligner extends BaseAligner<SftpParams> {
 
         boolean updateSchema = false;
 
-        if (!params.xslfilter.isEmpty()) {
+        if (!params.xslfilter.isEmpty() && params.xslfilter.startsWith("schema:")) {
             md = HarvesterUtil.processMetadata(metadataSchemaUtils.getSchema(schema), md, processName, processParams);
             String newSchema = metadataSchemaUtils.autodetectSchema(md);
             updateSchema = !newSchema.equals(schema);
