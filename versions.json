@@ -7,6 +7,13 @@
     ]
   },
   {
+    "version": "4.2",
+    "title": "4.2",
+    "aliases": [
+      "stable"
+    ]
+  },
+  {
     "version": "3.12",
     "title": "3.12",
     "aliases": [
