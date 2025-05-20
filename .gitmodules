@@ -12,4 +12,4 @@
 	url = https://github.com/geonetwork/geonetwork-ui.git
 [submodule "schemas/dcat-ap"]
 	path = schemas/dcat-ap
-	url = git@github.com:metadata101/dcat-ap.git
+	url = git@github.com:GeoCat/dcat-ap.git
