@@ -26,6 +26,7 @@ package org.fao.geonet.api.records.formatters;
 import jeeves.server.context.ServiceContext;
 import org.fao.geonet.constants.Params;
 import org.fao.geonet.domain.AbstractMetadata;
+import org.fao.geonet.util.XslUtil;
 import org.jdom.Element;
 import org.springframework.web.context.request.WebRequest;
 
@@ -62,6 +63,10 @@ public class FormatterParams {
     public String getResourceUrl() {
         String xslid = param("xsl", null);
         String schemaParam = "";
+
+        if (xslid != null) {
+            xslid = XslUtil.encodeForJavaScript(xslid);
+        }
 
         if (formatterInSchemaPlugin) {
             schemaParam = Params.SCHEMA + "=" + schema + "&";

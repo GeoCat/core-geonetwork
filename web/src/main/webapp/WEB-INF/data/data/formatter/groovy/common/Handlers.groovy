@@ -7,6 +7,7 @@ import org.fao.geonet.api.records.formatters.groovy.util.*
 import org.fao.geonet.api.records.model.related.RelatedItemType
 import org.fao.geonet.constants.Geonet
 import org.fao.geonet.kernel.GeonetworkDataDirectory
+import org.fao.geonet.util.XslUtil
 import org.fao.geonet.utils.Xml
 import org.jdom.Element
 
@@ -126,7 +127,7 @@ public class Handlers {
     def htmlOrXmlEnd = {
         def required = "";
         def tabToggle = "";
-        def activeTab = env.param('tab').toString();
+        def activeTab = XslUtil.encodeForHTML(env.param('tab').toString());
 
         if (activeTab != 'Null Value') {
             tabToggle = "gnFormatter.toggleTab('$activeTab');"
