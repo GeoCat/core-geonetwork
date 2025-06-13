@@ -35,6 +35,8 @@
   <!-- Form field type configuration. Default is text. -->
   <fields>
     <for name="gmd:abstract" use="textarea"/>
+    <!-- Example configuration to use markdown editor for abstract field -->
+    <!-- <for name="gmd:abstract" use="data-gn-field-markdown-div" />-->
     <for name="gmd:checkPointDescription" use="textarea"/>
     <for name="gmd:credit" use="textarea"/>
     <for name="gmd:description" use="textarea"/>

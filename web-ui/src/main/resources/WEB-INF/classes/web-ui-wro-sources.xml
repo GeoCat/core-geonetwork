@@ -31,6 +31,7 @@
     <cssSource webappPath="/catalog/views/"/>
     <cssSource webappPath="/catalog/style/"/>
     <cssSource webappPath="/catalog/lib/bootstrap-table/dist/bootstrap-table.min.css" />
+    <cssSource webappPath="/catalog/lib/angular-markdown-editor/style/" />
   </require>
   <declarative name="lib" pathOnDisk="web-ui/src/main/resources">
     <jsSource webappPath="/catalog/lib/modernizr.js" minimize="false"/>
@@ -120,6 +121,13 @@
     <jsSource webappPath="/catalog/lib/recaptcha/angular-recaptcha.min.js" minimize="false"/>
     <jsSource webappPath="/catalog/lib/geohash.js"/>
     <jsSource webappPath="/catalog/lib/xml2json/xml2json.min.js" minimize="false"/>
+    <!-- Angular markdown editor -->
+    <jsSource webappPath="/catalog/lib/angular-markdown-editor/src/marked.js" />
+    <jsSource webappPath="/catalog/lib/angular-markdown-editor/src/angular-marked.min.js" minimize="false" />
+    <jsSource webappPath="/catalog/lib/angular-markdown-editor/src/bootstrap-markdown.js" />
+    <jsSource webappPath="/catalog/lib/angular-markdown-editor/src/highlight.min.js" minimize="false" />
+    <jsSource webappPath="/catalog/lib/angular-markdown-editor/src/angular-highlightjs.min.js" minimize="false" />
+    <jsSource webappPath="/catalog/lib/angular-markdown-editor/src/angular-markdown-editor.js" />
   </declarative>
   <!-- Same as previous + olcesium -->
   <declarative name="lib3d" pathOnDisk="web-ui/src/main/resources">
@@ -213,5 +221,12 @@
     <jsSource webappPath="/catalog/lib/recaptcha/angular-recaptcha.min.js" minimize="false"/>
     <jsSource webappPath="/catalog/lib/geohash.js"/>
     <jsSource webappPath="/catalog/lib/xml2json/xml2json.min.js" minimize="false"/>
+    <!-- Angular markdown editor -->
+    <jsSource webappPath="/catalog/lib/angular-markdown-editor/src/marked.js" />
+    <jsSource webappPath="/catalog/lib/angular-markdown-editor/src/angular-marked.min.js" minimize="false" />
+    <jsSource webappPath="/catalog/lib/angular-markdown-editor/src/bootstrap-markdown.js" />
+    <jsSource webappPath="/catalog/lib/angular-markdown-editor/src/highlight.min.js" minimize="false" />
+    <jsSource webappPath="/catalog/lib/angular-markdown-editor/src/angular-highlightjs.min.js" minimize="false" />
+    <jsSource webappPath="/catalog/lib/angular-markdown-editor/src/angular-markdown-editor.js" />
   </declarative>
 </sources>

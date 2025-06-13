@@ -66,6 +66,12 @@
     <link href="{/root/gui/url}/static/ng-skos.css?v={$buildNumber}" rel="stylesheet" media="screen"></link>
     <link href="{/root/gui/url}/static/{/root/gui/nodeId}_custom_style.css?v={$buildNumber}&amp;{$minimizedParam}"
           rel="stylesheet" media="all"/>
+
+    <!-- Angular markdown editor -->
+    <link href="{$uiResourcesPath}lib/angular-markdown-editor/style/bootstrap-markdown.min.css" rel="stylesheet" media="screen"></link>
+    <link href="{$uiResourcesPath}lib/angular-markdown-editor/style/github.min.css" rel="stylesheet" media="screen"></link>
+    <link href="{$uiResourcesPath}lib/angular-markdown-editor/style/angular-markdown-editor.css" rel="stylesheet" media="screen"></link>
+
   </xsl:template>
 
   <xsl:template name="css-load-nojs">
@@ -242,6 +248,14 @@
         <script src="{$uiResourcesPath}lib/geohash.js?v={$buildNumber}"></script>
 
         <script src="{$uiResourcesPath}lib/xml2json/xml2json.min.js?v={$buildNumber}"></script>
+
+        <!-- Angular markdown editor -->
+        <script src="{$uiResourcesPath}lib/angular-markdown-editor/src/marked.js?v={$buildNumber}"></script>
+        <script src="{$uiResourcesPath}lib/angular-markdown-editor/src/angular-marked.min.js?v={$buildNumber}"></script>
+        <script src="{$uiResourcesPath}lib/angular-markdown-editor/src/bootstrap-markdown.js?v={$buildNumber}"></script>
+        <script src="{$uiResourcesPath}lib/angular-markdown-editor/src/highlight.min.js?v={$buildNumber}"></script>
+        <script src="{$uiResourcesPath}lib/angular-markdown-editor/src/angular-highlightjs.js?v={$buildNumber}"></script>
+        <script src="{$uiResourcesPath}lib/angular-markdown-editor/src/angular-markdown-editor.js?v={$buildNumber}"></script>
       </xsl:when>
       <xsl:otherwise>
       </xsl:otherwise>
