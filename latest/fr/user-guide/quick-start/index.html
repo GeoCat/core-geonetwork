@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../assets/images/geonetwork-logo.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.15">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.2afb09e1.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.342714a4.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -1784,7 +1784,7 @@
 
 
   
-    <a href="https://github.com/geonetwork/core-geonetwork/edit/main/docs/manual/docs/user-guide/quick-start/index.md" title="Editer cette page" class="md-content__button md-icon">
+    <a href="https://github.com/geonetwork/core-geonetwork/edit/main/docs/manual/docs/user-guide/quick-start/index.md" title="Editer cette page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1858,19 +1858,34 @@ b.  Click <code>load templates</code> to load examples.</p>
 <p>You can use the Search form to search information using the GeoNetwork catalog. The Search form allows you to search using:</p>
 <ul>
 <li>
-<p>a full text search box providing suggestions</p>
+<p>A full text search box providing suggestions. Enter the desired keywords and search terms into the <strong>Search</strong> box and click the <strong>Search</strong> icon or press ++Enter++. The search results are displayed in a list. Note that the entire content of the record is searched, not just the titles and description.</p>
 <p><img alt="" src="../../../user-guide/quick-start/img/full-text.png" /></p>
+<p>The wildcard <code>*</code> is used to match the start or end of word; for example, if you search for <code>Area*</code>,  you will search for results that contain words beginning with the text <code>Area</code>. Wildcards can also be used multiple times to search for part of a word.</p>
 </li>
 <li>
-<p>facets which defines groups that you can click to browse the content of the catalog</p>
+<p>Facets which defines groups that you can click to browse the content of the catalog</p>
 <p><img alt="" src="../../../user-guide/quick-start/img/facets.png" /></p>
 </li>
 <li>
-<p>spatial filtering to choose information in specific areas</p>
+<p>Spatial filtering to choose information in specific areas</p>
 <p><img alt="" src="../../../user-guide/quick-start/img/spatial-filter.png" /></p>
 </li>
 <li>
-<p>advanced search</p>
+<p>Advanced search options are located in the last menu item of the <strong>Search</strong> field.</p>
+<ul>
+<li>
+<p>Allows you to configure the search behaviour, such as:</p>
+<ul>
+<li>Exact match: search for exact matches of the search terms. For example, if you search for multiple words, the search will return only records that contain all of the words in the same order as you entered them.</li>
+<li>Search in title only: searches for the search terms only in the title of the records.</li>
+<li>Only my records: searches for records that you have created.</li>
+</ul>
+</li>
+<li>
+<p>Define the languages to search in.</p>
+</li>
+<li>Filter by date range: allows you to search for records that were created or modified within a specific date range.</li>
+</ul>
 <p><img alt="" src="../../../user-guide/quick-start/img/advanced.png" /></p>
 </li>
 </ul>
@@ -2117,10 +2132,10 @@ b.  Click <code>load templates</code> to load examples.</p>
     
     
       
-      <script id="__config" type="application/json">{"base": "../../..", "features": ["toc.follow", "navigation.tracking", "navigation.top", "navigation.tabs", "navigation.prune", "navigation.indexes", "navigation.footer", "header.autohide", "content.tabs.link", "content.code.copy", "content.action.view", "content.action.edit", "announce.dismiss"], "search": "../../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": {"alias": true, "default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["toc.follow", "navigation.tracking", "navigation.top", "navigation.tabs", "navigation.prune", "navigation.indexes", "navigation.footer", "header.autohide", "content.tabs.link", "content.code.copy", "content.action.view", "content.action.edit", "announce.dismiss"], "search": "../../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": {"alias": true, "default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.56ea9cef.min.js"></script>
       
     
   </body>
