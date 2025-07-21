@@ -66,7 +66,9 @@
             "div[data-ng-transclude] > textarea.form-control," +
             // + selector for field using directive eg. gn-keyword-picker
             "div[data-ng-transclude] > span > input.form-control," +
-            "div[data-ng-transclude] > span > textarea.form-control";
+            "div[data-ng-transclude] > span > textarea.form-control," +
+            // + selector for field using directive eg. gn-field-markdown
+            "div[data-ng-transclude] > div.md-editor";
 
           // Some input should be displayed in Right-To-Left direction
           var rtlLanguages = ["AR"];
@@ -154,6 +156,19 @@
 
           scope.languagesOrdered = computeLanguageOrdered(scope.languages, element);
 
+          /**
+           * Gets the element with the lang attribute. By default, it is the same element as provided in the parameter,
+           * except if it is using the gn-field-markdown, then it will return the textarea inside.
+           * @param inputEl
+           */
+          function getInputLang(inputEl) {
+            if (inputEl.hasClass("md-editor")) {
+              return inputEl.find("textarea");
+            } else {
+              return inputEl;
+            }
+          }
+
           $timeout(function () {
             scope.expanded = scope.expanded === "true";
 
@@ -161,12 +176,13 @@
               .find(formFieldsSelector)
               .each(function () {
                 var inputEl = $(this);
-                var langId = inputEl.attr("lang");
+                var inputLang = getInputLang(inputEl);
+                var langId = inputLang.attr("lang");
 
                 // FIXME : should not be the id but the ISO3Code
                 if (langId) {
                   // Add the language label
-                  inputEl.before(
+                  inputLang.before(
                     '<span class="label label-primary">' +
                       $translate.instant(getISO3Code(langId)) +
                       "</span>"
@@ -174,15 +190,15 @@
 
                   // Set the direction attribute
                   if ($.inArray(langId, rtlLanguages) !== -1) {
-                    inputEl.attr("dir", "rtl");
+                    inputLang.attr("dir", "rtl");
                   }
 
                   var setNoDataClass = function () {
                     var code = "#" + langId;
-                    scope.hasData[code] = inputEl.val().trim().length > 0;
+                    scope.hasData[code] = inputLang.val().trim().length > 0;
                   };
 
-                  inputEl.on("keyup", setNoDataClass);
+                  inputLang.on("keyup", setNoDataClass);
 
                   setNoDataClass();
                 }
@@ -190,21 +206,24 @@
 
             // By default, do not expand fields
             scope.displayAllLanguages(scope.expanded);
-          });
+          }, 100); // delay to ensure the gn-field-markdown directive has been loaded
 
           scope.switchToLanguage = function (langId) {
             scope.currentLanguage = langId.replace("#", "");
             $(element)
               .find(formFieldsSelector)
               .each(function () {
+                var inputEl = $(this);
+                var inputLang = getInputLang(inputEl);
+
                 if (
-                  $(this).attr("lang") === scope.currentLanguage ||
-                  ($(this).attr("lang") === mainLanguage && scope.currentLanguage === "")
+                  inputLang.attr("lang") === scope.currentLanguage ||
+                  (inputLang.attr("lang") === mainLanguage && scope.currentLanguage === "")
                 ) {
-                  var el = $(this).removeClass("hidden");
+                  var el = inputEl.removeClass("hidden");
                   if (shouldFocus(el)) el.focus();
                 } else {
-                  $(this).addClass("hidden");
+                  inputEl.addClass("hidden");
                 }
               });
           };
@@ -229,13 +248,16 @@
                   }
                 } else {
                   setLabel("allLanguage");
-                  $(this).prev("span").addClass("hidden");
+                  var inputEl = $(this);
+                  var inputLang = getInputLang(inputEl);
 
-                  if ($(this).attr("lang") !== mainLanguage) {
-                    $(this).addClass("hidden");
+                  inputEl.prev("span").addClass("hidden");
+
+                  if (inputLang.attr("lang") !== mainLanguage) {
+                    inputEl.addClass("hidden");
                   } else {
                     scope.currentLanguage = mainLanguage;
-                    var el = $(this).removeClass("hidden");
+                    var el = inputEl.removeClass("hidden");
                     if (focus && shouldFocus(el)) {
                       el.focus();
                     }

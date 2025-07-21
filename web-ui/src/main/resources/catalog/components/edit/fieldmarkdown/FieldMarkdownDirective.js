@@ -32,8 +32,15 @@
       });
     }
   ]);
+  /**
+   * Directive for rendering a markdown field with syntax highlighting.
+   * It uses angular-markdown-editor and hljs for rendering.
+   *
+   * @example
+   * <div gn-field-markdown="fieldValue" ref="someRef" required="true" language="EN" tooltip="Markdown editor"></div>
+   */
 
-  module.directive("gnFieldMarkdownDiv", [
+  module.directive("gnFieldMarkdown", [
     "$http",
     "$rootScope",
     function ($http, $rootScope) {
@@ -42,14 +49,15 @@
         replace: true,
         transclude: true,
         scope: {
-          value: "@gnFieldMarkdownDiv",
-          label: "@label",
+          value: "@gnFieldMarkdown",
           ref: "@ref",
-          required: "@required"
+          language: "@language",
+          tooltip: "@tooltip"
         },
         templateUrl:
           "../../catalog/components/edit/fieldmarkdown/partials/" + "fieldmarkdown.html",
-        link: function (scope, element, attrs) {}
+        link: function (scope, element, attrs) {
+        }
       };
     }
   ]);

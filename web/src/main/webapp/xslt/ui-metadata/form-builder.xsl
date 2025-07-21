@@ -233,6 +233,15 @@
                 <xsl:variable name="tooltip"
                               select="concat($schema, '|', name(.), '|', name(..), '|', $xpath)"></xsl:variable>
 
+                <xsl:if test="name(.) = 'gmd:abstract'">
+                  <xsl:message>
+                    render-element
+                    name: <xsl:value-of select="name(.)"/>
+                    $editInfo: <xsl:copy-of select="$editInfo" />
+                    $parentEditInfo: <xsl:copy-of select="$parentEditInfo" />
+                    $value: <xsl:copy-of select="$value" />
+                  </xsl:message>
+                </xsl:if>
                 <!-- Preserve order of the languages as defined in the record. -->
                 <xsl:for-each select="$value/values/value">
                   <xsl:if test="@lang != ''">
@@ -1263,6 +1272,14 @@
             <xsl:attribute name="data-gn-field-tooltip" select="$tooltip"/>
           </xsl:if>
         </input>
+      </xsl:when>
+      <xsl:when test="$type = 'markdown'">
+        <div
+          data-gn-field-markdown="{$valueToEdit}"
+          data-ref="{concat('_', $value//@ref)}"
+          data-language="{normalize-space($lang)}"
+          data-gn-field-tooltip="{$tooltip}">
+        </div>
       </xsl:when>
       <xsl:otherwise>
 
