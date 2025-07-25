@@ -102,7 +102,7 @@ public class GeoNetworkApiClient {
 
         ObjectMapper objectMapper = new ObjectMapper();
         List<Source> sourceList
-            = objectMapper.readValue(sourcesJson, new TypeReference<>(){});
+            = objectMapper.readValue(sourcesJson, new TypeReference<List<Source>>(){});
 
         Map<String, Source> sourceMap = new HashMap<>();
         sourceList.forEach(s -> sourceMap.put(s.getUuid(), s));
@@ -122,7 +122,7 @@ public class GeoNetworkApiClient {
         String groupsJson = retrieveUrl(addUrlSlash(serverUrl) + "api/groups", user, password);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(groupsJson, new TypeReference<>(){});
+        return objectMapper.readValue(groupsJson, new TypeReference<List<Group>>(){});
     }
 
     /**
@@ -225,7 +225,7 @@ public class GeoNetworkApiClient {
         final String requestHost = method.getURI().getHost();
         HttpClientContext httpClientContext = HttpClientContext.create();
 
-        final Function<HttpClientBuilder, Void> requestConfiguration = new Function<>() {
+        final Function<HttpClientBuilder, Void> requestConfiguration = new Function<HttpClientBuilder, Void>() {
             @Nullable
             @Override
             public Void apply(HttpClientBuilder input) {
