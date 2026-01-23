@@ -1858,7 +1858,7 @@
     <description>Nome da série, ou conjunto de dados agregados</description>
     <condition>Obrigatório</condition>
   </element>
-  <element name="gmd:name" context="gmd:MD_Format" id="285.0">
+  <element name="gmd:name" context="gmd:MD_Format">
     <label>Name</label>
     <description>Name of the data transfer format(s)</description>
     <help>name of the data transfer format(s)</help>

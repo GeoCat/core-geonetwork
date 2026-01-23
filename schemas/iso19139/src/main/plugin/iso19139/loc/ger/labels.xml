@@ -27,7 +27,7 @@
         xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml"
         xmlns:srv="http://www.isotc211.org/2005/srv" xmlns:gmx="http://www.isotc211.org/2005/gmx">
 
-  <element name="gmd:MD_Metadata" id="1">
+  <element name="gmd:MD_Metadata">
     <label>Metadaten</label>
     <abbrLabel>Metadaten</abbrLabel>
     <help>Dieses Element bildet im ISO Standard 19115 die Basisklasse
@@ -40,7 +40,7 @@
       definiert
     </description>
   </element>
-  <element name="gmd:metadataStandardName" id="10">
+  <element name="gmd:metadataStandardName">
     <label>Bezeichnung des Metadatenstandards</label>
     <help>z.B. ISO 19115, GM03Core (ggf. andere Metadatenprofile)</help>
     <condition/>
@@ -48,25 +48,25 @@
       Profilname)
     </description>
   </element>
-  <element name="gmd:nameOfMeasure" id="100">
+  <element name="gmd:nameOfMeasure">
     <label>Testverfahren</label>
     <help/>
     <condition/>
     <description>Bezeichnung des auf die Daten angewendeten Testverfahrens</description>
   </element>
-  <element name="gmd:measureIdentification" id="101">
+  <element name="gmd:measureIdentification">
     <label>Verfahrensidentifikator</label>
     <help/>
     <condition/>
     <description>Kennung einer registrierten Standardprozedur</description>
   </element>
-  <element name="gmd:measureDescription" id="102">
+  <element name="gmd:measureDescription">
     <label>Verfahrensbeschreibung</label>
     <help/>
     <condition/>
     <description>Beschreibung der Qualitätsprüfung</description>
   </element>
-  <element name="gmd:evaluationMethodType" id="103">
+  <element name="gmd:evaluationMethodType">
     <label>Typ der Bewertungsmethode</label>
     <help/>
     <condition/>
@@ -74,19 +74,19 @@
       Datenbestands
     </description>
   </element>
-  <element name="gmd:evaluationMethodDescription" id="104">
+  <element name="gmd:evaluationMethodDescription">
     <label>Methodenbeschreibung</label>
     <help/>
     <condition/>
     <description>Beschreibung der Bewertungsmethode</description>
   </element>
-  <element name="gmd:evaluationProcedure" id="105">
+  <element name="gmd:evaluationProcedure">
     <label>Bewertungsmethode</label>
     <help/>
     <condition/>
     <description>Bibliografische Angaben zur Bewertungsmethode</description>
   </element>
-  <element name="gmd:dateTime" context="gmd:DQ_Element" id="106">
+  <element name="gmd:dateTime" context="gmd:DQ_Element">
     <label>Bewertungszeitpunkt</label>
     <help>Hier nur Zeitpunkte, da die Klasse "dateTime" keinen Zeitraum
       zulässt
@@ -94,7 +94,7 @@
     <condition/>
     <description>Zeitpunkt(e) der Bewertung</description>
   </element>
-  <element name="gmd:result" id="107">
+  <element name="gmd:result">
     <label>Ergebnis</label>
     <help/>
     <condition>Obligatorisch innerhalb der Qualitätsinformation</condition>
@@ -105,7 +105,7 @@
       ergeben hat
     </description>
   </element>
-  <element name="gmd:DQ_Completeness" id="108">
+  <element name="gmd:DQ_Completeness">
     <label>Vollständigkeit</label>
     <help/>
     <condition/>
@@ -113,7 +113,7 @@
       Beziehungen
     </description>
   </element>
-  <element name="gmd:DQ_CompletenessCommission" id="109">
+  <element name="gmd:DQ_CompletenessCommission">
     <label>Datenüberschuss</label>
     <help>Angaben beziehen sich auf den vollständigen Geltungsbereich
       (scope) der
@@ -125,7 +125,7 @@
       sind
     </description>
   </element>
-  <element name="gmd:metadataStandardVersion" id="11">
+  <element name="gmd:metadataStandardVersion">
     <label>Version des Metadatenstandards</label>
     <help>z.B. "ISO 19115:2003 (E)" oder "ISO 19115:2003/Cor. 1:2006 (E)"</help>
     <condition/>
@@ -133,7 +133,7 @@
       genutzten Profils
     </description>
   </element>
-  <element name="gmd:dataSetURI" id="11.1">
+  <element name="gmd:dataSetURI">
     <label>URI des Datenbestands</label>
     <help>z.B. ein Link, der direkt auf einen maschinenlesbaren Datensatz
       verweisen kann (URL,
@@ -145,7 +145,7 @@
       beziehen
     </description>
   </element>
-  <element name="gmd:locale" context="gmd:MD_Metadata" id="11.2">
+  <element name="gmd:locale" context="gmd:MD_Metadata">
     <label>Sprachraum</label>
     <help/>
     <condition/>
@@ -154,7 +154,7 @@
       vorliegt
     </description>
   </element>
-  <element name="gmd:DQ_CompletenessOmission" id="110">
+  <element name="gmd:DQ_CompletenessOmission">
     <label>Datendefizit</label>
     <help>Angaben beziehen sich auf den vollständigen Geltungsbereich
       (scope) der
@@ -165,7 +165,7 @@
       fehlen
     </description>
   </element>
-  <element name="gmd:DQ_LogicalConsistency" id="111">
+  <element name="gmd:DQ_LogicalConsistency">
     <label>Logische Konsistenz</label>
     <help/>
     <condition/>
@@ -176,19 +176,19 @@
       sein)
     </description>
   </element>
-  <element name="gmd:DQ_ConceptualConsistency" id="112">
+  <element name="gmd:DQ_ConceptualConsistency">
     <label>Konzeptionelle Konsistenz</label>
     <help/>
     <condition/>
     <description>Einhaltung der Regeln des konzeptionellen Schemas</description>
   </element>
-  <element name="gmd:DQ_DomainConsistency" id="113">
+  <element name="gmd:DQ_DomainConsistency">
     <label>Konsistenz des Wertebereichs</label>
     <help/>
     <condition/>
     <description>Einhaltung der Werte in Wertebereichen</description>
   </element>
-  <element name="gmd:DQ_FormatConsistency" id="114">
+  <element name="gmd:DQ_FormatConsistency">
     <label>Formatkonsistenz</label>
     <help>Hinweis: Bei Datenquellen, die in unterschiedlichen Formaten
       (z.B. Kommagenauigkeit)
@@ -200,7 +200,7 @@
       physikalischen Datenstruktur gespeichert ist
     </description>
   </element>
-  <element name="gmd:DQ_TopologicalConsistency" id="115">
+  <element name="gmd:DQ_TopologicalConsistency">
     <label>Topologische Konsistenz</label>
     <help/>
     <condition/>
@@ -209,19 +209,19 @@
       Geltungsbereich
     </description>
   </element>
-  <element name="gmd:DQ_PositionalAccuracy" id="116">
+  <element name="gmd:DQ_PositionalAccuracy">
     <label>Positionsgenauigkeit</label>
     <help/>
     <condition/>
     <description>Positionsgenauigkeiten von Objekten</description>
   </element>
-  <element name="gmd:DQ_AbsoluteExternalPositionalAccuracy" id="117">
+  <element name="gmd:DQ_AbsoluteExternalPositionalAccuracy">
     <label>Absolute Positionsgenauigkeit</label>
     <help/>
     <condition/>
     <description>Abweichung der Ist-Koordinaten von den Soll-Koordinaten</description>
   </element>
-  <element name="gmd:DQ_GriddedDataPositionalAccuracy" id="118">
+  <element name="gmd:DQ_GriddedDataPositionalAccuracy">
     <label>Rasterpositionsgenauigkeit</label>
     <help/>
     <condition/>
@@ -229,7 +229,7 @@
       Sollwerten
     </description>
   </element>
-  <element name="gmd:DQ_RelativeInternalPositionalAccuracy" id="119">
+  <element name="gmd:DQ_RelativeInternalPositionalAccuracy">
     <label>Relative Positionsgenauigkeit</label>
     <help/>
     <condition/>
@@ -238,7 +238,7 @@
       Sollposition
     </description>
   </element>
-  <element name="gmd:spatialRepresentationInfo" id="12">
+  <element name="gmd:spatialRepresentationInfo">
     <label>Struktur der räumlichen Daten</label>
     <abbrLabel>Datenstruktur</abbrLabel>
     <help>Angabe zur technischen Beschaffenheit der Daten. Unterschieden werden z. B. Vektordaten und Rasterdaten.
@@ -248,7 +248,7 @@
     <condition/>
     <description>Typ der digitalen Daten (Raster / Vektor / Alphanumerisch)</description>
   </element>
-  <element name="gmd:DQ_TemporalAccuracy" id="120">
+  <element name="gmd:DQ_TemporalAccuracy">
     <label>Zeitliche Genauigkeit</label>
     <help/>
     <condition/>
@@ -256,7 +256,7 @@
       der Objekte
     </description>
   </element>
-  <element name="gmd:DQ_AccuracyOfATimeMeasurement" id="121">
+  <element name="gmd:DQ_AccuracyOfATimeMeasurement">
     <label>Genauigkeit der Zeitmessung</label>
     <help>Die Angabe der Genauigkeit der Zeitmessung ist z.B. bei
       Positionierungsdiensten oder
@@ -268,13 +268,13 @@
       Zeitmessung)
     </description>
   </element>
-  <element name="gmd:DQ_TemporalConsistency" id="122">
+  <element name="gmd:DQ_TemporalConsistency">
     <label>Zeitliche Konsistenz</label>
     <help/>
     <condition/>
     <description>Korrektheit von geordneten Ereignissen oder Abfolgen</description>
   </element>
-  <element name="gmd:DQ_TemporalValidity" id="123">
+  <element name="gmd:DQ_TemporalValidity">
     <label>Zeitliche Gültigkeit</label>
     <help/>
     <condition/>
@@ -282,7 +282,7 @@
       Geltungsbereichs
     </description>
   </element>
-  <element name="gmd:DQ_ThematicAccuracy" id="124">
+  <element name="gmd:DQ_ThematicAccuracy">
     <label>Thematische Genauigkeit</label>
     <help/>
     <condition/>
@@ -291,7 +291,7 @@
       Angaben sowie der Klassifikation von Objekten und ihrer Beziehungen
     </description>
   </element>
-  <element name="gmd:DQ_ThematicClassificationCorrectness" id="125">
+  <element name="gmd:DQ_ThematicClassificationCorrectness">
     <label>Korrektheit der thematischen Klassifizierung</label>
     <help>"Universe of discourse" aus der englischen Beschreibung wird an
       dieser Stelle mit Wertebereich übersetzt
@@ -302,25 +302,25 @@
       vollständig abdecken
     </description>
   </element>
-  <element name="gmd:DQ_NonQuantitativeAttributeAccuracy" id="126">
+  <element name="gmd:DQ_NonQuantitativeAttributeAccuracy">
     <label>Genauigkeit nicht-quantitativer Attribute</label>
     <help>Granularität der Objektbeschreibung</help>
     <condition/>
     <description>Genauigkeit von nicht-quantitativen Attributen</description>
   </element>
-  <element name="gmd:DQ_QuantitativeAttributeAccuracy" id="127">
+  <element name="gmd:DQ_QuantitativeAttributeAccuracy">
     <label>Genauigkeit quantitativer Attribute</label>
     <help/>
     <condition/>
     <description>Genauigkeit von quantitativen Attributen</description>
   </element>
-  <element name="gmd:DQ_Result" id="128">
+  <element name="gmd:DQ_Result">
     <label>Ergebnis</label>
     <help/>
     <condition/>
     <description>Generalisierungsklasse von spezifischen Ergebnisklassen</description>
   </element>
-  <element name="gmd:DQ_ConformanceResult" id="129">
+  <element name="gmd:DQ_ConformanceResult">
     <label>Konformitätsergebnis</label>
     <help/>
     <condition>obligatorisch nach INSPIRE</condition>
@@ -329,7 +329,7 @@
       Qualitätsprüfverfahren gegen einen zulässigen Prüfwert
     </description>
   </element>
-  <element name="gmd:referenceSystemInfo" id="13">
+  <element name="gmd:referenceSystemInfo">
     <label>Referenzsystem</label>
     <abbrLabel>Ref. Sys.</abbrLabel>
     <help/>
@@ -340,7 +340,7 @@
     </description>
   </element>
   <element name="gmd:specification" context="gmd:DQ_ConformanceResult"
-           id="130">
+>
     <label>Verfahrensspezifikation</label>
     <help/>
     <condition>Obligatorisch</condition>
@@ -350,13 +350,13 @@
     </description>
   </element>
   <element name="gmd:explanation" context="gmd:DQ_ConformanceResult"
-           id="131">
+>
     <label>Erklärung</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Erklärung der Bedeutung der Konformität für das Ergebnis</description>
   </element>
-  <element name="gmd:pass" context="gmd:DQ_ConformanceResult" id="132">
+  <element name="gmd:pass" context="gmd:DQ_ConformanceResult">
     <label>Bestanden</label>
     <help/>
     <condition>Obligatorisch</condition>
@@ -364,7 +364,7 @@
       ja
     </description>
   </element>
-  <element name="gmd:DQ_QuantitativeResult" id="133">
+  <element name="gmd:DQ_QuantitativeResult">
     <label>Quantitatives Ergebnis</label>
     <help/>
     <condition/>
@@ -373,28 +373,28 @@
     </description>
   </element>
   <element name="gmd:valueType" context="gmd:DQ_QuantitativeResult"
-           id="134">
+>
     <label>Wertetyp</label>
     <help/>
     <condition/>
     <description>Wertetyp, in dem das Qualitätsergebnis angegeben wird</description>
   </element>
   <element name="gmd:valueUnit" context="gmd:DQ_QuantitativeResult"
-           id="135">
+>
     <label>Masseinheit</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Masseinheit, in der das Qualitätsergebnis angegeben wird</description>
   </element>
   <element name="gmd:errorStatistic" context="gmd:DQ_QuantitativeResult"
-           id="136">
+>
     <label>Statistikmethode</label>
     <help/>
     <condition/>
     <description>Statistische Methode zur Ermittlung des Werts</description>
   </element>
   <element name="gmd:value" context="gmd:DQ_QuantitativeResult"
-           id="137">
+>
     <label>Wert</label>
     <help/>
     <condition>Obligatorisch</condition>
@@ -402,7 +402,7 @@
       Bewertungsmethode
     </description>
   </element>
-  <element name="gmd:DQ_Scope" id="138">
+  <element name="gmd:DQ_Scope">
     <label>Geltungsbereich</label>
     <help/>
     <condition/>
@@ -411,7 +411,7 @@
       die/den Qualitätsinformationen angegeben werden
     </description>
   </element>
-  <element name="gmd:level" context="gmd:DQ_Scope" id="139">
+  <element name="gmd:level" context="gmd:DQ_Scope">
     <label>Bezugsebene</label>
     <help>Bereich, auf den die Qualitätsinformationen zutreffen. In der
       Codeliste kann die Ebene,
@@ -422,7 +422,7 @@
     <condition>Obligatorisch</condition>
     <description>Hierarchische Ebene der Daten dieses Geltungsbereichs</description>
   </element>
-  <element name="gmd:metadataExtensionInfo" id="14">
+  <element name="gmd:metadataExtensionInfo">
     <label>Metadatenerweiterung</label>
     <abbrLabel>Erweiterung</abbrLabel>
     <help/>
@@ -432,7 +432,7 @@
       sind
     </description>
   </element>
-  <element name="gmd:extent" context="gmd:DQ_Scope" id="140">
+  <element name="gmd:extent" context="gmd:DQ_Scope">
     <label>Ausdehnung</label>
     <help/>
     <condition/>
@@ -441,7 +441,7 @@
       dieses Geltungsbereichs
     </description>
   </element>
-  <element name="gmd:levelDescription" context="gmd:DQ_Scope" id="141">
+  <element name="gmd:levelDescription" context="gmd:DQ_Scope">
     <label>Ebenenbeschreibung</label>
     <help/>
     <condition>Obligatorisch wenn nicht "Datenbestand" oder "Serie"</condition>
@@ -449,13 +449,13 @@
       Geltungsbereichs
     </description>
   </element>
-  <element name="gmd:MD_MaintenanceInformation" id="142">
+  <element name="gmd:MD_MaintenanceInformation">
     <label>Datenpflege</label>
     <help>z.B. Nachführungsinformationen</help>
     <condition/>
     <description>Information zu Umfang und Turnus der Aktualisierung</description>
   </element>
-  <element name="gmd:maintenanceAndUpdateFrequency" id="143">
+  <element name="gmd:maintenanceAndUpdateFrequency">
     <label>Überarbeitungsintervall</label>
     <help/>
     <condition>Obligatorisch</condition>
@@ -464,13 +464,13 @@
       wird
     </description>
   </element>
-  <element name="gmd:dateOfNextUpdate" id="144">
+  <element name="gmd:dateOfNextUpdate">
     <label>Nächstes Aktualisierungsdatum</label>
     <help>z.B. nächstes Nachführungsdatum</help>
     <condition/>
     <description>Datum der planmässigen Überarbeitung der Daten</description>
   </element>
-  <element name="gmd:userDefinedMaintenanceFrequency" id="145">
+  <element name="gmd:userDefinedMaintenanceFrequency">
     <label>Benutzerdefiniertes Pflegeintervall</label>
     <help>Intervalle, die nicht in der Codeliste
       "MD_MaintenanceFrequencyCode" enthalten sind
@@ -480,7 +480,7 @@
       vordefiniert ist
     </description>
   </element>
-  <element name="gmd:updateScope" id="146">
+  <element name="gmd:updateScope">
     <label>Datenpflegebereich</label>
     <help>Es kann beispielsweise nur ein Teil der Daten (z.B. eine Ebene
       der AV) nachgeführt
@@ -489,7 +489,7 @@
     <condition/>
     <description>Geltungsbereich der Daten, die gepflegt werden</description>
   </element>
-  <element name="gmd:updateScopeDescription" id="147">
+  <element name="gmd:updateScopeDescription">
     <label>Beschreibung des Datenpflegebereichs</label>
     <help/>
     <condition/>
@@ -499,7 +499,7 @@
     </description>
   </element>
   <element name="gmd:maintenanceNote" context="gmd:MD_MaintenanceInformation"
-           id="148">
+>
     <label>Anmerkung</label>
     <help>Spezielle Hinweise die die Nachführung oder den Unterhalt
       betreffen
@@ -510,7 +510,7 @@
     </description>
   </element>
   <element name="gmd:contact" context="gmd:MD_MaintenanceInformation"
-           id="148.1">
+>
     <label>Kontakt für die Datenpflege</label>
     <help>z.B. zuständige Stelle für Nachführungsarbeiten</help>
     <condition/>
@@ -519,7 +519,7 @@
       Ressource verantwortlich sind
     </description>
   </element>
-  <element name="gmd:MD_ScopeDescription" id="149">
+  <element name="gmd:MD_ScopeDescription">
     <label>Beschreibung des Geltungsbereichs</label>
     <help/>
     <condition>Es muss eines der folgenden Felder ausgefüllt sein:
@@ -528,7 +528,7 @@
     </condition>
     <description>Beschreibung der Klasse, die den Geltungsbereich bildet</description>
   </element>
-  <element name="gmd:identificationInfo" id="15">
+  <element name="gmd:identificationInfo">
     <label>Basisinformation</label>
     <abbrLabel>Basisinf.</abbrLabel>
     <help>Mit diesem Element werden grundlegende Informationen zur
@@ -542,7 +542,7 @@
     </description>
   </element>
   <element name="gmd:attributes" context="gmd:MD_ScopeDescription"
-           id="150">
+>
     <label>Attribute</label>
     <help/>
     <condition/>
@@ -551,7 +551,7 @@
     </description>
   </element>
   <element name="gmd:features" context="gmd:MD_ScopeDescription"
-           id="151">
+>
     <label>Objekte</label>
     <help/>
     <condition/>
@@ -560,7 +560,7 @@
     </description>
   </element>
   <element name="gmd:featureInstances" context="gmd:MD_ScopeDescription"
-           id="152">
+>
     <label>Objektinstanzen</label>
     <help/>
     <condition/>
@@ -569,7 +569,7 @@
     </description>
   </element>
   <element name="gmd:attributeInstances" context="gmd:MD_ScopeDescription"
-           id="153">
+>
     <label>Attributwerte</label>
     <help/>
     <condition/>
@@ -578,13 +578,13 @@
     </description>
   </element>
   <element name="gmd:dataset" context="gmd:MD_ScopeDescription"
-           id="154">
+>
     <label>Datenbestand</label>
     <help/>
     <condition/>
     <description>Datenbestand, auf den sich die Information bezieht</description>
   </element>
-  <element name="gmd:other" context="gmd:MD_ScopeDescription" id="155">
+  <element name="gmd:other" context="gmd:MD_ScopeDescription">
     <label>Andere</label>
     <help/>
     <condition/>
@@ -593,19 +593,19 @@
       lassen
     </description>
   </element>
-  <element name="gmd:MD_SpatialRepresentation" id="156">
+  <element name="gmd:MD_SpatialRepresentation">
     <label>Struktur der räumlichen Daten</label>
     <help/>
     <condition/>
     <description>Digitale Methode zur Darstellung räumlicher Informationen</description>
   </element>
-  <element name="gmd:MD_GridSpatialRepresentation" id="157">
+  <element name="gmd:MD_GridSpatialRepresentation">
     <label>Rasterdaten</label>
     <help/>
     <condition/>
     <description>Information über die Strukturelemente der Rasterdaten</description>
   </element>
-  <element name="gmd:numberOfDimensions" id="158">
+  <element name="gmd:numberOfDimensions">
     <label>Anzahl der Dimensionen</label>
     <help>Mit diesem Element wird die Anzahl der in einem Rasterdatensatz
       vorhandenen unabhängigen
@@ -617,13 +617,13 @@
     <condition>Obligatorisch</condition>
     <description>Anzahl der unabhängigen räumlich-zeitlichen Achsen</description>
   </element>
-  <element name="gmd:axisDimensionProperties" id="159">
+  <element name="gmd:axisDimensionProperties">
     <label>Dimensionseigenschaften</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Eigenschaften der einzelnen räumlich-zeitlichen Achsen</description>
   </element>
-  <element name="gmd:contentInfo" id="16">
+  <element name="gmd:contentInfo">
     <label>Dateninhalt</label>
     <abbrLabel>Dateninhalt</abbrLabel>
     <help/>
@@ -633,7 +633,7 @@
       Bilddateneigenschaften
     </description>
   </element>
-  <element name="gmd:cellGeometry" id="160">
+  <element name="gmd:cellGeometry">
     <label>Zellengeometrie</label>
     <help>Unterschieden wird hier zwischen dem Pixel als Flächenwert und
       (Mess-)Werten an den
@@ -645,7 +645,7 @@
       beschreibt
     </description>
   </element>
-  <element name="gmd:transformationParameterAvailability" id="161">
+  <element name="gmd:transformationParameterAvailability">
     <label>Verfügbarkeit von Transformationsparametern</label>
     <help/>
     <condition>Obligatorisch</condition>
@@ -654,7 +654,7 @@
       existieren
     </description>
   </element>
-  <element name="gmd:MD_Georectified" id="162">
+  <element name="gmd:MD_Georectified">
     <label>Georektifiziertes Raster</label>
     <help/>
     <condition/>
@@ -669,7 +669,7 @@
     </description>
   </element>
   <element name="gmd:checkPointAvailability" context="gmd:MD_Georectified"
-           id="163">
+>
     <label>Kontrollpunktverfügbarkeit</label>
     <help>Kontrollpunkte sind Passpunkte, die nicht zur Georeferenzierung
       verwendet wurden und damit
@@ -682,7 +682,7 @@
     </description>
   </element>
   <element name="gmd:checkPointDescription" context="gmd:MD_Georectified"
-           id="164">
+>
     <label>Kontrollpunktbeschreibung</label>
     <help/>
     <condition>Obligatorisch wenn unter "Kontrollpunktverfügbarkeit" mit
@@ -694,7 +694,7 @@
     </description>
   </element>
   <element name="gmd:cornerPoints" context="gmd:MD_Georectified"
-           id="165">
+>
     <label>Eckpunkte</label>
     <help/>
     <condition>Obligatorisch</condition>
@@ -710,7 +710,7 @@
     </description>
   </element>
   <element name="gmd:centerPoint" context="gmd:MD_Georectified"
-           id="166">
+>
     <label>Mittelpunkt</label>
     <help>Die Angabe kann auch nur einer ungefähren Verortung entsprechen
       (z.B. Mittelpunkte von
@@ -725,7 +725,7 @@
     </description>
   </element>
   <element name="gmd:pointInPixel" context="gmd:MD_Georectified"
-           id="167">
+>
     <label>Punkt im Pixel</label>
     <help>Für den Fall, dass das Raster aus Flächenwerten besteht, kann
       die Georeferenz sich auf
@@ -735,14 +735,14 @@
     <description>Punkt im Pixel, an welchem der Bezug zur Erde besteht</description>
   </element>
   <element name="gmd:transformationDimensionDescription" context="gmd:MD_Georectified"
-           id="168">
+>
     <label>Transformationsbeschreibung</label>
     <help/>
     <condition/>
     <description>Allgemeine Beschreibung der Transformation</description>
   </element>
   <element name="gmd:transformationDimensionMapping" context="gmd:MD_Georectified"
-           id="169">
+>
     <label>Raumachsenzuordnung</label>
     <help>zweckmässig werden die Bezeichnungen von
       MD_Dimension.Dimensionname der räumlichen Achsen
@@ -751,14 +751,14 @@
     <condition/>
     <description>Zuordnung der Dimensionen zu den Raumachsen</description>
   </element>
-  <element name="gmd:distributionInfo" id="17">
+  <element name="gmd:distributionInfo">
     <label>Vertriebsinformation</label>
     <abbrLabel>Vertrieb</abbrLabel>
     <help/>
     <condition/>
     <description>Information zum Vertrieb und Bezug der Ressource</description>
   </element>
-  <element name="gmd:MD_Georeferenceable" id="170">
+  <element name="gmd:MD_Georeferenceable">
     <label>Georeferenzierbares Raster</label>
     <help/>
     <condition/>
@@ -771,21 +771,21 @@
     </description>
   </element>
   <element name="gmd:controlPointAvailability" context="gmd:MD_Georeferenceable"
-           id="171">
+>
     <label>Passpunktverfügbarkeit</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Angabe, ob Passpunkte existieren</description>
   </element>
   <element name="gmd:orientationParameterAvailability" context="gmd:MD_Georeferenceable"
-           id="172">
+>
     <label>Verfügbarkeit der Orientierungsparameter</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Angabe, ob Orientierungsparameter verfügbar sind</description>
   </element>
   <element name="gmd:orientationParameterDescription" context="gmd:MD_Georeferenceable"
-           id="173">
+>
     <label>Beschreibung der Orientierungsparameter</label>
     <help/>
     <condition/>
@@ -794,7 +794,7 @@
     </description>
   </element>
   <element name="gmd:georeferencedParameters" context="gmd:MD_Georeferenceable"
-           id="174">
+>
     <label>Georeferenzierungsparameter</label>
     <help/>
     <condition>Obligatorisch</condition>
@@ -803,27 +803,27 @@
     </description>
   </element>
   <element name="gmd:parameterCitation" context="gmd:MD_Georeferenceable"
-           id="175">
+>
     <label>Parameter</label>
     <help/>
     <condition/>
     <description>Bibliografische Angaben zur Parameterbeschreibung</description>
   </element>
-  <element name="gmd:MD_VectorSpatialRepresentation" id="176">
+  <element name="gmd:MD_VectorSpatialRepresentation">
     <label>Vektordaten</label>
     <help/>
     <condition/>
     <description>Information über die Strukturelemente der Vektordaten</description>
   </element>
   <element name="gmd:topologyLevel" context="gmd:MD_VectorSpatialRepresentation"
-           id="177">
+>
     <label>Topologielevel</label>
     <help/>
     <condition/>
     <description>Topologische Dimensionen und Merkmale</description>
   </element>
   <element name="gmd:geometricObjects" context="gmd:MD_VectorSpatialRepresentation"
-           id="178">
+>
     <label>Geometrische Objekte</label>
     <help/>
     <condition/>
@@ -832,13 +832,13 @@
       Objekte
     </description>
   </element>
-  <element name="gmd:MD_Dimension" id="179">
+  <element name="gmd:MD_Dimension">
     <label>Achse</label>
     <help/>
     <condition/>
     <description>Eigenschaften der Achse</description>
   </element>
-  <element name="gmd:dataQualityInfo" id="18">
+  <element name="gmd:dataQualityInfo">
     <label>Datenqualität</label>
     <abbrLabel>Qualität</abbrLabel>
     <help/>
@@ -846,20 +846,20 @@
     <description>Umfassende Qualitätsbewertung der Ressource</description>
   </element>
   <element name="gmd:dimensionName" context="gmd:MD_Dimension"
-           id="180">
+>
     <label>Achsenbezeichnung</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Bezeichnung der Achse</description>
   </element>
   <element name="gmd:dimensionSize" context="gmd:MD_Dimension"
-           id="181">
+>
     <label>Elementanzahl</label>
     <help>z.B. Anzahl der Pixel</help>
     <condition>Obligatorisch</condition>
     <description>Anzahl der Elemente entlang der Achse</description>
   </element>
-  <element name="gmd:resolution" context="gmd:MD_Dimension" id="182">
+  <element name="gmd:resolution" context="gmd:MD_Dimension">
     <label>Auflösung</label>
     <help>Auflösung u.a. durch Angabe der Einheit sowie Teilung; siehe ISO
       19103, p34 ff
@@ -867,7 +867,7 @@
     <condition/>
     <description>Auflösung des Rasters in Richtung dieser Achse</description>
   </element>
-  <element name="gmd:MD_GeometricObjects" id="183">
+  <element name="gmd:MD_GeometricObjects">
     <label>Geometrische Objekte</label>
     <help/>
     <condition/>
@@ -877,14 +877,14 @@
     </description>
   </element>
   <element name="gmd:geometricObjectType" context="gmd:MD_GeometricObjects"
-           id="184">
+>
     <label>Geometrietyp</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Typ der geometrischen Objekte</description>
   </element>
   <element name="gmd:geometricObjectCount" context="gmd:MD_GeometricObjects"
-           id="185">
+>
     <label>Anzahl</label>
     <help/>
     <condition/>
@@ -893,14 +893,14 @@
       vorkommen
     </description>
   </element>
-  <element name="gmd:MD_ReferenceSystem" id="186">
+  <element name="gmd:MD_ReferenceSystem">
     <label>Referenzsystem</label>
     <help/>
     <condition/>
     <description>Information zum Referenzsystem</description>
   </element>
   <element name="gmd:referenceSystemIdentifier" context="gmd:MD_ReferenceSystem"
-           id="187">
+>
     <label>Identifikator des Referenzsystems</label>
     <help>Bei räumlichen Referenzsystemen wird die Angabe des EPSG-Codes
       empfohlen (z.B. EPSG:4326
@@ -909,7 +909,7 @@
     <condition/>
     <description>Eindeutige Bezeichnung des Referenzsystems</description>
   </element>
-  <element name="gmd:portrayalCatalogueInfo" id="19">
+  <element name="gmd:portrayalCatalogueInfo">
     <label>Darstellungskatalog</label>
     <abbrLabel>Darst.katalog</abbrLabel>
     <help>z.B. Signaturenkatalog</help>
@@ -918,7 +918,7 @@
       Ressource in einer Karte
     </description>
   </element>
-  <element name="gmd:RS_ReferenceSystem" id="195">
+  <element name="gmd:RS_ReferenceSystem">
     <label>Referenzsystem</label>
     <help/>
     <condition/>
@@ -927,33 +927,33 @@
       Bezugssysteme
     </description>
   </element>
-  <element name="gmd:name" context="gmd:RS_ReferenceSystem" id="196">
+  <element name="gmd:name" context="gmd:RS_ReferenceSystem">
     <label>Bezeichnung</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Bezeichnung des verwendeten Bezugssystems</description>
   </element>
   <element name="gmd:domainOfValidity" context="gmd:RS_ReferenceSystem"
-           id="197">
+>
     <label>Gültigkeitsbereich</label>
     <help>Zeitlicher bzw. geografischer Bereich</help>
     <condition/>
     <description>Bereich, in welchem das Bezugssystem gilt</description>
   </element>
-  <element name="gmd:fileIdentifier" id="2">
+  <element name="gmd:fileIdentifier">
     <label>Metadatensatzidentifikator</label>
     <help>Empfehlung: Verwendung einer UUID</help>
     <condition/>
     <description>Eindeutiger Identifikator für diesen Metadatensatz</description>
   </element>
-  <element name="gmd:metadataConstraints" context="gmd:MD_Metadata" id="20">
+  <element name="gmd:metadataConstraints" context="gmd:MD_Metadata">
     <label>Metadateneinschränkungen</label>
     <abbrLabel>Einschränkungen</abbrLabel>
     <help/>
     <condition/>
     <description>Einschränkungen in Zugriff und Benutzung der Metadaten</description>
   </element>
-  <element name="gmd:MD_Identifier" id="205">
+  <element name="gmd:MD_Identifier">
     <label>Identifikator</label>
     <help/>
     <condition/>
@@ -962,7 +962,7 @@
       identifiziert
     </description>
   </element>
-  <element name="gmd:authority" id="206">
+  <element name="gmd:authority">
     <label>Zuständige Stelle</label>
     <help/>
     <condition/>
@@ -970,7 +970,7 @@
       verwaltet
     </description>
   </element>
-  <element name="gmd:code" id="207">
+  <element name="gmd:code">
     <label>Code</label>
     <help>veröffentlichte Codelisten wie z.B. Amtlicher Gemeindeschlüssel,
       EPSG-Code
@@ -980,13 +980,13 @@
       identifiziert
     </description>
   </element>
-  <element name="gmd:RS_Identifier" id="208">
+  <element name="gmd:RS_Identifier">
     <label>Identifikator des Bezugssystems</label>
     <help/>
     <condition/>
     <description>Identifikator des Bezugssystems</description>
   </element>
-  <element name="gmd:codeSpace" context="gmd:RS_Identifier" id="208.1">
+  <element name="gmd:codeSpace" context="gmd:RS_Identifier">
     <label>Namensraum</label>
     <help/>
     <condition/>
@@ -995,13 +995,13 @@
       zuständig ist
     </description>
   </element>
-  <element name="gmd:version" context="gmd:RS_Identifier" id="208.2">
+  <element name="gmd:version" context="gmd:RS_Identifier">
     <label>Version</label>
     <help/>
     <condition/>
     <description>Versionsbezeichnung des Namensraums</description>
   </element>
-  <element name="gmd:applicationSchemaInfo" id="21">
+  <element name="gmd:applicationSchemaInfo">
     <label>Anwendungsschema</label>
     <abbrLabel>Schema</abbrLabel>
     <help>Mit diesem Element werden Informationen zu einem Anwendungsschema / Datenmodell erfasst. Ein Anwendungsschema
@@ -1012,7 +1012,7 @@
     <condition/>
     <description>Information zum Datenmodell des Datenbestands</description>
   </element>
-  <element name="gmd:metadataMaintenance" id="22">
+  <element name="gmd:metadataMaintenance">
     <label>Metadatenpflege</label>
     <abbrLabel>Pflege</abbrLabel>
     <help>z.B. Informationen zur Metadatennachführung</help>
@@ -1022,7 +1022,7 @@
       Metadaten
     </description>
   </element>
-  <element name="gmd:MD_Identification" id="23">
+  <element name="gmd:MD_Identification">
     <label>Basisinformation</label>
     <help/>
     <condition/>
@@ -1030,13 +1030,13 @@
       Ressource
     </description>
   </element>
-  <element name="gmd:MD_ContentInformation" id="232">
+  <element name="gmd:MD_ContentInformation">
     <label>Dateninhalt</label>
     <help/>
     <condition/>
     <description>Beschreibung des Inhalts des Datenbestands</description>
   </element>
-  <element name="gmd:MD_FeatureCatalogueDescription" id="233">
+  <element name="gmd:MD_FeatureCatalogueDescription">
     <label>Objektartenkatalog</label>
     <help/>
     <condition/>
@@ -1044,7 +1044,7 @@
       konzeptionellen Schema
     </description>
   </element>
-  <element name="gmd:complianceCode" id="234">
+  <element name="gmd:complianceCode">
     <label>ISO 19110 Konformität</label>
     <help/>
     <condition/>
@@ -1053,13 +1053,13 @@
     </description>
   </element>
   <element name="gmd:language" context="gmd:MD_FeatureCatalogueDescription"
-           id="235">
+>
     <label>Sprache</label>
     <help/>
     <condition/>
     <description>Im Objektartenkatalog genutzte Sprache</description>
   </element>
-  <element name="gmd:includedWithDataset" id="236">
+  <element name="gmd:includedWithDataset">
     <label>Im Datenbestand enthalten</label>
     <help/>
     <condition>Obligatorisch</condition>
@@ -1067,7 +1067,7 @@
       beinhaltet
     </description>
   </element>
-  <element name="gmd:featureTypes" id="237">
+  <element name="gmd:featureTypes">
     <label>Objektarten</label>
     <help/>
     <condition/>
@@ -1076,20 +1076,20 @@
       vorkommt
     </description>
   </element>
-  <element name="gmd:featureCatalogueCitation" id="238">
+  <element name="gmd:featureCatalogueCitation">
     <label>Objektartenkatalog</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Bibliografische Angaben zum Objektartenkatalog</description>
   </element>
-  <element name="gmd:MD_CoverageDescription" id="239">
+  <element name="gmd:MD_CoverageDescription">
     <label>Rasterdateninhalt</label>
     <help/>
     <condition/>
     <description>Information zum Inhalt einer Rasterdatenzelle</description>
   </element>
   <element name="gmd:citation" context="gmd:MD_DataIdentification"
-           id="24">
+>
     <label>Bibliografische Angaben</label>
     <help>Ressourcen können z.B. Datensätze, digitale Karten, Messreihen,
       Services aber auch analoge
@@ -1102,7 +1102,7 @@
       soll
     </description>
   </element>
-  <element name="gmd:attributeDescription" id="240">
+  <element name="gmd:attributeDescription">
     <label>Attributbeschreibung</label>
     <help/>
     <condition>Obligatorisch</condition>
@@ -1111,25 +1111,25 @@
       wird
     </description>
   </element>
-  <element name="gmd:contentType" id="241">
+  <element name="gmd:contentType">
     <label>Inhaltstyp</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Typ der Information, die in der Zelle dargestellt wird</description>
   </element>
-  <element name="gmd:dimension" id="242">
+  <element name="gmd:dimension">
     <label>Wertebereich</label>
     <help/>
     <condition/>
     <description>Information über den Wertebereich der Zelle</description>
   </element>
-  <element name="gmd:MD_ImageDescription" id="243">
+  <element name="gmd:MD_ImageDescription">
     <label>Aufnahmeeigenschaften</label>
     <help/>
     <condition/>
     <description>Information über die Verwendbarkeit eines Bildes</description>
   </element>
-  <element name="gmd:illuminationElevationAngle" id="244">
+  <element name="gmd:illuminationElevationAngle">
     <label>Beleuchtungshöhenwinkel</label>
     <help/>
     <condition/>
@@ -1140,7 +1140,7 @@
       Bezug das Zentrumspixel.
     </description>
   </element>
-  <element name="gmd:illuminationAzimuthAngle" id="245">
+  <element name="gmd:illuminationAzimuthAngle">
     <label>Beleuchtungsazimut</label>
     <help/>
     <condition/>
@@ -1150,7 +1150,7 @@
       Zentrumspixel.
     </description>
   </element>
-  <element name="gmd:imagingCondition" id="246">
+  <element name="gmd:imagingCondition">
     <label>Aufnahmebedingung</label>
     <help/>
     <condition/>
@@ -1158,13 +1158,13 @@
       beeinflusst
     </description>
   </element>
-  <element name="gmd:imageQualityCode" id="247">
+  <element name="gmd:imageQualityCode">
     <label>Bildqualität</label>
     <help/>
     <condition/>
     <description>Gibt die Bildqualität an</description>
   </element>
-  <element name="gmd:cloudCoverPercentage" id="248">
+  <element name="gmd:cloudCoverPercentage">
     <label>Wolkenbedeckung</label>
     <help/>
     <condition/>
@@ -1173,7 +1173,7 @@
       ist
     </description>
   </element>
-  <element name="gmd:processingLevelCode" id="249">
+  <element name="gmd:processingLevelCode">
     <label>Bearbeitungsgrad</label>
     <help/>
     <condition/>
@@ -1182,7 +1182,7 @@
       geometrischen Bearbeitung angibt
     </description>
   </element>
-  <element name="gmd:abstract" id="25">
+  <element name="gmd:abstract">
     <label>Kurzbeschreibung</label>
     <help/>
     <condition>Obligatorisch</condition>
@@ -1190,7 +1190,7 @@
       Ressource
     </description>
   </element>
-  <element name="gmd:compressionGenerationQuantity" id="250">
+  <element name="gmd:compressionGenerationQuantity">
     <label>Kompressionszyklen</label>
     <help/>
     <condition/>
@@ -1199,13 +1199,13 @@
       wurden
     </description>
   </element>
-  <element name="gmd:triangulationIndicator" id="251">
+  <element name="gmd:triangulationIndicator">
     <label>Triangulation</label>
     <help/>
     <condition/>
     <description>Angabe, ob eine Aerotriangulation vorgenommen wurde</description>
   </element>
-  <element name="gmd:radiometricCalibrationDataAvailability" id="252">
+  <element name="gmd:radiometricCalibrationDataAvailability">
     <label>Radiometriekalibrierung</label>
     <help/>
     <condition/>
@@ -1214,13 +1214,13 @@
     </description>
   </element>
   <element name="gmd:cameraCalibrationInformationAvailability"
-           context="gmd:MD_ImageDescription" id="253">
+           context="gmd:MD_ImageDescription">
     <label>Kamerakalibrierung</label>
     <help/>
     <condition/>
     <description>Angabe, ob Kalibrierungsparameter vorhanden sind</description>
   </element>
-  <element name="gmd:filmDistortionInformationAvailability" id="254">
+  <element name="gmd:filmDistortionInformationAvailability">
     <label>Filmkorrektur</label>
     <help>Bei der Erstellung photogrammetrischer Aufnahmen können vor dem
       Film planparallele Platten
@@ -1233,7 +1233,7 @@
     <condition/>
     <description>Angabe, ob Korrekturinformationen verfügbar sind</description>
   </element>
-  <element name="gmd:lensDistortionInformationAvailability" id="255">
+  <element name="gmd:lensDistortionInformationAvailability">
     <label>Linsenkorrektur</label>
     <help/>
     <condition/>
@@ -1241,31 +1241,31 @@
       Linsenkorrekturinformationen
     </description>
   </element>
-  <element name="gmd:MD_RangeDimension" id="256">
+  <element name="gmd:MD_RangeDimension">
     <label>Wertebereich</label>
     <help/>
     <condition/>
     <description>Information über den Wertebereich jeder Achse</description>
   </element>
-  <element name="gmd:sequenceIdentifier" id="257">
+  <element name="gmd:sequenceIdentifier">
     <label>Sequenzidentifikator</label>
     <help/>
     <condition/>
     <description>Identifikator für den Bezeichner eines Wertebereichs</description>
   </element>
-  <element name="gmd:descriptor" id="258">
+  <element name="gmd:descriptor">
     <label>Beschreibung</label>
     <help/>
     <condition/>
     <description>Beschreibung eines Zellwertbereichs dieser Achse</description>
   </element>
-  <element name="gmd:MD_Band" id="259">
+  <element name="gmd:MD_Band">
     <label>Band</label>
     <help/>
     <condition/>
     <description>Wellenlängenbereich im elektromagnetischen Spektrum</description>
   </element>
-  <element name="gmd:purpose" id="26">
+  <element name="gmd:purpose">
     <label>Zweck</label>
     <help>Dieses Element unterscheidet sich vom Element
       "resourceSpecificUsage", da hier der
@@ -1277,7 +1277,7 @@
       wurde
     </description>
   </element>
-  <element name="gmd:maxValue" id="260">
+  <element name="gmd:maxValue">
     <label>Maximalwert</label>
     <help/>
     <condition/>
@@ -1286,7 +1286,7 @@
       kann
     </description>
   </element>
-  <element name="gmd:minValue" id="261">
+  <element name="gmd:minValue">
     <label>Minimalwert</label>
     <help/>
     <condition/>
@@ -1295,7 +1295,7 @@
       kann
     </description>
   </element>
-  <element name="gmd:units" id="262">
+  <element name="gmd:units">
     <label>Einheit</label>
     <help/>
     <condition>Obligatorisch, wenn ein Maximalwert oder ein Minimalwert
@@ -1303,13 +1303,13 @@
     </condition>
     <description>Masseinheit der Wellenlänge</description>
   </element>
-  <element name="gmd:peakResponse" id="263">
+  <element name="gmd:peakResponse">
     <label>Empfindlichkeitsmaximum</label>
     <help/>
     <condition/>
     <description>Wellenlänge, bei der ein Sensor am stärksten anspricht</description>
   </element>
-  <element name="gmd:bitsPerValue" id="264">
+  <element name="gmd:bitsPerValue">
     <label>Bittiefe</label>
     <help>Bitauflösung der Grauwerte</help>
     <condition/>
@@ -1317,7 +1317,7 @@
       unkomprimierten Werte
     </description>
   </element>
-  <element name="gmd:toneGradation" id="265">
+  <element name="gmd:toneGradation">
     <label>Anzahl Graustufen</label>
     <help/>
     <condition/>
@@ -1326,31 +1326,31 @@
       Rasterdaten
     </description>
   </element>
-  <element name="gmd:scaleFactor" id="266">
+  <element name="gmd:scaleFactor">
     <label>Skalierungsfaktor</label>
     <help>Histogrammstreckung</help>
     <condition/>
     <description>Skalierungsfaktor, der auf den Zellwert angewandt wurde</description>
   </element>
-  <element name="gmd:offset" id="267">
+  <element name="gmd:offset">
     <label>Offsetwert</label>
     <help/>
     <condition/>
     <description>Physikalischer Wert, der dem Zellwert Null entspricht</description>
   </element>
-  <element name="gmd:MD_PortrayalCatalogueReference" id="268">
+  <element name="gmd:MD_PortrayalCatalogueReference">
     <label>Darstellungskatalog</label>
     <help>Signaturenkatalog</help>
     <condition/>
     <description>Referenz zum verwendeten Darstellungskatalog</description>
   </element>
-  <element name="gmd:portrayalCatalogueCitation" id="269">
+  <element name="gmd:portrayalCatalogueCitation">
     <label>Darstellungskatalog</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Bibliografische Angaben zum Darstellungskatalog</description>
   </element>
-  <element name="gmd:credit" id="27">
+  <element name="gmd:credit">
     <label>Beteiligte</label>
     <help/>
     <condition/>
@@ -1358,7 +1358,7 @@
       haben
     </description>
   </element>
-  <element name="gmd:MD_Distribution" id="270">
+  <element name="gmd:MD_Distribution">
     <label>Vertrieb</label>
     <help/>
     <condition/>
@@ -1367,7 +1367,7 @@
       Ressource
     </description>
   </element>
-  <element name="gmd:distributionFormat" id="271">
+  <element name="gmd:distributionFormat">
     <label>Abgabeformat</label>
     <help>Es ist entweder das Datenformat beim Vertrieb
       (MD_Distribution.distributionFormat) oder
@@ -1380,14 +1380,14 @@
       werden
     </description>
   </element>
-  <element name="gmd:distributor" id="272">
+  <element name="gmd:distributor">
     <label>Vertriebsstelle</label>
     <help/>
     <condition/>
     <description>Information über die Vertriebsstelle</description>
   </element>
   <element name="gmd:transferOptions" context="gmd:MD_Distribution"
-           id="273">
+>
     <label>Transferoptionen</label>
     <help/>
     <condition/>
@@ -1395,14 +1395,14 @@
       der Ressource
     </description>
   </element>
-  <element name="gmd:MD_DigitalTransferOptions" id="274">
+  <element name="gmd:MD_DigitalTransferOptions">
     <label>Digitale Transferoptionen</label>
     <help/>
     <condition/>
     <description>Technische Mittel und Medien zum Bezug der Ressource</description>
   </element>
   <element name="gmd:unitsOfDistribution" context="gmd:MD_DigitalTransferOptions"
-           id="275">
+>
     <label>Abgabeeinheiten</label>
     <help/>
     <condition/>
@@ -1412,7 +1412,7 @@
     </description>
   </element>
   <element name="gmd:transferSize" context="gmd:MD_DigitalTransferOptions"
-           id="276">
+>
     <label>Transfergrösse</label>
     <help/>
     <condition/>
@@ -1422,7 +1422,7 @@
     </description>
   </element>
   <element name="gmd:onLine" context="gmd:MD_DigitalTransferOptions"
-           id="277">
+>
     <label>Online</label>
     <help/>
     <condition/>
@@ -1432,7 +1432,7 @@
     </description>
   </element>
   <element name="gmd:offLine" context="gmd:MD_DigitalTransferOptions"
-           id="278">
+>
     <label>Offline</label>
     <help/>
     <condition/>
@@ -1441,20 +1441,20 @@
       kann
     </description>
   </element>
-  <element name="gmd:MD_Distributor" id="279">
+  <element name="gmd:MD_Distributor">
     <label>Vertriebsstelle</label>
     <help/>
     <condition/>
     <description>Information über die Vertriebsstelle</description>
   </element>
-  <element name="gmd:status" id="28">
+  <element name="gmd:status">
     <label>Bearbeitungsstatus</label>
     <help/>
     <condition/>
     <description>Bearbeitungsstatus der Ressource</description>
   </element>
   <element name="gmd:distributorContact" context="gmd:MD_Distributor"
-           id="280">
+>
     <label>Kontakt</label>
     <help>Als Pflichtfeld ist mindestens ein Kontakt zu nennen, es müssen
       aber nicht alle in Frage
@@ -1464,14 +1464,14 @@
     <description>Kontakt, über den die Ressource bezogen werden kann</description>
   </element>
   <element name="gmd:distributionOrderProcess" context="gmd:MD_Distributor"
-           id="281">
+>
     <label>Bestellverfahren</label>
     <help/>
     <condition/>
     <description>Information über Bestellung, Bezug und Kosten</description>
   </element>
   <element name="gmd:distributorFormat" context="gmd:MD_Distributor"
-           id="282">
+>
     <label>Datenformat</label>
     <help>Es ist entweder das Datenformat beim Vertrieb
       (MD_Distribution.distributionFormat) oder
@@ -1485,7 +1485,7 @@
     </description>
   </element>
   <element name="gmd:distributorTransferOptions" context="gmd:MD_Distributor"
-           id="283">
+>
     <label>Transferoptionen</label>
     <help>Hier handelt es sich ausschliesslich um Informationen zu
       digitalen Medien.
@@ -1496,7 +1496,7 @@
       einsetzt
     </description>
   </element>
-  <element name="gmd:MD_Format" id="284">
+  <element name="gmd:MD_Format">
     <label>Format</label>
     <help>Datenkodierung = computer language construct that specifies the
       representation of data
@@ -1508,7 +1508,7 @@
       einem Speichermedium oder einem Übermittlungsweg
     </description>
   </element>
-  <element name="gmd:name" context="gmd:MD_Format" id="285">
+  <element name="gmd:name" context="gmd:MD_Format">
     <label>Bezeichnung</label>
     <help>z.B. TXT, PDF, TIFF, SHAPE etc., aber auch ZIP</help>
     <condition>Obligatorisch</condition>
@@ -1532,7 +1532,7 @@
       <option value="OGC:OWS Context">OGC:OWS Context</option>
     </helper>
   </element>
-  <element name="gmd:version" context="gmd:MD_Format" id="286">
+  <element name="gmd:version" context="gmd:MD_Format">
     <label>Version</label>
     <help>z.B. Nummer, Datum</help>
     <condition>Obligatorisch</condition>
@@ -1542,13 +1542,13 @@
     <label>Version</label>
     <description></description>
   </element>
-  <element name="gmd:amendmentNumber" context="gmd:MD_Format" id="287">
+  <element name="gmd:amendmentNumber" context="gmd:MD_Format">
     <label>Revisionsnummer</label>
     <help>Nummern von Änderungen, Revisionen oder Zusätzen</help>
     <condition/>
     <description>Änderungsnummer des Datenformats</description>
   </element>
-  <element name="gmd:specification" context="gmd:MD_Format" id="288">
+  <element name="gmd:specification" context="gmd:MD_Format">
     <label>Spezifikation</label>
     <help/>
     <condition/>
@@ -1557,7 +1557,7 @@
     </description>
   </element>
   <element name="gmd:fileDecompressionTechnique" context="gmd:MD_Format"
-           id="289">
+>
     <label>Dekompressionsmethode</label>
     <help>z.B. LZW, PackBits</help>
     <condition/>
@@ -1566,7 +1566,7 @@
       von komprimierten Ressourcen angewendet werden können
     </description>
   </element>
-  <element name="gmd:pointOfContact" id="29">
+  <element name="gmd:pointOfContact">
     <label>Kontakt für die Ressource</label>
     <help/>
     <condition/>
@@ -1576,13 +1576,13 @@
     </description>
   </element>
   <element name="gmd:formatDistributor" context="gmd:MD_Format"
-           id="290">
+>
     <label>Vertriebsstelle des Formats</label>
     <help/>
     <condition/>
     <description>Information über die Vertriebsstelle des Formats</description>
   </element>
-  <element name="gmd:MD_Medium" id="291">
+  <element name="gmd:MD_Medium">
     <label>Medium</label>
     <help>Verwendung nur im Kontext von Offline-Medien</help>
     <condition/>
@@ -1590,7 +1590,7 @@
       vertrieben wird
     </description>
   </element>
-  <element name="gmd:name" context="gmd:MD_Medium" id="292">
+  <element name="gmd:name" context="gmd:MD_Medium">
     <label>Bezeichnung</label>
     <help/>
     <condition/>
@@ -1598,13 +1598,13 @@
       ist
     </description>
   </element>
-  <element name="gmd:density" context="gmd:MD_Medium" id="293">
+  <element name="gmd:density" context="gmd:MD_Medium">
     <label>Schreibdichte</label>
     <help/>
     <condition/>
     <description>Schreibdichte auf dem Medium</description>
   </element>
-  <element name="gmd:densityUnits" context="gmd:MD_Medium" id="294">
+  <element name="gmd:densityUnits" context="gmd:MD_Medium">
     <label>Einheit der Schreibdichte</label>
     <help>z.B. bpi bei Bändern</help>
     <condition>Obligatorisch wenn das Attribut "Schreibdichte" ausgefüllt
@@ -1612,13 +1612,13 @@
     </condition>
     <description>Masseinheit für die angegebene Schreibdichte</description>
   </element>
-  <element name="gmd:volumes" context="gmd:MD_Medium" id="295">
+  <element name="gmd:volumes" context="gmd:MD_Medium">
     <label>Anzahl</label>
     <help>Beispiel: 4 DVDs 34 Kartenblätter 5 Bände</help>
     <condition/>
     <description>Anzahl der Datenträger</description>
   </element>
-  <element name="gmd:mediumFormat" context="gmd:MD_Medium" id="296">
+  <element name="gmd:mediumFormat" context="gmd:MD_Medium">
     <label>Format</label>
     <help>Für CDs und DVDs kann z.B. der Standard angegeben werden, nach
       denen diese erzeugt wurden
@@ -1627,7 +1627,7 @@
     <condition/>
     <description>Schreibformat des Mediums</description>
   </element>
-  <element name="gmd:mediumNote" context="gmd:MD_Medium" id="297">
+  <element name="gmd:mediumNote" context="gmd:MD_Medium">
     <label>Anmerkung</label>
     <help>Mit diesem Element können weitere Angaben zur Nutzung des
       Mediums gemacht werden. Hier
@@ -1641,7 +1641,7 @@
       nutzen
     </description>
   </element>
-  <element name="gmd:MD_StandardOrderProcess" id="298">
+  <element name="gmd:MD_StandardOrderProcess">
     <label>Bestellverfahren</label>
     <help/>
     <condition/>
@@ -1651,7 +1651,7 @@
     </description>
   </element>
   <element name="gmd:fees" context="gmd:MD_StandardOrderProcess"
-           id="299">
+>
     <label>Kosten</label>
     <help>Währungscodes nach ISO 4217 sind dreistellige Kürzel wie z.B.
       USD, EUR, CHF etc.
@@ -1662,13 +1662,13 @@
       ISO 4217
     </description>
   </element>
-  <element name="gmd:language" context="gmd:MD_Metadata" id="3">
+  <element name="gmd:language" context="gmd:MD_Metadata">
     <label>Sprache</label>
     <help/>
     <condition>Obligatorisch nach INSPIRE</condition>
     <description>Zur Dokumentation der Metadaten verwendete Sprache</description>
   </element>
-  <element name="gmd:resourceMaintenance" id="30">
+  <element name="gmd:resourceMaintenance">
     <label>Pflege der Ressource</label>
     <help>Informationen zur Nachführung der Ressource</help>
     <condition/>
@@ -1678,14 +1678,14 @@
     </description>
   </element>
   <element name="gmd:plannedAvailableDateTime" context="gmd:MD_StandardOrderProcess"
-           id="300">
+>
     <label>Zeitpunkt der Verfügbarkeit</label>
     <help/>
     <condition/>
     <description>Datum und Zeit, wann die Ressource verfügbar sein wird</description>
   </element>
   <element name="gmd:orderingInstructions" context="gmd:MD_StandardOrderProcess"
-           id="301">
+>
     <label>Bestellhinweise</label>
     <help/>
     <condition/>
@@ -1695,13 +1695,13 @@
     </description>
   </element>
   <element name="gmd:turnaround" context="gmd:MD_StandardOrderProcess"
-           id="302">
+>
     <label>Lieferzeit</label>
     <help/>
     <condition/>
     <description>Übliche Bearbeitungsdauer einer Bestellung</description>
   </element>
-  <element name="gmd:MD_MetadataExtensionInformation" id="303">
+  <element name="gmd:MD_MetadataExtensionInformation">
     <label>Metadatenerweiterung</label>
     <help>Der Standard ISO 19115 bietet die Möglichkeit standardkonformer
       Erweiterungen an. Die
@@ -1710,7 +1710,7 @@
     <condition/>
     <description>Beschreibung der Erweiterung der Metadaten</description>
   </element>
-  <element name="gmd:extensionOnLineResource" id="304">
+  <element name="gmd:extensionOnLineResource">
     <label>Online-Ressource</label>
     <help/>
     <condition/>
@@ -1718,7 +1718,7 @@
       Erweiterungselementen
     </description>
   </element>
-  <element name="gmd:extendedElementInformation" id="305">
+  <element name="gmd:extendedElementInformation">
     <label>Erweiterungselement</label>
     <help/>
     <condition/>
@@ -1727,7 +1727,7 @@
       zur Beschreibung geografischer Daten erforderlich ist
     </description>
   </element>
-  <element name="gmd:MD_ExtendedElementInformation" id="306">
+  <element name="gmd:MD_ExtendedElementInformation">
     <label>Erweiterungselement</label>
     <help/>
     <condition/>
@@ -1737,14 +1737,14 @@
     </description>
   </element>
   <element name="gmd:name" context="gmd:MD_ExtendedElementInformation"
-           id="307">
+>
     <label>Bezeichnung</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Bezeichnung des Erweiterungselements</description>
   </element>
   <element name="gmd:shortName" context="gmd:MD_ExtendedElementInformation"
-           id="308">
+>
     <label>Kurzbezeichnung</label>
     <help/>
     <condition>Obligatorisch ausser wenn Datentyp = CodelistElement</condition>
@@ -1755,7 +1755,7 @@
     </description>
   </element>
   <element name="gmd:domainCode" context="gmd:MD_ExtendedElementInformation"
-           id="309">
+>
     <label>Code</label>
     <help>Dieses Element wird nur für Codelisten verwendet und beinhaltet
       einen dreistelligen Code
@@ -1765,7 +1765,7 @@
     <condition>Obligatorisch wenn Datentyp = codelistElement</condition>
     <description>Dreistelliger Code für erweiterte Elemente</description>
   </element>
-  <element name="gmd:graphicOverview" id="31">
+  <element name="gmd:graphicOverview">
     <label>Grafische Darstellung</label>
     <help>z.B. Vorschaubild, Übersichtsbild, exemplarische Darstellung</help>
     <condition/>
@@ -1774,14 +1774,14 @@
     </description>
   </element>
   <element name="gmd:definition" context="gmd:MD_ExtendedElementInformation"
-           id="310">
+>
     <label>Definition</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Definition des erweiterten Elements</description>
   </element>
   <element name="gmd:obligation" context="gmd:MD_ExtendedElementInformation"
-           id="311">
+>
     <label>Verbindlichkeit</label>
     <help>Angabe, ob das Element verpflichtend, optional oder bedingt ist</help>
     <condition>Obligatorisch ausser: Datentyp = "codelist", "enumeration"
@@ -1790,7 +1790,7 @@
     <description>Verbindlichkeit des erweiterten Elements</description>
   </element>
   <element name="gmd:condition" context="gmd:MD_ExtendedElementInformation"
-           id="312">
+>
     <label>Bedingung</label>
     <help/>
     <condition>Obligatorisch falls Verbindlichkeit = "conditional"</condition>
@@ -1799,14 +1799,14 @@
     </description>
   </element>
   <element name="gmd:dataType" context="gmd:MD_ExtendedElementInformation"
-           id="313">
+>
     <label>Datentyp</label>
     <help>Wert ist aus Codeliste auszuwählen</help>
     <condition>Obligatorisch</condition>
     <description>Code, der den Datentyp des erweiterten Elements festlegt</description>
   </element>
   <element name="gmd:maximumOccurrence" context="gmd:MD_ExtendedElementInformation"
-           id="314">
+>
     <label>Maximales Vorkommen</label>
     <help/>
     <condition>Obligatorisch ausser: Datentyp = "codelist", "enumeration"
@@ -1815,7 +1815,7 @@
     <description>Maximales Vorkommen des erweiterten Elements</description>
   </element>
   <element name="gmd:domainValue" context="gmd:MD_ExtendedElementInformation"
-           id="315">
+>
     <label>Wertebereich</label>
     <help>z.B. Wertebereich von 0 bis 90 für Nord- oder Südwerte</help>
     <condition>Obligatorisch ausser: Datentyp = "codelist", "enumeration"
@@ -1826,7 +1826,7 @@
     </description>
   </element>
   <element name="gmd:parentEntity" context="gmd:MD_ExtendedElementInformation"
-           id="316">
+>
     <label>Klassenzuordnung</label>
     <help/>
     <condition>Obligatorisch</condition>
@@ -1838,7 +1838,7 @@
     </description>
   </element>
   <element name="gmd:rule" context="gmd:MD_ExtendedElementInformation"
-           id="317">
+>
     <label>Erläuterung</label>
     <help>zusammenfassende Beschreibung der Elemente dataType und
       parentEntity
@@ -1850,14 +1850,14 @@
     </description>
   </element>
   <element name="gmd:rationale" context="gmd:MD_ExtendedElementInformation"
-           id="318">
+>
     <label>Begründung</label>
     <help/>
     <condition/>
     <description>Begründung für die Erstellung des erweiterten Elements</description>
   </element>
   <element name="gmd:source" context="gmd:MD_ExtendedElementInformation"
-           id="319">
+>
     <label>Urheber</label>
     <help/>
     <condition>Obligatorisch</condition>
@@ -1865,13 +1865,13 @@
       erstellt hat
     </description>
   </element>
-  <element name="gmd:resourceFormat" id="32">
+  <element name="gmd:resourceFormat">
     <label>Format der Ressource</label>
     <help/>
     <condition/>
     <description>Formatbeschreibung der Ressource</description>
   </element>
-  <element name="gmd:MD_ApplicationSchemaInformation" id="320">
+  <element name="gmd:MD_ApplicationSchemaInformation">
     <label>Anwendungsschema</label>
     <help/>
     <condition/>
@@ -1881,21 +1881,21 @@
     </description>
   </element>
   <element name="gmd:name" context="gmd:MD_ApplicationSchemaInformation"
-           id="321">
+>
     <label>Anwendungsschema</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Bibliografische Angaben zum Anwendungsschema</description>
   </element>
   <element name="gmd:schemaLanguage" context="gmd:MD_ApplicationSchemaInformation"
-           id="322">
+>
     <label>Schemasprache</label>
     <help>z.B. UML (Unified Modelling Language)</help>
     <condition>Obligatorisch</condition>
     <description>Angabe der im Schema verwendeten Sprache</description>
   </element>
   <element name="gmd:constraintLanguage" context="gmd:MD_ApplicationSchemaInformation"
-           id="323">
+>
     <label>Constraint Language</label>
     <help>z.B. OCL (Object Constraint Language)</help>
     <condition>Obligatorisch</condition>
@@ -1904,21 +1904,21 @@
     </description>
   </element>
   <element name="gmd:schemaAscii" context="gmd:MD_ApplicationSchemaInformation"
-           id="324">
+>
     <label>Schema in ASCII</label>
     <help/>
     <condition/>
     <description>Vollständiges Anwendungsschema als ASCII-Datei</description>
   </element>
   <element name="gmd:graphicsFile" context="gmd:MD_ApplicationSchemaInformation"
-           id="325">
+>
     <label>Grafikdatei</label>
     <help/>
     <condition/>
     <description>Vollständiges Anwendungsschema als Grafikdatei</description>
   </element>
   <element name="gmd:softwareDevelopmentFile" context="gmd:MD_ApplicationSchemaInformation"
-           id="326">
+>
     <label>Software-Entwicklungsdatei</label>
     <help/>
     <condition/>
@@ -1927,7 +1927,7 @@
     </description>
   </element>
   <element name="gmd:softwareDevelopmentFileFormat" context="gmd:MD_ApplicationSchemaInformation"
-           id="327">
+>
     <label>Format der Software-Entwicklungsdatei</label>
     <help/>
     <condition/>
@@ -1936,14 +1936,14 @@
       einer Softwareentwicklungsdatei verwendet wurde
     </description>
   </element>
-  <element name="gmd:descriptiveKeywords" id="33">
+  <element name="gmd:descriptiveKeywords">
     <label>Schlagwörter</label>
     <help/>
     <condition/>
     <description>Schlagwörter, ihr Typ (thematische Zugehörigkeit) und Quellenangabe
       (häufig ein Thesaurus mit Publikationsdatum)</description>
   </element>
-  <element name="gmd:EX_Extent" id="334">
+  <element name="gmd:EX_Extent">
     <label>Ausdehnung</label>
     <help/>
     <condition/>
@@ -1951,7 +1951,7 @@
       Ausdehnung
     </description>
   </element>
-  <element name="gmd:description" context="gmd:EX_Extent" id="335">
+  <element name="gmd:description" context="gmd:EX_Extent">
     <label>Beschreibung</label>
     <help/>
     <condition>Es muss entweder description, geographicElement,
@@ -1962,7 +1962,7 @@
     </description>
   </element>
   <element name="gmd:geographicElement" context="gmd:EX_Extent"
-           id="336">
+>
     <label>Geografische Ausdehnung</label>
     <help/>
     <condition>Es muss entweder description, geographicElement,
@@ -1972,7 +1972,7 @@
       Objekts
     </description>
   </element>
-  <element name="gmd:temporalElement" context="gmd:EX_Extent" id="337">
+  <element name="gmd:temporalElement" context="gmd:EX_Extent">
     <label>Zeitliche Ausdehnung</label>
     <help/>
     <condition>Es muss entweder description, geographicElement,
@@ -1982,7 +1982,7 @@
       Objekts
     </description>
   </element>
-  <element name="gmd:verticalElement" context="gmd:EX_Extent" id="338">
+  <element name="gmd:verticalElement" context="gmd:EX_Extent">
     <label>Vertikale Ausdehnung</label>
     <help/>
     <condition>Es muss entweder description, geographicElement,
@@ -1992,13 +1992,13 @@
       Objekts
     </description>
   </element>
-  <element name="gmd:EX_GeographicExtent" id="339">
+  <element name="gmd:EX_GeographicExtent">
     <label>Geografische Ausdehnung</label>
     <help/>
     <condition/>
     <description>Geografisches Gebiet des Datenbestands</description>
   </element>
-  <element name="gmd:resourceSpecificUsage" id="34">
+  <element name="gmd:resourceSpecificUsage">
     <label>Nutzungsinformation</label>
     <help/>
     <condition/>
@@ -2007,7 +2007,7 @@
       Nutzern verwendet wurde oder wird
     </description>
   </element>
-  <element name="gmd:extentTypeCode" id="340">
+  <element name="gmd:extentTypeCode">
     <label>Art der Ausdehnungsangabe</label>
     <help>0 = Ausschliessend, 1 = Einschliessend</help>
     <condition/>
@@ -2016,7 +2016,7 @@
       ausschliesst
     </description>
   </element>
-  <element name="gmd:EX_BoundingPolygon" id="341">
+  <element name="gmd:EX_BoundingPolygon">
     <label>Begrenzungspolygon</label>
     <help>Details siehe ISO 19107</help>
     <condition/>
@@ -2027,13 +2027,13 @@
     </description>
   </element>
   <element name="gmd:polygon" context="gmd:EX_BoundingPolygon"
-           id="342">
+>
     <label>Polygon</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Koordinatenpaare, die das Begrenzungspolygon definieren</description>
   </element>
-  <element name="gmd:EX_GeographicBoundingBox" id="343">
+  <element name="gmd:EX_GeographicBoundingBox">
     <label>Geografisches Begrenzungsrechteck</label>
     <help>Hinweis: Im Original wird auf den Verweis auf ein Bezugssystem
       explizit verzichtet, da nur
@@ -2046,7 +2046,7 @@
     <description>Geografische Lage des Datenbestands</description>
   </element>
   <element name="gmd:westBoundLongitude" context="gmd:EX_GeographicBoundingBox"
-           id="344">
+>
     <label>Westliche Länge</label>
     <help/>
     <condition>Obligatorisch</condition>
@@ -2056,7 +2056,7 @@
     </description>
   </element>
   <element name="gmd:eastBoundLongitude" context="gmd:EX_GeographicBoundingBox"
-           id="345">
+>
     <label>Östliche Länge</label>
     <help/>
     <condition>Obligatorisch</condition>
@@ -2066,7 +2066,7 @@
     </description>
   </element>
   <element name="gmd:southBoundLatitude" context="gmd:EX_GeographicBoundingBox"
-           id="346">
+>
     <label>Südliche Breite</label>
     <help/>
     <condition>Obligatorisch</condition>
@@ -2076,7 +2076,7 @@
     </description>
   </element>
   <element name="gmd:northBoundLatitude" context="gmd:EX_GeographicBoundingBox"
-           id="347">
+>
     <label>Nördliche Breite</label>
     <help/>
     <condition>Obligatorisch</condition>
@@ -2085,7 +2085,7 @@
       Nord)
     </description>
   </element>
-  <element name="gmd:EX_GeographicDescription" id="348">
+  <element name="gmd:EX_GeographicDescription">
     <label>Geografische Beschreibung</label>
     <help/>
     <condition/>
@@ -2094,7 +2094,7 @@
     </description>
   </element>
   <element name="gmd:geographicIdentifier" context="gmd:EX_GeographicDescription"
-           id="349">
+>
     <label>Geografischer Identifikator</label>
     <help>z.B. Angabe des Gemeindeschlüssels, einer Postleitzahl,
       Objektschlüssel aus einem
@@ -2107,32 +2107,32 @@
       Gebiets
     </description>
   </element>
-  <element name="gmd:resourceConstraints" id="35">
+  <element name="gmd:resourceConstraints">
     <label>Ressourceneinschränkungen</label>
     <help/>
     <condition/>
     <description>Einschränkungen bezüglich der Ressource</description>
   </element>
   <element name="gmd:aggregationInfo" context="gmd:MD_DataIdentification"
-           id="35.1">
+>
     <label>Beziehungsinformation</label>
     <help/>
     <condition/>
     <description>Angaben über Beziehungen zu anderen Datenbeständen</description>
   </element>
-  <element name="gmd:EX_TemporalExtent" id="350">
+  <element name="gmd:EX_TemporalExtent">
     <label>Zeitliche Ausdehnung</label>
     <help/>
     <condition/>
     <description>Zeitspanne, die die Ressource abdeckt</description>
   </element>
-  <element name="gmd:extent" context="gmd:EX_TemporalExtent" id="351">
+  <element name="gmd:extent" context="gmd:EX_TemporalExtent">
     <label>Zeitliche Ausdehnung</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Datum und Zeit des Inhalts der Ressource</description>
   </element>
-  <element name="gmd:EX_SpatialTemporalExtent" id="352">
+  <element name="gmd:EX_SpatialTemporalExtent">
     <label>Räumlich-zeitliche Ausdehnung</label>
     <help/>
     <condition/>
@@ -2141,33 +2141,33 @@
     </description>
   </element>
   <element name="gmd:spatialExtent" context="gmd:EX_SpatialTemporalExtent"
-           id="353">
+>
     <label>Räumliche Ausdehnung</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Räumliche Komponente der räumlich-zeitlichen Ausdehnung</description>
   </element>
-  <element name="gmd:EX_VerticalExtent" id="354">
+  <element name="gmd:EX_VerticalExtent">
     <label>Vertikale Ausdehnung</label>
     <help/>
     <condition/>
     <description>Vertikale Ausdehnung der Ressource</description>
   </element>
   <element name="gmd:minimumValue" context="gmd:EX_VerticalExtent"
-           id="355">
+>
     <label>Tiefster Punkt</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Höhenangabe des tiefsten Punkts</description>
   </element>
   <element name="gmd:maximumValue" context="gmd:EX_VerticalExtent"
-           id="356">
+>
     <label>Höchster Punkt</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Höhenangabe des höchsten Punkts</description>
   </element>
-  <element name="gmd:verticalCRS" id="358">
+  <element name="gmd:verticalCRS">
     <label>Vertikales Bezugssystem</label>
     <help>verticalCRS siehe ISO 19111</help>
     <condition>Obligatorisch</condition>
@@ -2176,7 +2176,7 @@
       sind. Das Höhenbezugssystem beinhaltet die Angabe einer Masseinheit.
     </description>
   </element>
-  <element name="gmd:CI_Citation" id="359">
+  <element name="gmd:CI_Citation">
     <label>Bibliografische Angaben</label>
     <help>Ressourcen können z.B. Datensätze, digitale Karten, Messreihen,
       Services aber auch analoge
@@ -2189,7 +2189,7 @@
     <condition/>
     <description>Bibliografische Beschreibung der Ressource</description>
   </element>
-  <element name="gmd:MD_DataIdentification" id="36">
+  <element name="gmd:MD_DataIdentification">
     <label>Basisinformation zum Datenbestand</label>
     <help/>
     <condition/>
@@ -2197,20 +2197,20 @@
       Datenbestands
     </description>
   </element>
-  <element name="gmd:title" context="gmd:CI_Citation" id="360">
+  <element name="gmd:title" context="gmd:CI_Citation">
     <label>Titel</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Bezeichnung, unter der die Ressource bekannt ist</description>
   </element>
   <element name="gmd:alternateTitle" context="gmd:CI_Citation"
-           id="361">
+>
     <label>Alternativtitel</label>
     <help>z.B. 'TK 25' als Kurzform für 'Topographische Karte 1:25 000'</help>
     <condition/>
     <description>Kurzbezeichnung oder anderer Titel der Ressource</description>
   </element>
-  <element name="gmd:date" context="gmd:CI_Date" id="394">
+  <element name="gmd:date" context="gmd:CI_Date">
     <label>Datum</label>
     <help/>
     <condition>Obligatorisch</condition>
@@ -2219,7 +2219,7 @@
       Ressource
     </description>
   </element>
-  <element name="gmd:date" context="gmd:CI_Citation" id="362">
+  <element name="gmd:date" context="gmd:CI_Citation">
     <label>Datumsangaben</label>
     <help/>
     <condition/>
@@ -2228,19 +2228,19 @@
       Ressource
     </description>
   </element>
-  <element name="gmd:edition" context="gmd:CI_Citation" id="363">
+  <element name="gmd:edition" context="gmd:CI_Citation">
     <label>Ausgabe</label>
     <help/>
     <condition/>
     <description>Ausgabe, Auflage oder Version der Ressource</description>
   </element>
-  <element name="gmd:editionDate" context="gmd:CI_Citation" id="364">
+  <element name="gmd:editionDate" context="gmd:CI_Citation">
     <label>Ausgabedatum</label>
     <help/>
     <condition/>
     <description>Erscheinungsdatum der Ausgabe oder Version</description>
   </element>
-  <element name="gmd:identifier" context="gmd:CI_Citation" id="365">
+  <element name="gmd:identifier" context="gmd:CI_Citation">
     <label>Identifikator</label>
     <help>Wird nach INSPIRE als Identifikator im Zusammenhang mit Services
       verwendet.
@@ -2251,14 +2251,14 @@
     </description>
   </element>
   <element name="gmd:intentionally left blank" context="gmd:CI_Citation"
-           id="366">
+>
     <label/>
     <help/>
     <condition/>
     <description/>
   </element>
   <element name="gmd:citedResponsibleParty" context="gmd:CI_Citation"
-           id="367">
+>
     <label>Verantwortliche Stelle</label>
     <help>Hier ist beispielsweise der Autor einer Publikation anzugeben
       (im Gegensatz zu
@@ -2271,13 +2271,13 @@
     </description>
   </element>
   <element name="gmd:presentationForm" context="gmd:CI_Citation"
-           id="368">
+>
     <label>Präsentationsform</label>
     <help/>
     <condition/>
     <description>Form, in der die Ressource vorliegt (Darstellungsart)</description>
   </element>
-  <element name="gmd:series" context="gmd:CI_Citation" id="369">
+  <element name="gmd:series" context="gmd:CI_Citation">
     <label>Serie</label>
     <help/>
     <condition/>
@@ -2286,7 +2286,7 @@
     </description>
   </element>
   <element name="gmd:spatialRepresentationType" context="gmd:MD_DataIdentification"
-           id="37">
+>
     <label>Räumliche Darstellungsart</label>
     <help/>
     <condition/>
@@ -2296,7 +2296,7 @@
     </description>
   </element>
   <element name="gmd:otherCitationDetails" context="gmd:CI_Citation"
-           id="370">
+>
     <label>Weitere Informationen</label>
     <help>Hier können alle Arten von Zusatzinformationen zur
       Veröffentlichung eingetragen werden,
@@ -2310,7 +2310,7 @@
     </description>
   </element>
   <element name="gmd:collectiveTitle" context="gmd:CI_Citation"
-           id="371">
+>
     <label>Gemeinsamer Titel</label>
     <help>Dieses Feld wird in der Schweiz genutzt um Geobasisdatensätze
       des Bundesrechts zu kennzeichnen (juristische Bezeichnung, Anhang I,
@@ -2322,19 +2322,19 @@
     <condition/>
     <description>Gemeinsamer Titel mit Bandangaben</description>
   </element>
-  <element name="gmd:ISBN" context="gmd:CI_Citation" id="372">
+  <element name="gmd:ISBN" context="gmd:CI_Citation">
     <label>ISBN</label>
     <help/>
     <condition/>
     <description>Internationale Standardbuchnummer</description>
   </element>
-  <element name="gmd:ISSN" context="gmd:CI_Citation" id="373">
+  <element name="gmd:ISSN" context="gmd:CI_Citation">
     <label>ISSN</label>
     <help/>
     <condition/>
     <description>Internationale Standardseriennummer</description>
   </element>
-  <element name="gmd:CI_ResponsibleParty" id="374">
+  <element name="gmd:CI_ResponsibleParty">
     <label>Verantwortliche Stelle</label>
     <help/>
     <condition/>
@@ -2343,7 +2343,7 @@
       steht
     </description>
   </element>
-  <element name="gmd:individualName" id="375">
+  <element name="gmd:individualName">
     <label>Person</label>
     <help>Als Trennzeichen wird Komma empfohlen</help>
     <condition>Es muss entweder ein Nachname, eine Organisation oder eine
@@ -2354,7 +2354,7 @@
       Trennzeichen getrennt
     </description>
   </element>
-  <element name="gmd:organisationName" id="376">
+  <element name="gmd:organisationName">
     <label>Organisation</label>
     <help/>
     <condition>Es muss entweder ein Nachname, eine Organisation oder eine
@@ -2362,7 +2362,7 @@
     </condition>
     <description>Bezeichnung der verantwortlichen Organisation</description>
   </element>
-  <element name="gmd:positionName" id="377">
+  <element name="gmd:positionName">
     <label>Position</label>
     <help/>
     <condition>Es muss entweder ein Nachname, eine Organisation oder eine
@@ -2370,13 +2370,13 @@
     </condition>
     <description>Position oder Funktion der zuständigen Person</description>
   </element>
-  <element name="gmd:contactInfo" id="378">
+  <element name="gmd:contactInfo">
     <label>Kontaktangaben</label>
     <help/>
     <condition/>
     <description>Kontaktangaben zur verantwortlichen Stelle</description>
   </element>
-  <element name="gmd:role" id="379">
+  <element name="gmd:role">
     <label>Funktion</label>
     <help/>
     <condition>Obligatorisch</condition>
@@ -2385,7 +2385,7 @@
       einnimmt
     </description>
   </element>
-  <element name="gmd:spatialResolution" id="38">
+  <element name="gmd:spatialResolution">
     <label>Räumliche Auflösung</label>
     <help>z.B. Maßstab, Bodenauflösung, Gitterweite, Rasterauflösung</help>
     <condition/>
@@ -2393,13 +2393,13 @@
       Informationen
     </description>
   </element>
-  <element name="gmd:CI_Address" id="380">
+  <element name="gmd:CI_Address">
     <label>Adressangaben</label>
     <help/>
     <condition/>
     <description>Adressangaben zur verantwortlichen Stelle</description>
   </element>
-  <element name="gmd:deliveryPoint" context="gmd:CI_Address" id="381">
+  <element name="gmd:deliveryPoint" context="gmd:CI_Address">
     <label>Straße und Hausnummer</label>
     <help/>
     <condition/>
@@ -2408,38 +2408,38 @@
       A
     </description>
   </element>
-  <element name="gmd:city" id="382">
+  <element name="gmd:city">
     <label>Ort</label>
     <help/>
     <condition/>
     <description>Ortsname (Stadt, Gemeinde)</description>
   </element>
   <element name="gmd:administrativeArea" context="gmd:CI_Address"
-           id="383">
+>
     <label>Verwaltungseinheit</label>
     <help/>
     <condition/>
     <description>Bundesland oder Kanton</description>
   </element>
-  <element name="gmd:postalCode" id="384">
+  <element name="gmd:postalCode">
     <label>PLZ</label>
     <help/>
     <condition/>
     <description>Postleitzahl</description>
   </element>
-  <element name="gmd:country" id="385">
+  <element name="gmd:country">
     <label>Staat</label>
     <help>z.B. Schweiz, Österreich oder Deutschland</help>
     <condition/>
     <description>Staat</description>
   </element>
-  <element name="gmd:electronicMailAddress" id="386">
+  <element name="gmd:electronicMailAddress">
     <label>E-Mail</label>
     <help/>
     <condition/>
     <description>E-Mail-Adresse</description>
   </element>
-  <element name="gmd:CI_Contact" id="387">
+  <element name="gmd:CI_Contact">
     <label>Kontaktangaben</label>
     <help/>
     <condition/>
@@ -2448,7 +2448,7 @@
       Organisation
     </description>
   </element>
-  <element name="gmd:phone" context="gmd:CI_Contact" id="388">
+  <element name="gmd:phone" context="gmd:CI_Contact">
     <label>Telefon</label>
     <help>Es wird empfohlen, die Telefonnummer (Festnetz/Mobil/Fax) gemäss
       DIN 5008 zu erfassen. Z.B.
@@ -2460,7 +2460,7 @@
       Organisation
     </description>
   </element>
-  <element name="gmd:address" context="gmd:CI_Contact" id="389">
+  <element name="gmd:address" context="gmd:CI_Contact">
     <label>Adressangaben</label>
     <help/>
     <condition/>
@@ -2470,7 +2470,7 @@
     </description>
   </element>
   <element name="gmd:language" context="gmd:MD_DataIdentification"
-           id="39">
+>
     <label>Sprache</label>
     <help>In Hinblick auf INSPIRE sollte die Angabe bzw. Speicherung eines
       Codes gemäss ISO 639-2/B
@@ -2479,7 +2479,7 @@
     <condition/>
     <description>Im Datenbestand verwendete Sprache</description>
   </element>
-  <element name="gmd:onlineResource" context="gmd:CI_Contact" id="390">
+  <element name="gmd:onlineResource" context="gmd:CI_Contact">
     <label>Website</label>
     <help>Hier kann z.B. der Internetauftritt der verantwortlichen Stelle
       angegeben werden.
@@ -2490,7 +2490,7 @@
       Organisation
     </description>
   </element>
-  <element name="gmd:hoursOfService" context="gmd:CI_Contact" id="391">
+  <element name="gmd:hoursOfService" context="gmd:CI_Contact">
     <label>Servicezeiten</label>
     <help>Die ISO gibt kein Format für den Zeitraum und die Zeitzone vor.
       z.B. "08:00 -
@@ -2503,7 +2503,7 @@
     </description>
   </element>
   <element name="gmd:contactInstructions" context="gmd:CI_Contact"
-           id="392">
+>
     <label>Ergänzende Hinweise</label>
     <help/>
     <condition/>
@@ -2512,7 +2512,7 @@
       erreichen ist
     </description>
   </element>
-  <element name="gmd:CI_Date" id="393">
+  <element name="gmd:CI_Date">
     <label>Datumsangaben</label>
     <help>Falls die Ressource nicht veröffentlicht wurde, kann z. B. auch
       das Datum der Erstellung
@@ -2536,13 +2536,13 @@
   <element name="gco:DateTime">
     <label>Date time</label>
   </element>
-  <element name="gmd:dateType" context="gmd:CI_Date" id="395">
+  <element name="gmd:dateType" context="gmd:CI_Date">
     <label>Datumstyp</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Art des Datums</description>
   </element>
-  <element name="gmd:CI_OnlineResource" id="396">
+  <element name="gmd:CI_OnlineResource">
     <label>Online-Ressource</label>
     <help>z.B. Informationen über den Online-Zugriff auf einen Datensatz,
       eine Homepage, eine
@@ -2551,7 +2551,7 @@
     <condition/>
     <description>Information zur Online-Ressource</description>
   </element>
-  <element name="gmd:linkage" context="gmd:CI_OnlineResource" id="397">
+  <element name="gmd:linkage" context="gmd:CI_OnlineResource">
     <label>URL</label>
     <help>z. B. eine Internetadresse wie: http://www.statkart.no/isotc211
       oder eine FTP-Adresse wie:
@@ -2563,7 +2563,7 @@
       Locator)
     </description>
   </element>
-  <element name="gmd:protocol" id="398.0" alias="protocol">
+  <element name="gmd:protocol" alias="protocol">
     <label>Protokoll</label>
     <help/>
     <condition/>
@@ -2647,7 +2647,7 @@
     </helper>
   </element>
   <element name="gmd:applicationProfile" context="gmd:CI_OnlineResource"
-           id="399">
+>
     <label>Anwendungsprofil</label>
     <help>z. B. "OpenGIS Catalogue Services Specification 2.0.2 - ISO
       Metadata Application Profile",
@@ -2656,14 +2656,14 @@
     <condition/>
     <description>Bezeichnung eines Anwendungsprofils für die Online-Ressource</description>
   </element>
-  <element name="gmd:MD_CharacterSetCode" id="4">
+  <element name="gmd:MD_CharacterSetCode">
     <label>Zeichensatz</label>
     <help>Empfehlung: Verwendung von UTF8</help>
     <condition/>
     <description>Exakte Bezeichnung des Zeichencodestandards, der im Metadatensatz verwendet
       wird</description>
   </element>
-  <element name="gmd:characterSet" context="gmd:MD_Metadata" id="4">
+  <element name="gmd:characterSet" context="gmd:MD_Metadata">
     <label>Zeichensatz</label>
     <help>Empfehlung: Verwendung von UTF8</help>
     <condition/>
@@ -2673,7 +2673,7 @@
     </description>
   </element>
   <element name="gmd:characterSet" context="gmd:MD_DataIdentification"
-           id="40">
+>
     <label>Zeichensatz</label>
     <help/>
     <condition/>
@@ -2682,33 +2682,33 @@
       wird
     </description>
   </element>
-  <element name="gmd:characterSet" id="4.0">
+  <element name="gmd:characterSet">
     <label>Zeichensatz</label>
     <help>Empfehlung: Verwendung von UTF8</help>
     <description>Exakte Bezeichnung des Zeichencodestandards, der im Metadatensatz verwendet
       wird</description>
   </element>
-  <element name="gmd:name" context="gmd:CI_OnlineResource" id="400">
+  <element name="gmd:name" context="gmd:CI_OnlineResource">
     <label>Bezeichnung</label>
     <help>z. B. "GeoPortal.Bund"</help>
     <condition/>
     <description>Bezeichnung der Online-Ressource</description>
   </element>
   <element name="gmd:description" context="gmd:CI_OnlineResource"
-           id="401">
+>
     <label>Beschreibung</label>
     <help/>
     <condition/>
     <description>Ausführliche Beschreibung der Online-Ressource</description>
   </element>
   <element name="gmd:function" context="gmd:CI_OnlineResource"
-           id="402">
+>
     <label>Funktion</label>
     <help/>
     <condition/>
     <description>Funktion der Online-Ressource</description>
   </element>
-  <element name="gmd:CI_Series" id="403">
+  <element name="gmd:CI_Series">
     <label>Serienangaben</label>
     <help/>
     <condition/>
@@ -2717,7 +2717,7 @@
       gehört
     </description>
   </element>
-  <element name="gmd:name" context="gmd:CI_Series" id="404">
+  <element name="gmd:name" context="gmd:CI_Series">
     <label>Bezeichnung</label>
     <help>Mit diesem Element kann eine übergeordnete Instanz benannt
       werden, in der die Ressource
@@ -2739,13 +2739,13 @@
     </description>
   </element>
   <element name="gmd:issueIdentification" context="gmd:CI_Series"
-           id="405">
+>
     <label>Kennung</label>
     <help>Heft, Band, Kartenblattnummer, Messung etc.</help>
     <condition/>
     <description>Kennung eines Elements einer Serie</description>
   </element>
-  <element name="gmd:page" context="gmd:CI_Series" id="406">
+  <element name="gmd:page" context="gmd:CI_Series">
     <label>Seitenangabe</label>
     <help>Einzelheiten, auf welcher Seite der Veröffentlichung der
       beschriebene Artikel zu finden
@@ -2754,7 +2754,7 @@
     <condition/>
     <description>Seitenangabe zum Artikel in einer Publikation</description>
   </element>
-  <element name="gmd:CI_Telephone" id="407">
+  <element name="gmd:CI_Telephone">
     <label>Telefon</label>
     <help/>
     <condition/>
@@ -2763,7 +2763,7 @@
       Organisation
     </description>
   </element>
-  <element name="gmd:voice" id="408">
+  <element name="gmd:voice">
     <label>Telefonnummer</label>
     <help/>
     <condition/>
@@ -2771,7 +2771,7 @@
       Person
     </description>
   </element>
-  <element name="gmd:facsimile" id="409">
+  <element name="gmd:facsimile">
     <label>Telefaxnummer</label>
     <help/>
     <condition/>
@@ -2779,7 +2779,7 @@
       Person
     </description>
   </element>
-  <element name="gmd:topicCategory" id="41">
+  <element name="gmd:topicCategory">
     <label>ISO-Thematik</label>
     <help/>
     <condition>Obligatorisch wenn Hierarchieebene = Datenbestand, bzw. auf
@@ -2788,10 +2788,10 @@
     <description>Thematische Einordnung des Datenbestands</description>
   </element>
   <!-- <element name="gmd:intentionally left blank" context="gmd:MD_Identification"
-		id="42"> <label/> <help/> <condition/> <description/> </element> <element
-		name="gmd:intentionally left blank" context="gmd:MD_Identification" id="43">
+> <label/> <help/> <condition/> <description/> </element> <element
+		name="gmd:intentionally left blank" context="gmd:MD_Identification">
 		<label/> <help/> <condition/> <description/> </element> -->
-  <element name="gmd:environmentDescription" id="44">
+  <element name="gmd:environmentDescription">
     <label>Produktionsumgebung</label>
     <help/>
     <condition/>
@@ -2801,7 +2801,7 @@
     </description>
   </element>
   <element name="gmd:extent" context="gmd:MD_DataIdentification"
-           id="45">
+>
     <label>Ausdehnung</label>
     <help/>
     <condition>Wenn Hierarchieebene = Datenbestand, muss entweder eine
@@ -2814,7 +2814,7 @@
       Datenbestands
     </description>
   </element>
-  <element name="gmd:supplementalInformation" id="46">
+  <element name="gmd:supplementalInformation">
     <label>Zusatzinformation</label>
     <help>weitere, den Datensatz beschreibende Information, welche für die
       Benutzung, Bearbeitung
@@ -2823,7 +2823,7 @@
     <condition/>
     <description>Ergänzende, den Datenbestand beschreibende Information</description>
   </element>
-  <element name="srv:SV_ServiceIdentification" id="47">
+  <element name="srv:SV_ServiceIdentification">
     <label>Basisinformation zum Dienst</label>
     <help/>
     <condition/>
@@ -2849,20 +2849,20 @@
   <element name="srv:valueType">
     <label>Value type</label>
   </element>
-  <element name="gmd:MD_BrowseGraphic" id="48">
+  <element name="gmd:MD_BrowseGraphic">
     <label>Grafische Darstellung</label>
     <help>z.B. Vorschaubild, Übersichtsbild, exemplarische Darstellung</help>
     <condition/>
     <description>Grafik, die die Ressource darstellt (möglichst einschliesslich
       Legende)</description>
   </element>
-  <element name="gmd:fileName" context="gmd:MD_BrowseGraphic" id="49">
+  <element name="gmd:fileName" context="gmd:MD_BrowseGraphic">
     <label>Dateiname</label>
     <help>Empfehlung: Angabe einer URI</help>
     <condition>Obligatorisch</condition>
     <description>Dateiname der Grafik</description>
   </element>
-  <element name="gmd:parentIdentifier" id="5">
+  <element name="gmd:parentIdentifier">
     <label>Identifikator des übergeordneten Metadatensatzes</label>
     <help>Empfehlung: Verwendung einer UUID Es ist möglich, Metadatensätze hierarchisch zu
       strukturieren. So kann z.B. ein Metadatensatz die Merkmale einer ganzen Kartenserie
@@ -2873,52 +2873,52 @@
     <description>Eindeutiger Identifikator des übergeordneten Metadatensatzes (Elternobjekt), auf
       den sich der aktuelle Metadatensatz (Kindobjekt) bezieht</description>
   </element>
-  <element name="gmd:fileDescription" context="gmd:MD_BrowseGraphic" id="50">
+  <element name="gmd:fileDescription" context="gmd:MD_BrowseGraphic">
     <label>Dateibeschreibung</label>
     <help/>
     <condition/>
     <description>Textliche Beschreibung des Inhalts der Grafik</description>
   </element>
-  <element name="gmd:fileType" context="gmd:MD_BrowseGraphic" id="51">
+  <element name="gmd:fileType" context="gmd:MD_BrowseGraphic">
     <label>Dateiformat</label>
     <help/>
     <condition/>
     <description>Dateiformat der Grafik, z.B.: CGM, EPS, GIF, JPEG, PBM, PS, TIFF, XWD</description>
   </element>
-  <element name="gmd:MD_Keywords" id="52">
+  <element name="gmd:MD_Keywords">
     <label>Schlüsselwörter</label>
     <help/>
     <condition/>
     <description>Schlüsselwörter, ihr Typ und die Referenzquelle</description>
   </element>
-  <element name="gmd:keyword" id="53">
+  <element name="gmd:keyword">
     <label>Schlüsselwort</label>
     <help/>
     <condition>Obligatorisch</condition>
     <description>Umgangssprachlich verwendete Wörter, Ausdrücke oder formalisierte Fachbegriffe, die
       den Inhalt beschreiben</description>
   </element>
-  <element name="gmd:type" context="gmd:MD_Keywords" id="54">
+  <element name="gmd:type" context="gmd:MD_Keywords">
     <label>Schlüsselworttyp</label>
     <help/>
     <condition/>
     <description>Einteilung von Schlüsselwörtern in inhaltlich verwandte Sachgebiete</description>
   </element>
-  <element name="gmd:thesaurusName" context="gmd:MD_Keywords" id="55">
+  <element name="gmd:thesaurusName" context="gmd:MD_Keywords">
     <label>Thesaurus</label>
     <help/>
     <condition/>
     <description>Name eines formell registrierten Wortschatzes oder einer ähnlich verbindlichen
       Quelle von Schlüsselwörtern</description>
   </element>
-  <element name="gmd:MD_RepresentativeFraction" id="56">
+  <element name="gmd:MD_RepresentativeFraction">
     <label>Maßstab</label>
     <help/>
     <condition/>
     <description>Hergeleitet vom ISO 19103; Maßstab, wobei MD_RepresentativFraction.denominator = 1
       / Scale.measure Und Scale.targetUnits = Scale.sourceUnits</description>
   </element>
-  <element name="gmd:denominator" id="57">
+  <element name="gmd:denominator">
     <label>Maßstabszahl</label>
     <help>Empfehlung: Falls ein Maßstabsbereich angegeben werden soll, ist die Klasse MD_Resolution
       zweifach zu nutzen und jeweils die obere und untere Maßstabszahl einzutragen.</help>
@@ -2937,40 +2937,40 @@
     </helper>
 
   </element>
-  <element name="gmd:intentionally left blank" context="gmd:MD_RepresentativeFraction" id="58">
+  <element name="gmd:intentionally left blank" context="gmd:MD_RepresentativeFraction">
     <label/>
     <help/>
     <condition/>
     <description/>
   </element>
-  <element name="gmd:MD_Resolution" id="59">
+  <element name="gmd:MD_Resolution">
     <label>Auflösung</label>
     <help/>
     <condition/>
     <description>Detailliertheitsgrad, angegeben durch eine Maßstabszahl oder eine
       Bodenauflösung</description>
   </element>
-  <element name="gmd:hierarchyLevel" id="6">
+  <element name="gmd:hierarchyLevel">
     <label>Hierarchieebene</label>
     <help>Das Element ist verpflichtend, wenn die Hierarchiebene nicht "dataset" ist.</help>
     <condition>Default: Datenbestand</condition>
     <description>Bereich, auf den sich die Metadaten beziehen (Weitere Informationen zu
       Hierarchieebenen sind dem ISO 19115 - Anhang H zu entnehmen)</description>
   </element>
-  <element name="gmd:equivalentScale" context="gmd:MD_Resolution" id="60">
+  <element name="gmd:equivalentScale" context="gmd:MD_Resolution">
     <label>Vergleichsmaßstab</label>
     <help/>
     <condition>auszufüllen, wenn keine Distanz (Bodenauflösung) angegeben wird</condition>
     <description>Detailliertheitsgrad, angegeben durch den Maßstab einer vergleichbaren gedruckten
       Karte</description>
   </element>
-  <element name="gmd:distance" context="gmd:MD_Resolution" id="61">
+  <element name="gmd:distance" context="gmd:MD_Resolution">
     <label>Distanz</label>
     <help>Abstand der Rastermittelpunkte bzw. Gitterstützpunkte</help>
     <condition>auszufüllen, wenn kein Vergleichsmaßstab angegeben wird</condition>
     <description>Bodenauflösung</description>
   </element>
-  <element name="gmd:MD_Usage" id="62">
+  <element name="gmd:MD_Usage">
     <label>Nutzung</label>
     <help>Mit diesem Element wird die tatsächliche Nutzung der Ressource beschrieben. Im Unterschied
       zum Element "purpose" (Line 26) wird hier nicht der ursprüngliche Zweck genannt, der zur
@@ -2980,97 +2980,97 @@
     <description>Kurze Beschreibung, auf welche Art und Weise die Ressource zur Zeit verwendet wird
       oder verwendet wurde</description>
   </element>
-  <element name="gmd:specificUsage" context="gmd:MD_Usage" id="63">
+  <element name="gmd:specificUsage" context="gmd:MD_Usage">
     <label>Spezifische Nutzung</label>
     <help/>
     <condition/>
     <description>Kurze Beschreibung zur Verwendung der Ressource</description>
   </element>
-  <element name="gmd:usageDateTime" context="gmd:MD_Usage" id="64">
+  <element name="gmd:usageDateTime" context="gmd:MD_Usage">
     <label>Zeitpunkt der Erstnutzung</label>
     <help/>
     <condition/>
     <description>Datum und Zeit der erstmaligen Verwendung der Ressource</description>
   </element>
-  <element name="gmd:userDeterminedLimitations" context="gmd:MD_Usage" id="65">
+  <element name="gmd:userDeterminedLimitations" context="gmd:MD_Usage">
     <label>Benutzerdefinierte Einschränkungen</label>
     <help/>
     <condition/>
     <description>Vom Benutzer angegebene Anwendungen, für welche die Ressource nicht geeignet
       ist</description>
   </element>
-  <element name="gmd:userContactInfo" context="gmd:MD_Usage" id="66">
+  <element name="gmd:userContactInfo" context="gmd:MD_Usage">
     <label>Nutzerkontakt</label>
     <help/>
     <condition/>
     <description>Kontaktinformation zu Person(en) und Organisation(en), welche die Ressource
       verwenden</description>
   </element>
-  <element name="gmd:MD_AggregateInformation" id="66.1">
+  <element name="gmd:MD_AggregateInformation">
     <label>Aggregationsinformation</label>
     <help/>
     <condition/>
     <description>Information zu assoziierten Datenbeständen</description>
   </element>
-  <element name="gmd:aggregationInfo" id="66.1">
+  <element name="gmd:aggregationInfo">
     <label>Aggregationsinformation</label>
     <help/>
     <condition/>
     <description>Information zu assoziierten Datenbeständen</description>
   </element>
-  <element name="gmd:aggregateDataSetName" id="66.2">
+  <element name="gmd:aggregateDataSetName">
     <label>Assoziierter Datenbestand</label>
     <help/>
     <condition>Entweder Assoziierter Datenbestand (aggregateDataSetName) oder Identifikator (aggregateDataSetIdentifier) müssen ausgefüllt werden.</condition>
     <description>Bibliografische Angaben zum assoziierten Datenbestand</description>
   </element>
-  <element name="gmd:aggregateDataSetIdentifier" id="66.3">
+  <element name="gmd:aggregateDataSetIdentifier">
     <label>Identifikator</label>
     <help/>
     <condition>Entweder Assoziierter Datenbestand (aggregateDataSetName) oder Identifikator (aggregateDataSetIdentifier) müssen ausgefüllt werden.</condition>
     <description>Identifikator des assoziierten Datenbestands</description>
   </element>
-  <element name="gmd:associationType" id="66.4">
+  <element name="gmd:associationType">
     <label>Assoziationstyp</label>
     <help/>
     <condition/>
     <description>Art der Verbindung zum assoziierten Datenbestand</description>
   </element>
-  <element name="gmd:initiativeType" id="66.5">
+  <element name="gmd:initiativeType">
     <label>Veranlassung</label>
     <help/>
     <condition/>
     <description>Rahmen, in dem der assoziierte Datenbestand erzeugt wurde</description>
   </element>
-  <element name="gmd:MD_Constraints" id="67">
+  <element name="gmd:MD_Constraints">
     <label>Einschränkungen</label>
     <help/>
     <condition/>
     <description>Zugriffs- und Nutzungseinschränkungen, denen eine Ressource oder ein Metadatensatz
       unterliegt</description>
   </element>
-  <element name="gmd:useLimitation" id="68">
+  <element name="gmd:useLimitation">
     <label>Anwendungseinschränkungen</label>
     <help/>
     <condition/>
     <description>Einschränkungen, die die Eignung der Ressource oder Metadaten betreffen Beispiel:
       "nicht für Navigationszwecke geeignet"</description>
   </element>
-  <element name="gmd:MD_LegalConstraints" id="69">
+  <element name="gmd:MD_LegalConstraints">
     <label>Rechtliche Einschränkungen</label>
     <help/>
     <condition/>
     <description>Einschränkungen und rechtliche Voraussetzungen für den Zugriff sowie die Verwendung
       der Ressource oder der Metadaten</description>
   </element>
-  <element name="gmd:hierarchyLevelName" id="7">
+  <element name="gmd:hierarchyLevelName">
     <label>Bezeichnung der Hierarchieebene</label>
     <help>z.B. ein konkreter Name eines Kartenwerks Das Element ist verpflichtend, wenn die
       Hierarchiebene nicht "dataset" ist.</help>
     <condition>Default: Datenbestand</condition>
     <description>Bezeichnung der Hierarchieebene, auf die sich die Metadaten beziehen</description>
   </element>
-  <element name="gmd:accessConstraints" id="70">
+  <element name="gmd:accessConstraints">
     <label>Zugriffseinschränkungen</label>
     <help/>
     <condition/>
@@ -3078,7 +3078,7 @@
       sowie andere besondere Einschränkungen des Zugriffs auf die Ressource oder die
       Metadaten</description>
   </element>
-  <element name="gmd:useConstraints" id="71">
+  <element name="gmd:useConstraints">
     <label>Nutzungseinschränkungen</label>
     <help/>
     <condition/>
@@ -3086,7 +3086,7 @@
       andere besondere Einschränkungen oder Warnungen bezüglich der Nutzung der Ressource oder der
       Metadaten</description>
   </element>
-  <element name="gmd:otherConstraints" id="72">
+  <element name="gmd:otherConstraints">
     <label>Andere Einschränkungen</label>
     <help>Mit diesem Element können sonstige Einschränkungen erfasst werden, denen der Datenzugriff
       oder die Datennutzung unterliegt. Dieses Element muss nur dann belegt werden, wenn in den
@@ -3096,21 +3096,21 @@
     <description>Andere Einschränkungen und rechtliche Voraussetzungen für den Zugriff und die
       Verwendung der Ressource oder der Metadaten</description>
   </element>
-  <element name="gmd:MD_SecurityConstraints" id="73">
+  <element name="gmd:MD_SecurityConstraints">
     <label>Sicherheitseinschränkungen</label>
     <help/>
     <condition/>
     <description>Anwendungseinschränkungen für die Ressource oder für Metadaten zur Wahrung der
       nationalen Sicherheit oder ähnlicher Sicherheitsbelange</description>
   </element>
-  <element name="gmd:classification" context="gmd:MD_SecurityConstraints" id="74">
+  <element name="gmd:classification" context="gmd:MD_SecurityConstraints">
     <label>Sicherheitseinstufung</label>
     <help/>
     <condition/>
     <description>Sicherheitseinstufung beim Umgang mit der Ressource oder den
       Metadaten</description>
   </element>
-  <element name="gmd:userNote" context="gmd:MD_SecurityConstraints" id="75">
+  <element name="gmd:userNote" context="gmd:MD_SecurityConstraints">
     <label>Erläuterung</label>
     <help/>
     <condition/>
@@ -3118,26 +3118,26 @@
       rechtliche Voraussetzungen für den Erhalt oder die Verwendung der Ressource bzw.
       Metadaten</description>
   </element>
-  <element name="gmd:classificationSystem" context="gmd:MD_SecurityConstraints" id="76">
+  <element name="gmd:classificationSystem" context="gmd:MD_SecurityConstraints">
     <label>Einstufungssystem</label>
     <help/>
     <condition/>
     <description>Bezeichnung des Einstufungssystems</description>
   </element>
-  <element name="gmd:handlingDescription" context="gmd:MD_SecurityConstraints" id="77">
+  <element name="gmd:handlingDescription" context="gmd:MD_SecurityConstraints">
     <label>Verwendungshinweis</label>
     <help/>
     <condition/>
     <description>Zusätzliche Information zu Einschränkungen bei der Verwendung der Ressource oder
       der Metadaten</description>
   </element>
-  <element name="gmd:DQ_DataQuality" id="78">
+  <element name="gmd:DQ_DataQuality">
     <label>Datenqualität</label>
     <help/>
     <condition/>
     <description>Information zur Qualität des Datenbestands</description>
   </element>
-  <element name="gmd:scope" context="gmd:DQ_DataQuality" id="79">
+  <element name="gmd:scope" context="gmd:DQ_DataQuality">
     <label>Geltungsbereich</label>
     <help>Qualitätsangaben können entweder zum Gesamtdatenbestand (z.B. Deutschland) oder zu
       Teilmengen räumlicher (z.B. Bundesländer) oder inhaltlicher Art (Objekte, Attribute usw.)
@@ -3145,146 +3145,146 @@
     <condition/>
     <description>Geltungsbereich der Daten, auf die sich die Qualitätsangaben beziehen</description>
   </element>
-  <element name="gmd:contact" id="8">
+  <element name="gmd:contact">
     <label>Metadatenkontakt</label>
     <help/>
     <condition/>
     <description>Für die Metadaten verantwortliche Stelle</description>
   </element>
-  <element name="gmd:report" context="gmd:DQ_DataQuality" id="80">
+  <element name="gmd:report" context="gmd:DQ_DataQuality">
     <label>Qualitätsbericht</label>
     <help/>
     <condition>Für Datenbestand muss entweder &quot;Qualitätsbericht&quot; oder &quot;Herkunft&quot; ausgefüllt werden.</condition>
     <description>Quantitative Qualitätsinformation über die Daten, bezogen auf den genannten
       Geltungsbereich</description>
   </element>
-  <element name="gmd:lineage" context="gmd:DQ_DataQuality" id="81">
+  <element name="gmd:lineage" context="gmd:DQ_DataQuality">
     <label>Herkunft</label>
     <help/>
     <condition>Für Datenbestand muss entweder &quot;Qualitätsbericht&quot; oder &quot;Herkunft&quot; ausgefüllt werden.</condition>
     <description>Nicht-quantitative Qualitätsinformation über die Herkunft der Daten bezogen auf den
       genannten Geltungsbereich</description>
   </element>
-  <element name="gmd:LI_Lineage" id="82">
+  <element name="gmd:LI_Lineage">
     <label>Herkunft</label>
     <help/>
     <condition/>
     <description>Information über die Datenerzeugung bzw. die dafür genutzten Datenquellen oder den
       Kenntnismangel ihrer Herkunft</description>
   </element>
-  <element name="gmd:statement" context="gmd:LI_Lineage" id="83">
+  <element name="gmd:statement" context="gmd:LI_Lineage">
     <label>Erläuterung</label>
     <help/>
     <condition>Inhalt obligatorisch für Datenbestand oder Serie</condition>
     <description>Allgemeine Aussagen des Datenerzeugers zur Herkunft des Datenbestands</description>
   </element>
-  <element name="gmd:processStep" context="gmd:LI_Lineage" id="84">
+  <element name="gmd:processStep" context="gmd:LI_Lineage">
     <label>Bearbeitungsschritt</label>
     <help/>
     <condition>Obligatorisch wenn Erläuterung und Datenquelle nicht ausgefüllt sind.</condition>
     <description>Information über den Herstellungsprozess des Datenbestands im genannten
       Geltungsbereich</description>
   </element>
-  <element name="gmd:source" context="gmd:LI_Lineage" id="85">
+  <element name="gmd:source" context="gmd:LI_Lineage">
     <label>Datenquelle</label>
     <help/>
     <condition>Obligatorisch wenn Erläuterung und Bearbeitungsschritt nicht ausgefüllt sind.</condition>
     <description>Information über die bei der Datenerzeugung genutzten Datenquellen im genannten
       Geltungsbereich</description>
   </element>
-  <element name="gmd:LI_ProcessStep" id="86">
+  <element name="gmd:LI_ProcessStep">
     <label>Bearbeitungsschritt</label>
     <help/>
     <condition/>
     <description>Information über einen Schritt im Erstellungs- oder Transformationsprozess der
       Daten einschliesslich der Datenpflege</description>
   </element>
-  <element name="gmd:description" context="gmd:LI_ProcessStep" id="87">
+  <element name="gmd:description" context="gmd:LI_ProcessStep">
     <label>Beschreibung</label>
     <help/>
     <condition/>
     <description>Beschreibung des Bearbeitungsschritts einschliesslich wichtiger Parameter oder
       Toleranzen</description>
   </element>
-  <element name="gmd:rationale" context="gmd:LI_ProcessStep" id="88">
+  <element name="gmd:rationale" context="gmd:LI_ProcessStep">
     <label>Veranlassung</label>
     <help/>
     <condition/>
     <description>Notwendigkeit bzw. Zweck des Bearbeitungsschritts</description>
   </element>
-  <element name="gmd:dateTime" context="gmd:LI_ProcessStep" id="89">
+  <element name="gmd:dateTime" context="gmd:LI_ProcessStep">
     <label>Bearbeitungszeitpunkt</label>
     <help>Hier nur Zeitpunkt, da die Klasse "dateTime" keinen Zeitraum zulässt</help>
     <condition/>
     <description>Zeitpunkt des Bearbeitungsschritts</description>
   </element>
-  <element name="gmd:dateStamp" id="9">
+  <element name="gmd:dateStamp">
     <label>Datum</label>
     <help>Datum der Erstellung oder des aktuellen Bearbeitungsstands der Metadaten Eingabeformat:
       Zeichenkette im Format yyyy-mm-dd nach ISO19103, z.B. "1998-09-08"</help>
     <condition/>
     <description>Datum, zu dem der Metadatensatz erzeugt/geändert wurde</description>
   </element>
-  <element name="gmd:processor" context="gmd:LI_ProcessStep" id="90">
+  <element name="gmd:processor" context="gmd:LI_ProcessStep">
     <label>Bearbeiter</label>
     <help/>
     <condition/>
     <description>Kontaktinformation zu Person(en) und Organisation(en), welche mit dem
       Bearbeitungsschritt in Beziehung stehen</description>
   </element>
-  <element name="gmd:source" context="gmd:LI_ProcessStep" id="91">
+  <element name="gmd:source" context="gmd:LI_ProcessStep">
     <label>Datenquelle</label>
     <help/>
     <condition/>
     <description>Information über die bei der Datenerzeugung genutzten Datenquelle im genannten
       Geltungsbereich</description>
   </element>
-  <element name="gmd:LI_Source" id="92">
+  <element name="gmd:LI_Source">
     <label>Datenquelle</label>
     <help/>
     <condition/>
     <description>Information über die bei der Datenerzeugung genutzten Datenquelle im genannten
       Geltungsbereich</description>
   </element>
-  <element name="gmd:description" context="gmd:LI_Source" id="93">
+  <element name="gmd:description" context="gmd:LI_Source">
     <label>Beschreibung</label>
     <help/>
     <condition>Obligatorisch wenn (Quelldaten-)Ausdehnung nicht ausgefüllt</condition>
     <description>Detaillierte Beschreibung der Ebene der Quelldaten</description>
   </element>
-  <element name="gmd:scaleDenominator" context="gmd:LI_Source" id="94">
+  <element name="gmd:scaleDenominator" context="gmd:LI_Source">
     <label>Maßstabszahl</label>
     <help/>
     <condition/>
     <description>Angabe der Maßstabszahl (mz) eines Maßstab 1 : mz der Ausgangskarte</description>
   </element>
-  <element name="gmd:sourceReferenceSystem" context="gmd:LI_Source" id="95">
+  <element name="gmd:sourceReferenceSystem" context="gmd:LI_Source">
     <label>Bezugssystem</label>
     <help/>
     <condition/>
     <description>Räumliches Bezugssystem der Quelldaten</description>
   </element>
-  <element name="gmd:sourceCitation" context="gmd:LI_Source" id="96">
+  <element name="gmd:sourceCitation" context="gmd:LI_Source">
     <label>Quelldatenbestand</label>
     <help/>
     <condition/>
     <description>Bibliografische Angaben zur eindeutigen Identifizierung der Quelle</description>
   </element>
-  <element name="gmd:sourceExtent" context="gmd:LI_Source" id="97">
+  <element name="gmd:sourceExtent" context="gmd:LI_Source">
     <label>Ausdehnung</label>
     <help/>
     <condition>Obligatorisch wenn (Quelldaten-)Beschreibung nicht ausgefüllt</condition>
     <description>Ausdehnungsinformation einschl. des Begrenzungsrechtecks (Bounding Box), des
       Begrenzungspolygons sowie der vertikalen und zeitlichen Ausdehnung der Quelle</description>
   </element>
-  <element name="gmd:sourceStep" context="gmd:LI_Source" id="98">
+  <element name="gmd:sourceStep" context="gmd:LI_Source">
     <label>Bearbeitungsschritt</label>
     <help/>
     <condition/>
     <description>Information über einen Bearbeitungsschritt bei der Erstellung der
       Quelldaten</description>
   </element>
-  <element name="gmd:DQ_Element" id="99">
+  <element name="gmd:DQ_Element">
     <label>Datenqualitätselement</label>
     <help>Hier werden die quantitativen Methoden zur Qualitätsbewertung und ihre Ergebnisse
       beschrieben.</help>
@@ -3555,11 +3555,11 @@
     <label>Schlüsselwörter</label>
     <description>Technische Schlüsselwörter, zur Beschreibung des Dienstes</description>
   </element>
-  <element name="gco:Measure" id="100.0" context="gmd:DQ_Element">
+  <element name="gco:Measure" context="gmd:DQ_Element">
     <label>Masseinheit</label>
     <description>Bezeichnung der Masseinheit für das Testverfahren</description>
   </element>
-  <element name="gco:Measure" id="357.0" context="gmd:EX_VerticalExtent">
+  <element name="gco:Measure" context="gmd:EX_VerticalExtent">
     <label>Masseinheit</label>
     <description>Masseinheiten zur Beschreibung einer vertikalen Ausdehnung.</description>
     <help>Z.B. m, ft, mm, hPa</help>
@@ -3622,7 +3622,7 @@
     <description>Unique identifier</description>
   </element>
 
-  <element name="gml:id" id="191.0" context="gmd:MD_CRS">
+  <element name="gml:id" context="gmd:MD_CRS">
     <label>Ellipsoid</label>
     <description>ID des genutzten Ellipsoides</description>
     <help/>

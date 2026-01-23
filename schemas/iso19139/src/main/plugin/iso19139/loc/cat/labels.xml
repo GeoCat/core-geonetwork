@@ -33,7 +33,7 @@
     <label>Codi de l'abast</label>
     <description>Classe d'informació que s'aplica a l'entitat referenciada</description>
   </element>
-  <element name="code" id="207.0" context="gmd:MD_Identifier">
+  <element name="code" context="gmd:MD_Identifier">
     <label>Identificador</label>
     <description>Valor alfanumèric que identifica una instància al namespace</description>
     <help>valor alfanumèric que identifica una instància de l'espai de noms</help>
@@ -42,31 +42,31 @@
     <label>Codi del sistema</label>
     <description>Codi p.e. codi EPSG</description>
   </element>
-  <element name="code" id="547.0" context="gmd:MD_CodeValue">
+  <element name="code" context="gmd:MD_CodeValue">
     <label>Codi</label>
     <description>Valor del codi</description>
     <help>Codi de valor (per exemple, numèric)</help>
   </element>
-  <element name="codeSpace" id="208.1">
+  <element name="codeSpace">
     <label>Autoritat de referència</label>
     <description>Autoritat responsable de la codificació. p.e. EPSG</description>
   </element>
-  <element name="gco:Date" id="364.0" context="gmd:CI_Citation">
+  <element name="gco:Date" context="gmd:CI_Citation">
     <label>Dada d'edició</label>
     <description>Data de l'edició</description>
   </element>
-  <element name="gco:Date" id="393.0">
+  <element name="gco:Date">
     <label>Data</label>
     <description>Format 2007-09-12 (YYYY-MM-DD)</description>
     <help>data de referència i esdeveniment utilitzat per descriure-la</help>
     <_condition>Obligatorietat segons l'objecte al que es refereix</_condition>
   </element>
-  <element name="gco:DateTime" id="64.0" context="gmd:MD_Usage">
+  <element name="gco:DateTime" context="gmd:MD_Usage">
     <description>Format com a 2007-09-12T15:00:00 (YYYY-MM-DDTHH:mm:ss)</description>
     <label>Data i hora d'ús</label>
     <help>data i hora de la primera utilització o rang d'usos del recurs i/o sèrie de recursos</help>
   </element>
-  <element name="gco:DateTime" id="300.0" context="gmd:MD_StandardOrderProcess">
+  <element name="gco:DateTime" context="gmd:MD_StandardOrderProcess">
     <description>Format com a 2007-09-12T15:00:00 (YYYY-MM-DDTHH:mm:ss)</description>
     <label>Data i hora planejada de disponibilitat</label>
     <help>data i hora en la que el recurs estarà disponible</help>
@@ -76,489 +76,489 @@
     <description>Data i hora, o rang de data i hora, en què aquest pas de procés va tenir lloc
       (AAAA-MM-DDThh:mm:ss)</description>
   </element>
-  <element name="gco:Measure" id="100.0" context="gmd:DQ_Element">
+  <element name="gco:Measure" context="gmd:DQ_Element">
     <label>Nom de la mesura</label>
     <description>Nom del test aplicat a la dada</description>
   </element>
-  <element name="gco:Measure" id="357.0" context="gmd:EX_VerticalExtent">
+  <element name="gco:Measure" context="gmd:EX_VerticalExtent">
     <label>Unitat de mesura</label>
     <description>Unitats verticals usades per a l'extensió vertical de la informació. Exemples:
       metres, peus, mil·límetres, hectopascals</description>
     <_condition>Obligatori</_condition>
   </element>
-  <element name="gmd:CI_Address" id="380.0">
+  <element name="gmd:CI_Address">
     <label>Adreça</label>
     <description>Localització de l'individu o organització responsable</description>
     <_condition>Obligatorietat segons l'objecte al que es refereix</_condition>
   </element>
-  <element name="gmd:CI_Citation" id="359.0">
+  <element name="gmd:CI_Citation">
     <label>Citació</label>
     <description>Referència estandarditzada del recurs</description>
     <_condition>Obligatorietat segons l'objecte al que es refereix</_condition>
   </element>
-  <element name="gmd:CI_Contact" id="387.0">
+  <element name="gmd:CI_Contact">
     <label>Contacte</label>
     <description>Informació necessària per a establir contacte amb la persona o organització
       responsable</description>
     <_condition>Obligatorietat segons l'objecte al que es refereix</_condition>
   </element>
-  <element name="gmd:CI_Date" id="393.0">
+  <element name="gmd:CI_Date">
     <label>Data</label>
     <description>Data de referència i esdeveniment usat per descriure'l (YYYY-MM-DD)
     </description>
     <_condition>Obligatorietat segons l'objecte al que es refereix</_condition>
   </element>
-  <element name="gmd:CI_OnlineResource" id="396.0">
+  <element name="gmd:CI_OnlineResource">
     <label>Recurs en línia</label>
     <description>Informació sobre recursos en línia de on es poden obtenir conjunts de dades,
       especificacions, noms de perfils comuns i elements per estendre les metadades</description>
     <_condition>Obligatorietat segons l'objecte al que es refereix</_condition>
   </element>
-  <element name="gmd:CI_ResponsibleParty" id="374.0">
+  <element name="gmd:CI_ResponsibleParty">
     <label>Part responsable</label>
     <description>Identificació i/o forma(es) de comunicar amb la persona o organització associada a
       aquest conjunt de dades</description>
     <_condition>Obligatorietat segons l'objecte al que es refereix</_condition>
   </element>
-  <element name="gmd:CI_Series" id="403.0">
+  <element name="gmd:CI_Series">
     <label>Sèries</label>
     <description>Informació sobre seqüències o conjunts de dades agregades a què pertany el conjunt
       de dades</description>
     <_condition>Obligatorietat segons l'objecte al que es refereix</_condition>
   </element>
-  <element name="gmd:CI_Telephone" id="407.0">
+  <element name="gmd:CI_Telephone">
     <label>Telèfon</label>
     <description>Número de telèfon per contactar amb l'organització o individu responsable</description>
     <_condition>Obligatorietat segons l'objecte al que es refereix</_condition>
   </element>
-  <element name="gmd:DQ_AbsoluteExternalPositionalAccuracy" id="117.0">
+  <element name="gmd:DQ_AbsoluteExternalPositionalAccuracy">
     <label>Precisió absoluta de la posició externa</label>
     <description>Proximitat dels valors de coordenades informats i els valors acceptats com a
       vertaders</description>
   </element>
-  <element name="gmd:DQ_AccuracyOfATimeMeasurement" id="121.0">
+  <element name="gmd:DQ_AccuracyOfATimeMeasurement">
     <label>Precisió en la mesura del temps</label>
     <description>Exactitud de les referències temporals d'un element (expressant l'error en la
       mesura del temps)</description>
   </element>
-  <element name="gmd:DQ_CompletenessCommission" id="109.0">
+  <element name="gmd:DQ_CompletenessCommission">
     <label>Comisió de la completesa</label>
     <description>Excés de dades presents en el conjunt de dades, segons el descrit en l'àmbit
       d'aplicació</description>
   </element>
-  <element name="gmd:DQ_CompletenessOmission" id="110.0">
+  <element name="gmd:DQ_CompletenessOmission">
     <label>Omisió de la completesa</label>
     <description>Dada no disponible en el conjunt de dades, segons el descrit en l'àmbit d'aplicació</description>
   </element>
-  <element name="gmd:DQ_ConceptualConsistency" id="112.0">
+  <element name="gmd:DQ_ConceptualConsistency">
     <label>Consistència conceptual</label>
     <description>Adherència a les normes de l'esquema conceptual</description>
   </element>
-  <element name="gmd:DQ_ConformanceResult" id="129.0">
+  <element name="gmd:DQ_ConformanceResult">
     <label>Conformitat del resultat</label>
     <description>Informació sobre el resultat d'avaluar el valor obtingut (o conjunt de valors)
       respecte al nivell de qualitat establert com acceptable</description>
   </element>
-  <element name="gmd:DQ_DataQuality" id="78.0">
+  <element name="gmd:DQ_DataQuality">
     <label>Qualitat de la dada</label>
     <description>Informació de qualitat de les dades segons un abast donat</description>
   </element>
-  <element name="gmd:DQ_DomainConsistency" id="113.0">
+  <element name="gmd:DQ_DomainConsistency">
     <label>Consistència del domini</label>
     <description>Adherència dels valors al seu domini</description>
   </element>
-  <element name="gmd:DQ_FormatConsistency" id="114.0">
+  <element name="gmd:DQ_FormatConsistency">
     <label>Consistència del format</label>
     <description>Grau en què les dades s'emmagatzemen d'acord amb l'estructura física del conjunt de
       dades, respecte al que descriu l'abast</description>
   </element>
-  <element name="gmd:DQ_GriddedDataPositionalAccuracy" id="118.0">
+  <element name="gmd:DQ_GriddedDataPositionalAccuracy">
     <label>Precisió de la posició de les dades en malla</label>
     <description>Proximitat dels valors de posició de dades de malla respecte als valors acceptats
       com a vertaders</description>
   </element>
-  <element name="gmd:DQ_NonQuantitativeAttributeAccuracy" id="126.0">
+  <element name="gmd:DQ_NonQuantitativeAttributeAccuracy">
     <label>Precisió dels atributs no quantitatius</label>
     <description>Correcció dels atributs no quantitatius</description>
   </element>
-  <element name="gmd:DQ_QuantitativeAttributeAccuracy" id="127.0">
+  <element name="gmd:DQ_QuantitativeAttributeAccuracy">
     <label>Precisió de l'atribut quantitatiu</label>
     <description>Exactitud dels atributs quantitatius</description>
   </element>
-  <element name="gmd:DQ_QuantitativeResult" id="133.0">
+  <element name="gmd:DQ_QuantitativeResult">
     <label>Resultat quantitatiu</label>
     <description>Els valors o la informació del valor (o conjunt de valors) obtingut d'aplicar una
       mesura de qualitat de la dada.</description>
   </element>
-  <element name="gmd:DQ_RelativeInternalPositionalAccuracy" id="119.0">
+  <element name="gmd:DQ_RelativeInternalPositionalAccuracy">
     <label>Precisió de la posició relativa interna</label>
     <description>Proximitat de les posicions relatives dels elements en relació a les seves
       respectives posicions relatives acceptades com a vertaderes</description>
   </element>
-  <element name="gmd:DQ_Scope" id="138.0">
+  <element name="gmd:DQ_Scope">
     <label>Abast</label>
     <description>Descripció de la dada especificada per l'abast</description>
     <help>extensió de les característiques de la dada per a la que es reporta la qualitat de la
       informació</help>
   </element>
-  <element name="gmd:DQ_TemporalConsistency" id="122.0">
+  <element name="gmd:DQ_TemporalConsistency">
     <label>Consistència temporal</label>
     <description>Exactitud dels esdeveniments ordenats o seqüències, si informats</description>
   </element>
-  <element name="gmd:DQ_TemporalValidity" id="123.0">
+  <element name="gmd:DQ_TemporalValidity">
     <label>Validesa temporal</label>
     <description>Validesa de les dades especificades en l'abast pel que fa al temps</description>
   </element>
-  <element name="gmd:DQ_ThematicClassificationCorrectness" id="125.0">
+  <element name="gmd:DQ_ThematicClassificationCorrectness">
     <label>Exactitud de la classificació temàtica</label>
     <description>Comparació de les classes assignades als elements o els seus atributs respecte a un
       univers de discurs</description>
   </element>
-  <element name="gmd:DQ_TopologicalConsistency" id="115.0">
+  <element name="gmd:DQ_TopologicalConsistency">
     <label>Consistència topològica</label>
     <description>Correcció de les característiques topològiques codificades explícitament del
       conjunt de dades respecte al que es descriu en l'abast</description>
   </element>
-  <element name="gmd:EX_BoundingPolygon" id="341.0">
+  <element name="gmd:EX_BoundingPolygon">
     <label>Polígon delimitador</label>
     <description>Límit que conté el conjunt de dades, expressat com una successió de punts (x, y)
       descrivint un polígon tancat (on l'últim punt coincideix amb el primer punt)</description>
   </element>
-  <element name="gmd:EX_Extent" id="334.0">
+  <element name="gmd:EX_Extent">
     <label>Extensió</label>
     <description>Informació sobre l'extensió espacial, vertical i temporal</description>
   </element>
-  <element name="gmd:EX_GeographicBoundingBox" id="343.0">
+  <element name="gmd:EX_GeographicBoundingBox">
     <label>Extensió geogràfica</label>
     <description>Àmbit geogràfic del conjunt de dades</description>
   </element>
-  <element name="gmd:EX_GeographicDescription" id="348.0">
+  <element name="gmd:EX_GeographicDescription">
     <label>Descripció geogràfica</label>
     <description>Descripció de l'àrea geogràfica usant identificadors</description>
   </element>
-  <element name="gmd:EX_SpatialTemporalExtent" id="352.0">
+  <element name="gmd:EX_SpatialTemporalExtent">
     <label>Extensió espacial i temporal</label>
     <description>Extensió respecte a dates/hores, i extensió espacial</description>
   </element>
-  <element name="gmd:EX_TemporalExtent" id="350.0">
+  <element name="gmd:EX_TemporalExtent">
     <label>Extensió temporal</label>
     <description>Període de temps cobert pel conjunt de dades</description>
   </element>
-  <element name="gmd:EX_VerticalExtent" id="354.0">
+  <element name="gmd:EX_VerticalExtent">
     <label>Extensió vertical</label>
     <description>Domini vertical del conjunt de dades</description>
   </element>
-  <element name="gmd:ISBN" id="372.0">
+  <element name="gmd:ISBN">
     <label>ISBN</label>
     <description>Número de Llibre Estàndard Internacional (ISBN)</description>
   </element>
-  <element name="gmd:ISSN" id="373.0">
+  <element name="gmd:ISSN">
     <label>ISSN</label>
     <description>Número de Sèrie estàndard internacional (ISSN)</description>
   </element>
-  <element name="gmd:LI_Lineage" id="82.0">
+  <element name="gmd:LI_Lineage">
     <label>Llinatge</label>
     <description>Informació sobre les accions i fonts de dades que van donar origen a les dades
       especificades en l'abast, o la manca de coneixement sobre aquelles</description>
   </element>
-  <element name="gmd:LI_ProcessStep" id="86.0">
+  <element name="gmd:LI_ProcessStep">
     <label>Pas de procés</label>
     <description>Informació sobre un esdeveniment en el procés de creació de les dades especificat
       per l'abast</description>
     <help>informació sobre un esdeveniment o transformació durant l'històric d'un conjunt de dades,
       incloent-hi el procés de mantenir-lo</help>
   </element>
-  <element name="gmd:LI_Source" id="92.0">
+  <element name="gmd:LI_Source">
     <label>Origen</label>
     <description>Informació sobre les dades d'origen utilitzats en la creació de les dades
       especificades en l'abast</description>
   </element>
-  <element name="gmd:MD_AggregateInformation" id="66.1">
+  <element name="gmd:MD_AggregateInformation">
     <label>Informació agregada</label>
     <description>Informació agregada de conjunt de dades</description>
   </element>
-  <element name="gmd:MD_ApplicationSchemaInformation" id="320.0">
+  <element name="gmd:MD_ApplicationSchemaInformation">
     <description>Informació sobre l'esquema d'aplicació utilitzat per construir el conjunt de dades</description>
     <label>Informació de l'esquema d'aplicació</label>
   </element>
-  <element name="gmd:MD_Band" id="259.0">
+  <element name="gmd:MD_Band">
     <label>Banda</label>
     <description>Gamma de longituds d'ona en l'espectre electromagnètic</description>
     <help>rang de longituds d'ona en l'espectre electromagnètic</help>
   </element>
-  <element name="gmd:MD_BrowseGraphic" id="48.0">
+  <element name="gmd:MD_BrowseGraphic">
     <description>Gràfic que proporciona una il·lustració del conjunt de dades (ha d'incloure una
       llegenda per al gràfic)</description>
     <label>Gràfic de navegació</label>
   </element>
-  <element name="gmd:MD_Constraints" id="67.0">
+  <element name="gmd:MD_Constraints">
     <label>Restriccions</label>
     <description>Eestriccions d'accés i l'ús d'un registre de recursos o metadades</description>
   </element>
-  <element name="gmd:MD_CoverageDescription" id="239.0">
+  <element name="gmd:MD_CoverageDescription">
     <label>Descripció de la cobertura</label>
     <description>Informació sobre el contingut d'una cel·la de dades en malla</description>
   </element>
-  <element name="gmd:MD_DataIdentification" id="36.0">
+  <element name="gmd:MD_DataIdentification">
     <label>Identificació de la dada</label>
     <description>Informació necessària per a identificar un conjunt de dades</description>
   </element>
-  <element name="gmd:MD_DigitalTransferOptions" id="274.0">
+  <element name="gmd:MD_DigitalTransferOptions">
     <label>Opcions de transferència digital</label>
     <description>Mitjans tècnics i de comunicació pels quals s'obté un recurs del distribuïdor</description>
   </element>
-  <element name="gmd:MD_Dimension" id="179.0">
+  <element name="gmd:MD_Dimension">
     <label>Dimensió</label>
     <description>Propietats dels eixos</description>
   </element>
-  <element name="gmd:MD_Distribution" id="270.0">
+  <element name="gmd:MD_Distribution">
     <label>Distribució</label>
     <description>Informació sobre el distribuïdor i les opcions per obtenir el recurs</description>
   </element>
-  <element name="gmd:MD_Distributor" id="279.0">
+  <element name="gmd:MD_Distributor">
     <label>Distribuïdor</label>
     <description>Informació del distribuïdor</description>
   </element>
-  <element name="gmd:MD_ExtendedElementInformation" id="306.0">
+  <element name="gmd:MD_ExtendedElementInformation">
     <description>Nou element de metadades, que no es troba en la norma ISO 19115, i que es requereix
       per a descriure les dades geogràfiques</description>
     <label>Informació de l'element extès</label>
   </element>
-  <element name="gmd:MD_FeatureCatalogueDescription" id="233.0">
+  <element name="gmd:MD_FeatureCatalogueDescription">
     <label>Descripció del catàleg d'objectes geogràfics</label>
     <description>Informació que identifica el catàleg d'objectes geogràfics o l'esquema conceptual</description>
   </element>
-  <element name="gmd:MD_Format" id="284.0">
+  <element name="gmd:MD_Format">
     <label>Format</label>
     <description>Descripció de la construcció del llenguatge informàtic que especifica la
       representació d'objectes de dades en un registre, arxiu, missatge, dispositiu d'emmagatzematge
       o canal de transmissió</description>
   </element>
-  <element name="gmd:MD_GeometricObjects" id="183.0">
+  <element name="gmd:MD_GeometricObjects">
     <label>Objectes geomètrics</label>
     <description>Nombre d'objectes, enumerats per tipus d'objecte geomètric, que s'utilitzen en el
       conjunt de dades</description>
   </element>
-  <element name="gmd:MD_Georectified" id="162.0">
+  <element name="gmd:MD_Georectified">
     <label>Georrectificació</label>
     <description>Matriu que té les cel·les espaiades regularment en un sistema de coordenades
       definit en el seu sistema de referència espacial (SRS), de manera que qualsevol cel·la de la
       quadrícula pot ser geolocalitzada donada la seva posició dins de la quadrícula, l'origen de la
       quadrícula, l'espaiat entre cel·les i la seva orientació</description>
   </element>
-  <element name="gmd:MD_Georeferenceable" id="170.0">
+  <element name="gmd:MD_Georeferenceable">
     <label>Georreferenciable</label>
     <description>Malla on les cel·les estan espaiades regularment en un sistema de coordenades, les
       cel·les poden ser geolocalitzades individualment utilitzant la informació de geolocalització
       subministrada amb les dades, però no poden ser geolocalitzades únicament a partir de les
       propietats de la malla</description>
   </element>
-  <element name="gmd:MD_GridSpatialRepresentation" id="157.0">
+  <element name="gmd:MD_GridSpatialRepresentation">
     <label>Representació espacial en malla</label>
     <description>Informació sobre objectes espacials en forma de malla en el conjunt de dades</description>
   </element>
-  <element name="gmd:MD_Identifier" id="205.0">
+  <element name="gmd:MD_Identifier">
     <label>Identificador</label>
     <description>Valor que identifica de manera única un objecte dins d'un espai de noms</description>
   </element>
-  <element name="gmd:MD_ImageDescription" id="243.0">
+  <element name="gmd:MD_ImageDescription">
     <label>Descripció de la imatge</label>
     <description>Informació sobre la idoneïtat d'una imatge per al seu ús</description>
   </element>
-  <element name="gmd:MD_Keywords" id="52.0">
+  <element name="gmd:MD_Keywords">
     <label>Paraules clau</label>
     <description>Paraules clau, el seu tipus i font de referència</description>
   </element>
-  <element name="gmd:MD_LegalConstraints" id="69.0">
+  <element name="gmd:MD_LegalConstraints">
     <label>Restriccions legals</label>
     <description>Restriccions i requisits legals d'accés i ús del recurs o metadades</description>
   </element>
-  <element name="gmd:MD_MaintenanceInformation" id="142.0">
+  <element name="gmd:MD_MaintenanceInformation">
     <label>Informació de manteniment</label>
     <description>Informació sobre l'abast i la freqüència d'actualització</description>
   </element>
-  <element name="gmd:MD_Medium" id="291.0">
+  <element name="gmd:MD_Medium">
     <label>Mitjà</label>
     <description>Informació sobre els suports en què el recurs pot ser distribuït</description>
   </element>
-  <element name="gmd:MD_Metadata" id="1.0">
+  <element name="gmd:MD_Metadata">
     <label>Metadades</label>
     <abbrLabel>Metadades</abbrLabel>
     <description>Entitat arrel que defineix les metadades d'un recurs o recursos</description>
   </element>
-  <element name="gmd:MD_MetadataExtensionInformation" id="303.0">
+  <element name="gmd:MD_MetadataExtensionInformation">
     <description>Informació que descriu les extensions de les metadades</description>
     <label>Informació de l'extensió de la metadada</label>
   </element>
-  <element name="gmd:MD_PortrayalCatalogueReference" id="268.0">
+  <element name="gmd:MD_PortrayalCatalogueReference">
     <label>Referència al catàleg de representació</label>
     <description>Informació que identifica el catàleg de representació utilitzat</description>
   </element>
-  <element name="gmd:MD_RangeDimension" id="256.0">
+  <element name="gmd:MD_RangeDimension">
     <label>Rang de la dimensió</label>
     <description>Informació sobre el rang de cada dimensió d'un valor de medició de cel·les</description>
   </element>
-  <element name="gmd:MD_ReferenceSystem" id="186.0">
+  <element name="gmd:MD_ReferenceSystem">
     <label>Sistema de referència</label>
     <description>Informació sobre el sistema de referència.</description>
     <help>informació sobre el sistema de referència</help>
   </element>
-  <element name="gmd:MD_RepresentativeFraction" id="56.0">
+  <element name="gmd:MD_RepresentativeFraction">
     <label>Fracció representativa</label>
     <description>Derivat de Scale on MD_RepresentativeFraction.denominator = 1/Scale.measure i
       Scale.targetUnits = Scale.sourceUnits</description>
   </element>
-  <element name="gmd:MD_Resolution" id="59.0">
+  <element name="gmd:MD_Resolution">
     <label>Resolució</label>
     <description>Nivell de detall expressat com un factor d'escala o una distància al terreny</description>
   </element>
-  <element name="gmd:MD_ScopeDescription" id="149.0">
+  <element name="gmd:MD_ScopeDescription">
     <label>Descripció de l'abast</label>
     <description>Descripció de la classe d'informació coberta per la informació</description>
     <condition>Either attributes, features, featureInstances, attributeInstnaces, dataset or other
       must be provided</condition>
   </element>
-  <element name="gmd:MD_SecurityConstraints" id="73.0">
+  <element name="gmd:MD_SecurityConstraints">
     <label>Restriccions de seguretat</label>
     <description>Restriccions imposades a la manipulació del recurs o les metadades per motius de
       seguretat nacional o similars</description>
   </element>
-  <element name="gmd:MD_ServiceIdentification" id="47.0">
+  <element name="gmd:MD_ServiceIdentification">
     <label>Identificació del servei</label>
     <description>Identificació de les capacitats que un proveïdor de serveis posa a disposició de
       l'usuari del servei a través d'un conjunt d'interfícies que defineixen un comportament - per a
       més informació vegeu la norma ISO 19119 - Serveis</description>
   </element>
-  <element name="gmd:MD_StandardOrderProcess" id="298.0">
+  <element name="gmd:MD_StandardOrderProcess">
     <label>Procés de comanda estàndard</label>
     <description>Els mitjans més comuns per a l'obtenció o recepció del recurs, així com
       instruccions al respecte i informació sobre tarifes aplicables</description>
   </element>
-  <element name="gmd:MD_Usage" id="62.0">
+  <element name="gmd:MD_Usage">
     <label>Ús</label>
     <description>Breu descripció de les formes en les que s'utilitza actualment el recurs o recursos</description>
   </element>
-  <element name="gmd:MD_VectorSpatialRepresentation" id="176.0">
+  <element name="gmd:MD_VectorSpatialRepresentation">
     <label>Representació vectorial espacial</label>
     <description>Informació sobre els objectes espacials vectorials en el conjunt de dades</description>
   </element>
-  <element name="gmd:PT_FreeText" id="601.0">
+  <element name="gmd:PT_FreeText">
     <label>Text lliure</label>
     <description>Descripció d'un element de metadades de text lliure multiidiomàtic</description>
   </element>
-  <element name="gmd:RS_Identifier" id="208.0">
+  <element name="gmd:RS_Identifier">
     <description>Identificador utilitzat per a sistemes de referència</description>
     <label>Identificador</label>
   </element>
-  <element name="gmd:URL" id="608.0">
+  <element name="gmd:URL">
     <label>URL</label>
     <description>URL</description>
   </element>
-  <element name="gmd:abstract" id="25.0">
+  <element name="gmd:abstract">
     <label>Resum</label>
     <description>Breu resum narratiu del contingut del recurs o recursos</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:accessConstraints" id="70.0">
+  <element name="gmd:accessConstraints">
     <label>Restriccions d'accés</label>
     <description>Restriccions d'accés aplicades per a assegurar la protecció de la privacitat o de
       la propietat intel·lectual, així com restriccions o limitacions especials per obtenir el
       recurs</description>
   </element>
-  <element name="gmd:address" id="525.0" context="gmd:CI_ResponsibleParty">
+  <element name="gmd:address" context="gmd:CI_ResponsibleParty">
     <label>Adreça</label>
     <description>Direcció de la part responsable</description>
   </element>
-  <element name="gmd:address" id="389.0">
+  <element name="gmd:address">
     <label>Adreça</label>
     <description>Adreça física i de correu electrònic on posar-se en contacte amb l'organització o
       individu</description>
   </element>
-  <element name="gmd:administrativeArea" id="383.0">
+  <element name="gmd:administrativeArea">
     <label>Àrea administrativa</label>
     <description>Estat, província de la localització</description>
   </element>
-  <element name="gmd:aggregateDataSetIdentifier" id="66.3">
+  <element name="gmd:aggregateDataSetIdentifier">
     <label>Identificador del conjunt de dades agregades</label>
     <description>Informació d'identificació sobre el conjunt de dades agregades</description>
   </element>
-  <element name="gmd:aggregateDataSetName" id="66.2">
+  <element name="gmd:aggregateDataSetName">
     <label>Nom del conjunt de dades agregades</label>
     <description>Informació de citació sobre el conjunt de dades agregades</description>
     <_condition>Condicional si aggregateDataSetIdentifier no documentat?</_condition>
   </element>
-  <element name="gmd:aggregationInfo" id="35.1">
+  <element name="gmd:aggregationInfo">
     <label>Informació agregada</label>
     <description>Proporciona informació de conjunt de dades agregades</description>
   </element>
-  <element name="gmd:alternateTitle" id="361.0">
+  <element name="gmd:alternateTitle">
     <label>Títol alternatiu</label>
     <description>Nom curt o nom en un altre idioma pel qual es coneix el recurs esmentat. Per
       exemple: "BT25M" com un títol alternatiu per a "Base Topogràfica escala 1:25 000"</description>
   </element>
-  <element name="gmd:amendmentNumber" id="287.0">
+  <element name="gmd:amendmentNumber">
     <label>Nombre d'esmena</label>
     <description>Modificació del nombre de la versió del format</description>
   </element>
-  <element name="gmd:applicationProfile" id="399.0">
+  <element name="gmd:applicationProfile">
     <label>Perfil de l'aplicació</label>
     <description>Nom d'un perfil d'aplicació que pot utilitzar-se amb el recurs en línia</description>
   </element>
-  <element name="gmd:applicationSchemaInfo" id="21.0">
+  <element name="gmd:applicationSchemaInfo">
     <label>Informació de l'esquema de l'aplicació</label>
     <abbrLabel>Esquema Apl.</abbrLabel>
     <description>Proporciona informació sobre l'esquema conceptual d'un conjunt de dades</description>
   </element>
-  <element name="gmd:associationType" id="66.4">
+  <element name="gmd:associationType">
     <label>Tipus d'associació</label>
     <description>Tipus d'associació del conjunt de dades agregades</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:attributeDescription" id="240.0">
+  <element name="gmd:attributeDescription">
     <label>Descripció de l'atribut</label>
     <description>Descripció de l'atribut descrit pel valor de medició</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:attributeInstances" id="153.0">
+  <element name="gmd:attributeInstances">
     <label>Instàncies de l'atribut</label>
     <description>Instàncies d'atribut a què s'aplica la informació</description>
     <condition />
   </element>
-  <element name="gmd:attributes" id="150.0">
+  <element name="gmd:attributes">
     <label>Atributs</label>
     <description>Atributs als quals s'aplica la informació</description>
     <condition />
   </element>
-  <element name="gmd:authority" id="206.0">
+  <element name="gmd:authority">
     <label>Autoritat</label>
     <description>Persona o part responsable del manteniment de l'espai de noms</description>
   </element>
-  <element name="gmd:axisDimensionProperties" id="159.0">
+  <element name="gmd:axisDimensionProperties">
     <label>Propietats de les dimensions de l'eix</label>
     <description>Informació sobre propietats dels eixos espacio-temporals</description>
     <_condition>Obligatori</_condition>
   </element>
-  <element name="gmd:bitsPerValue" id="264.0">
+  <element name="gmd:bitsPerValue">
     <label>Bits per valor</label>
     <description>El nombre màxim de bits significatius en la representació no comprimida del valor
       de cada banda en cada píxel</description>
   </element>
-  <element name="gmd:cameraCalibrationInformationAvailability" id="253.0">
+  <element name="gmd:cameraCalibrationInformationAvailability">
     <label>Disponibilitat de la informació de la calibració de la càmera</label>
     <description>Indicació de si les constants que permeten correccions de calibratge de la càmera
       estan disponibles</description>
   </element>
-  <element name="gmd:cellGeometry" id="160.0">
+  <element name="gmd:cellGeometry">
     <label>Geometria de la cel·la</label>
     <description>Identificació de dades de malla com a punt o cel·la</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:centerPoint" id="166.0">
+  <element name="gmd:centerPoint">
     <label>Centroide</label>
     <description>Localització a la Terra de la cel·la a mig camí entre els extrems oposats de la
       malla expressada en el sistema de referència de coordenades</description>
   </element>
-  <element name="gmd:characterSet" id="4.0" context="gmd:MD_Metadata">
+  <element name="gmd:characterSet" context="gmd:MD_Metadata">
     <label>Codificació</label>
     <description>Nom complet de l'estàndard de codificació de caràcters utilitzat en el conjunt de
       metadades</description>
@@ -566,92 +566,92 @@
     <_condition>Condicional / ISO/IEC 10.646-1 no s'utilitza i no està definit mitjançant la
       codificació?</_condition>
   </element>
-  <element name="gmd:characterSet" id="40.0" context="gmd:MD_DataIdentification">
+  <element name="gmd:characterSet" context="gmd:MD_DataIdentification">
     <label>Codificació</label>
     <description>Nom complet de l'estàndard de codificació de caràcters utilitzat pel conjunt de
       dades</description>
     <_condition>Condicional / ISO 10.646-1 no s'utilitza?</_condition>
   </element>
-  <element name="gmd:characterSet" id="4.0">
+  <element name="gmd:characterSet">
     <label>Codificació</label>
     <description>Nom complet de l'estàndard de codificació de caràcters utilitzat en el conjunt de
       metadades</description>
     <condition>conditional</condition>
   </element>
-  <element name="gmd:checkPointAvailability" id="163.0">
+  <element name="gmd:checkPointAvailability">
     <description>Indicació de si els punts de posició geogràfica estan disponibles per a comprovar
       l'exactitud de les dades georeferenciada de la malla</description>
     <condition>mandatory</condition>
     <label>Disponibilitat de punts de control</label>
   </element>
-  <element name="gmd:checkPointDescription" id="164.0">
+  <element name="gmd:checkPointDescription">
     <description>Descripció dels punts de posició geogràfica utilitzats per provar l'exactitud de
       les dades georeferenciades de la malla</description>
     <condition>conditional</condition>
     <label>Descripció dels punts de control</label>
   </element>
-  <element name="gmd:citation" id="24.0" context="gmd:MD_Identification">
+  <element name="gmd:citation" context="gmd:MD_Identification">
     <label>Citació</label>
     <description>Dades de citació per al recurs o recursos</description>
   </element>
-  <element name="gmd:citation" id="576.0" context="gmd:MD_Authority">
+  <element name="gmd:citation" context="gmd:MD_Authority">
     <label>Citació</label>
     <description>Citació que pertany a l'autoritat</description>
   </element>
-  <element name="gmd:citation" id="581.0" context="gmd:MD_Thesaurus">
+  <element name="gmd:citation" context="gmd:MD_Thesaurus">
     <label>Citació</label>
     <description>Citació del tesaure</description>
   </element>
-  <element name="gmd:citation" id="581.0">
+  <element name="gmd:citation">
     <label>Citació</label>
     <description>Dades de citació per al recurs o recursos</description>
   </element>
-  <element name="gmd:citedResponsibleParty" id="367.0">
+  <element name="gmd:citedResponsibleParty">
     <label>Part responsable</label>
     <description>Nom i posició de la informació d'un individu o organització que és responsable del
       recurs</description>
   </element>
-  <element name="gmd:city" id="382.0">
+  <element name="gmd:city">
     <label>Ciutat</label>
     <description>Ciutat de la ubicació</description>
   </element>
-  <element name="gmd:classification" id="74.0">
+  <element name="gmd:classification">
     <condition>mandatory</condition>
     <label>Classificació</label>
     <description>Nom de les restriccions de manipulació sobre el recurs o metadades</description>
   </element>
-  <element name="gmd:classificationSystem" id="76.0">
+  <element name="gmd:classificationSystem">
     <label>Sistema de classificació</label>
     <description>Nom del sistema de classificació</description>
   </element>
-  <element name="gmd:cloudCoverPercentage" id="248.0">
+  <element name="gmd:cloudCoverPercentage">
     <label>Percentatge de cobertura de núvols</label>
     <description>Àrea del conjunt de dades tapat per núvols, expressat com un percentatge de
       l'extensió espacial</description>
   </element>
-  <element name="gmd:code" id="207.0" context="gmd:RS_Identifier">
+  <element name="gmd:code" context="gmd:RS_Identifier">
     <label>Identificador únic del recurs</label>
     <description>Valor alfanumèric que identifica una instància al namespace</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:code" id="207.0" context="gmd:MD_Identifier">
+  <element name="gmd:code" context="gmd:MD_Identifier">
     <label>Identificador</label>
     <description>Valor alfanumèric que identifica una instància al namespace</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:code" id="547.0" context="gmd:MD_CodeValue">
+  <element name="gmd:code" context="gmd:MD_CodeValue">
     <label>Codi</label>
     <description>Valor del codi</description>
     <help>Codi de valor (per exemple, numèric)</help>
   </element>
-  <element name="gmd:codeSpace" id="208.1">
+  <element name="gmd:codeSpace">
     <label>Espai de codis</label>
     <description>Nom o identificador de la persona o organització responsable de l'espai de noms</description>
     <helper>
       <option value="EPSG">EPSG</option>
     </helper>
   </element>
-  <element name="gmd:collectiveTitle" id="371.0">
+  <element name="gmd:collectiveTitle">
     <label>Títol col·lectiu</label>
     <description>Títol comú. NOTA el títol identifica col·lectivament els elements d'una sèrie,
       combinat amb la informació sobre els volums que estan disponibles a la font citada</description>
@@ -660,65 +660,65 @@
       exemple, l'entrada 47 de "Sèrie de mapes geofísics" consisteix en 3 conjunts de dades: "Mapa
       geofísic 1:500000", "Mapa especial geofísic" i "Atles gravimètric 1:100000"</help>
   </element>
-  <element name="gmd:complianceCode" id="234.0">
+  <element name="gmd:complianceCode">
     <label>Codi de conformitat</label>
     <description>Indicació de si el catàleg d'objectes geogràfics citat compleix amb la norma ISO
       19110</description>
   </element>
-  <element name="gmd:compressionGenerationQuantity" id="250.0">
+  <element name="gmd:compressionGenerationQuantity">
     <label>Quantitat de generacions de compressió</label>
     <description>El compte del nombre de cicles de compressió amb pèrdues realitzats sobre la imatge</description>
   </element>
-  <element name="gmd:condition" id="312.0">
+  <element name="gmd:condition">
     <label>Condició</label>
     <description>Condició sota la qual l'element extès és obligatori</description>
   </element>
-  <element name="gmd:constraintLanguage" id="323.0">
+  <element name="gmd:constraintLanguage">
     <label>Restricció d'idioma</label>
     <description>Llenguatge formal utilitzat en l'Esquema d'Aplicació</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:contact" id="8.0" context="gmd:MD_Metadata">
+  <element name="gmd:contact" context="gmd:MD_Metadata">
     <condition>mandatory</condition>
     <label>Contacte</label>
     <description>Part responsable de la Informació de metadades</description>
   </element>
-  <element name="gmd:contact" id="148.1" context="gmd:MD_MaintenanceInformation">
+  <element name="gmd:contact" context="gmd:MD_MaintenanceInformation">
     <label>Contacte</label>
     <description>Identificació i canals de comunicació amb la persona, persones i organitzacióamb
       responsabilitat en el manteniment de les metadades</description>
   </element>
-  <element name="gmd:contact" id="8.0">
+  <element name="gmd:contact">
     <label>Autor de la metadada</label>
     <description>Part responsable de la Informació de metadades</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:contactInfo" id="378.0">
+  <element name="gmd:contactInfo">
     <description>Direcció de la part responsable</description>
     <label>Informació de contacte</label>
   </element>
-  <element name="gmd:contactInstructions" id="392.0">
+  <element name="gmd:contactInstructions">
     <label>Instruccions de contacte</label>
     <description>Instruccions suplementàries sobre com o quan s'ha de posar en contacte amb la
       persona o organització</description>
   </element>
-  <element name="gmd:contentInfo" id="16.0">
+  <element name="gmd:contentInfo">
     <description>Proporciona informació sobre el catàleg d'objectes geogràfics i descriu les
       característiques de les dades de cobertura i d'imatge</description>
     <label>Informació del contingut</label>
     <abbrLabel>Info. Continguts</abbrLabel>
   </element>
-  <element name="gmd:contentType" id="241.0">
+  <element name="gmd:contentType">
     <label>Tipus de contingut</label>
     <description>Tipus d'informació representada pel valor d'una cel·la</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:controlPointAvailability" id="171.0">
+  <element name="gmd:controlPointAvailability">
     <description>Indicació de si existeixen o no punts de control</description>
     <condition>mandatory</condition>
     <label>Disponibilitat de punts de control</label>
   </element>
-  <element name="gmd:cornerPoints" id="165.0">
+  <element name="gmd:cornerPoints">
     <label>Punts de cantonada</label>
     <description>Ubicació a la Terra de les cel·les en els extrems de les diagonals que defineixen
       la cobertura de la malla, expressada en el sistema de referència de coordenades. Hi ha quatre
@@ -726,107 +726,107 @@
       la mateixa diagonal</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:country" id="612.0">
+  <element name="gmd:country">
     <label>País</label>
     <description>País de l'adreça física</description>
   </element>
-  <element name="gmd:country" id="508.0" context="gmd:MD_Legislation">
+  <element name="gmd:country" context="gmd:MD_Legislation">
     <label>País</label>
     <description>País en el qual es va emetre la llei</description>
   </element>
-  <element name="gmd:country" id="605.0" context="PT_Group">
+  <element name="gmd:country" context="PT_Group">
     <label>País</label>
     <description>País del llenguatge utilitzat per documentar un text sense format</description>
   </element>
-  <element name="gmd:credit" id="27.0">
+  <element name="gmd:credit">
     <label>Crèdit</label>
     <description>Reconeixement d'aquells que van contribuir al recurs o recursos</description>
   </element>
-  <element name="gmd:dataQualityInfo" id="18.0">
+  <element name="gmd:dataQualityInfo">
     <label>Informació de la qualitat de les dades</label>
     <abbrLabel>Qualitat Dades</abbrLabel>
     <description>Proporciona avaluació global de la qualitat d'un recurs</description>
   </element>
-  <element name="gmd:dataSetURI" id="11.1">
+  <element name="gmd:dataSetURI">
     <label>URI del conjunt de dades</label>
     <description>Uniform Resource Identifier (URI) del conjunt de dades a les quals s'apliquen les
       metadades</description>
     <help>Identificador Uniforme de Recursos (URI) del conjunt de dades a la qual s'apliquen les
       metadades. Aquest vincle fa referència directa al conjunt de dades llegibles per una màquina.</help>
   </element>
-  <element name="gmd:dataType" id="313.0">
+  <element name="gmd:dataType">
     <label>Tipus de dada</label>
     <description>Codi que identifica el tipus de valor proporcionat a l'element extès</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:dataset" id="154.0">
+  <element name="gmd:dataset">
     <description>Conjunt de dades al qual s'aplica la informació</description>
     <condition />
     <label>Conjunt de dades</label>
   </element>
-  <element name="gmd:date" id="570.0">
+  <element name="gmd:date">
     <label>Data</label>
     <description>Data de referència per al recurs esmentat (AAAA-MM-DD)</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:date" id="570.0" context="gmd:MD_Revision">
+  <element name="gmd:date" context="gmd:MD_Revision">
     <label>Data de la darrera modificació</label>
     <description>Data de la darrera modificació</description>
   </element>
-  <element name="gmd:date" id="144.0" context="gmd:MD_MaintenanceInformation">
+  <element name="gmd:date" context="gmd:MD_MaintenanceInformation">
     <label>Data de la propera modificació</label>
     <description>Data de la revisió prevista per al recurs</description>
   </element>
-  <element name="gmd:date" id="362.0" context="gmd:CI_Citation">
+  <element name="gmd:date" context="gmd:CI_Citation">
     <condition>mandatory</condition>
     <label>Data</label>
     <description>Data de referència per al recurs citat</description>
     <_condition>Obligatori</_condition>
   </element>
-  <element name="gmd:date" id="394.0" context="gmd:CI_Date">
+  <element name="gmd:date" context="gmd:CI_Date">
     <condition>mandatory</condition>
     <label>Data</label>
     <description>Data de referència per al recurs citat</description>
     <_condition>Obligatori</_condition>
   </element>
-  <element name="gmd:dateOfNextUpdate" id="144.0">
+  <element name="gmd:dateOfNextUpdate">
     <label>Data de la propera modificació</label>
     <description>Data prevista per a la revisió del recurs (AAAA-MM-DD)</description>
   </element>
-  <element name="gmd:dateStamp" id="9.0">
+  <element name="gmd:dateStamp">
     <label>Data</label>
     <description>Data i hora en què es van crear les metadades (AAAA-MM-DDThh:mm:ss)</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:dateTime" id="89.0">
+  <element name="gmd:dateTime">
     <label>Data/Hora</label>
     <description>Data i hora, o rang de dates i hores, en què aquesta etapa del processat va tenir
       lloc (AAAA-MM-DDThh:mm:ss)</description>
   </element>
-  <element name="gmd:dateTime" id="89.0" context="LI_ProcessStep">
+  <element name="gmd:dateTime" context="LI_ProcessStep">
     <description>Data i hora, o rang de data i hora, en què aquest pas de procés va tenir lloc
       (AAAA-MM-DDThh:mm:ss)</description>
     <label>Data/Hora</label>
   </element>
-  <element name="gmd:dateTime" id="106.0" context="gmd:DQ_Element">
+  <element name="gmd:dateTime" context="gmd:DQ_Element">
     <label>Data/Hora</label>
     <description>Data o rang de dates en què es va aplicar una mesura de qualitat de dades</description>
   </element>
-  <element name="gmd:dateType" id="395.0">
+  <element name="gmd:dateType">
     <label>Tipus de data</label>
     <description>Esdeveniment utilitzat per a la data de referència</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:definition" id="310.0">
+  <element name="gmd:definition">
     <label>Definició</label>
     <description>Definició de l'element extès</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:deliveryPoint" id="381.0">
+  <element name="gmd:deliveryPoint">
     <label>Punt de lliurament</label>
     <description>Línia de direcció per a la ubicació (com es descriu en la norma ISO 11180, annex A)</description>
   </element>
-  <element name="gmd:denominator" id="57.0">
+  <element name="gmd:denominator">
     <label>Denominador</label>
     <description>El nombre sota de la línia en una fracció vulgar</description>
     <condition>add either a denominator or a distance</condition>
@@ -843,195 +843,195 @@
     </helper>
 
   </element>
-  <element name="gmd:density" id="293.0">
+  <element name="gmd:density">
     <label>Densitat</label>
     <description>Densitat a què es registren les dades</description>
   </element>
-  <element name="gmd:densityUnits" id="294.0">
+  <element name="gmd:densityUnits">
     <label>Unitat de densitat</label>
     <description>Les unitats de mesura de la densitat de gravació</description>
     <condition>conditional</condition>
   </element>
-  <element name="gmd:description" id="561.0">
+  <element name="gmd:description">
     <label>Descripció</label>
     <description>Descripció de l'esdeveniment, incloent-hi els paràmetres relacionats o toleràncies</description>
   </element>
-  <element name="gmd:description" id="561.0" context="gmd:MD_AbstractClass">
+  <element name="gmd:description" context="gmd:MD_AbstractClass">
     <label>Descripció</label>
     <description>Descripció</description>
   </element>
-  <element name="gmd:description" id="87.0" context="LI_ProcessStep">
+  <element name="gmd:description" context="LI_ProcessStep">
     <condition>mandatory</condition>
     <label>Descripció</label>
     <description>Descripció de l'esdeveniment, incloent-hi els paràmetres relacionats o toleràncies</description>
   </element>
-  <element name="gmd:description" id="93.0" context="LI_Source">
+  <element name="gmd:description" context="LI_Source">
     <label>Descripció</label>
     <description>Descripció detallada del nivell de les dades d'origen</description>
     <_condition>Condicional / no es proporciona cap sourceExtent?</_condition>
   </element>
-  <element name="gmd:description" id="335.0" context="gmd:EX_Extent">
+  <element name="gmd:description" context="gmd:EX_Extent">
     <label>Descripció</label>
     <description>Extensió espacial i temporal per a l'objecte de referència</description>
     <_condition>Condicional / geographicElement i temporalElement i verticalElement no documentats?</_condition>
   </element>
-  <element name="gmd:description" id="401.0" context="gmd:CI_OnlineResource">
+  <element name="gmd:description" context="gmd:CI_OnlineResource">
     <label>Descripció</label>
     <description>Descripció detallada de text del que el recurs en línia és o fa</description>
   </element>
-  <element name="gmd:description" id="541.0" context="gmd:MD_CodeDomain">
+  <element name="gmd:description" context="gmd:MD_CodeDomain">
     <label>Descripció</label>
     <description>Descripció del domini de codi</description>
   </element>
-  <element name="gmd:description" id="549.0" context="gmd:MD_CodeValue">
+  <element name="gmd:description" context="gmd:MD_CodeValue">
     <label>Descripció del valor</label>
     <description>Descripció del valor</description>
   </element>
-  <element name="gmd:description" id="552.0" context="gmd:MD_Attribute">
+  <element name="gmd:description" context="gmd:MD_Attribute">
     <label>Descripció</label>
     <description>Descripció de l'atribut</description>
   </element>
-  <element name="gmd:description" id="557.0" context="gmd:MD_Role">
+  <element name="gmd:description" context="gmd:MD_Role">
     <label>Descripció</label>
     <description>Descripció del paper</description>
   </element>
-  <element name="gmd:descriptiveKeywords" id="33.0">
+  <element name="gmd:descriptiveKeywords">
     <label>Conjunt de paraules clau</label>
     <description>Proporciona paraules clau de categoria, el tipus i font de referència</description>
   </element>
-  <element name="gmd:descriptor" id="258.0">
+  <element name="gmd:descriptor">
     <label>Descriptor</label>
     <description>Descripció de la gamma d'un valor de medició de cel·les</description>
   </element>
-  <element name="gmd:dimension" id="242.0">
+  <element name="gmd:dimension">
     <label>Dimensió</label>
     <description>Informació sobre les dimensions del valor del medició de cel·les</description>
   </element>
-  <element name="gmd:dimensionName" id="180.0">
+  <element name="gmd:dimensionName">
     <label>Nom de la dimensió</label>
     <description>Nom de l'eix</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:dimensionSize" id="181.0">
+  <element name="gmd:dimensionSize">
     <label>Mida de la dimensió</label>
     <description>Nombre d'elements al llarg de l'eix</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:distance" id="61.0">
+  <element name="gmd:distance">
     <label>Distància</label>
     <description>Distància a la mostra sobre la terra</description>
     <condition>Provide a distance if no equivalent Scale is documented</condition>
   </element>
-  <element name="gmd:distributionFormat" id="271.0">
+  <element name="gmd:distributionFormat">
     <label>Format de la distribució</label>
     <condition>mandatory</condition>
     <description>Proporciona una descripció del format de distribució de les dades</description>
   </element>
-  <element name="gmd:distributionInfo" id="17.0">
+  <element name="gmd:distributionInfo">
     <description>Proporciona informació sobre el distribuïdor i les opcions per obtenir el recurs</description>
     <label>Informació de la distribució</label>
     <abbrLabel>Distribució</abbrLabel>
   </element>
-  <element name="gmd:distributionOrderProcess" id="281.0">
+  <element name="gmd:distributionOrderProcess">
     <label>Distribució / procés de comanda</label>
     <description>Proporciona informació sobre com es pot obtenir el recurs, així com instruccions al
       respecte i informació sobre tarifes aplicables</description>
   </element>
-  <element name="gmd:distributor" id="272.0">
+  <element name="gmd:distributor">
     <label>Distribuïdor</label>
     <description>Proporciona informació sobre el distribuïdor</description>
   </element>
-  <element name="gmd:distributorContact" id="280.0">
+  <element name="gmd:distributorContact">
     <label>Contacte del distribuïdor</label>
     <description>Part a la qual es pot obtenir el recurs. Aquesta llista no té per què ser
       exhaustiva</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:distributorFormat" id="282.0">
+  <element name="gmd:distributorFormat">
     <label>Format de distribució</label>
     <description>Proporciona informació sobre el format utilitzat pel distribuïdor</description>
     <condition>conditional</condition>
   </element>
-  <element name="gmd:distributorTransferOptions" id="283.0">
+  <element name="gmd:distributorTransferOptions">
     <label>Opcions de transferència de la distribució</label>
     <description>Proporciona informació sobre els mitjans tècnics i els mitjans utilitzats pel
       distribuïdor</description>
   </element>
-  <element name="gmd:domainCode" id="309.0">
+  <element name="gmd:domainCode">
     <label>Codi del domini</label>
     <description>Codi de tres dígits assignat a l'element extès</description>
     <_condition>Condicional / és dataType? ¿¿CodelistElement??</_condition>
   </element>
-  <element name="gmd:domainOfValidity" id="197.0">
+  <element name="gmd:domainOfValidity">
     <label>Domini de validesa</label>
     <description>Rang de validesa per al sistema de referència</description>
   </element>
-  <element name="gmd:domainValue" id="315.0">
+  <element name="gmd:domainValue">
     <label>Valor del domini</label>
     <description>Valors vàlids que es poden assignar a l'element extès</description>
     <_condition>Condicional / dataType no és 'codelist', 'enumeration' o 'codelistElement'</_condition>
   </element>
-  <element name="gmd:eastBoundLongitude" id="345.0">
+  <element name="gmd:eastBoundLongitude">
     <label>Límit est</label>
     <description>Coordenada més oriental del límit de l'extensió del conjunt de dades expressada com
       una longitud en graus decimals (signe positiu cap a l'Est)</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:edition" id="363.0">
+  <element name="gmd:edition">
     <label>Edició</label>
     <description>Versió del recurs esmentat</description>
   </element>
-  <element name="gmd:editionDate" id="364.0">
+  <element name="gmd:editionDate">
     <label>Data d'edició</label>
     <description>Data d'edició (AAAA-MM-DD)</description>
   </element>
-  <element name="gmd:electronicMailAddress" id="386.0">
+  <element name="gmd:electronicMailAddress">
     <label>Adreça de correu electrònic</label>
     <description>Adreça de la bústia de correu electrònic de la persona o organització responsable</description>
   </element>
-  <element name="gmd:environmentDescription" id="44.0">
+  <element name="gmd:environmentDescription">
     <label>Descripció de l'entorn</label>
     <description>Descripció del conjunt de dades de l'entorn de processament del productor, incloent
       elements com ara el programari, el sistema operatiu de l'ordinador, nom d'arxiu i la mida del
       conjunt de dades</description>
   </element>
-  <element name="gmd:equivalentScale" id="60.0">
+  <element name="gmd:equivalentScale">
     <label>Escala equivalent</label>
     <description>Nivell de detall expressat com l'escala d'un mapa en paper equivalent</description>
     <_condition>Condicional / distància no documentada?</_condition>
   </element>
-  <element name="gmd:errorStatistic" id="136.0">
+  <element name="gmd:errorStatistic">
     <label>Error estadístic</label>
     <description>Mètode estadístic usat per determinar el valor</description>
   </element>
-  <element name="gmd:evaluationMethodDescription" id="104.0">
+  <element name="gmd:evaluationMethodDescription">
     <label>Descripció del mètode d'avaluació</label>
     <description>Descripció del mètode d'avaluació</description>
   </element>
-  <element name="gmd:evaluationMethodType" id="103.0">
+  <element name="gmd:evaluationMethodType">
     <label>Mètode d'avaluació</label>
     <description>Tipus de mètode utilitzat per avaluar la qualitat del conjunt de dades</description>
   </element>
-  <element name="gmd:evaluationProcedure" id="105.0">
+  <element name="gmd:evaluationProcedure">
     <label>Procediment d'avaluació</label>
     <description>Referència a la informació del procediment</description>
   </element>
-  <element name="gmd:explanation" id="131.0">
+  <element name="gmd:explanation">
     <label>Explicació</label>
     <description>Explicació del significat de conformitat per aquest resultat</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:extendedElementInformation" id="305.0">
+  <element name="gmd:extendedElementInformation">
     <label>Informació extensa de l'element</label>
     <description>Proporciona informació sobre un nou element de metadades que no es troba en la
       norma ISO 19115 i que es requereix per a descriure les dades geogràfiques</description>
   </element>
-  <element name="gmd:extensionOnLineResource" id="304.0">
+  <element name="gmd:extensionOnLineResource">
     <label>Extensió dels recursos en línia</label>
     <description>Informació sobre fonts en línia que contenen el nom del perfil de la comunitat i
       els elements de metadades extesos. Informació per a tots els nous elements de metadades</description>
   </element>
-  <element name="gmd:extent" id="45.0" context="gmd:MD_DataIdentification">
+  <element name="gmd:extent" context="gmd:MD_DataIdentification">
     <label>Extensió</label>
     <description>Informació de l'extensió de la informació, incloent-hi el polígon delimitador, i
       les extensions vertical i temporal del conjunt de dades</description>
@@ -1039,289 +1039,289 @@
       extent.geographicElement.EX_GeographicBoundingBox o bé
       extent.geographicElement.EX_GeographicDescription</_condition>
   </element>
-  <element name="gmd:extent" id="140.0" context="gmd:DQ_Scope">
+  <element name="gmd:extent" context="gmd:DQ_Scope">
     <label>Extensió</label>
     <description>Informació sobre l'extensió horitzontal, vertical i temporal de les dades
       especificades en l'abast</description>
   </element>
-  <element name="gmd:extent" id="351.0" context="gmd:EX_TemporalExtent">
+  <element name="gmd:extent" context="gmd:EX_TemporalExtent">
     <label>Extensió</label>
     <description>Data i hora del contingut del conjunt de dades</description>
     <_condition>obligatori</_condition>
   </element>
-  <element name="gmd:extentTypeCode" id="340.0">
+  <element name="gmd:extentTypeCode">
     <label>Codi del tipus d'extensió</label>
     <description>Indicació de si el polígon delimitador abasta una àrea coberta per les dades o una
       àrea en què les dades no són presents. Valors possibles: '1' per a la inclusió o '0' per
       l'exclusió</description>
   </element>
-  <element name="gmd:facsimile" id="409.0">
+  <element name="gmd:facsimile">
     <label>Facsímil</label>
     <description>Número de telèfon d'una màquina de fax de la persona o organització responsable</description>
   </element>
-  <element name="gmd:featureCatalogueCitation" id="238.0">
+  <element name="gmd:featureCatalogueCitation">
     <label>Citació del catàleg d'objectes geogràfics</label>
     <description>Referència bibliogràfica completa a un o més catàlegs d'objectes geogràfics externs</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:featureInstances" id="152.0">
+  <element name="gmd:featureInstances">
     <label>Instàncies d'objectes geogràfics</label>
     <description>Instàncies d'objectes geogràfics a les que s'aplica la informació</description>
     <condition />
   </element>
-  <element name="gmd:featureTypes" id="237.0">
+  <element name="gmd:featureTypes">
     <label>Tipus d'objectes geogràfics</label>
     <description>Subconjunt dels tipus d'objectes geogràfics del catàleg d'objectes geogràfics citat
       que es donen en les dades</description>
   </element>
-  <element name="gmd:features" id="151.0">
+  <element name="gmd:features">
     <label>Objectes Geogràfics</label>
     <description>Objectes geogràfics als que s'aplica la informació</description>
     <condition />
   </element>
-  <element name="gmd:fees" id="299.0">
+  <element name="gmd:fees">
     <label>Quotes</label>
     <description>Tarifes i condicions per a la recuperació de recursos. Incloure unitats monetàries
       (com s'especifica a la norma ISO 4217)</description>
   </element>
-  <element name="gmd:fileDecompressionTechnique" id="289.0">
+  <element name="gmd:fileDecompressionTechnique">
     <label>Tècnica de descompressió del fitxer</label>
     <description>Recomanacions d'algoritmes o processos que es poden aplicar per llegir o
       descomprimir els recursos que s'han aplicat tècniques de compressió</description>
   </element>
-  <element name="gmd:fileDescription" id="50.0">
+  <element name="gmd:fileDescription">
     <label>Descripció del fitxer</label>
     <description>Descripció del text de la il·lustració</description>
   </element>
-  <element name="gmd:fileIdentifier" id="2.0">
+  <element name="gmd:fileIdentifier">
     <label>Identificador del fitxer</label>
     <description>Identificador únic per a aquest registre de metadades</description>
   </element>
-  <element name="gmd:fileName" id="49.0">
+  <element name="gmd:fileName">
     <label>Nom del fitxer</label>
     <description>Nom de l'arxiu que conté un gràfic que proporciona una il·lustració del conjunt de
       dades. Podria ser una URL a un document imatge públic.</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:fileType" id="51.0">
+  <element name="gmd:fileType">
     <label>Tipus de fitxer</label>
     <description>Format en el qual es codifica la il·lustració</description>
     <help>Format en el qual es codifica la il·lustració. Exemples: CGM, EPS, GIF, JPEG, PBM, PS,
       TIFF, XWD</help>
   </element>
-  <element name="gmd:filmDistortionInformationAvailability" id="254.0">
+  <element name="gmd:filmDistortionInformationAvailability">
     <label>Disponibilitat d'informació sobre la distorsió del negatiu</label>
     <description>Indicació de si es disposa d'informació sobre les marques de calibratge</description>
   </element>
-  <element name="gmd:formatDistributor" id="290.0">
+  <element name="gmd:formatDistributor">
     <label>Format del distribuidor</label>
     <description>Proporciona informació sobre el format del distribuïdor</description>
   </element>
-  <element name="gmd:function" id="402.0">
+  <element name="gmd:function">
     <label>Funció</label>
     <description>Codi de funció realitzada pel recurs en línia</description>
   </element>
-  <element name="gmd:geographicElement" id="336.0">
+  <element name="gmd:geographicElement">
     <label>Element geogràfic</label>
     <description>Proporciona component geogràfic de l'extensió de l'objecte referit</description>
     <_condition>Condicional / description i temporalElement i verticalElement no documentats?</_condition>
   </element>
-  <element name="gmd:geographicIdentifier" id="349.0">
+  <element name="gmd:geographicIdentifier">
     <label>Identificador geogràfic</label>
     <description>Identificador usat per representar una zona geogràfica</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:geometricObjectCount" id="185.0">
+  <element name="gmd:geometricObjectCount">
     <label>Nombre d'objectes geomètrics</label>
     <description>Nombre total d'ocurrències de l'objecte puntual o vectorial dins el conjunt de
       dades</description>
   </element>
-  <element name="gmd:geometricObjectType" id="184.0">
+  <element name="gmd:geometricObjectType">
     <label>Tipus d'objecte geomètric</label>
     <description>Nom dels objectes espacials puntuals o vectorials utilitzats per descriure
       localitzacions espacials zero-, uni- o bi-dimensionals en el conjunt de dades</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:geometricObjects" id="178.0">
+  <element name="gmd:geometricObjects">
     <label>Objectes geomètrics</label>
     <description>Informació sobre els objectes geomètrics utilitzats en el conjunt de dades</description>
   </element>
-  <element name="gmd:georeferencedParameters" id="174.0">
+  <element name="gmd:georeferencedParameters">
     <label>Paràmetres georrererenciats</label>
     <description>Paràmetres georrererenciats</description>
   </element>
-  <element name="gmd:graphicOverview" id="31.0">
+  <element name="gmd:graphicOverview">
     <label>Mostra gràfica</label>
     <description>Proporciona una gràfica que il·lustra el recurs (ha d'incloure una llegenda per al
       gràfic)</description>
   </element>
-  <element name="gmd:graphicsFile" id="325.0">
+  <element name="gmd:graphicsFile">
     <label>Fitxer de gràfics</label>
     <description>Esquema d'aplicació complet proveït com un fitxer gràfic</description>
   </element>
-  <element name="gmd:handlingDescription" id="77.0">
+  <element name="gmd:handlingDescription">
     <label>Descripció de la manipulació</label>
     <description>Informació addicional sobre les restriccions en el maneig dels recursos</description>
   </element>
-  <element name="gmd:hierarchyLevel" id="6.0">
+  <element name="gmd:hierarchyLevel">
     <label>Jerarquia</label>
     <description>Àmbit d'aplicació a la qual s'apliquen les metadades (vegeu l'annex H per obtenir
       més informació sobre els nivells de jerarquia de metadades)</description>
   </element>
-  <element name="gmd:hierarchyLevelName" id="7.0">
+  <element name="gmd:hierarchyLevelName">
     <label>Nom del nivell jeràrquic</label>
     <description>Nom dels nivells de jerarquia per als que es proporcionen les metadades</description>
     <_condition>Condicional / hierarchyLevel no és igual a "dataset"?</_condition>
   </element>
-  <element name="gmd:hoursOfService" id="391.0">
+  <element name="gmd:hoursOfService">
     <label>Hores de servei</label>
     <description>Període de temps (inclosa la zona horària) en que es pot contactar amb
       l'organització o individu</description>
   </element>
-  <element name="gmd:identificationInfo" id="15.0">
+  <element name="gmd:identificationInfo">
     <label>Informació d'identificació</label>
     <abbrLabel>Identificació</abbrLabel>
     <description>Informació bàsica sobre el recurs al que s'apliquen les metadades</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:identifier" id="573.0">
+  <element name="gmd:identifier">
     <label>Identificador</label>
     <description>Tipus d'identificador únic per al recurs. Per exemple: Codi Universal de Producte
       (UPC), o National Stock Number (NSN)</description>
   </element>
-  <element name="gmd:identifier" id="573.0" context="gmd:CI_Citation">
+  <element name="gmd:identifier" context="gmd:CI_Citation">
     <label>Identificador del conjunt de dades/servei</label>
     <description>Identificador del conjunt de dades/servei</description>
   </element>
-  <element name="gmd:identifier" id="575.0" context="gmd:MD_Authority">
+  <element name="gmd:identifier" context="gmd:MD_Authority">
     <label>Identificador</label>
     <description>Identificador que correspon a l'autoritat</description>
   </element>
-  <element name="gmd:illuminationAzimuthAngle" id="245.0">
+  <element name="gmd:illuminationAzimuthAngle">
     <label>Angle azimutal de la il·luminació</label>
     <description>Azimut de la il·luminació mesurada en graus respecte al nord veritable en el moment
       de prendre la imatge. Per a imatges escanejades, es refereix el píxel central de la imatge</description>
   </element>
-  <element name="gmd:illuminationElevationAngle" id="244.0">
+  <element name="gmd:illuminationElevationAngle">
     <label>Angle elevació de la il·luminació</label>
     <description>Elevació de la il·luminació mesurada en graus en la direcció de les agulles del
       rellotge des del pla destí en la intersecció de la línia òptica de visió respecte a la
       superfície de la Terra. Per a imatges escanejades, es refereix al píxel central de la imatge</description>
   </element>
-  <element name="gmd:imageQualityCode" id="247.0">
+  <element name="gmd:imageQualityCode">
     <label>Codi de la qualitat de la imatge</label>
     <description>Especifica la qualitat de la imatge</description>
     <help>especifica la qualitat de la imatge</help>
   </element>
-  <element name="gmd:imagingCondition" id="246.0">
+  <element name="gmd:imagingCondition">
     <label>Condicions de formació d'imatges</label>
     <description>Condicions que van afectar la imatge</description>
   </element>
-  <element name="gmd:includedWithDataset" id="236.0">
+  <element name="gmd:includedWithDataset">
     <label>Inclòs al conjunt de dades</label>
     <description>Indicació de si el catàleg d'objectes geogràfics s'inclou o no en el conjunt de
       dades</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:individualName" id="375.0">
+  <element name="gmd:individualName">
     <label>Nom individual</label>
     <description>Nom de la persona responsable - cognoms, nom de pila, títol separats per un
       delimitador</description>
     <_condition>Condicional / organisationName i positionName no documentats?</_condition>
   </element>
-  <element name="gmd:initiativeType" id="66.5">
+  <element name="gmd:initiativeType">
     <label>Tipus d'iniciativa</label>
     <description>Tipus d'iniciativa sota la qual es va produir el conjunt agregat de dades</description>
   </element>
-  <element name="gmd:issueIdentification" id="405.0">
+  <element name="gmd:issueIdentification">
     <label>Identificador de la sèrie</label>
     <description>Informació identificant l'expedició de la sèrie</description>
   </element>
-  <element name="gmd:keyword" id="53.0">
+  <element name="gmd:keyword">
     <label>Paraula clau</label>
     <description>Paraules comunament utilitzades, o paraules o frases formalitzades usades per
       descriure el tema</description>
   </element>
-  <element name="gmd:language" id="3.0">
+  <element name="gmd:language">
     <label>Idioma de les metadades</label>
     <description>Idioma utilitzat per a la documentació de metadades</description>
     <condition>conditional</condition>
   </element>
-  <element name="gmd:language" context="gmd:MD_DataIdentification" id="39.0">
+  <element name="gmd:language" context="gmd:MD_DataIdentification">
     <label>Idioma</label>
     <description>Idioma o idiomes utilitzats en el conjunt de dades</description>
     <help>idioma(es) que es fa(n) servir dins el conjunt de dades</help>
     <_condition>Obligatori</_condition>
   </element>
-  <element name="gmd:language" context="gmd:MD_FeatureCatalogueDescription" id="235.0">
+  <element name="gmd:language" context="gmd:MD_FeatureCatalogueDescription">
     <label>Idioma</label>
     <description>Idioma o idiomes usats en el catàleg</description>
   </element>
-  <element name="gmd:lensDistortionInformationAvailability" id="255.0">
+  <element name="gmd:lensDistortionInformationAvailability">
     <label>Disponibilitat d'informació sobre la distorsió de les lents</label>
     <description>Indicació de si la informació sobre les correccions d'aberració de la lent està o
       no disponible</description>
   </element>
-  <element name="gmd:level" id="139.0">
+  <element name="gmd:level">
     <label>Jerarquia</label>
     <description>Nivell jeràrquic de les dades especificat en l'abast</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:levelDescription" id="141.0">
+  <element name="gmd:levelDescription">
     <label>Descripció del nivell</label>
     <description>Descripció detallada sobre el nivell de les dades especificats en l'abast
     </description>
     <_condition>Condicional / nivell no és igual a'dataset' o 'series'?</_condition>
   </element>
-  <element name="gmd:lineage" id="81.0">
+  <element name="gmd:lineage">
     <label>Llinatge</label>
     <description>Informació de qualitat no quantitativa sobre el llinatge de les dades especificats
       en l'abast</description>
     <_condition>Condicional / informe no proporcionat?</_condition>
   </element>
-  <element name="gmd:linkage" id="397.0">
+  <element name="gmd:linkage">
     <label>Enllaç</label>
     <description>Ubicació (direcció) per a l'accés en línia utilitzant una URL o esquema
       d'adreçament similar tal com http://www.statkart.no/isotc211</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:maintenanceAndUpdateFrequency" id="143.0">
+  <element name="gmd:maintenanceAndUpdateFrequency">
     <label>Manteniment i freqüència d'actualització</label>
     <description>Freqüència amb la qual es realitzen canvis i addicions al recurs després d'haver
       completat la primera versió</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:maintenanceNote" id="148.0">
+  <element name="gmd:maintenanceNote">
     <label>Nota de manteniment</label>
     <description>Informació relativa als requisits específics per al manteniment del recurs</description>
   </element>
-  <element name="gmd:maxValue" id="260.0">
+  <element name="gmd:maxValue">
     <label>Valor màxim</label>
     <description>Longitud d'ona més llarga que el sensor és capaç de recollir dins d'una banda
       designada</description>
   </element>
-  <element name="gmd:maximumValue" id="356.0">
+  <element name="gmd:maximumValue">
     <label>Valor màxim</label>
     <description>Extensió vertical més alta continguda en el conjunt de dades</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:measureDescription" id="102.0">
+  <element name="gmd:measureDescription">
     <label>Descripció de la mesura</label>
     <description>Descripció de la mesura essent determinada</description>
   </element>
-  <element name="gmd:measureIdentification" id="101.0">
+  <element name="gmd:measureIdentification">
     <label>Identificador de la mesura</label>
     <description>Codi identificant un procediment estàndard registrat</description>
   </element>
-  <element name="gmd:mediumFormat" id="296.0">
+  <element name="gmd:mediumFormat">
     <label>Format del medi</label>
     <description>Mètode utilitzat per escriure al medi</description>
   </element>
-  <element name="gmd:mediumNote" id="297.0">
+  <element name="gmd:mediumNote">
     <label>Nota del medi</label>
     <description>Descripció d'altres limitacions o requisits per utilitzar el medi</description>
   </element>
-  <element name="gmd:metadataConstraints" id="20.0" context="gmd:MD_Metadata">
+  <element name="gmd:metadataConstraints" context="gmd:MD_Metadata">
     <label>Limitacions de la metadada</label>
     <abbrLabel>Restriccions</abbrLabel>
     <description>Proporciona restriccions en l'accés i ús de metadades</description>
@@ -1331,48 +1331,48 @@
     <abbrLabel>Restriccions</abbrLabel>
     <description>Proporciona restriccions en l'accés i ús de les dades</description>
   </element>
-  <element name="gmd:metadataExtensionInfo" id="14.0">
+  <element name="gmd:metadataExtensionInfo">
     <description>Informació que descriu les extensions de les metadades</description>
     <label>Informació de l'extensió de la metadada</label>
     <abbrLabel>Info. Extensió</abbrLabel>
   </element>
-  <element name="gmd:metadataMaintenance" id="22.0">
+  <element name="gmd:metadataMaintenance">
     <label>Manteniment de la metadada</label>
     <abbrLabel>Manteniment</abbrLabel>
     <description>Proporciona informació sobre la freqüència de les actualitzacions de metadades, i
       l'abast d'aquests canvis</description>
   </element>
-  <element name="gmd:metadataStandardName" id="10.0">
+  <element name="gmd:metadataStandardName">
     <label>Nom estàndard de la metadada</label>
     <description>Nom de l'estàndard de metadades utilitzat (incloent-hi el nom del perfil)</description>
   </element>
-  <element name="gmd:metadataStandardVersion" id="11.0">
+  <element name="gmd:metadataStandardVersion">
     <label>Versió estàndard de la metadada</label>
     <description>Versió (perfil) de la norma de metadades utilitzada</description>
   </element>
-  <element name="gmd:minValue" id="261.0">
+  <element name="gmd:minValue">
     <label>Valor mínim</label>
     <description>Longitud d'ona més curta que el sensor és capaç de recollir dins d'una banda donada</description>
   </element>
-  <element name="gmd:minimumValue" id="355.0">
+  <element name="gmd:minimumValue">
     <label>Valor mínim</label>
     <description>Menor extensió vertical continguda en el conjunt de dades</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:name" context="gmd:MD_AbstractClass" id="560.0">
+  <element name="gmd:name" context="gmd:MD_AbstractClass">
     <label>Nom</label>
     <description>Nom</description>
   </element>
-  <element name="gmd:name" context="gmd:MD_Medium" id="292.0">
+  <element name="gmd:name" context="gmd:MD_Medium">
     <label>Nom</label>
     <description>Nom del mitjà en el qual es pot rebre el recurs</description>
   </element>
-  <element name="gmd:name" context="gmd:RS_ReferenceSystem" id="196.0">
+  <element name="gmd:name" context="gmd:RS_ReferenceSystem">
     <label>Nom</label>
     <description>Nom del sistema de referència utilitzat</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:name" context="gmd:MD_Format" id="285.0">
+  <element name="gmd:name" context="gmd:MD_Format">
     <label>Nom</label>
     <description>Nom del format de transferència de dades</description>
     <help>nom del(s) format(s) de transferència de dades</help>
@@ -1396,38 +1396,38 @@
       <option value="OGC:OWS-C">OGC OWS Context</option>
     </helper>
   </element>
-  <element name="gmd:name" context="gmd:MD_ExtendedElementInformation" id="307.0">
+  <element name="gmd:name" context="gmd:MD_ExtendedElementInformation">
     <label>Nom</label>
     <description>Nom de l'element extès de metadades</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:name" context="gmd:MD_ApplicationSchemaInformation" id="321.0">
+  <element name="gmd:name" context="gmd:MD_ApplicationSchemaInformation">
     <label>Nom</label>
     <description>Nom de l'esquema d'aplicació utilitzat</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:name" context="gmd:CI_OnlineResource" id="400.0">
+  <element name="gmd:name" context="gmd:CI_OnlineResource">
     <label>Nom del recurs</label>
     <description>Nom del recurs en línia</description>
   </element>
-  <element name="gmd:name" context="gmd:CI_Series" id="404.0">
+  <element name="gmd:name" context="gmd:CI_Series">
     <label>Nom</label>
     <description>Nom de la sèrie o conjunt de dades agregades, dels quals el conjunt de dades n'és
       una part</description>
   </element>
-  <element name="gmd:name" context="gmd:MD_CodeDomain" id="537.0">
+  <element name="gmd:name" context="gmd:MD_CodeDomain">
     <label>Nom</label>
     <description>Nom del domini de codi</description>
   </element>
-  <element name="gmd:name" context="gmd:MD_CodeValue" id="546.0">
+  <element name="gmd:name" context="gmd:MD_CodeValue">
     <label>Nom</label>
     <description>Nom del valor</description>
   </element>
-  <element name="gmd:name" context="gmd:MD_Attribute" id="551.0">
+  <element name="gmd:name" context="gmd:MD_Attribute">
     <label>Nom</label>
     <description>Nom de l'atribut</description>
   </element>
-  <element name="gmd:name" context="gmd:MD_Role" id="556.0">
+  <element name="gmd:name" context="gmd:MD_Role">
     <label>Nom</label>
     <description>Nom de rol</description>
   </element>
@@ -1435,7 +1435,7 @@
     <label>Nom</label>
     <description />
   </element>
-  <element name="gmd:nameOfMeasure" id="100.0">
+  <element name="gmd:nameOfMeasure">
     <label>Nom de la mesura</label>
     <description>Nom del test aplicat a la dada</description>
 		<!-- ISO19138 Data quality basic measures Annex C - under revision ISO
@@ -1443,418 +1443,418 @@
     <helper rel="gmd:measureDescription">
       <option value="">- Exactitud temàtica / Exactitud de l'atribut quantitatiu -</option>
       <option value="Excess item" title="Indication that an item is incorrectly present in the data"
-        id="ISO19138:2006:measure:1">Element en excés</option>
+>Element en excés</option>
       <option value="Number of excess items"
-        title="Number of items within the dataset, that should not have been in the dataset" id="ISO19138:2006:measure:2">Nombre
+        title="Number of items within the dataset, that should not have been in the dataset">Nombre
         d'elements sobrants</option>
       <option value="Rate of excess items"
         title="Number of excess items in the dataset in relation to the number of items that should have been present"
-        id="ISO19138:2006:measure:3">Taxa d'elements sobrants</option>
+>Taxa d'elements sobrants</option>
       <option value="Number of duplicate feature instances"
         title="Total number of exact duplications of feature instances within the data. Count of all items in the data that are incorrectly extracted with duplicate geometrie"
-        id="ISO19138:2006:measure:4">Nombre d'instàncies d'elements duplicats</option>
+>Nombre d'instàncies d'elements duplicats</option>
       <option value="Missing item" title="Indicator that shows that a specific item is missing in the data"
-        id="ISO19138:2006:measure:5">Element inexistent</option>
+>Element inexistent</option>
       <option value="Number of missing items" title="Count of all items that should have been in the dataset and are missing"
-        id="ISO19138:2006:measure:6">Elements no disponibles</option>
+>Elements no disponibles</option>
       <option value="Rate of missing items"
         title="Number of missing items in the dataset in relation to the number of items that should have been present"
-        id="ISO19138:2006:measure:7">Taxa d'elements faltants</option>
+>Taxa d'elements faltants</option>
       <option value="">-- Logical consistency / Conceptual consistency
         --
       </option>
       <option value="Conceptual schema noncompliance"
         title="Indication that an item is not compliant to the rules of the relevant conceptual schema"
-        id="ISO19138:2006:measure:8">Incompliment de l'esquema conceptual</option>
+>Incompliment de l'esquema conceptual</option>
       <option value="Conceptual schema compliance"
         title="Indication that an item complies with the rules of the relevant conceptual schema"
-        id="ISO19138:2006:measure:9">Compliment de l'esquema conceptual</option>
+>Compliment de l'esquema conceptual</option>
       <option value="Number of items noncompliant to the rules of the conceptual schema"
         title="Count of all items in the dataset that are noncompliant to the rules of the conceptual schema. If the conceptual schema explicitly or implicitly describes rules, these rules have to be followed. Violations against such rules can e.g. be invalid placement of features within a defined tolerance, duplication of features and invalid overlap of features."
-        id="ISO19138:2006:measure:10">Nombre d'elements que no compleixen les regles de l'esquema conceptual
+>Nombre d'elements que no compleixen les regles de l'esquema conceptual
       </option>
       <option value="Number of invalid overlaps of surfaces"
         title="Total number of erroneous overlaps within the data Which surfaces may overlap and which must not is application dependent. Not all overlapping surfaces are necessarily erroneous. When reporting this data quality measure the types of feature classes corresponding to the illegal overlapping surfaces have to be reported as well."
-        id="ISO19138:2006:measure:11">Nombre de superposicions de superfície invàlides</option>
+>Nombre de superposicions de superfície invàlides</option>
       <option value="Non-compliance rate with respect to the rules of the conceptual schema"
         title="Number of items in the dataset that are noncompliant to the rules of the conceptual schema in relation to the total number of these items supposed to be in the dataset"
-        id="ISO19138:2006:measure:12">Taxa d'incompliment respecte a les regles de l'esquema conceptual</option>
+>Taxa d'incompliment respecte a les regles de l'esquema conceptual</option>
       <option value=" Compliance rate with the rules of the conceptual schema"
         title="number of items in the dataset in compliance with the rules of the conceptual schema in relation to the total number of items"
-        id="ISO19138:2006:measure:13">Taxa de compliment de les regles de l'esquema conceptual</option>
+>Taxa de compliment de les regles de l'esquema conceptual</option>
       <option value="">-- Logical consistency / Domain consistency --
       </option>
       <option value="Value domain non-conformance" title="Indication of if an item is not in conformance with its value domain"
-        id="ISO19138:2006:measure:14">Domini de valors de no-conformitat</option>
+>Domini de valors de no-conformitat</option>
       <option value="Value domain conformance" title="Indication of if an item is conforming to its value domain"
-        id="ISO19138:2006:measure:15">Domini de valors de conformitat</option>
+>Domini de valors de conformitat</option>
       <option value="Number of items not in conformance with their value domain"
         title="Count of all items in the dataset that are not in conformance with their value domain."
-        id="ISO19138:2006:measure:16">Nombre d'elements en falta de conformitat amb el seu domini de valors</option>
+>Nombre d'elements en falta de conformitat amb el seu domini de valors</option>
       <option value="Value domain conformance rate"
         title="Number of items in the dataset that are in conformance with their value domain in relation to the total number of items in the dataset"
-        id="ISO19138:2006:measure:17">Taxa de conformitat amb el domini de valors</option>
+>Taxa de conformitat amb el domini de valors</option>
       <option value="Value domain non-conformance rate"
         title="the number of items in the dataset that are not in conformance with their value domain in relation to the total number of items"
-        id="ISO19138:2006:measure:18">Taxa de no conformitat amb el domini de valors</option>
+>Taxa de no conformitat amb el domini de valors</option>
       <option value="Physical structure conflicts"
         title="Count of all items in the dataset that are stored in conflict with the physical structure of the dataset"
-        id="ISO19138:2006:measure:19">Conflictes de l'estructura física</option>
+>Conflictes de l'estructura física</option>
       <option value="Physical structure conflict rate"
         title="Number of items in the dataset that are stored in conflict with the physical structure of the dataset divided by the total number of items"
-        id="ISO19138:2006:measure:20">Taxa de conflictes en l'estructura física</option>
+>Taxa de conflictes en l'estructura física</option>
       <option value="">-- Logical consistency / Topological consistency
         --
       </option>
       <option value="Number of faulty point-curve connections"
         title="Number of faulty point-curve connections in the dataset. A point-curve connection exists where different curves touch. These curves have an intrinsic topological relationship that has to reflect the true constellation. If the point-curve connection contradicts the universe of discourse, the point-curve connection is faulty with respect to this data quality measure. The data quality measure counts the number of errors of this kind."
-        id="ISO19138:2006:measure:21">Nombre de connexions punt-corba defectuosos</option>
+>Nombre de connexions punt-corba defectuosos</option>
       <option value="Rate of faulty point-curve connections"
         title="Number of faulty link node connections in relation to the number of supposed link node connections"
-        id="ISO19138:2006:measure:22">Taxa de connexions punt-corba defectuosos</option>
+>Taxa de connexions punt-corba defectuosos</option>
       <option value="Number of missing connection due to undershoots"
         title="Count of items in the dataset, within the parameter tolerance, that are mismatched due to undershoots"
-        id="ISO19138:2006:measure:23">Nombre connexions que falten a causa de sotstraces</option>
+>Nombre connexions que falten a causa de sotstraces</option>
       <option value="Number of missing connections due to overshoots"
         title="Count of items in the dataset, within the parameter tolerance, that are mismatched due to overshoots"
-        id="ISO19138:2006:measure:24">Nombre connexions que falten a causa de sobretraces</option>
+>Nombre connexions que falten a causa de sobretraces</option>
       <option value="Number of invalid slivers"
         title="Count of all items in the dataset that are invalid sliver surfaces. A sliver is an unintended area that occurs when adjacent surfaces are not digitized properly. The borders of the adjacent surfaces may unintentionally gap or overlap by small amounts to cause a topological error."
-        id="ISO19138:2006:measure:25">Nombre d'estelles (Slivers) no vàlides</option>
+>Nombre d'estelles (Slivers) no vàlides</option>
       <option value="Number of invalid self intersect errors" title="Count of all items in the data that illegally intersect with themselves"
-        id="ISO19138:2006:measure:26">Nombre d'errors d'auto-intersecció</option>
+>Nombre d'errors d'auto-intersecció</option>
       <option value="Number of invalid self overlap errors" title="Count of all items in the data that illegally self overlap"
-        id="ISO19138:2006:measure:27">Nombre d'errors d'auto-solapament</option>
+>Nombre d'errors d'auto-solapament</option>
       <option value="">-- Positional accuracy / Absolute or external
         accuracy / General measures --
       </option>
       <option value="Mean value of positional uncertainties"
         title="Mean value of the positional uncertainties for a set of positions where the positional uncertainties are defined as the distance between a measured position and what is considered as the corresponding true position"
-        id="ISO19138:2006:measure:28">Valor mitjà de la incertesa posicional</option>
+>Valor mitjà de la incertesa posicional</option>
       <option value="Mean value of positional uncertainties excluding outliers"
         title="For a set of points where the distance does not exceed a defined threshold the arithmetical average of distances between their measured positions and what is considered as the corresponding true positions"
-        id="ISO19138:2006:measure:29">Valor mitjà de la incertesa posicional excloent-hi valors atípics
+>Valor mitjà de la incertesa posicional excloent-hi valors atípics
       </option>
       <option value="Number of positional uncertainties above a given threshold"
         title="Number of positional uncertainties above a given threshold for a set of positions. The errors are defined as the distance between a measured position and what is considered as the corresponding true position"
-        id="ISO19138:2006:measure:30">Nombre d'incerteses posicionals que ultrapassen un llindar donat
+>Nombre d'incerteses posicionals que ultrapassen un llindar donat
       </option>
       <option value="Rate of positional errors above a given threshold"
         title="Number of positional uncertainties above a given threshold for a set of positions in relation to the total number of measured positions. The errors are defined as the distance between a measured position and what is considered as the corresponding true position."
-        id="ISO19138:2006:measure:31">Taxa d'errors de posició per sobre d'un determinat llindar</option>
+>Taxa d'errors de posició per sobre d'un determinat llindar</option>
       <option value="Covariance matrix"
         title="A symmetrical square matrix with variances of point coordinates on the main diagonal and covariances between these coordinates as off-diagonal elements."
-        id="ISO19138:2006:measure:32">Matriu de covariància</option>
+>Matriu de covariància</option>
       <option value="">-- Positional accuracy / Absolute or external
         accuracy / Vertical --
       </option>
       <option value="Linear error probable"
         title="Half length of the interval defined by an upper and a lower limit, in which the true value lies with probability 50%."
-        id="ISO19138:2006:measure:33">Error lineal probable (LEP)</option>
+>Error lineal probable (LEP)</option>
       <option value="Standard linear error"
         title="Half length of the interval defined by an upper and a lower limit, in which the true value lies with probability 68.3%."
-        id="ISO19138:2006:measure:34">Error lineal estándar</option>
+>Error lineal estándar</option>
       <option value="Linear map accuracy at 90% significance level"
         title="Half length of the interval defined by an upper and a lower limit, in which the true value lies with probability 90%."
-        id="ISO19138:2006:measure:35">Exactitud lineal del mapa amb nivell de significació del 90%</option>
+>Exactitud lineal del mapa amb nivell de significació del 90%</option>
       <option value="Linear map accuracy at 95% significance level"
         title="Half length of the interval defined by an upper and a lower limit, in which the true value lies with probability 95%."
-        id="ISO19138:2006:measure:36">Exactitud lineal del mapa amb nivell de significació del 95%</option>
+>Exactitud lineal del mapa amb nivell de significació del 95%</option>
       <option value="Linear map accuracy at 99% significance level"
         title="Half length of the interval defined by an upper and a lower limit, in which the true value lies with probability 99%."
-        id="ISO19138:2006:measure:37">Exactitud lineal del mapa amb nivell de significació del 99%</option>
+>Exactitud lineal del mapa amb nivell de significació del 99%</option>
       <option value="Near certainty linear error"
         title="Half length of the interval defined by an upper and a lower limit, in which the true value lies with probability 99.8%."
-        id="ISO19138:2006:measure:38">Error lineal Proper a la certesa (LNCE)</option>
+>Error lineal Proper a la certesa (LNCE)</option>
       <option value="Root mean square error"
         title="Standard deviation, where the true value is not estimated from the observations but known a priori."
-        id="ISO19138:2006:measure:39">Arrel de l'error quadràtic mitjà (RMSE)</option>
+>Arrel de l'error quadràtic mitjà (RMSE)</option>
       <option
         value="Absolute linear error at 90% significance level of biased vertical data (Alternative 1)"
         title="The absolute vertical accuracy of the data’s coordinates, expressed in terms of linear error at 90% probability given that a bias is present."
-        id="ISO19138:2006:measure:40">Error absolut lineal amb nivell de significança del 90% de les dades verticals
+>Error absolut lineal amb nivell de significança del 90% de les dades verticals
         esbiaixades (Alternativa 1)</option>
       <option value="Absolute linear error at 90% significance level of biased vertical data"
         title="The absolute vertical accuracy of the data’s coordinates, expressed in terms of linear error at 90% probability given that a bias is present."
-        id="ISO19138:2006:measure:41">Error lineal absolut amb nivell de significança del 90% en les dades verticals
+>Error lineal absolut amb nivell de significança del 90% en les dades verticals
         esbiaixades</option>
       <option value="">-- Positional accuracy / Absolute or external
         accuracy / Horizontal --
       </option>
       <option value="Circular standard deviation"
         title="Radius describing a circle, in which the true point location lies with the probability of 39.4%."
-        id="ISO19138:2006:measure:42">Desviació estàndard circular</option>
+>Desviació estàndard circular</option>
       <option value="Circular error probable"
         title="Radius describing a circle, in which the true point location lies with the probability of 50%."
-        id="ISO19138:2006:measure:43">Error circular probable</option>
+>Error circular probable</option>
       <option value=" Circular map accuracy standard"
         title="Radius describing a circle, in which the true point location lies with the probability of 90%."
-        id="ISO19138:2006:measure:44">Exactitud circular estàndard del mapa (CMAS)</option>
+>Exactitud circular estàndard del mapa (CMAS)</option>
       <option value="Circular error at 95% significance level"
         title="Radius describing a circle, in which the true point location lies with the probability of 95%."
-        id="ISO19138:2006:measure:45">Error circular amb nivell de significació del 95%</option>
+>Error circular amb nivell de significació del 95%</option>
       <option value="Circular near certainty error"
         title="Radius describing a circle, in which the true point location lies with the probability of 99.8%."
-        id="ISO19138:2006:measure:46">Error circular proper a la certesa (LNCE)</option>
+>Error circular proper a la certesa (LNCE)</option>
       <option value="Root mean square error of planimetry"
         title="Radius of a circle around the given point, in which the true value lies with probability P."
-        id="ISO19138:2006:measure:47">Arrel de l'error quadràtic mitjà de la planimetria</option>
+>Arrel de l'error quadràtic mitjà de la planimetria</option>
       <option value="Absolute circular error at 90% significance level of biased data (Alternative 2)"
         title="The absolute horizontal accuracy of the data’s coordinates, expressed in terms of circular error at 90% probability given that a bias is present."
-        id="ISO19138:2006:measure:48">Error circular absolut amb nivell de significança del 90% de les dades esbiaixades
+>Error circular absolut amb nivell de significança del 90% de les dades esbiaixades
         (Alternativa 2)</option>
       <option value="Absolute circular error at 90% significance level of biased data"
         title="The absolute horizontal accuracy of the data’s coordinates, expressed in terms of circular error at 90% probability given that a bias is present."
-        id="ISO19138:2006:measure:49">Error absolut circular amb nivell de significança del 90% de les dades
+>Error absolut circular amb nivell de significança del 90% de les dades
         esbiaixades</option>
       <option value="Uncertainty ellipse"
         title="2D ellipse with the two main axes indicating the direction and magnitude of the highest and the lowest uncertainty of a 2D point"
-        id="ISO19138:2006:measure:50">El·lipse d'incertesa</option>
+>El·lipse d'incertesa</option>
       <option value="Confidence ellipse"
         title="2D ellipse with the two main axes indicating the direction and magnitude of the highest and the lowest uncertainty of a 2D point"
-        id="ISO19138:2006:measure:51">El·lipse de confiança</option>
+>El·lipse de confiança</option>
       <option value="">-- Positional accuracy / Relative or internal
         accuracy --
       </option>
       <option value="Relative vertical error"
         title="Evaluation of the random errors of one relief feature to another in the same dataset or on the same map/chart. It is a function of the random errors in the two elevations with respect to a common vertical datum."
-        id="ISO19138:2006:measure:52">Error vertical relatiu</option>
+>Error vertical relatiu</option>
       <option value="Relative horizontal error"
         title="Evaluation of the random errors in the horizontal position of one feature to another in the same dataset or on the same map/chart."
-        id="ISO19138:2006:measure:53">Error horizontal relatiu</option>
+>Error horizontal relatiu</option>
       <option value="">-- Temporal accuracy / Accuracy of a time
         measurement --
       </option>
       <option value="Time accuracy at 68.3% significance level"
         title="Half length of the interval defined by an upper and a lower limit, in which the true value for the time instance lies with probability 68.3%."
-        id="ISO19138:2006:measure:54">Exactitud temporal amb nivell de significació del 68,3%</option>
+>Exactitud temporal amb nivell de significació del 68,3%</option>
       <option value="Time accuracy at 50% significance level"
         title="Half length of the interval defined by an upper and a lower limit, in which the true value for the time instance lies with probability 50%."
-        id="ISO19138:2006:measure:55">Exactitud temporal amb nivell de significació del 50%</option>
+>Exactitud temporal amb nivell de significació del 50%</option>
       <option value="Time accuracy at 90% significance level"
         title="Half length of the interval defined by an upper and a lower limit, in which the true value for the time instance lies with probability 90%."
-        id="ISO19138:2006:measure:56">Exactitud temporal amb nivell de significació del 90%</option>
+>Exactitud temporal amb nivell de significació del 90%</option>
       <option value="Time accuracy at 95% significance level"
         title="Half length of the interval defined by an upper and a lower limit, in which the true value for the time instance lies with probability 95%."
-        id="ISO19138:2006:measure:57">Exactitud temporal amb nivell de significació del 95%</option>
+>Exactitud temporal amb nivell de significació del 95%</option>
       <option value="Time accuracy at 99% significance level"
         title="Half length of the interval defined by an upper and a lower limit, in which the true value for the time instance lies with probability 99%."
-        id="ISO19138:2006:measure:58">Exactitud temporal amb nivell de significació del 99%</option>
+>Exactitud temporal amb nivell de significació del 99%</option>
       <option value="Time accuracy at 99.8% significance level"
         title="Half length of the interval defined by an upper and a lower limit, in which the true value for the time instance lies with probability 99.8%."
-        id="ISO19138:2006:measure:59">Exactitud temporal amb nivell de significació del 99,8%</option>
+>Exactitud temporal amb nivell de significació del 99,8%</option>
       <option value="">-- Thematic accuracy / Classification
         correctness --
       </option>
       <option value="Number of incorrectly classified features" title="Number of incorrectly classified features"
-        id="ISO19138:2006:measure:60">Nombre d'objectes geogràfics incorrectament classificats</option>
+>Nombre d'objectes geogràfics incorrectament classificats</option>
       <option value="Misclassification rate"
         title="number of incorrectly classified features in relation to the number of features that are supposed to be there"
-        id="ISO19138:2006:measure:61">Taxa d'errors de classificació</option>
+>Taxa d'errors de classificació</option>
       <option value="Misclassification matrix"
-        title="matrix that indicates the number of items of class (i) classified as class (j)." id="ISO19138:2006:measure:62">Matriu
+        title="matrix that indicates the number of items of class (i) classified as class (j).">Matriu
         de classificació errònia</option>
       <option value="Relative misclassification matrix"
         title="matrix that indicates the number of items of class (i) classified as class (i) divided by the number of items of class (i)"
-        id="ISO19138:2006:measure:63">Matriu de classificació errònia relativa</option>
+>Matriu de classificació errònia relativa</option>
       <option value="Kappa coefficient"
         title="Coefficient to quantify the proportion of agreement of assignments to classes by removing misclassifications"
-        id="ISO19138:2006:measure:64">Coeficient kappa</option>
+>Coeficient kappa</option>
       <option value="">-- Thematic accuracy / Non-quantitative
         attribute correctness --
       </option>
       <option value="Number of incorrect attribute values"
         title="Total number of erroneous attribute values within the relevant part of the dataset"
-        id="ISO19138:2006:measure:65">Nombre de valors d'atribut incorrectes</option>
+>Nombre de valors d'atribut incorrectes</option>
       <option value="Rate of correct attribute values"
         title="Number of correct attribute values in relation to the total number of attribute values"
-        id="ISO19138:2006:measure:66">Taxa de valors d'atribut correctes</option>
+>Taxa de valors d'atribut correctes</option>
       <option value="Rate of incorrect attribute values"
         title="Number of attribute values where incorrect values are assigned in relation to the total number of attribute values"
-        id="ISO19138:2006:measure:67">Taxa de valors d'atribut incorrectes</option>
+>Taxa de valors d'atribut incorrectes</option>
       <option value="">-- Thematic accuracy / Quantitative attribute
         accuracy --
       </option>
       <option value="Attribute value uncertainty at 68.3% significance level"
         title="Half length of the interval defined by an upper and a lower limit, in which the true value for the quantitative attribute lies with probability 68.3%."
-        id="ISO19138:2006:measure:68">Incertesa del valor de l'atribut amb nivell de significació del 68,3%</option>
+>Incertesa del valor de l'atribut amb nivell de significació del 68,3%</option>
       <option value="Attribute value uncertainty at 50% significance level"
         title="Half length of the interval defined by an upper and a lower limit, in which the true value for the quantitative attribute lies with probability 50%."
-        id="ISO19138:2006:measure:69">Incertesa del valor de l'atribut amb nivell de significació del 50%</option>
+>Incertesa del valor de l'atribut amb nivell de significació del 50%</option>
       <option value="Attribute value uncertainty at 90% significance level"
         title="Half length of the interval defined by an upper and a lower limit, in which the true value for the quantitative attribute lies with probability 90%."
-        id="ISO19138:2006:measure:70">Incertesa del valor de l'atribut amb nivell de significació del 90%</option>
+>Incertesa del valor de l'atribut amb nivell de significació del 90%</option>
       <option value="Attribute value uncertainty at 95% significance level"
         title="Half length of the interval defined by an upper and a lower limit, in which the true value for the quantitative attribute lies with probability 95%."
-        id="ISO19138:2006:measure:71">Incertesa del valor de l'atribut amb nivell de significació del 95%</option>
+>Incertesa del valor de l'atribut amb nivell de significació del 95%</option>
       <option value="Attribute value uncertainty at 99% significance level"
         title="Half length of the interval defined by an upper and a lower limit, in which the true value for the quantitative attribute lies with probability 99%."
-        id="ISO19138:2006:measure:72">Incertesa del valor de l'atribut amb nivell de significació del 99%</option>
+>Incertesa del valor de l'atribut amb nivell de significació del 99%</option>
       <option value="Attribute value uncertainty at 99.8% significance level"
         title="Half length of the interval defined by an upper and a lower limit, in which the true value for the quantitative attribute lies with probability 99.8%."
-        id="ISO19138:2006:measure:73">Incertesa del valor de l'atribut amb nivell de significació del 99,8%</option>
+>Incertesa del valor de l'atribut amb nivell de significació del 99,8%</option>
     </helper>
   </element>
-  <element name="gmd:northBoundLatitude" id="347.0">
+  <element name="gmd:northBoundLatitude">
     <label>Límit nord</label>
     <description>Coordenada més al nord del límit de l'extensió del conjunt de dades expressada com
       una latitud en graus decimals (signe positiu cap al Nord)</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:numberOfDimensions" id="158.0">
+  <element name="gmd:numberOfDimensions">
     <label>Nombre de dimensions</label>
     <description>Nombre d'eixos espacio-temporals independents</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:obligation" id="311.0">
+  <element name="gmd:obligation">
     <label>Obligació</label>
     <description>Obligatorietat de l'element exstès</description>
   </element>
-  <element name="gmd:offLine" id="278.0">
+  <element name="gmd:offLine">
     <label>Offline</label>
     <description>Informació sobre els mitjans de comunicació fora de línia mitjançant els quals es
       pot obtenir el recurs</description>
   </element>
-  <element name="gmd:offset" id="267.0">
+  <element name="gmd:offset">
     <label>Offset</label>
     <description>El valor físic que correspon a un valor de cel·la de zero</description>
   </element>
-  <element name="gmd:onLine" id="277.0">
+  <element name="gmd:onLine">
     <label>Recurs en línia</label>
     <description>Informació sobre fonts en línia de les que es pot obtenir el recurs</description>
   </element>
-  <element name="gmd:onlineResource" id="390.0">
+  <element name="gmd:onlineResource">
     <help>Defineix la URL per accedir a la pàgina web</help>
     <label>Pàgina web</label>
     <description>Informació en línia que es pot utilitzar per contactar amb la persona o
       organització</description>
   </element>
-  <element name="gmd:orderingInstructions" id="301.0">
+  <element name="gmd:orderingInstructions">
     <label>Instruccions de la comanda</label>
     <description>Instruccions generals, termes i serveis prestats pel distribuïdor</description>
   </element>
-  <element name="gmd:organisationName" id="376.0">
+  <element name="gmd:organisationName">
     <label>Nom de l'Organització</label>
     <description>Nom de l'organització responsable</description>
     <condition>conditional</condition>
   </element>
-  <element name="gmd:orientationParameterAvailability" id="172.0">
+  <element name="gmd:orientationParameterAvailability">
     <label>Disponibilitat de paràmetres d'orientació</label>
     <description>Indicació de si estan disponibles els paràmetres d'orientació</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:orientationParameterDescription" id="173.0">
+  <element name="gmd:orientationParameterDescription">
     <label>Descripció de paràmetres d'orientació</label>
     <description>Descripció dels paràmetres usats per descriure l'orientació del sensor</description>
   </element>
-  <element name="gmd:other" id="155.0">
+  <element name="gmd:other">
     <label>Altres</label>
     <description>Classe d'informació que no cau dins de les altres categories a les que s'aplica la
       informació</description>
     <condition />
   </element>
-  <element name="gmd:otherCitationDetails" id="370.0">
+  <element name="gmd:otherCitationDetails">
     <label>Altres detalls de la citació</label>
     <description>Altra informació necessària per completar la citació que no està recollida en un
       altre lloc</description>
   </element>
-  <element name="gmd:otherConstraints" id="72.0">
+  <element name="gmd:otherConstraints">
     <label>Altres resriccions</label>
     <description>Altres restriccions i requisits legals d'accés i ús del recurs</description>
     <condition>conditional</condition>
   </element>
-  <element name="gmd:page" id="406.0">
+  <element name="gmd:page">
     <label>Pàgina</label>
     <description>Detalls sobre en quines pàgines de la publicació es va publicar l'article</description>
   </element>
-  <element name="gmd:parameterCitation" id="175.0">
+  <element name="gmd:parameterCitation">
     <label>Citació de paràmetres</label>
     <description>Referència que proporciona una descripció dels paràmetres</description>
   </element>
-  <element name="gmd:parentEntity" id="316.0">
+  <element name="gmd:parentEntity">
     <label>Element pare</label>
     <description>Nom de les entitats de metadades en què pot aparèixer aquest element extès de
       metadades. El nom pot ser un element estàndard de metadades o un altre element extès.</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:parentIdentifier" id="5.0">
+  <element name="gmd:parentIdentifier">
     <label>Identificador del pare</label>
     <description>Identificador del registre de metadades del qual aquestes metadades són un
       subconjunt (fill)</description>
   </element>
-  <element name="gmd:pass" id="132.0">
+  <element name="gmd:pass">
     <label>Passa</label>
     <description>Indicació del resultat de la conformitat on 0 = no-conforme i 1 = conforme</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:peakResponse" id="263.0">
+  <element name="gmd:peakResponse">
     <label>Pic de resposta</label>
     <description>Longitud d'ona a la qual la resposta és la més alta</description>
   </element>
-  <element name="gmd:phone" id="526.0">
+  <element name="gmd:phone">
     <label>Telèfon</label>
     <description>Números de telèfon en els quals es pot contactar amb l'organització o individu</description>
   </element>
-  <element name="gmd:plannedAvailableDateTime" id="300.0">
+  <element name="gmd:plannedAvailableDateTime">
     <label>Disponibilitat prevista</label>
     <description>Data i hora en què el conjunt de dades estarà disponible (AAAA-MM-DDThh:mm:ss)</description>
   </element>
-  <element name="gmd:pointInPixel" id="167.0">
+  <element name="gmd:pointInPixel">
     <label>Punt al píxel</label>
     <description>Punt dins d'un píxel que es correspon amb la ubicació sobre la Terra d'aquest píxel</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:pointOfContact" id="29.0">
+  <element name="gmd:pointOfContact">
     <label>Punt de contacte</label>
     <description>Identificació de, i mitjans de comunicació amb, persona(es) i organització(ns)
       associada(es) amb el recurs</description>
   </element>
-  <element name="gmd:polygon" id="342.0">
+  <element name="gmd:polygon">
     <label>Polígon</label>
     <description>Conjunts de punts que defineixen el polígon delimitador</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:portrayalCatalogueCitation" id="269.0">
+  <element name="gmd:portrayalCatalogueCitation">
     <label>Citació del catàleg de representació</label>
     <description>Referència bibliogràfica del catàleg de representació esmentat</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:portrayalCatalogueInfo" id="19.0">
+  <element name="gmd:portrayalCatalogueInfo">
     <label>Informació del catàleg de representació</label>
     <abbrLabel>Representació</abbrLabel>
     <description>Proporciona informació sobre el catàleg de regles definides per a la representació
       d'un recurs</description>
   </element>
-  <element name="gmd:positionName" id="377.0">
+  <element name="gmd:positionName">
     <label>Nom del càrrec</label>
     <description>Funció o càrrec de la persona responsable</description>
     <condition>conditional</condition>
   </element>
-  <element name="gmd:postalCode" id="384.0">
+  <element name="gmd:postalCode">
     <label>Codi postal</label>
     <description>Codi postal</description>
   </element>
-  <element name="gmd:presentationForm" id="368.0">
+  <element name="gmd:presentationForm">
     <label>Formulari de presentació</label>
     <description>Mode en el qual es representa el recurs</description>
   </element>
-  <element name="gmd:processStep" id="84.0">
+  <element name="gmd:processStep">
     <label>Pas de procés</label>
     <description>Informació sobre un esdeveniment en el procés de creació de les dades especificat
       per l'abast</description>
     <condition>conditional</condition>
   </element>
-  <element name="gmd:processingLevelCode" id="249.0">
+  <element name="gmd:processingLevelCode">
     <label>Codi del nivell de processament</label>
     <description>Codi del distribuïdor de la imatge que identifica el nivell de processament
       radiomètric i geomètric que s'ha aplicat</description>
   </element>
-  <element name="gmd:processor" id="90.0">
+  <element name="gmd:processor">
     <label>Processador</label>
     <description>Identificació i mitjans de comunicació amb persona(es) i organització(ns) associats
       al pas de procés</description>
   </element>
-  <element name="gmd:protocol" id="398.0" alias="protocol">
+  <element name="gmd:protocol" alias="protocol">
     <label>Protoco</label>
     <description>Protocol de connexió que s'utilitzarà</description>
     <helper sort="true">
@@ -1913,240 +1913,240 @@
       <option value="UKST">Tipus de Servei Desconegut</option>
     </helper>
   </element>
-  <element name="gmd:purpose" id="26.0">
+  <element name="gmd:purpose">
     <label>Propòsit</label>
     <description>Resum de les intencions amb què es va desenvolupar el recurs</description>
   </element>
-  <element name="gmd:radiometricCalibrationDataAvailability" id="252.0">
+  <element name="gmd:radiometricCalibrationDataAvailability">
     <label>Disponibilitat de dades sobre la calibració radiomètrica</label>
     <description>Indicació de si es disposa o no de la informació de calibració radiomètrica per a
       generar el producte estàndard de dades radiomètricament calibrades</description>
   </element>
-  <element name="gmd:rationale" id="88.0">
+  <element name="gmd:rationale">
     <label>Raó</label>
     <description>Requisit o propòsit de l'etapa de processament</description>
   </element>
-  <element name="gmd:rationale" id="318.0" context="gmd:MD_ExtendedElementInformation">
+  <element name="gmd:rationale" context="gmd:MD_ExtendedElementInformation">
     <label>Raó</label>
     <description>Raó per crear l'element extès</description>
   </element>
-  <element name="gmd:referenceSystemIdentifier" id="187.0">
+  <element name="gmd:referenceSystemIdentifier">
     <label>Identificador del Sistema de Referència</label>
     <description>Nom del sistema de referència</description>
     <condition>conditional</condition>
   </element>
-  <element name="gmd:referenceSystemInfo" id="13.0">
+  <element name="gmd:referenceSystemInfo">
     <label>Informació del Sistema de Referència</label>
     <abbrLabel>Sist. Ref.</abbrLabel>
     <description>Descripció dels sistemes de referència espacials i temporals utilitzats en el
       conjunt de dades</description>
   </element>
-  <element name="gmd:report" id="80.0">
+  <element name="gmd:report">
     <label>Informe</label>
     <description>Informació quantitativa sobre la qualitat de les dades especificades en l'abast</description>
     <condition>conditional</condition>
   </element>
-  <element name="gmd:resolution" id="182.0">
+  <element name="gmd:resolution">
     <label>Resolució</label>
     <description>Grau de detall en el conjunt de dades de malla</description>
   </element>
-  <element name="gmd:resourceConstraints" id="35.0">
+  <element name="gmd:resourceConstraints">
     <label>Restriccions del recurs</label>
     <description>Proporciona informació sobre les restriccions que s'apliquen al recurs</description>
   </element>
-  <element name="gmd:resourceFormat" id="32.0">
+  <element name="gmd:resourceFormat">
     <label>Format del recurs</label>
     <description>Proporciona una descripció del format del recurs</description>
   </element>
-  <element name="gmd:resourceMaintenance" id="30.0">
+  <element name="gmd:resourceMaintenance">
     <label>Manteniment dels recursos</label>
     <description>Proporciona informació sobre la freqüència d'actualitzacions dels recursos i
       l'abast d'aquests canvis</description>
   </element>
-  <element name="gmd:resourceSpecificUsage" id="34.0">
+  <element name="gmd:resourceSpecificUsage">
     <label>Ús específic del recurs</label>
     <description>Proporciona informació bàsica sobre l'aplicació específica per a la qual el recurs
       ha estat o està sent utilitzat per diferents usuaris</description>
   </element>
-  <element name="gmd:result" id="107.0">
+  <element name="gmd:result">
     <label>Resultat</label>
     <description>Valor (o conjunt de valors) obtinguts a partir de l'aplicació de mesures de
       qualitat de les dades, o el resultat d'avaluar el valor obtingut (o conjunt de valors) contra
       un nivell específic de qualitat acceptable</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:role" id="566.0" context="gmd:MD_Association">
+  <element name="gmd:role" context="gmd:MD_Association">
     <label>Rol</label>
     <description>Referència als objectius (rols) d'una associació concreta</description>
   </element>
-  <element name="gmd:role" id="379.0">
+  <element name="gmd:role">
     <label>Rol</label>
     <description>Funció realitzada per la part responsable</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:rule" id="317.0">
+  <element name="gmd:rule">
     <label>Regla</label>
     <description>Especifica com es relaciona l'element extès amb d'altres elements i entitats
       existents</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:scaleDenominator" id="94.0">
+  <element name="gmd:scaleDenominator">
     <label>Denominador d'escala</label>
     <description>Denominador de la fracció representativa sobre un mapa d'origen</description>
   </element>
-  <element name="gmd:scaleFactor" id="266.0">
+  <element name="gmd:scaleFactor">
     <label>Factor d'escala</label>
     <description>Factor d'escala que s'ha aplicat al valor de cel·la</description>
   </element>
-  <element name="gmd:schemaAscii" id="324.0">
+  <element name="gmd:schemaAscii">
     <description>Esquema d'aplicació complet donat com un fitxer ASCII</description>
     <label>Esquema ASCII</label>
   </element>
-  <element name="gmd:schemaLanguage" id="322.0">
+  <element name="gmd:schemaLanguage">
     <label>Esquema de l'idioma</label>
     <description>Identificació del llenguatge d'esquema utilitzat</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:scope" id="79.0">
+  <element name="gmd:scope">
     <label>Abast</label>
     <description>Les dades específiques a les quals s'aplica la informació de qualitat de dades</description>
   </element>
-  <element name="gmd:sequenceIdentifier" id="257.0">
+  <element name="gmd:sequenceIdentifier">
     <label>Identificador de la seqüència</label>
     <description>Número que identifica unívocament la instància de bandes de longitud d'ona en les
       quals opera el sensor</description>
   </element>
-  <element name="gmd:series" id="369.0">
+  <element name="gmd:series">
     <label>Sèries</label>
     <description>Informació sobre la sèrie o conjunt de dades agregades, dels quals el conjunt de
       dades n'és una part</description>
   </element>
-  <element name="gmd:shortName" id="308.0">
+  <element name="gmd:shortName">
     <label>Nom curt</label>
     <description>Forma curta adequada per a ús en un mètode d'aplicació tal com XML o SGML. NOTA
       poden ser usats altres mètodes</description>
   </element>
-  <element name="gmd:softwareDevelopmentFile" id="326.0">
+  <element name="gmd:softwareDevelopmentFile">
     <label>Fitxer de desenvolupament de software</label>
     <description>Esquema d'aplicació complet donat com un arxiu de desenvolupament de programari</description>
   </element>
-  <element name="gmd:softwareDevelopmentFileFormat" id="327.0">
+  <element name="gmd:softwareDevelopmentFileFormat">
     <label>Format del fitxer de desenvolupament de software</label>
     <description>Format del fitxer de desenvolupament de programari en què està descrit l'esquema
       d'aplicació</description>
   </element>
-  <element name="gmd:source" id="85.0">
+  <element name="gmd:source">
     <label>Origen</label>
     <description>Informació sobre les dades d'origen utilitzats en la creació de les dades
       especificades en l'abast</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:source" id="319.0" context="gmd:MD_ExtendedElementInformation">
+  <element name="gmd:source" context="gmd:MD_ExtendedElementInformation">
     <condition>mandatory</condition>
     <label>Origen</label>
     <description>Nom de la persona o entitat que crea l'element extès</description>
   </element>
-  <element name="gmd:sourceCitation" id="96.0">
+  <element name="gmd:sourceCitation">
     <label>Citació de la font</label>
     <description>Referència recomanada per a ser utilitzada per a les dades d'origen</description>
   </element>
-  <element name="gmd:sourceExtent" id="97.0">
+  <element name="gmd:sourceExtent">
     <label>Extensió de la font</label>
     <description>La informació sobre l'extensió espacial, vertical i font de dades temporal</description>
     <condition>conditional</condition>
   </element>
-  <element name="gmd:sourceReferenceSystem" id="95.0">
+  <element name="gmd:sourceReferenceSystem">
     <label>Sistema de referència de la font</label>
     <description>Sistema de referència espacial utilitzat per les dades d'origen</description>
   </element>
-  <element name="gmd:sourceStep" id="98.0">
+  <element name="gmd:sourceStep">
     <label>Pas de la font</label>
     <description>Informació sobre un esdeveniment en el procés de creació de les dades d'origen</description>
   </element>
-  <element name="gmd:southBoundLatitude" id="346.0">
+  <element name="gmd:southBoundLatitude">
     <label>Límit sud</label>
     <description>Coordenada més al sud del límit de l'extensió del conjunt de dades expressada com
       una latitud en graus (signe positiu cap al Nord)</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:spatialExtent" id="353.0">
+  <element name="gmd:spatialExtent">
     <label>Extensió espacial</label>
     <description>Component d'extensió espacial de l'extensió espacio-temporal composta</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:spatialRepresentationInfo" id="12.0">
+  <element name="gmd:spatialRepresentationInfo">
     <label>Informació de la representació espacial</label>
     <abbrLabel>Repr. Espacial</abbrLabel>
     <description>Representació digital de la informació espacial en el conjunt de dades</description>
   </element>
-  <element name="gmd:spatialRepresentationType" id="37.0">
+  <element name="gmd:spatialRepresentationType">
     <label>Tipus de representació espacial</label>
     <description>Mètode utilitzat per representar espacialment la informació geogràfica</description>
   </element>
-  <element name="gmd:spatialResolution" id="38.0">
+  <element name="gmd:spatialResolution">
     <label>Resolució espacial</label>
     <description>Factor que proporciona una comprensió general de la densitat de les dades espacials
       en el conjunt de dades</description>
   </element>
-  <element name="gmd:specificUsage" id="63.0">
+  <element name="gmd:specificUsage">
     <label>Ús específic</label>
     <description>Breu descripció de l'ús del recurs i/o sèrie de recursos</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:specification" id="130.0" context="gmd:DQ_ConformanceResult">
+  <element name="gmd:specification" context="gmd:DQ_ConformanceResult">
     <condition>mandatory</condition>
     <label>Especificació</label>
     <description>Citació de les especificacions o requeriments de l'usuari contra el qual s'està
       avaluant les dades</description>
   </element>
-  <element name="gmd:specification" id="288.0" context="gmd:MD_Format">
+  <element name="gmd:specification" context="gmd:MD_Format">
     <label>Especificació</label>
     <description>Nom d'un subconjunt, perfil o especificació de producte del format</description>
   </element>
   <element name="gmd:specification">
     <label>Especificació</label>
   </element>
-  <element name="gmd:statement" id="83.0">
+  <element name="gmd:statement">
     <label>Declaració</label>
     <description>Explicació general del coneixement del productor de dades sobre el llinatge d'un
       conjunt de dades</description>
     <condition>conditional</condition>
   </element>
-  <element name="gmd:status" id="28.0">
+  <element name="gmd:status">
     <label>Estat</label>
     <description>Estat del recurs</description>
   </element>
-  <element name="gmd:supplementalInformation" id="46.0">
+  <element name="gmd:supplementalInformation">
     <label>Informació suplementària</label>
     <description>Qualsevol altra informació descriptiva sobre el conjunt de dades</description>
   </element>
-  <element name="gmd:temporalElement" id="337.0">
+  <element name="gmd:temporalElement">
     <label>Element temporal</label>
     <description>Proporciona component temporal de l'extensió de l'objecte referit</description>
     <condition>conditional</condition>
   </element>
-  <element name="gmd:textGroup" id="602.0">
+  <element name="gmd:textGroup">
     <label>Grup de text</label>
     <description>Grup de text</description>
   </element>
-  <element name="gmd:thesaurusName" id="55.0">
+  <element name="gmd:thesaurusName">
     <label>Nom del tesaure</label>
     <description>Nom del tesaure registrat o una font autoritativa similar de paraules clau</description>
   </element>
-  <element name="gmd:title" id="360.0">
+  <element name="gmd:title">
     <label>Títol</label>
     <description>Nom amb el que es coneix el recurs esmentat</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:title" id="507.0" context="gmd:MD_Legislation">
+  <element name="gmd:title" context="gmd:MD_Legislation">
     <label>Títol</label>
     <description>Referència al títol legal</description>
   </element>
-  <element name="gmd:toneGradation" id="265.0">
+  <element name="gmd:toneGradation">
     <label>Gradació del to</label>
     <description>Nombre de valors numèrics discrets en les dades de la malla</description>
   </element>
-  <element name="gmd:topicCategory" id="41.0">
+  <element name="gmd:topicCategory">
     <label>Categoria temàtica</label>
     <description>Tema(es) principal(s) del conjunt de dades</description>
     <condition>mandatory</condition>
@@ -2159,108 +2159,108 @@
       solapaments entre les diferents categories generals i s'exhorta l'usuari a seleccionar la més
       adequada.</description>
   </element>
-  <element name="gmd:topologyLevel" id="177.0">
+  <element name="gmd:topologyLevel">
     <label>Nivell topològic</label>
     <description>Codi que identifica el grau de complexitat de les relacions espacials</description>
   </element>
-  <element name="gmd:transferOptions" id="273.0">
+  <element name="gmd:transferOptions">
     <label>Opcions de transferència</label>
     <description>Proporciona informació sobre els medis i els mitjans tècnics pels quals s'obtén un
       recurs des del distribuïdor</description>
   </element>
-  <element name="gmd:transferSize" id="276.0">
+  <element name="gmd:transferSize">
     <label>Mida de la transferència</label>
     <description>Pes estimat d'una unitat en el format de transferència especificat, expressat en
       megabytes. La mida de transferència és > 0,0</description>
   </element>
-  <element name="gmd:transformationDimensionDescription" id="168.0">
+  <element name="gmd:transformationDimensionDescription">
     <label>Descripció de la dimensió de transformació</label>
     <description>Descripció de la informació sobre quines de les dimensions són dimensions espacials</description>
   </element>
-  <element name="gmd:transformationDimensionMapping" id="169.0">
+  <element name="gmd:transformationDimensionMapping">
     <label>Mapeig de la dimensió de transformació</label>
     <description>Informació sobre quines de les dimensions de la malla són les dimensions espacials</description>
   </element>
-  <element name="gmd:transformationParameterAvailability" id="161.0">
+  <element name="gmd:transformationParameterAvailability">
     <label>Disponibilitat de paràmetres de transformació</label>
     <condition>mandatory</condition>
     <description>Indicació de si hi ha (estan disponibles) els paràmetres de transformació entre
       coordenades de la imatge i coordenades geogràfiques o del mapa</description>
   </element>
-  <element name="gmd:triangulationIndicator" id="251.0">
+  <element name="gmd:triangulationIndicator">
     <label>indicador de triangulació</label>
     <description>Indicació de si s'ha realitzat o no la triangulació de la imatge</description>
   </element>
-  <element name="gmd:turnaround" id="302.0">
+  <element name="gmd:turnaround">
     <label>Gir en rodó</label>
     <description>Temps típic de resposta d'una comanda</description>
   </element>
-  <element name="gmd:type" id="54.0">
+  <element name="gmd:type">
     <label>Tipus</label>
     <description>Temàtica usada per agrupar paraules clau similars</description>
   </element>
-  <element name="gmd:type" id="540.0" context="gmd:MD_CodeDomain">
+  <element name="gmd:type" context="gmd:MD_CodeDomain">
     <label>Tipus</label>
     <description>Tipus de dades del domini de codi</description>
   </element>
-  <element name="gmd:type" id="543.0" context="gmd:MD_Type">
+  <element name="gmd:type" context="gmd:MD_Type">
     <label>Definició de tipus</label>
     <description>Definició del tipus de dades</description>
     <help>Definició del tipus de dada, formal o informal (p.e. Text12, Línia)</help>
   </element>
-  <element name="gmd:units" id="262.0">
+  <element name="gmd:units">
     <label>Unitat del valor</label>
     <description>Unitats en què s'expressen les longituds d'ona dels sensors</description>
   </element>
-  <element name="gmd:unitsOfDistribution" id="275.0">
+  <element name="gmd:unitsOfDistribution">
     <label>Unitats de distribució</label>
     <description>Tessel·les, capes, àrees geogràfiques, etc., en els quals les dades estan
       disponibles</description>
   </element>
-  <element name="gmd:updateScope" id="146.0">
+  <element name="gmd:updateScope">
     <label>Abast de l'actualització</label>
     <description>Abast de les dades a les quals s'aplica el manteniment</description>
   </element>
-  <element name="gmd:updateScopeDescription" id="147.0">
+  <element name="gmd:updateScopeDescription">
     <label>Descripció de l'abast de l'actualització</label>
     <description>Informació addicional sobre l'abast o extensió del recurs</description>
   </element>
-  <element name="gmd:usageDateTime" id="64.0">
+  <element name="gmd:usageDateTime">
     <label>Dia i hora d'ús</label>
     <description>Data i hora de la primera utilització o rang d'utilitzacions del recurs i/o sèrie
       de recursos (AAAA-MM-DDThh:mm:ss)</description>
   </element>
-  <element name="gmd:useConstraints" id="71.0">
+  <element name="gmd:useConstraints">
     <label>Restriccions d'ús</label>
     <description>Restriccions aplicades per a assegurar la protecció de la privacitat o de la
       propietat intel·lectual, així com restriccions, limitacions o avisos sobre l'us del recurs</description>
   </element>
-  <element name="gmd:useLimitation" id="68.0">
+  <element name="gmd:useLimitation">
     <label>Limitació de l'ús</label>
     <description>Limitació que afecta l'adequació d'un recurs a certs usos. Per exemple, _no apte
       per a la navegació_</description>
   </element>
-  <element name="gmd:userContactInfo" id="66.0">
+  <element name="gmd:userContactInfo">
     <label>Informació de contacte de l'usuari</label>
     <description>Identificació i mitjans de comunicació amb les persones i organitzacions utilitzant
       el recurs</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:userDefinedMaintenanceFrequency" id="145.0">
+  <element name="gmd:userDefinedMaintenanceFrequency">
     <label>Freqüència de manteniment definida per l'usuari</label>
     <description>Període de manteniment diferent del dels definits</description>
   </element>
-  <element name="gmd:userDeterminedLimitations" id="65.0">
+  <element name="gmd:userDeterminedLimitations">
     <label>Limitacions determinades per l'usuari</label>
     <description>Aplicacions, determinades per l'usuari, per a les que el recurs o sèrie de recursos
       no són adequats</description>
   </element>
-  <element name="gmd:userNote" id="75.0">
+  <element name="gmd:userNote">
     <label>Notes de l'usuari</label>
     <description>Explicació de l'aplicació de les restriccions legals o altres restriccions i
       requisits legals per a l'obtenció i ús del recurs o metadades</description>
   </element>
-  <element name="gmd:value" id="137.0" context="gmd:DQ_QuantitativeResult">
+  <element name="gmd:value" context="gmd:DQ_QuantitativeResult">
     <condition>mandatory</condition>
     <label>Valor</label>
     <description>Valor o valors quantitatius, contingut determinat pel procediment d'avaluació
@@ -2270,11 +2270,11 @@
     <label>Valor</label>
     <description />
   </element>
-  <element name="gmd:value" id="544.0" context="gmd:MD_Type">
+  <element name="gmd:value" context="gmd:MD_Type">
     <label>Valor</label>
     <description>Valor del tipus de dades</description>
   </element>
-  <element name="gmd:valueType" id="134.0">
+  <element name="gmd:valueType">
     <label>Tipus de valor</label>
     <description>Valor o rang de valors del nivell de conformitat quantitativa</description>
     <helper>
@@ -2286,35 +2286,35 @@
       <option value="Measure(s) (value(s) + unit(s))">Mesura(es) (valor(s) + unitat(s))</option>
     </helper>
   </element>
-  <element name="gmd:valueUnit" id="135.0">
+  <element name="gmd:valueUnit">
     <label>Unitat del valor</label>
     <description>Unitat del valor per informar d'un resultat de qualitat de dades</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:version" id="208.2" context="gmd:RS_Identifier">
+  <element name="gmd:version" context="gmd:RS_Identifier">
     <label>Versió</label>
     <description>Identificador de versió per a l'espai de noms</description>
   </element>
-  <element name="gmd:version" id="286.0">
+  <element name="gmd:version">
     <label>Versió</label>
     <description>Versió del format (data, número, etc.)</description>
     <condition>mandatory</condition>
   </element>
-  <element name="gmd:verticalElement" id="338.0">
+  <element name="gmd:verticalElement">
     <label>Element vertical</label>
     <description>Proporciona component vertical de l'extensió de l'objecte referit</description>
     <condition>conditional</condition>
   </element>
-  <element name="gmd:voice" id="408.0">
+  <element name="gmd:voice">
     <label>Telèfon</label>
     <description>Número de telèfon mitjançant el qual es pot contactar amb l'organització o individu
       responsable</description>
   </element>
-  <element name="gmd:volumes" id="295.0">
+  <element name="gmd:volumes">
     <label>Volums</label>
     <description>Nombre d'elements en el medi identificat</description>
   </element>
-  <element name="gmd:westBoundLongitude" id="344.0">
+  <element name="gmd:westBoundLongitude">
     <label>Límit oest</label>
     <description>Coordenada més occidental del límit de l'extensió del conjunt de dades expressada
       com una longitud en graus decimals (signe positiu cap a l'Est)</description>
@@ -2456,12 +2456,12 @@
     <description>Identificador únic</description>
   </element>
 
-  <element name="gml:id" id="191.0" context="gmd:MD_CRS">
+  <element name="gml:id" context="gmd:MD_CRS">
     <label>El·lipsoide</label>
     <description>Identitat de l'el·lipsoide utilitzat</description>
     <help>identificació de l'el·lipsoide utilitzat</help>
   </element>
-  <element name="id" id="191.0">
+  <element name="id">
     <label>Identificador</label>
     <description>Identificador únic</description>
   </element>
