@@ -157,6 +157,7 @@ public class KeycloakUserUtils extends BaseUserUtils {
 
             // Assign the highest profile available
             Map<Profile, List<String>> profileGroups = getProfileGroups(accessToken);
+            List<String> systemGroups = getSystemGroups(accessToken);
             if (newUserFlag || keycloakConfiguration.isUpdateProfile()) {
                 user.setProfile(getMaxProfile(baselUser.getProfile(), profileGroups));
             }
@@ -168,7 +169,7 @@ public class KeycloakUserUtils extends BaseUserUtils {
                 }
 
                 if (newUserFlag || keycloakConfiguration.isUpdateGroup()) {
-                    updateGroups(profileGroups, user);
+                    updateGroups(systemGroups, profileGroups, user);
                 }
             }
 
@@ -238,14 +239,48 @@ public class KeycloakUserUtils extends BaseUserUtils {
     }
 
     /**
+     * Get system groups from the access token.
+     * System groups are roles that do not follow the "group:role" format and are not recognized as profiles.
+     * @param accessToken keycloak access token to get system group information from.
+     * @return list of system group names.
+     */
+    private List<String> getSystemGroups(AccessToken accessToken) {
+        String roleGroupSeparator = keycloakConfiguration.getRoleGroupSeparator();
+        List<String> groups = new ArrayList<>();
+
+        if (accessToken.getResourceAccess(adapterDeploymentContext.resolveDeployment(null).getResourceName()) != null) {
+            for (String role : accessToken.getResourceAccess(adapterDeploymentContext.resolveDeployment(null).getResourceName()).getRoles()) {
+                if (!role.contains(roleGroupSeparator) && Profile.findProfileIgnoreCase(role) == null) {
+                    groups.add(role);
+                }
+            }
+        }
+
+        return groups;
+    }
+
+    /**
      * Update users group information in the database.
+     * @param systemGroups list of system group names.
      * @param profileGroups object containing the profile and related groups.
      * @param user to apply the changes to.
      */
-    private void updateGroups(Map<Profile, List<String>> profileGroups, User user) {
+    private void updateGroups(List<String> systemGroups, Map<Profile, List<String>> profileGroups, User user) {
         Set<UserGroup> userGroups = new HashSet<>();
 
-        // Now we add the groups
+        // Now we add the system groups
+        for (String rgGroup : systemGroups) {
+            Group group = getOrCreateGroup(rgGroup, GroupType.SystemPrivilege);
+
+            UserGroup usergroup = new UserGroup();
+            usergroup.setGroup(group);
+            usergroup.setUser(user);
+            usergroup.setProfile(Profile.RegisteredUser);
+
+            userGroups.add(usergroup);
+        }
+
+        // Now we add the profile groups
         for (Profile p : profileGroups.keySet()) {
             List<String> groups = profileGroups.get(p);
             for (String rgGroup : groups) {
