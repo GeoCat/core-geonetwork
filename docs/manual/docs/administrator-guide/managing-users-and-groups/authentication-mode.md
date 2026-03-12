@@ -841,6 +841,46 @@ sample:RegisteredUser
 
 A similar setup is described for geoserver in the [geoserver documentation](https://docs.geoserver.org/latest/en/user/community/keycloak/index.html).
 
+### Role types
+
+The Keycloak connector classifies client roles into three categories:
+
+| Category | Format | Example | Description |
+| -------- | ------ | ------- | ----------- |
+| Profile | `<ProfileName>` | `Administrator`, `Reviewer` | A role whose name matches a GeoNetwork profile. Sets the user's overall profile level. |
+| Group-profile | `<GroupName>:<ProfileName>` | `sample:Editor` | A role containing the configured separator (`:` by default). The user is added to the named group with the specified profile. |
+| System group | any other value | `externalPublicationRequester` | A role that does not match a profile name and does not contain the separator. It is treated as a system group. |
+
+#### System groups
+
+Roles that do not match a GeoNetwork profile and do not follow the `group:profile` format are automatically treated as **system groups**. When group synchronisation is enabled (`updateGroup=true`), these roles are mapped to GeoNetwork groups of type `SystemPrivilege` and the user is associated with them using the `RegisteredUser` profile.
+
+System privilege groups differ from regular workspace groups:
+
+- They **cannot own metadata** records.
+- They **cannot be assigned record-level privileges**.
+- They are intended for **system-wide permissions** only (e.g. granting access to specific application features).
+
+For example, adding the following client role in Keycloak:
+
+``` text
+externalPublicationRequester
+```
+
+will create (if it does not already exist) a GeoNetwork group called `externalPublicationRequester` with type `SystemPrivilege`, and any user holding that role will be added to it.
+
+You can combine system group roles with profile and group-profile roles in the same client configuration:
+
+``` text
+Administrator
+sample:Editor
+sample:Reviewer
+externalPublicationRequester
+anotherSystemGroup
+```
+
+In this example `Administrator` sets the user profile, `sample:Editor` and `sample:Reviewer` assign group-level permissions, and `externalPublicationRequester` and `anotherSystemGroup` are mapped as system groups.
+
 ## Configurating JWT/JSON Headers {#jwt-headers}
 
 The JWT Headers module provides a security module for header based security. It is equivalent to GeoServer's JWT Headers Module (both GeoServer and GeoNetwork share a code library to make them equivalent). 
