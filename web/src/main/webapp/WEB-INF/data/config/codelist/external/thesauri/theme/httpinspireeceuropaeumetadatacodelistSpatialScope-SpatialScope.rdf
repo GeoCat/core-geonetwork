@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <skos:ConceptScheme xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/SpatialScope">
+    <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/" xml:lang="nl">Ruimtelijke dekking</dc:title>
+    <dcterms:issued xmlns:dcterms="http://purl.org/dc/terms/">2018-04-04T09:39:29</dcterms:issued>
+    <dcterms:modified xmlns:dcterms="http://purl.org/dc/terms/">2018-04-04T09:39:29</dcterms:modified>
+  </skos:ConceptScheme>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/SpatialScope/national">
+    <skos:prefLabel xml:lang="nl">Nationaal</skos:prefLabel>
+    <skos:scopeNote xml:lang="nl">De reikwijdte van de gegevensverzameling is bedoeld om het nationale grondgebied te bestrijken.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/SpatialScope" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/SpatialScope/regional">
+    <skos:prefLabel xml:lang="nl">Regionaal</skos:prefLabel>
+    <skos:scopeNote xml:lang="nl">De reikwijdte van de gegevensverzameling is bedoeld om het grondgebied van een of meer administratieve eenheden op subnationaal niveau te bestrijken.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/SpatialScope" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/SpatialScope/local">
+    <skos:prefLabel xml:lang="nl">Lokaal</skos:prefLabel>
+    <skos:scopeNote xml:lang="nl">De reikwijdte van de gegevensverzameling is bedoeld om het grondgebied van een of meer lokale administratieve eenheden te bestrijken.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/SpatialScope" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/SpatialScope/global">
+    <skos:prefLabel xml:lang="nl">Globaal</skos:prefLabel>
+    <skos:scopeNote xml:lang="nl">De reikwijdte van de gegevensverzameling is bedoeld om de hele aarde te bestrijken.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/SpatialScope" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/SpatialScope/european">
+    <skos:prefLabel xml:lang="nl">Europees</skos:prefLabel>
+    <skos:scopeNote xml:lang="nl">De reikwijdte van de gegevensverzameling is bedoeld voor Europa.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/SpatialScope" />
+  </skos:Concept>
+</rdf:RDF>
+

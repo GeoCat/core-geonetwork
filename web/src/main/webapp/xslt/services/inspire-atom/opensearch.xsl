@@ -39,24 +39,24 @@
 
           <os:Url type="application/opensearchdescription+xml" rel="self">
             <xsl:attribute name="template"
-                           select="concat(/root/gui/url,'/opensearch/', /root/gui/language, '/', /root/response/fileId,'/OpenSearchDescription.xml')"/>
+                           select="concat(/root/gui/url,'/opensearch/dut/', /root/response/fileId,'/OpenSearchDescription.xml')"/>
           </os:Url>
 
           <!--Generic URL template for browser integration-->
           <os:Url type="application/atom+xml" rel="results">
             <xsl:attribute name="template"
-                           select="concat(/root/gui/url,'/opensearch/', /root/gui/language, '/', /root/response/fileId,'/describe')"/>
+                           select="concat(/root/gui/url,'/opensearch/dut/', /root/response/fileId,'/describe')"/>
           </os:Url>
 
           <!--Generic URL template for browser integration-->
           <os:Url type="application/xml" rel="results">
             <xsl:attribute name="template"
-                           select="concat(/root/gui/url,'/opensearch/', /root/gui/language, '/', /root/response/fileId,'/search?any={searchTerms?}')"/>
+                           select="concat(/root/gui/url,'/opensearch/dut/', /root/response/fileId,'/search?any={searchTerms?}')"/>
           </os:Url>
 
           <os:Url type="text/html" rel="results">
             <xsl:attribute name="template"
-                           select="concat(/root/gui/url,'/opensearch/', /root/gui/language,'/search?q={searchTerms?}')"/>
+                           select="concat(/root/gui/url,'/opensearch/dut/search?q={searchTerms?}')"/>
           </os:Url>
         </xsl:when>
         <xsl:otherwise>
@@ -67,7 +67,7 @@
           <!--Generic URL template for browser integration-->
           <os:Url type="application/xml" rel="results">
             <xsl:attribute name="template"
-                           select="concat(/root/gui/url,'/opensearch/', /root/gui/language, '/search?any={searchTerms?}')"/>
+                           select="concat(/root/gui/url,'/opensearch/dut/search?any={searchTerms?}')"/>
           </os:Url>
         </xsl:otherwise>
       </xsl:choose>
@@ -75,7 +75,7 @@
 
       <os:Url type="application/atom+xml" rel="describedby">
         <xsl:attribute name="template"
-                       select="concat(/root/gui/url,'/opensearch/', /root/gui/language, '/describe?spatial_dataset_identifier_code={inspire_dls:spatial_dataset_identifier_code?}', '&amp;spatial_dataset_identifier_namespace={inspire_dls:spatial_dataset_identifier_namespace?}', '&amp;language={language?}')"/>
+                       select="concat(/root/gui/url,'/opensearch/dut/describe?spatial_dataset_identifier_code={inspire_dls:spatial_dataset_identifier_code?}', '&amp;spatial_dataset_identifier_namespace={inspire_dls:spatial_dataset_identifier_namespace?}', '&amp;language={language?}')"/>
       </os:Url>
 
 
@@ -84,7 +84,7 @@
                        select="/root/response/datasets/dataset[1]/file[1]/type"/>
 
         <xsl:attribute name="template"
-                       select="concat(/root/gui/url,'/opensearch/', /root/gui/language, '/download?spatial_dataset_identifier_code={inspire_dls:spatial_dataset_identifier_code?}', '&amp;spatial_dataset_identifier_namespace={inspire_dls:spatial_dataset_identifier_namespace?}&amp;crs={inspire_dls:crs?}', '&amp;language={language?}')"/>
+                       select="concat(/root/gui/url,'/opensearch/dut/download?spatial_dataset_identifier_code={inspire_dls:spatial_dataset_identifier_code?}', '&amp;spatial_dataset_identifier_namespace={inspire_dls:spatial_dataset_identifier_namespace?}&amp;crs={inspire_dls:crs?}', '&amp;language={language?}')"/>
       </os:Url>
 
       <!-- Repeat the following for each data set, for each CRS of a dataset query example (regardless of the number of file formats -->
@@ -118,7 +118,7 @@
           <os:Tags></os:Tags>
           <os:Contact><xsl:value-of select="//feedback/email"/></os:Contact>
           <os:LongName><xsl:value-of select="//site/organization"/></os:LongName>
-          <os:Language><xsl:value-of select="/root/gui/language"/></os:Language>
+          <os:Language>dut</os:Language>
         </xsl:otherwise>
       </xsl:choose>
     </os:OpenSearchDescription>

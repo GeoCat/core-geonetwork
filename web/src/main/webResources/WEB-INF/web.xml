@@ -75,6 +75,10 @@
   <filter>
     <filter-name>springSecurityFilterChain</filter-name>
     <filter-class>jeeves.config.springutil.JeevesDelegatingFilterProxy</filter-class>
+    <init-param>
+      <param-name>loginService</param-name>
+      <param-value>signin</param-value>
+    </init-param>
   </filter>
 
   <filter-mapping>
@@ -506,7 +510,7 @@
 
   <servlet>
     <servlet-name>HttpDashboardProxy</servlet-name>
-    <servlet-class>org.fao.geonet.proxy.URITemplateProxyServlet</servlet-class>
+    <servlet-class>org.mitre.dsmiley.httpproxy.ProxyServlet</servlet-class>
     <init-param>
       <param-name>targetUri</param-name>
       <param-value>${kb.url}</param-value>

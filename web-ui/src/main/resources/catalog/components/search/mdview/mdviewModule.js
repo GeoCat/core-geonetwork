@@ -414,6 +414,15 @@
               if (f != undefined) {
                 $scope.currentFormatter = f.replace(/.*(\/formatters.*)/, "$1");
                 $scope.loadFormatter(f);
+              } else {
+                if (
+                  $scope.mdView.current.record.documentStandard !== "iso19110" ||
+                  $scope.mdView.current.record.related.uuids
+                ) {
+                  $scope.infoTabs.relations = { active: true };
+                } else {
+                  $scope.infoTabs.general = { active: true };
+                }
               }
             });
         }

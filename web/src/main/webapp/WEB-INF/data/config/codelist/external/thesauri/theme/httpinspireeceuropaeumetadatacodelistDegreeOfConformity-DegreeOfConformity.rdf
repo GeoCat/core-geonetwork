@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <skos:ConceptScheme xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/DegreeOfConformity">
+
+    <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/" xml:lang="nl">Conformiteitsindicatie</dc:title>
+    <dcterms:issued xmlns:dcterms="http://purl.org/dc/terms/">2018-12-03T22:48:50</dcterms:issued>
+    <dcterms:modified xmlns:dcterms="http://purl.org/dc/terms/">2018-12-03T22:48:50</dcterms:modified>
+  </skos:ConceptScheme>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/DegreeOfConformity/conformant">
+    <skos:prefLabel xml:lang="en">Conformant</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">The resource is fully conformant with the cited specification.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Conform</skos:prefLabel>
+    <skos:scopeNote xml:lang="nl">De bron is volledig conform de specificatie.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/DegreeOfConformity" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/DegreeOfConformity/notConformant">
+    <skos:prefLabel xml:lang="en">Not Conformant</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">The resource does not conform to the cited specification.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Niet conform</skos:prefLabel>
+    <skos:scopeNote xml:lang="nl">De bron is niet conform de specificatie.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/DegreeOfConformity" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/DegreeOfConformity/notEvaluated">
+    <skos:prefLabel xml:lang="en">Not evaluated</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Conformance has not been evaluated.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Niet beoordeeld</skos:prefLabel>
+    <skos:scopeNote xml:lang="nl">De conformiteit is niet beoordeeld.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/DegreeOfConformity" />
+  </skos:Concept>
+</rdf:RDF>
+

@@ -87,7 +87,10 @@
         link: function ($scope) {
           $scope.pagesMenu = [];
 
-          if ($scope.section === "header" || $scope.section === "footer") {
+          if ($scope.section === "menu") {
+            $scope.pagesConfig =
+              gnGlobalSettings.gnCfg.mods["header"][$scope.section + "CustomMenu"];
+          } else if ($scope.section === "header" || $scope.section === "footer") {
             $scope.pagesConfig =
               gnGlobalSettings.gnCfg.mods[$scope.section][$scope.section + "CustomMenu"];
             if ($scope.pagesConfig && $scope.pagesConfig.length === 0) {

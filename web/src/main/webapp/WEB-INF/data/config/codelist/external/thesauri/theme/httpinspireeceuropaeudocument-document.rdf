@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <skos:ConceptScheme xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document">
+
+    <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/" xml:lang="nl">INSPIRE referentie documenten register</dc:title>
+    <dcterms:issued xmlns:dcterms="http://purl.org/dc/terms/">2018-11-08T17:53:06</dcterms:issued>
+    <dcterms:modified xmlns:dcterms="http://purl.org/dc/terms/">2018-11-08T17:53:06</dcterms:modified>
+  </skos:ConceptScheme>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/ASPRS">
+    <skos:prefLabel xml:lang="en">American Society for Photogrammetry and Remote Sensing (ASPRS). LAS SPECIFICATION, VERSION 1.3 – R11, OCTOBER 24, 2010</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/ICS">
+    <skos:prefLabel xml:lang="en">Cohen, K.M., Finney, S. &amp; Gibbard, P.L., International Chronostratigraphic Chart, August 2012, International Commission on Stratigraphy of the International Union of Geological Sciences, 2012 Data providers may use the additional values for Pre-Cambrian rocks and Quaternary units specified in the INSPIRE Technical Guidance document on Geology.</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/EC11562008">
+    <skos:prefLabel xml:lang="en">Annex II to Regulation (EC) No 1165/2008</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/ASFIS">
+    <skos:prefLabel xml:lang="en">ASFIS (Aquatic Sciences and Fisheries Information System) List of Species for Fishery Statistics Purposes published by the Food and Agriculture Organization of the United Nations</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/EEZS">
+    <skos:prefLabel xml:lang="en">Descriptions of the European, Environmental Zones and Strata, Wageningen, 2012.</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/EC562008">
+    <skos:prefLabel xml:lang="en">DIRECTIVE 2008/56/EC OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 17 June 2008</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/BGR">
+    <skos:prefLabel xml:lang="en">Codes for the classification of bio-geographical regions, as specified in the Code List for Bio-geographical Regions, Europe 2011, published on the web site of the European Environment Agency.</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/FLORAEU">
+    <skos:prefLabel xml:lang="en">Map of the natural vegetation of Europe: scale 1:2,500,000, Part 2: Legend, Bundesamt für Naturschutz (German Federal Agency for Nature conservation), Bonn, 2000.</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/EUNIShab">
+    <skos:prefLabel xml:lang="en">Classification of habitat types according to the EUNIS Biodiversity database, as specified in the EUNIS habitat types classification published on the web site of the European Environment Agency.</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/HabDir">
+    <skos:prefLabel xml:lang="en">Classification of habitat types according to Annex I to Directive 92/43/EEC</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/MSFHabDir">
+    <skos:prefLabel xml:lang="en">Classification of habitat types according to table 1 of Annex III to Directive 2008/56/EC</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/SCDWHO">
+    <skos:prefLabel xml:lang="en">10th Revision of the International Statistical Classification of Diseases and Related Health Problems, published by the World Health Organization</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/CoD">
+    <skos:prefLabel xml:lang="en">European Shortlist for Causes of Death published by Eurostat</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/FaoMaster">
+    <skos:prefLabel xml:lang="en">Guidelines for soil description, 4th edition, Food and Agriculture Organization of the United Nations, Rome, 2006, pp. 67-71</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/FaoSub">
+    <skos:prefLabel xml:lang="en">Guidelines for soil description, 4th edition, Food and Agriculture Organization of the United Nations, Rome, 2006, pp. 71-75</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/FaoPrime">
+    <skos:prefLabel xml:lang="en">Guidelines for soil description, 4th edition, Food and Agriculture Organization of the United Nations, Rome, 2006, pp. 77</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/WRBQuP">
+    <skos:prefLabel xml:lang="en">World reference base for soil resources 2006, first update 2007, World Soil Resources Reports No. 103, Food and Agriculture Organization of the United Nations, Rome, 2007 (p. 51-66)</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/WRBQu">
+    <skos:prefLabel xml:lang="en">World reference base for soil resources 2006, first update 2007, World Soil Resources Reports No. 103, Food and Agriculture Organization of the United Nations, Rome, 2007 (p. 97-107)</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/WRBRef">
+    <skos:prefLabel xml:lang="en">World reference base for soil resources 2006, first update 2007, World Soil Resources Reports No. 103, Food and Agriculture Organization of the United Nations, Rome, 2007 (p. 51-66)</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/WRBSpec">
+    <skos:prefLabel xml:lang="en">World reference base for soil resources 2006, first update 2007, World Soil Resources Reports No. 103, Food and Agriculture Organization of the United Nations, Rome, 2007 (p. 107)</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/Article17">
+    <skos:prefLabel xml:lang="en">Population units as part of NATURA 2000 Reference Portal for Art.17.</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/EUNISSpec">
+    <skos:prefLabel xml:lang="en">Reference lists containing the EUNIS species identifiers, as specified in EUNIS Biodiversity database published on the web site of the European Environment Agency.</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/EUNomen">
+    <skos:prefLabel xml:lang="en">Pan-European Species directories Infrastructure available through the EU-Nomen portal</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/Natura2000">
+    <skos:prefLabel xml:lang="en">Reference Portal for Natura 2000 as defined in Commission Implementing Decision 2011/484/EU</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/Nace">
+    <skos:prefLabel xml:lang="en">Economic activities according to Eurostat NACE Classification values, as specified in Regulation (EC) No 1893/2006 of the European Parliament and of the Council</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/WasteStat">
+    <skos:prefLabel xml:lang="en">Classification of economic activities according to Section 8 of Annex I of Regulation (EC) No 2150/2002</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/StatProd">
+    <skos:prefLabel xml:lang="en">Classification of Economical Products by Economical Activity according to Regulation (EC) No 451/2008 of the European Parliament and of the Council.</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/WasteRec">
+    <skos:prefLabel xml:lang="en">Classification of waste recovery and disposal operations according to Annexes I and II of Directive 2008/98/EC of the European Parliament and of the Council</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/WasteHaz">
+    <skos:prefLabel xml:lang="en">Classification of Wastes according to Decision 2000/532/EC</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/CFSNames">
+    <skos:prefLabel xml:lang="en">British Oceanographic Data Centre (BODC) Climate and Forecast Standard Names</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/BODC">
+    <skos:prefLabel xml:lang="en">British Oceanographic Data Centre (BODC)</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/document/CountryCode">
+    <skos:prefLabel xml:lang="en">Country Named Authority List from the Metadata Registry of the Publications Office</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/document" />
+  </skos:Concept>
+</rdf:RDF>
+

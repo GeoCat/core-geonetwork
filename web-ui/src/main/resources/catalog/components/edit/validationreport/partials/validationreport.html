@@ -90,7 +90,7 @@
             </span>
             <span
               class="label pull-right label-success gn-margin-bottom-sm col-md-12"
-              data-ng-if="type.total !== '?' && type.success !== '?'"
+              data-ng-if="type.total !== '?' && type.success !== '?' && type.success !== '0'"
             >
               <ng-pluralize
                 count="type.success"
@@ -157,7 +157,7 @@
             </span>
             <span
               class="label pull-right label-success gn-margin-bottom-sm col-md-12"
-              data-ng-if="type.total !== '?' && type.success !== '?'"
+              data-ng-if="type.total !== '?' && type.success !== '?' && type.success !== '0'"
             >
               <ng-pluralize
                 count="type.success"
@@ -202,7 +202,6 @@
         <div class="panel-body" data-ng-if="type.schematronVerificationError">
           <ul class="list-group">
             <li class="list-group-item text-danger">
-              <p data-translate="">validationServiceErrorHeader</p>
               <p>{{type.schematronVerificationError}}</p>
               <p data-translate="">validationServiceErrorDetail</p>
             </li>
@@ -221,7 +220,8 @@
               data-ng-show="(showErrors && rule.type === 'error') || (showSuccess && rule.type === 'success')"
               data-ng-class="rule.type !== 'error' ? '' : (type.requirement === 'REQUIRED' ? 'text-danger' : 'text-info')"
             >
-              <p data-ng-class="rule.msg ? 'text-bold' : ''">{{pattern.title}}</p>
+              <!-- Hide pattern title -->
+              <!--<p data-ng-class="rule.msg ? 'text-bold' : ''">{{pattern.title}}</p>-->
               <p data-ng-show="rule.msg" ng-bind-html="rule.msg | linky"></p>
             </li>
           </ul>

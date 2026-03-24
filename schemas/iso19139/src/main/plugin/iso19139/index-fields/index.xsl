@@ -599,7 +599,8 @@
             </thesaurus>
           </xsl:for-each-group>
 
-          <xsl:variable name="geoDescription"
+          <!-- NGR: disable indexing geographical description as a keyword -->
+          <!--<xsl:variable name="geoDescription"
                         select="//gmd:geographicElement/*/gmd:geographicIdentifier/
                                   */gmd:code[*/normalize-space(.) != '']
                                 |//gmd:EX_Extent/gmd:description[*/normalize-space(.) != '']"/>
@@ -617,7 +618,7 @@
                 </xsl:for-each>
               </keywords>
             </thesaurus>
-          </xsl:if>
+          </xsl:if>-->
         </xsl:variable>
 
         <xsl:call-template name="build-all-keyword-fields">
@@ -1075,16 +1076,18 @@
             <xsl:if test="$stepDateTimeZulu != ''">
               ,"date": "<xsl:value-of select="gmd:dateTime/gco:*/text()"/>"
             </xsl:if>
-            ,"source": [
-            <xsl:for-each select="gmd:source/*[gmd:description/gco:CharacterString != '']">
-              {
-                "descriptionObject": <xsl:value-of
-                                        select="gn-fn-index:add-multilingual-field(
-                                          'description', gmd:description, $allLanguages, true())"/>
-              }
-              <xsl:if test="position() != last()">,</xsl:if>
-            </xsl:for-each>
-            ]
+            <xsl:if test="normalize-space(gmd:source) != ''">
+              ,"source": [
+              <xsl:for-each select="gmd:source/*[gmd:description/gco:CharacterString != '']">
+                {
+                  "descriptionObject": <xsl:value-of
+                                          select="gn-fn-index:add-multilingual-field(
+                                            'description', gmd:description, $allLanguages, true())"/>
+                }
+                <xsl:if test="position() != last()">,</xsl:if>
+              </xsl:for-each>
+              ]
+            </xsl:if>
 
             <xsl:variable name="processors"
                           select="gmd:processor/*[gmd:organisationName/gco:CharacterString != '']"/>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <skos:ConceptScheme xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/QualityOfServiceCriteria">
+    <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/" xml:lang="nl">Service kwaliteits kriteria</dc:title>
+    <dcterms:issued xmlns:dcterms="http://purl.org/dc/terms/">2018-04-04T09:11:03</dcterms:issued>
+    <dcterms:modified xmlns:dcterms="http://purl.org/dc/terms/">2018-04-04T09:11:03</dcterms:modified>
+  </skos:ConceptScheme>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/QualityOfServiceCriteria/availability">
+    <skos:prefLabel xml:lang="en">availability</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">beschikbaarheid</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">The percentage of time the service is available.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/QualityOfServiceCriteria" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/QualityOfServiceCriteria/performance">
+    <skos:prefLabel xml:lang="en">performance</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">prestatie</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">How fast a request to the spatial data service can be completed.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/QualityOfServiceCriteria" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/QualityOfServiceCriteria/capacity">
+    <skos:prefLabel xml:lang="en">capacity</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">capaciteit</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">The maximum number of simultaneous requests that can be completed with the declared performance.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/QualityOfServiceCriteria" />
+  </skos:Concept>
+</rdf:RDF>
+

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <skos:ConceptScheme xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/OnLineDescriptionCode">
+    <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/" xml:lang="nl">Online description code</dc:title>
+    <dcterms:issued xmlns:dcterms="http://purl.org/dc/terms/">2018-11-08T16:25:58</dcterms:issued>
+    <dcterms:modified xmlns:dcterms="http://purl.org/dc/terms/">2018-11-08T16:25:58</dcterms:modified>
+  </skos:ConceptScheme>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/OnLineDescriptionCode/accessPoint">
+    <skos:prefLabel xml:lang="en">access point</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">The internet address used to directly call an operation provided by a spatial data service.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/OnLineDescriptionCode" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/OnLineDescriptionCode/endPoint">
+    <skos:prefLabel xml:lang="en">end point</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">An internet address containing a detailed description of a spatial data service, including a list of end points to allow its execution.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/OnLineDescriptionCode" />
+  </skos:Concept>
+</rdf:RDF>
+

@@ -153,8 +153,12 @@
           <xsl:if test="name()  != 'geonet:child'">
             <xsl:for-each select="$metadata//svrl:failed-assert[@ref=$ref]">
               <error type="{ancestor::svrl:schematron-output/@title}" gravity="{ancestor::gn:report/@gn:required}">
-                <xsl:value-of select="preceding-sibling::svrl:active-pattern[1]/@name"/> :
-                <xsl:copy-of select="svrl:text/*"/>
+                <!-- Hide pattern name from the message -->
+                <!--<xsl:value-of select="preceding-sibling::svrl:active-pattern[1]/@name"/> : -->
+                <xsl:choose>
+                  <xsl:when test="count(svrl:text/*) > 0">  <xsl:copy-of select="svrl:text/*"/></xsl:when>
+                  <xsl:otherwise><xsl:value-of select="svrl:text"/></xsl:otherwise>
+                </xsl:choose>
               </error>
             </xsl:for-each>
           </xsl:if>
@@ -180,8 +184,12 @@
           <xsl:if test="name() = 'geonet:child'">
             <xsl:for-each select="$metadata//svrl:failed-assert[@ref=$uuid]">
               <error type="{ancestor::svrl:schematron-output/@title}" gravity="{ancestor::gn:report/@gn:required}">
-                <xsl:value-of select="preceding-sibling::svrl:active-pattern[1]/@name"/> :
-                <xsl:copy-of select="svrl:text/*"/>
+                <!-- Hide pattern name from the message -->
+                <!--<xsl:value-of select="preceding-sibling::svrl:active-pattern[1]/@name"/> : -->
+                <xsl:choose>
+                  <xsl:when test="count(svrl:text/*) > 0">  <xsl:copy-of select="svrl:text/*"/></xsl:when>
+                  <xsl:otherwise><xsl:value-of select="svrl:text"/></xsl:otherwise>
+                </xsl:choose>
               </error>
             </xsl:for-each>
           </xsl:if>

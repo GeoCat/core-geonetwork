@@ -35,6 +35,23 @@
     <to type="permanent-redirect">%{context-path}/doc/api/index.html</to>
   </rule>
 
+
+
+	<!-- ngr: 3.12.x inspire csw -->
+    <rule>
+        <from>^/srv/([a-z]+)/csw-inspire(.*)$</from>
+        <to type="forward">/csw-inspire/$1/csw$2</to>
+    </rule>
+
+	<!-- ngr: old inspire csw -->
+    <rule>
+        <from>^/srv/([a-z]+)/inspire(.*)$</from>
+        <to type="forward">/csw-inspire/$1/csw$2</to>
+    </rule>
+    <rule>
+        <from>^/srv/([a-z]+)/portal.sitemap(.*)$</from>
+        <to type="forward">/srv/api/sitemap$2</to>
+    </rule>
   <!-- Rule to redirect URL to resources from RDF output -->
   <rule>
     <note>Redirect to default formatter when accessing
@@ -139,6 +156,32 @@
     </note>
     <from>^/(.*)/catalog.search\?.*uuid=(.*)</from>
     <to type="permanent-redirect">%{context-path}/#/metadata/$2</to>
+  </rule>
+
+ <rule>
+    <note>
+      Redirects to hash with search "with" any field
+      Example URL: http://localhost:8080/geonetwork?any=da165110-88fd-11da-a88f-000d939bc5d8
+    </note>
+    <from>^/(.*)/catalog.search\?.*any=(.*)</from>
+    <to type="permanent-redirect">%{context-path}/#/search?any=$2</to>
+  </rule>
+  
+  <rule>
+    <note>
+        XML Metadata Get
+    </note>
+    <from>^/(.*)/(.*)/xml.metadata.get\?uuid=(.*)$</from>
+    <to type="forward">/srv/api/records/$3/formatters/xml</to>
+  </rule>
+
+  <!-- OLD Q service replacement used by OpenData portal -->
+  <rule>
+    <note>
+      Q API
+    </note>
+    <from>^/(.*)/(.*)/q\?(.*)$</from>
+    <to type="forward">/srv/api/searchq</to>
   </rule>
 
   <rule>

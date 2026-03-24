@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:ns3="http://purl.org/dc/elements/1.1/"
+	xmlns:ns5="http://www.opengis.net/gml#"
+	xmlns:ns2="http://www.w3.org/2004/02/skos/core#"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+
+<rdf:Description rdf:about="VERORDENING (EU) Nr. 1089/2010 VAN DE COMMISSIE van 23 november 2010 ter uitvoering van Richtlijn 2007/2/EG van het Europees Parlement en de Raad betreffende de interoperabiliteit van verzamelingen ruimtelijke gegevens en van diensten met betrekking tot ruimtelijke gegevens"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Interoperabiliteit van datasets en services (EU VERORDENING 1089/2010)</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="VERORDENING (EG) Nr. 976/2009 VAN DE COMMISSIE van 19 oktober 2009 tot uitvoering van Richtlijn 2007/2/EG van het Europees Parlement en de Raad wat betreft de netwerkdiensten"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">VERORDENING (EG) wat betreft de netwerkdiensten</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Technical Guidance for the implementation of INSPIRE Download Services"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Download Services</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Technical Guidance for the implementation of INSPIRE View Services"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">View Services</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Addresses and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Adressen</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Administrative Units and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">Administratieve eenheden</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Cadastral Parcels and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Kadastrale percelen</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Coordinate Reference Systems and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">Systemen voor verwijzing door middel van coördinaten</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Geographical Grid Systems and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Geografisch rastersysteem</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Geographical Names and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">Geografische namen</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Hydrography and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Hydrografie</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Protected Sites and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Beschermde gebieden</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Transport Networks and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">Vervoersnetwerken</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Agricultural and Aquaculture Facilities and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Faciliteiten voor landbouw en aquacultuur</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Area Management/Restriction/Regulation Zones and Reporting Units and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">Gebiedsbeheer gebieden waar beperkingen gelden gereguleerde gebieden en rapportage-eenheden</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Atmospheric Conditions and Meteorological Geographical Features and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Atmosferische omstandigheden en Meteorologische geografische kenmerken</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Bio-geographical Regions and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">Biogeografische gebieden</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Buildings and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Gebouwen</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Elevation and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Hoogte</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Energy Resources and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">Energiebronnen</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Environmental Monitoring Facilities and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Milieubewakingsvoorzieningen</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Geology and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Geologie</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Habitats and Biotopes and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Habitats en biotopen</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Human Health and Safety and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Menselijke gezondheid en veiligheid</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Land Cover and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">Landgebruik</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Land Use and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">Bodemgebruik</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Mineral Resources and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Minerale bronnen</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Natural Risk Zones and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">Gebieden met natuurrisico’s</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Oceanographic geographical features and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Oceanografische geografische kenmerken</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Orthoimagery and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">Orthobeeldvorming</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Population Distribution and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Spreiding van de bevolking – demografie</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Production and Industrial Facilities and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">Faciliteiten voor productie en industrie</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Sea Regions and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Zeegebieden</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Soil and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">Bodem</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Species Distribution and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">Verspreiding van soorten</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Statistical Units and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Statistische eenheden</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="INSPIRE Data Specification on Utility and Government Services and Technical Guidelines"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Nutsdiensten en overheidsdiensten</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Basismodel geo-informatie (NEN3610:2011)"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">Basismodel geo-informatie</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Informatiemodel AERIUS (IMAER)"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">IM AERIUS</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Informatiemodel Archeologie (IM SIKB0102)"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">IM Archeologie</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Informatiemodel Basisregistratie Ondergrond"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">IM Basisregistratie Ondergrond</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Informatiemodel Beheer openbare ruimte (IMBOR)"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">IM Beheer openbare ruimte</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Informatiemodel berichtenverkeer Digitale Bereikbaarheidskaart"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">IM berichtenverkeer Digitale Bereikbaarheidskaart</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Informatiemodel Bodembeheer (IMSIKB0101)"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">IM Bodembeheer</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Informatiemodel IMOOV conceptueel model"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">IMOOV conceptueel model</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Informatiemodel IMOOV UML model"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">IMOOV UML model</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Informatiemodel Kabels en Leidingen (IMKL)"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">IM Kabels en Leidingen</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Informatiemodel Kadaster (IMKAD)"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">IM Kadaster</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Informatiemodel Landelijk Gebied (IMLG)"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">IM Landelijk Gebied</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Informatiemodel Metingen (IM Metingen)"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">IM Metingen</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Informatiemodel Natuurbeheerplannen (IMNA)"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">IM Natuurbeheerplannen</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Informatiemodel Ruimtelijke Ordening (IMRO2012)"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">IM Ruimtelijke Ordening</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Informatiemodel Ruimtelijke Ordening Planteksten (IMROPT2012)"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">IM Ruimtelijke Ordening Planteksten</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Informatiemodel Stedelijk Water (IMSW)"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">IM Stedelijk Water</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Informatiemodel TOP10NL"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>  <ns2:prefLabel xml:lang="nl">IM TOP10NL</ns2:prefLabel>
+</rdf:Description>
+<rdf:Description rdf:about="Informatiemodel Water (IMWA)"><rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>   <ns2:prefLabel xml:lang="nl">IM Water</ns2:prefLabel>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://geonetwork-opensource.org/domainspecifications">
+	<rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+	<ns3:title xml:lang="nl">Domein specificaties</ns3:title>
+</rdf:Description>
+
+
+</rdf:RDF>

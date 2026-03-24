@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <skos:ConceptScheme xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/media-types">
+    <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/" xml:lang="nl">INSPIRE media-typen register</dc:title>
+    <dcterms:issued xmlns:dcterms="http://purl.org/dc/terms/">2018-11-08T17:57:25</dcterms:issued>
+    <dcterms:modified xmlns:dcterms="http://purl.org/dc/terms/">2018-11-08T17:57:25</dcterms:modified>
+  </skos:ConceptScheme>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="https://www.iana.org/assignments/media-types/application/geopackage+sqlite3">
+    <skos:prefLabel xml:lang="nl">geopackage+sqlite3</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/media-types" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://www.iana.org/assignments/media-types/application/gml+xml">
+    <skos:prefLabel xml:lang="nl">gml+xml</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/media-types" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://www.iana.org/assignments/media-types/application/vnd.google-earth.kml+xml">
+    <skos:prefLabel xml:lang="nl">vnd.google-earth.kml+xml</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/media-types" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://www.iana.org/assignments/media-types/application/vnd.google-earth.kmz">
+    <skos:prefLabel xml:lang="nl">vnd.google-earth.kmz</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/media-types" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="https://www.iana.org/assignments/media-types/application/vnd.sqlite3">
+    <skos:prefLabel xml:lang="nl">vnd.sqlite3</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/media-types" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/media-types/application/x-ascii-grid">
+    <skos:prefLabel xml:lang="nl">x-ascii-grid</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/media-types" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/media-types/application/x-ecw">
+    <skos:prefLabel xml:lang="nl">x-ecw</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/media-types" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/media-types/application/x-filegdb">
+    <skos:prefLabel xml:lang="nl">x-filegdb</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/media-types" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/media-types/application/x-gmz">
+    <skos:prefLabel xml:lang="nl">x-gmz</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/media-types" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/media-types/application/x-las">
+    <skos:prefLabel xml:lang="nl">x-las</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/media-types" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/media-types/application/x-laz">
+    <skos:prefLabel xml:lang="nl">x-laz</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/media-types" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/media-types/application/x-oracledump">
+    <skos:prefLabel xml:lang="nl">x-oracledump</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/media-types" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/media-types/application/x-shapefile">
+    <skos:prefLabel xml:lang="nl">x-shapefile</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/media-types" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/media-types/application/x-tab">
+    <skos:prefLabel xml:lang="nl">x-tab</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/media-types" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/media-types/application/x-tab-raster">
+    <skos:prefLabel xml:lang="nl">x-tab-raster</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/media-types" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/media-types/application/x-worldfile">
+    <skos:prefLabel xml:lang="nl">x-worldfile</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/media-types" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://www.iana.org/assignments/media-types/image/jp2">
+    <skos:prefLabel xml:lang="nl">jp2</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/media-types" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://www.iana.org/assignments/media-types/image/tiff">
+    <skos:prefLabel xml:lang="nl">tiff</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/media-types" />
+  </skos:Concept>
+</rdf:RDF>
+

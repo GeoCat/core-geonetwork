@@ -33,6 +33,7 @@
   <context:annotation-config/>
 
   <context:property-placeholder location="${app.properties},file://#{systemEnvironment['geonetwork_dir']}/config/app.properties"
+                                order="1"
                                 ignore-unresolvable="true"
                                 ignore-resource-not-found="true"
                                 file-encoding="UTF-8"/>
@@ -168,7 +169,7 @@
     <bean class="org.fao.geonet.api.records.extent.ExpandFactor"
           p:proportion=".01" p:factor=".5"/>
     <bean class="org.fao.geonet.api.records.extent.ExpandFactor"
-          p:proportion=".015" p:factor=".2"/>
+          p:proportion=".015" p:factor=".1"/>
   </util:set>
 
 
@@ -232,6 +233,14 @@
   <util:map id="regionGetMapBackgroundLayers">
     <entry key="osm"
            value="\${map.bbox.background.service}"/>
+    <!--<entry key="nationaalgeoregister"
+           value="https://geodata.nationaalgeoregister.nl/bestuurlijkegrenzen/wms?SERVICE=WMS&amp;LAYERS=provincies&amp;SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetMap&amp;STYLES=&amp;FORMAT=image/png&amp;EXCEPTIONS=application/vnd.ogc.se_inimage&amp;SRS={SRS}&amp;BBOX={MINX},{MINY},{MAXX},{MAXY}&amp;WIDTH={WIDTH}&amp;HEIGHT={HEIGHT}"/>-->
+	<entry key='nationaalgeoregister'
+           value='{
+                    "wmtsGetCapabilitiesURL": "https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0?request=GetCapabilities&amp;service=WMTS",
+                    "layerName":"standaard"
+                  }'
+    />
   </util:map>
 
     <bean class="org.fao.geonet.kernel.datamanager.draft.DraftMetadataIndexer"/>
@@ -273,8 +282,7 @@
     <entry key="gnui">
       <util:list>
         <value>json/gnui</value>
-        <value>standards/iso19139/codelists/gmd:MD_TopicCategoryCode+gmd:MD_ScopeCode+gmd:MD_MaintenanceFrequencyCode+gmd:MD_ProgressCode+gmd:DS_InitiativeTypeCode+gmd:MD_SpatialRepresentationTypeCode</value>
-        <value>standards/iso19115-3.2018/codelists/cit:CI_DateTypeCode</value>
+        <value>standards/iso19139/codelists/gmd:MD_TopicCategoryCode+gmd:MD_ScopeCode+gmd:MD_MaintenanceFrequencyCode+gmd:MD_ProgressCode+gmd:DS_InitiativeTypeCode+gmd:MD_SpatialRepresentationTypeCode+gmd:CI_RoleCode+gmd:CI_DateTypeCode+indeterminatePosition</value>
         <value>db/MetadataCategory+Operation+Group+StatusValue+Source+Translations</value>
       </util:list>
     </entry>
@@ -287,9 +295,8 @@
       <util:list>
         <value>json/core+search+v4+custom</value>
         <value>json/schemas</value>
-        <value>standards/iso19139/codelists/gmd:MD_TopicCategoryCode+gmd:MD_ScopeCode+gmd:MD_MaintenanceFrequencyCode+gmd:MD_ProgressCode+gmd:MD_SpatialRepresentationTypeCode</value>
-        <value>standards/iso19115-3.2018/codelists/cit:CI_DateTypeCode+indeterminatePosition+mri:DS_InitiativeTypeCode+mri:DS_AssociationTypeCode+cit:CI_RoleCode</value>
-        <value>standards/iso19139/labels/gmd:DQ_ThematicClassificationCorrectness+gmd:DQ_AbsoluteExternalPositionalAccuracy+gmd:DQ_AccuracyOfATimeMeasurement+gmd:DQ_CompletenessCommission+gmd:DQ_CompletenessOmission+gmd:DQ_ConceptualConsistency+gmd:DQ_ConformanceResult+gmd:DQ_DataQuality+gmd:DQ_DomainConsistency+gmd:DQ_EvaluationMethodTypeCode+gmd:DQ_FormatConsistency+gmd:DQ_GriddedDataPositionalAccuracy+gmd:DQ_NonQuantitativeAttributeAccuracy+gmd:DQ_QuantitativeAttributeAccuracy+gmd:DQ_RelativeInternalPositionalAccuracy+gmd:DQ_TemporalConsistency+gmd:DQ_TemporalValidity+gmd:DQ_ThematicClassificationCorrectness+gmd:DQ_TopologicalConsistency</value>
+        <value>standards/iso19139/codelists/gmd:MD_TopicCategoryCode+gmd:MD_ScopeCode+gmd:MD_MaintenanceFrequencyCode+gmd:MD_ProgressCode+gmd:MD_SpatialRepresentationTypeCode+gmd:CI_RoleCode+gmd:CI_DateTypeCode+indeterminatePosition</value>
+        <value>standards/iso19115-3.2018/codelists/mri:DS_InitiativeTypeCode+mri:DS_AssociationTypeCode</value>
         <value>db/MetadataCategory+Operation+Group+StatusValue+Source+Translations</value>
       </util:list>
     </entry>
@@ -304,8 +311,8 @@
       <util:list>
         <value>json/core+search+editor+v4+custom</value>
         <value>json/schemas</value>
-        <value>standards/iso19139/codelists/gmd:MD_TopicCategoryCode+gmd:MD_ScopeCode+gmd:MD_MaintenanceFrequencyCode+gmd:MD_ProgressCode+gmd:MD_SpatialRepresentationTypeCode</value>
-        <value>standards/iso19115-3.2018/codelists/cit:CI_DateTypeCode+indeterminatePosition+mri:DS_InitiativeTypeCode+mri:DS_AssociationTypeCode+cit:CI_RoleCode</value>
+        <value>standards/iso19139/codelists/gmd:MD_TopicCategoryCode+gmd:MD_ScopeCode+gmd:MD_MaintenanceFrequencyCode+gmd:MD_ProgressCode+gmd:MD_SpatialRepresentationTypeCode+gmd:CI_RoleCode+gmd:CI_DateTypeCode+indeterminatePosition</value>
+        <value>standards/iso19115-3.2018/codelists/mri:DS_InitiativeTypeCode+mri:DS_AssociationTypeCode</value>
         <value>db/MetadataCategory+Operation+Group+StatusValue+Source+Translations</value>
       </util:list>
     </entry>

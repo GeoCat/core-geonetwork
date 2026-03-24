@@ -61,7 +61,9 @@
                     data-gn-humanize-time="{{md.changeDate}}"
                     data-from-now=""
                   ></small>
-
+                  <small class="text-muted"
+                    ><i>Profiel: {{md.documentStandard}}</i></small
+                  >
                   <span data-ng-if="displayWorkflowStatus(md)">
                     &centerdot;
                     <small
@@ -77,13 +79,13 @@
                       >
                     </small>
 
-                    <small
-                      class="text-muted gn-status"
+                    <!--<small
+                    class="text-muted gn-status"
                       data-ng-class="text-warning"
                       data-ng-if="!md.mdStatus"
-                      data-ng-translate=""
-                      >{{'status-no-status' | translate}}</small
-                    >
+                    data-ng-translate=""
+                    >{{'status-no-status' | translate}}</small
+                  >-->
                   </span>
                 </div>
               </div>
@@ -111,7 +113,7 @@
               <a
                 class="btn btn-default"
                 data-ng-show="user.canEditRecord(md) && md.isTemplate != 's'
-                              && (user.isReviewerOrMore() || md.mdStatus != 4 || !isMdWorkflowEnable)"
+                             && (user.isReviewerOrMore() || md.mdStatus != 4 || !isMdWorkflowEnable)"
                 data-ng-href="#/metadata/{{mdService.getMetadataIdToEdit(md)}}?redirectUrl=catalog.edit"
                 title="{{'edit' | translate}}"
               >
@@ -121,8 +123,8 @@
                 class="btn btn-default"
                 href=""
                 data-ng-show="(!md.isPublished() || (md.isPublished() && user.canDeletePublishedMetadata())) && user.canEditRecord(md) && md.isTemplate != 's'
-                              && (user.isReviewerOrMore() || md.mdStatus != 4 || !isMdWorkflowEnable)
-                              && md.draft != 'e'"
+                             && (user.isReviewerOrMore() || md.mdStatus != 4 || !isMdWorkflowEnable)
+                             && md.draft != 'e'"
                 data-ng-click="removeMetadata(md)"
                 title="{{'delete' | translate}}"
               >

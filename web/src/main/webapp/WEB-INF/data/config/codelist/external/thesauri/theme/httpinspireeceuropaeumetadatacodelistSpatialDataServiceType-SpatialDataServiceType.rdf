@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <skos:ConceptScheme xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceType">
+    <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/" xml:lang="nl">Type dienst met betrekking tot ruimtelijke gegevens</dc:title>
+    <dcterms:issued xmlns:dcterms="http://purl.org/dc/terms/">2018-04-04T09:35:02</dcterms:issued>
+    <dcterms:modified xmlns:dcterms="http://purl.org/dc/terms/">2018-04-04T09:35:02</dcterms:modified>
+  </skos:ConceptScheme>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceType/discovery">
+    <skos:prefLabel xml:lang="nl">Zoekdienst</skos:prefLabel>
+    <skos:scopeNote xml:lang="nl">Diensten die het mogelijk maken verzamelingen ruimtelijke gegevens en diensten met betrekking tot ruimtelijke gegevens op te zoeken op basis van de inhoud van de overeenkomstige metagegevens, en de inhoud van de metagegevens weer te geven.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceType" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceType/view">
+    <skos:prefLabel xml:lang="nl">Raadpleegdienst</skos:prefLabel>
+    <skos:scopeNote xml:lang="nl">Diensten die het minstens mogelijk maken raadpleegbare verzamelingen ruimtelijke gegevens weer te geven, in deze verzamelingen te navigeren, in of uit te zoomen, panoramisch of met overlays weer te geven en om de verklaring van de informatie en de relevantie van de metagegevens weer te geven.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceType" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceType/download">
+    <skos:prefLabel xml:lang="nl">Downloaddienst</skos:prefLabel>
+    <skos:scopeNote xml:lang="nl">Diensten die het mogelijk maken kopieën van verzamelingen ruimtelijke gegevens geheel of gedeeltelijk te downloaden en er, waar praktisch mogelijk, rechtstreeks toegang toe te hebben.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceType" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceType/transformation">
+    <skos:prefLabel xml:lang="nl">Verwerkingsdienst</skos:prefLabel>
+    <skos:scopeNote xml:lang="nl">Diensten die het mogelijk maken verzamelingen ruimtelijke gegevens te veranderen om tot interoperabiliteit te komen.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceType" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceType/invoke">
+    <skos:prefLabel xml:lang="nl">Oproepdienst</skos:prefLabel>
+    <skos:scopeNote xml:lang="nl">Diensten die het mogelijk maken zowel de input als de output van gegevens omtrent diensten te definiëren, alsook een workflowketen die vele diensten combineert. Ook de externe webdiensteninterface van de workflowketen kan worden gedefinieerd.</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceType" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceType/other">
+    <skos:prefLabel xml:lang="nl">Andere dienst</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceType" />
+  </skos:Concept>
+</rdf:RDF>
+

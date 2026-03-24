@@ -46,18 +46,22 @@
         <xsl:variable name="nodeName"
                       select="util:getNodeName('', $lang, true())"/>
 
-        <xsl:variable name="htmlHeadTitle"
+        <!--<xsl:variable name="htmlHeadTitle"
                       select="if ($discoveryServiceRecordUuid != '')
                               then util:getIndexField(
-                                        string($lang),
+                                        $lang,
                                         $discoveryServiceRecordUuid,
                                         'resourceTitleObject',
-                                        string($lang))
+                                        $lang)
                               else if (contains($nodeName, '|'))
                               then substring-before($nodeName, '|')
-                              else $nodeName"/>
+                              else $nodeName"/>-->
 
-
+        <xsl:variable name="htmlHeadTitle"
+          select="if (contains($nodeName, '|'))
+          then substring-before($nodeName, '|')
+          else $nodeName"/>
+        
         <xsl:variable name="htmlHeadDescription"
                       select="if ($discoveryServiceRecordUuid != '')
                               then util:getIndexField(
@@ -99,7 +103,7 @@
       -->
       <body data-ng-controller="GnCatController" data-ng-class="[isHeaderFixed ? 'gn-header-fixed' : 'gn-header-relative', isLogoInHeader ? 'gn-logo-in-header' : 'gn-logo-in-navbar', isFooterEnabled ? 'gn-show-footer' : 'gn-hide-footer']">
 
-        <div data-gn-alert-manager=""/>
+        <div data-gn-alert-manager=""></div>
 
         <xsl:choose>
           <xsl:when test="ends-with($service, 'nojs')">

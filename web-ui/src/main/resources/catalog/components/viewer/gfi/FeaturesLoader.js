@@ -131,6 +131,34 @@
       layer.infoFormat = infoFormat;
     }
 
+    var fixXlinkNamespace = function (data) {
+      var xml = $.parseXML(data);
+
+      var gmlNodeNamesToCheck = ["MultiPolygon", "Polygon"];
+
+      for (var i = 0; i < gmlNodeNamesToCheck.length; i++) {
+        var nodes = xml.getElementsByTagNameNS(
+          "http://www.opengis.net/gml",
+          gmlNodeNamesToCheck[i]
+        );
+
+        if (nodes.length > 0) {
+          if (
+            nodes[0].parentElement &&
+            nodes[0].parentElement.attributes &&
+            nodes[0].parentElement.attributes.hasOwnProperty("xmlns:xlink")
+          ) {
+            nodes[0].parentElement.attributes.removeNamedItem("xmlns:xlink");
+            data = new XMLSerializer().serializeToString(xml);
+
+            break;
+          }
+        }
+      }
+
+      return data;
+    };
+
     var uri = layer
       .getSource()
       .getFeatureInfoUrl(
@@ -151,7 +179,10 @@
       })
       .then(
         function (response) {
-          if (infoFormat && infoFormat.match(/application\/(geo|geo\+)?json/i) != null) {
+          if (
+            infoFormat &&
+            infoFormat.match(/application\/(geo|geo\+){0,1}json/i) != null
+          ) {
             var jsonf = new ol.format.GeoJSON();
             var features = [];
             response.data.features.forEach(function (f) {
@@ -163,7 +194,12 @@
             infoFormat.match(/application\/vnd.ogc.gml|text\/xml/i) != null
           ) {
             var format = new ol.format.WMSGetFeatureInfo();
-            this.features = format.readFeatures(response.data, {
+
+            // Some servers return xmlns:xlink namespace in the geometry container, causing issues with the parsing of the xml
+            // for polygon features
+            var data = fixXlinkNamespace(response.data);
+
+            this.features = format.readFeatures(data, {
               featureProjection: map.getView().getProjection()
             });
           } else {
@@ -172,7 +208,12 @@
 
             //Try anyway with the default one and cross fingers
             var format = new ol.format.WMSGetFeatureInfo();
-            this.features = format.readFeatures(response.data, {
+
+            // Some servers return xmlns:xlink namespace in the geometry container, causing issues with the parsing of the xml
+            // for polygon features
+            var data = fixXlinkNamespace(response.data);
+
+            this.features = format.readFeatures(data, {
               featureProjection: map.getView().getProjection()
             });
           }

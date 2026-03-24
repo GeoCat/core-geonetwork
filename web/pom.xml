@@ -1327,6 +1327,18 @@
         <env>inspire</env>
       </properties>
     </profile>
+    <profile>
+      <id>env-prod-ngr</id>
+      <activation> <!-- -Denv=prod-ngr -->
+        <property>
+          <name>env</name>
+          <value>prod-ngr</value>
+        </property>
+      </activation>
+      <properties>
+        <env>prod-ngr</env>
+      </properties>
+    </profile>
 
     <profile>
       <id>with-doc</id>

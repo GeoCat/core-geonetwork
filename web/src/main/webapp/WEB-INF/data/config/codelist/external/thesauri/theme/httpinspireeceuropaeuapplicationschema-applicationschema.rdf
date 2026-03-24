@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <skos:ConceptScheme xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema">
+    <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/" xml:lang="nl">INSPIRE applicatie schema register</dc:title>
+    <dcterms:issued xmlns:dcterms="http://purl.org/dc/terms/">2018-11-14T11:33:48</dcterms:issued>
+    <dcterms:modified xmlns:dcterms="http://purl.org/dc/terms/">2018-11-14T11:33:48</dcterms:modified>
+  </skos:ConceptScheme>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/ompr">
+    <skos:prefLabel xml:lang="en">Processes</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Application Schema for Processes</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Processen</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/ad">
+    <skos:prefLabel xml:lang="en">Addresses</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Adressen</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/au">
+    <skos:prefLabel xml:lang="en">Administrative Units</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Administratieve Eenheden</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/mu">
+    <skos:prefLabel xml:lang="en">Maritime Units</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Maritieme Eenheden</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/af">
+    <skos:prefLabel xml:lang="en">Agricultural and Aquaculture Facilities Model</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Landbouw- En Aquacultuurvoorzieningen</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/am">
+    <skos:prefLabel xml:lang="en">Area Management Restriction and Regulation Zones</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">The Area Management Restriction and Regulation Zones application schema contains the spatial object that represents zones or areas established to protect the environment via management, restriction or regulation.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Gebiedsbeheer/Gebieden Waar Beperkingen Gelden/Gereguleerde Gebieden En Rapportage-Eenheden</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/ac-mf">
+    <skos:prefLabel xml:lang="en">Atmospheric Conditions and Meteorological Geographical Features</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Atmosferische Omstandigheden En Meteorologische Geografische Kenmerken</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/br">
+    <skos:prefLabel xml:lang="en">Bio-geographical Regions</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Biogeografische Gebieden</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/bu-core2d">
+    <skos:prefLabel xml:lang="en">Building 2D</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">The 2D application schema for INSPIRE theme buildings.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Gebouwen 2D</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/bu-core3d">
+    <skos:prefLabel xml:lang="en">Building 3D</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">The 3D application schema for INSPIRE theme buildings.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Gebouwen 3D</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/bu-base">
+    <skos:prefLabel xml:lang="en">Building Base</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">The base application schema for INSPIRE theme buildings.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Gebouwenbasis</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/cp">
+    <skos:prefLabel xml:lang="en">Cadastral Parcels</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">The application schema CadastralParcels contains the feature types CadastralParcel, CadastralBoundary and CadastralIndexSet.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Kadastrale Percelen</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/el-bas">
+    <skos:prefLabel xml:lang="en">Elevation - Base Types</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Elevation - Base Types application schema.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Hoogte – Basistypes</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/el-cov">
+    <skos:prefLabel xml:lang="en">Elevation - Grid Coverage</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Elevation - Grid Coverage application schema.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Hoogte – raster-coverage.</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/el-tin">
+    <skos:prefLabel xml:lang="en">Elevation - TIN</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Elevation - TIN application schema.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Hoogte - TIN</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/el-vec">
+    <skos:prefLabel xml:lang="en">Elevation - Vector Elements</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Elevation - Vector Elements application schema.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Hoogte - Vectorelementen</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/er-b">
+    <skos:prefLabel xml:lang="en">Energy Resources Base</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Energiebronnenbasis</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/er-c">
+    <skos:prefLabel xml:lang="en">Energy Resources Coverage</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Energiebronnen Coverage</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/er-v">
+    <skos:prefLabel xml:lang="en">Energy Resources Vector</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Energiebronnenvector</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/ef">
+    <skos:prefLabel xml:lang="en">Environmental Monitoring Facilities</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Milieubewakingsvoorzieningen</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/act-core">
+    <skos:prefLabel xml:lang="en">Activity Complex</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Activiteitencomplex</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/base">
+    <skos:prefLabel xml:lang="en">Base Types</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">schema for basic types used by multiple themes</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Basistypes</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/base2">
+    <skos:prefLabel xml:lang="en">Base Types 2</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">schema for additional basic types used by multiple themes</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Basistypes 2</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/cvbase">
+    <skos:prefLabel xml:lang="en">Coverages (Base)</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">base schema for coverages</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Coverages (Basis)</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/gmlcov">
+    <skos:prefLabel xml:lang="en">Coverages (Domain and Range)</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">application schema for coverages with a representation that separates domain and range</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Coverages (Domein en Bereik)</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/net">
+    <skos:prefLabel xml:lang="en">Network</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Netwerk</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/omop">
+    <skos:prefLabel xml:lang="en">Observable Properties</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Application Schema for Observable Properties</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Waarneembare Eigenschappen</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/omor">
+    <skos:prefLabel xml:lang="en">Observation References</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Application Schema for Observation References</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Waarnemingsreferenties</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/omso">
+    <skos:prefLabel xml:lang="en">Specialised Observations</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Application schema for specialist types of Observations</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Gespecialiseerde Waarnemingen</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/gn">
+    <skos:prefLabel xml:lang="en">Geographical Names</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Geografische Namen</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/ge">
+    <skos:prefLabel xml:lang="en">Geology</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Geologie</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/ge_gp">
+    <skos:prefLabel xml:lang="en">Geophysics</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Geofysica</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/ge_hg">
+    <skos:prefLabel xml:lang="en">Hydrogeology</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Hydrogeologie</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/hb">
+    <skos:prefLabel xml:lang="en">Habitats and Biotopes</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Habitats En Biotopen</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/hh">
+    <skos:prefLabel xml:lang="en">Human Health</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Menselijke Gezondheid En Veiligheid</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/hy">
+    <skos:prefLabel xml:lang="en">Hydro - Base</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">This package provides base classes used to identify real-world objects. These identities may be used to provide implicit semantic associations between different 'implementation views'.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Hydro - Basis</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/hy-n">
+    <skos:prefLabel xml:lang="en">Hydro - Network</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">The Network application schema contains spatial objects associated with a connected hydrographic network representation of waterways, lakes etc. This is required primarily for the 'spatial analysis and modelling' Use Case.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Hydro - Netwerk</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/hy-p">
+    <skos:prefLabel xml:lang="en">Hydro - Physical Waters</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">The 'PhysicalWaters' application schema is concerned primarily with the 'mapping' Use Case</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Hydro - Fysieke</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/lcn">
+    <skos:prefLabel xml:lang="en">Land Cover Nomenclature</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Land Cover Application schema defininf common components as Normanclature and codelist.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Landbedekking Nomenclatuur</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/lcr">
+    <skos:prefLabel xml:lang="en">Land Cover Raster</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Land Cover Application schema for rasters.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Landbedekking Raster</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/lcv">
+    <skos:prefLabel xml:lang="en">Land Cover Vector</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Land Cover Application schema for vector geometries (points or polygons).</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Landbedekking Vector</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/elu">
+    <skos:prefLabel xml:lang="en">Existing Land Use</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Bestaand Landgebruik</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/gelu">
+    <skos:prefLabel xml:lang="en">Gridded Land Use</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Raster Bestaand Landgebruik</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/lunom">
+    <skos:prefLabel xml:lang="en">Land Use Nomenclature</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Nomenclatuur Landgebruik</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/plu">
+    <skos:prefLabel xml:lang="en">Planned Land Use</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Steekproef Bestaand Landgebruik</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/selu">
+    <skos:prefLabel xml:lang="en">Sampled Land Use</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Eksisterende Arealanvendelse I Stikprøven</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/mr-core">
+    <skos:prefLabel xml:lang="en">Mineral Resources</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Minerale Bronnen</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/nz-core">
+    <skos:prefLabel xml:lang="en">Natural Risk Zones</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Gebieden Met Natuurrisico's</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/of">
+    <skos:prefLabel xml:lang="en">Oceanographic Geographical Features</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Oceanografische Geografische Kenmerken</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/oi">
+    <skos:prefLabel xml:lang="en">Orthoimagery</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Orthoafbeelding</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/pd">
+    <skos:prefLabel xml:lang="en">Population Distribution - Demography</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Spreiding Van De Bevolking – Demografie</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/pf">
+    <skos:prefLabel xml:lang="en">Production and Industrial Facilities</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Productie- En Industrievoorzieningen</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/ps">
+    <skos:prefLabel xml:lang="en">Protected Sites Simple</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Beschermde Gebieden</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/sr">
+    <skos:prefLabel xml:lang="en">Sea Regions</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Physical conditions of seas and saline water bodies divided into regions and sub-regions with common characteristics. (2007/2/EC)\n\nA historical version of the theme definition is found in the INSPIRE IMS paper:\n&amp;amp;bull; Seas and saline water bodies divided into regions and sub-regions. Each region with common characteristics, concerning water flow/ circulation, adjacent river catchments, bio-chemical or temperature of water, based on scientific criteria. Detailed information at regional level exist. (INSPIRE IMS, 2003)\n\nBoth 'Oceanographic geographical features' and 'Sea-regions' are concerned with physical conditions of marine water-masses. (This is a similar overlap to that which exists for themes 7.13 "Atmospheric Conditions" and 7.14 "Meteorological geographical features".) To resolve the ambiguity, we consider the multi-level approach to data needs assessment applied in ETC. Data at local or regional level are often needed for management and policy implementation, while lower resolution ('smaller scale') data are often required for reporting and policy development/evaluation. The latter includes summaries and integrated data products.\n\nWe regard the "Sea regions" theme as focussing on the local/regional level coastal zone.\n\nWhereas 7.15 'Oceanographic geographical features' focuses on physical conditions and general circulation of offshore oceanic waters, the 'Sea regions' theme is concerned with marine features of the coastal zone ? regions defined as 'transitional waters' and 'coastal waters' in the Water Framework Directive:\n&amp;amp;bull; transitional waters: bodies of surface water in the vicinity of river mouths which are partly saline in character as a result of their proximity to coastal waters but which are substantially influenced by freshwater flows\n&amp;amp;bull; coastal waters: surface water on the landward side of a line, every point of which is at a distance of one nautical mile on the seaward side from the nearest point of the baseline from which the breadth of territorial waters is measured, extending where appropriate up to the outer limit of transitional waters\n\nThe World Meteorological Organisation also has a geometry-based sea region classification, dividing the ocean into Marsden Squares.\nBoth biotic and physical parameters and indicators are important in the classification and delineation of sea regions. Physical data requirements for important indicators defined in the WFD and the Integrated Coastal Zone Management policy are outlined in the ETC paper. These include:\n&amp;amp;bull; nutrients (nitrate, phosphate and nitrogen: phosphorus ratio) by regional sea and water body type\n&amp;amp;bull; concentrations of hazardous substances and pollutants (incl. heavy metals, persistent organic pollutants)\n&amp;amp;bull; productivity indicators (incl. surface cholorophyll-a)\n&amp;amp;bull; biological classification of waters\n&amp;amp;bull; water masses/layers characterised by bulk temperature and salinity properties\n&amp;amp;bull; polar area features (incl. pack ice)\n&amp;amp;bull; wind (climatological and meteorolog\n&amp;amp;bull; benthic parameters (sediment, benthic communities/habitats)\n&amp;amp;bull; sea level\n&amp;amp;bull; chemical species and concentrations\n&amp;amp;bull; physical characteristics (incl. temperature, salinity)\n&amp;amp;bull; currents (including surface currents)\n&amp;amp;bull; tidal zones\n&amp;amp;bull; wavesrequired</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Zeegebieden</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/so">
+    <skos:prefLabel xml:lang="en">Soil</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Bodem</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/sd">
+    <skos:prefLabel xml:lang="en">Species Distribution</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Spreiding Van Soorten</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/su-core">
+    <skos:prefLabel xml:lang="en">Statistical Units Base</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">The base package. It provides most abstract classes required to link the grid and vector view of statistical units.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Statistische Eenhedenbasis</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/su-grid">
+    <skos:prefLabel xml:lang="en">Statistical Units Grid</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Package containing classes to represent statistical grids.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Statistische Eenhedenraster</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/su-vector">
+    <skos:prefLabel xml:lang="en">Statistical Units Vector</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Package containing classes to represent statistical units with vector geometries.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Statistische Eenhedenvector</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/tn-a">
+    <skos:prefLabel xml:lang="en">Air Transport Network</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">This package defines the types that are used on the air transport subtheme.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Luchtvervoersnetwerk</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/tn-c">
+    <skos:prefLabel xml:lang="en">Cable Transport Network</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">This package defines the types that are used on the cable subtheme.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Kabelbaannetwerk</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/tn">
+    <skos:prefLabel xml:lang="en">Common Transport Elements</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">This package defines the types that are common for all transport networks subthemes.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Gemeenschappelijke Vervoerselementen</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/tn-ra">
+    <skos:prefLabel xml:lang="en">Railway Transport Network</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">This package defines the types that are used on the rail subtheme</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Spoorvervoernetwerk</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/tn-ro">
+    <skos:prefLabel xml:lang="en">Road Transport Network</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">This package defines the types that are used on the road subtheme.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Wegvervoernetwerk</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/tn-w">
+    <skos:prefLabel xml:lang="en">Water Transport Network</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">This package defines the types that are used on the water transport subtheme.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Netwerk Voor Vervoer Over Water</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/us-govserv">
+    <skos:prefLabel xml:lang="en">Administrative and Social Governmental Services</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Bestuurlijke En Maatschappelijke Instanties Van De Overheid</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/us-net-common">
+    <skos:prefLabel xml:lang="en">Common Utility Network Elements</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Common Utility Network Elements</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Gemeenschappelijke Elementen Van Openbare Nutsvoorzieningennetten</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/us-net-el">
+    <skos:prefLabel xml:lang="en">Electricity Network</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Electricity network sub-domain.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Elektriciteitsnet</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/us-emf">
+    <skos:prefLabel xml:lang="en">Environmental Management Facilities</skos:prefLabel>
+    <skos:prefLabel xml:lang="nl">Inrichtingen Milieubeheer</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/us-net-ogc">
+    <skos:prefLabel xml:lang="en">Oil-Gas-Chemicals Network</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Oil, gas &amp;amp;amp; chemicals network sub-domain.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Olie-Gas-Chemisch Netwerk</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/us-net-sw">
+    <skos:prefLabel xml:lang="en">Sewer Network</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Sewer network sub-domain.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Rioleringsnet</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/us-net-th">
+    <skos:prefLabel xml:lang="en">Thermal Network</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Thermal network sub-domain.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Thermisch Net</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/us-net-wa">
+    <skos:prefLabel xml:lang="en">Water Network</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Water network sub-domain.</skos:scopeNote>
+    <skos:prefLabel xml:lang="nl">Watervoorzieningsnet</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/hh-sa">
+    <skos:prefLabel xml:lang="en">Safety</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Safety</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+  <skos:Concept xmlns:skos="http://www.w3.org/2004/02/skos/core#" rdf:about="http://inspire.ec.europa.eu/applicationschema/er-s">
+    <skos:prefLabel xml:lang="en">Energy Statistics</skos:prefLabel>
+    <skos:scopeNote xml:lang="en">Energy Statistics</skos:scopeNote>
+    <skos:inScheme rdf:resource="http://inspire.ec.europa.eu/applicationschema" />
+  </skos:Concept>
+</rdf:RDF>
+

@@ -83,22 +83,16 @@
                           src="{nodeUrl}../images/logos/{$parameterValue}.png"/>
                   </xsl:when>
                   <xsl:when test="$parameterName = 'responsiblePartyEmail'">
-                    <h2>
-                      <xsl:value-of select="$parameterValue"/>
-                    </h2>
+                    <h4><xsl:value-of select="$parameterValue"/></h4>
                   </xsl:when>
                   <xsl:when test="$parameterName = 'topicCat' or $parameterName = 'type'">
                     <span class="">
                       <i class="fa fa-3x gn-icon gn-icon-{$parameterValue}">&#160;</i>
                     </span>
-                    <h2>
-                      <xsl:value-of select="$parameterValue"/>
-                    </h2>
+                    <h4><xsl:value-of select="$parameterValue"/></h4>
                   </xsl:when>
                   <xsl:otherwise>
-                    <h2>
-                      <xsl:value-of select="$parameterValue"/>
-                    </h2>
+                    <h4><xsl:value-of select="$parameterValue"/></h4>
                   </xsl:otherwise>
                 </xsl:choose>
               </div>
@@ -168,12 +162,7 @@
 
             <ul class="list-group gn-resultview gn-resultview-sumup">
               <xsl:for-each select="metadata">
-               <li class="list-group-item gn-grid"
-                   id="{*[name()='geonet:info']/uuid}"
-                   itemprop="dataset"
-                   itemscope="itemscope"
-                   itemtype="{gn-fn-core:get-schema-org-class(type[1])}">
-                 <meta itemprop="url" content="{$nodeUrl}api/records/{*[name()='geonet:info']/uuid}"></meta>
+               <li class="list-group-item" style="padding-right:20px">
                  <div class="row">
                    <xsl:if test="count(category) > 0">
                      <div class="gn-md-category">
@@ -191,10 +180,9 @@
                  </div>
 
                  <div class="gn-md-title">
-                   <h1 itemprop="name">
+                   <h3>
                      <a href="{$nodeUrl}api/records/{*[name()='geonet:info']/uuid}"
                         itemprop="url">
-                       <!-- <i class="fa gn-icon-{type}" title="{type}">&#160;</i> -->
                        <xsl:choose>
                          <xsl:when test="title != ''">
                            <xsl:value-of select="title"/>
@@ -204,12 +192,12 @@
                          </xsl:otherwise>
                        </xsl:choose>
                      </a>
-                   </h1>
+                   </h3>
                  </div>
 
                   <div class="clearfix">
                     <xsl:for-each select="image[1]">
-                      <div class="gn-md-thumbnail pull-left">
+                      <div class="gn-md-thumbnail pull-left" style="margin-right:10px">
                         <img class="gn-img-thumbnail"
                              itemprop="thumbnailUrl"
                              alt="{thumbnail}"

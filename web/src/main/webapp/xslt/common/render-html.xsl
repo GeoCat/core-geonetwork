@@ -28,8 +28,13 @@
   <xsl:param name="cssClass" select="''"/>
 
   <xsl:include href="../base-layout-cssjs-loader.xsl"/>
-  <xsl:include href="../skin/default/skin.xsl"/>
+  <xsl:include href="../skin/dutch/skin.xsl"/>
 
+  <xsl:output omit-xml-declaration="yes"
+              method="html"
+              doctype-system="html"
+              indent="yes"
+              encoding="UTF-8"/>
 
   <xsl:template name="render-html">
     <xsl:param name="content"/>
@@ -59,6 +64,7 @@
 
         <meta name="description" content="{normalize-space($description)}"/>
         <meta name="keywords" content=""/>
+        <meta name="google-site-verification" content="Iw0Pidf5_dv71b48LTG1yNp_81E_V-_KSMMwkr6J2_s" />
 
         <meta property="og:title" content="{$title}" />
         <meta property="og:description" content="{normalize-space($description)}" />
@@ -103,3 +109,4 @@
     </html>
   </xsl:template>
 </xsl:stylesheet>
+
