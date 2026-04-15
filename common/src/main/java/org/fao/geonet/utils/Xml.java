@@ -342,13 +342,14 @@ public final class Xml {
      */
     public static Element loadStream(InputStream input) throws IOException, JDOMException {
         try (PushbackInputStream f = processBOMMarker(input, "")) {
-        SAXBuilder builder = getSAXBuilderWithPathXMLResolver(false, null); //new SAXBuilder();
-        builder.setFeature("http://apache.org/xml/features/validation/schema", false);
-        builder.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            SAXBuilder builder = getSAXBuilderWithPathXMLResolver(false, null); //new SAXBuilder();
+            builder.setFeature("http://apache.org/xml/features/validation/schema", false);
+            builder.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            // See https://codeql.github.com/codeql-query-help/java/java-xxe/
+            builder.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             Document jdoc = builder.build(f);
-
-        return (Element) jdoc.getRootElement().detach();
-    }
+            return (Element) jdoc.getRootElement().detach();
+        }
     }
 
     /**
