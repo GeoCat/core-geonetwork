@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2001-2021 Food and Agriculture Organization of the
+ * Copyright (C) 2001-2026 Food and Agriculture Organization of the
  * United Nations (FAO-UN), United Nations World Food Programme (WFP)
  * and United Nations Environment Programme (UNEP)
  *
@@ -244,7 +244,7 @@ public class Setting extends GeonetEntity {
      * @param editable true if the setting is private.
      */
     public Setting setEditable(boolean editable) {
-        setInternal_JpaWorkaround(Constants.toYN_EnabledChar(editable));
+        setEditable_JpaWorkaround(Constants.toYN_EnabledChar(editable));
         return this;
     }
 
