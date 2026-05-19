@@ -46,7 +46,7 @@
           <span data-translate="">privileges</span>
         </a>
       </li>
-      <li role="menuitem" data-ng-if="md.isOwned() && user.isUserAdminOrMore()">
+      <li role="menuitem" data-ng-if="md.isOwned() && user.isEditorOrMore()">
         <a
           href=""
           data-ng-click="mdService.openTransferOwnership(md, null, getCatScope())"
