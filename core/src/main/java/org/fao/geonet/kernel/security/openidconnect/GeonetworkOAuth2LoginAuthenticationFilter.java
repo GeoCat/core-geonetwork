@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Food and Agriculture Organization of the
+ * Copyright (C) 2026 Food and Agriculture Organization of the
  * United Nations (FAO-UN), United Nations World Food Programme (WFP)
  * and United Nations Environment Programme (UNEP)
  *
@@ -83,7 +83,7 @@ public class GeonetworkOAuth2LoginAuthenticationFilter extends OAuth2LoginAuthen
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult)
-        throws IOException, ServletException {
+        throws IOException {
         String username = "UNIDENTIFIED";
         if (authResult == null) {
             throw new IOException("authresult is null!"); // this shouldn't happen
@@ -123,7 +123,7 @@ public class GeonetworkOAuth2LoginAuthenticationFilter extends OAuth2LoginAuthen
             if (redirectURL != null) {
                 try {
                     URI redirectUri = new URI(redirectURL);
-                    if (redirectUri != null && !redirectUri.isAbsolute()) {
+                    if (!redirectUri.isAbsolute() && !redirectUri.toString().startsWith("/")) {
                         response.sendRedirect(redirectUri.toString());
                     } else {
                         // If the redirect url ends up being null or absolute url then lets redirect back to the context home.
@@ -183,8 +183,7 @@ public class GeonetworkOAuth2LoginAuthenticationFilter extends OAuth2LoginAuthen
             if (!parameters.containsKey(parmName)) {
                 return null;
             }
-            String result = parameters.getFirst(parmName);
-            return result;
+            return parameters.getFirst(parmName);
         } catch (Exception e) {
             return null;
         }
