@@ -38,6 +38,7 @@ import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.api.ApiParams;
 import org.fao.geonet.api.ApiUtils;
+import org.fao.geonet.api.processing.report.BatchEditMetadataItemResult;
 import org.fao.geonet.api.processing.report.IProcessingReport;
 import org.fao.geonet.api.processing.report.SimpleMetadataProcessingReport;
 import org.fao.geonet.domain.AbstractMetadata;
@@ -220,84 +221,92 @@ public class BatchEditsApi implements ApplicationContextAware {
 
         BatchTransactionalProcessor<String> processor =
             new BatchTransactionalProcessor<>("BatchEditing", appContext);
+        processor.setBatchSize(100);
         processor.process(setOfUuidsToEdit, recordUuid -> {
+            BatchEditMetadataItemResult itemResult = new BatchEditMetadataItemResult();
             AbstractMetadata record = metadataRepository.findOneByUuid(recordUuid);
             if (record == null) {
-                report.incrementNullRecords();
+                itemResult.incrementNullRecords();
             } else if (!accessMan.isOwner(serviceContext, String.valueOf(record.getId()))) {
-                report.addNotEditableMetadataId(record.getId());
+                itemResult.addNotEditableMetadataId(record.getId());
             } else {
                 // Processing
-                try {
-                    EditLib editLib = new EditLib(_schemaManager);
-                    MetadataSchema metadataSchema = _schemaManager.getSchema(record.getDataInfo().getSchemaId());
-                    Element metadata = record.getXmlData(false);
-                    String original = Xml.getString(metadata);
-                    boolean metadataChanged = false;
+                EditLib editLib = new EditLib(_schemaManager);
+                MetadataSchema metadataSchema = _schemaManager.getSchema(record.getDataInfo().getSchemaId());
+                Element metadata = record.getXmlData(false);
+                String original = Xml.getString(metadata);
+                boolean metadataChanged = false;
 
-                    Iterator<BatchEditParameter> listOfUpdatesIterator = listOfUpdates.iterator();
-                    while (listOfUpdatesIterator.hasNext()) {
-                        BatchEditParameter batchEditParameter =
-                            listOfUpdatesIterator.next();
+                Iterator<BatchEditParameter> listOfUpdatesIterator = listOfUpdates.iterator();
+                while (listOfUpdatesIterator.hasNext()) {
+                    BatchEditParameter batchEditParameter =
+                        listOfUpdatesIterator.next();
 
-                        AddElemValue propertyValue =
-                            new AddElemValue(batchEditParameter.getValue());
+                    AddElemValue propertyValue =
+                        new AddElemValue(batchEditParameter.getValue());
 
-                        // This value is used in replace mode to create the node if it doesn't exist.
-                        // We don't want to create a node in replace mode, just replace the element if it exists, otherwise ignore it.
-                        boolean createXpathNodeIfNotExists = propertyValue.isAddMode();
+                    // This value is used in replace mode to create the node if it doesn't exist.
+                    // We don't want to create a node in replace mode, just replace the element if it exists, otherwise ignore it.
+                    boolean createXpathNodeIfNotExists = propertyValue.isAddMode();
 
-                        boolean applyEdit = true;
-                        if (StringUtils.isNotEmpty(batchEditParameter.getCondition())) {
-                            applyEdit = false;
-                            final Object node = Xml.selectSingle(metadata, batchEditParameter.getCondition(), metadataSchema.getNamespaces());
-                            if (node != null && node instanceof Boolean && (Boolean) node == true) {
-                                applyEdit = true;
-                            }
-                        }
-                        if (applyEdit) {
-                            metadataChanged = editLib.addElementOrFragmentFromXpath(
-                                metadata,
-                                metadataSchema,
-                                batchEditParameter.getXpath(),
-                                propertyValue,
-                                createXpathNodeIfNotExists
-                            ) || metadataChanged;
+                    boolean applyEdit = true;
+                    if (StringUtils.isNotEmpty(batchEditParameter.getCondition())) {
+                        applyEdit = false;
+                        final Object node = Xml.selectSingle(metadata, batchEditParameter.getCondition(), metadataSchema.getNamespaces());
+                        if (node != null && node instanceof Boolean && (Boolean) node == true) {
+                            applyEdit = true;
                         }
                     }
-                    if (previewOnly) {
-                        if (diffType == null) {
-                            preview.addContent(metadata.detach());
-                        } else {
-                            preview.addContent(
-                                Diff.diff(original, Xml.getString(metadata), diffType)
-                            );
-                        }
-                    } else if (metadataChanged) {
-                        boolean validate = false;
-                        boolean ufo = true;
-                        boolean uds = updateDateStamp;
-                        Element beforeMetadata = dataMan.getMetadata(serviceContext, String.valueOf(record.getId()), false, false, false);
-
-                        dataMan.updateMetadata(
-                            serviceContext, record.getId() + "", metadata,
-                            validate, ufo,
-                            "eng", // Not used when validate is false
-                            null, uds, IndexingMode.full);
-                        report.addMetadataInfos(record, "Metadata updated.");
-
-                        Element afterMetadata = dataMan.getMetadata(serviceContext, String.valueOf(record.getId()), false, false, false);
-                        XMLOutputter outp = new XMLOutputter();
-                        String xmlBefore = outp.outputString(beforeMetadata);
-                        String xmlAfter = outp.outputString(afterMetadata);
-                        new RecordUpdatedEvent(record.getId(), userSession.getUserIdAsInt(), xmlBefore, xmlAfter).publish(appContext);
-                    } else {
-                        report.incrementUnchangedRecords();
+                    if (applyEdit) {
+                        metadataChanged = editLib.addElementOrFragmentFromXpath(
+                            metadata,
+                            metadataSchema,
+                            batchEditParameter.getXpath(),
+                            propertyValue,
+                            createXpathNodeIfNotExists
+                        ) || metadataChanged;
                     }
-                } catch (Exception e) {
-                    report.addMetadataError(record, e);
                 }
+                if (previewOnly) {
+                    if (diffType == null) {
+                        preview.addContent(metadata.detach());
+                    } else {
+                        preview.addContent(
+                            Diff.diff(original, Xml.getString(metadata), diffType)
+                        );
+                    }
+                } else if (metadataChanged) {
+                    boolean validate = false;
+                    boolean ufo = true;
+                    boolean uds = updateDateStamp;
+
+                    dataMan.updateMetadata(
+                        serviceContext, record.getId() + "", metadata,
+                        validate, ufo,
+                        "eng", // Not used when validate is false
+                        null, uds, IndexingMode.full);
+                    itemResult.addMetadataInfos(record, "Metadata updated.");
+
+                    String xmlBefore = original;
+                    String xmlAfter = Xml.getString(metadata);
+                    itemResult.addEvent(new RecordUpdatedEvent(record.getId(), userSession.getUserIdAsInt(), xmlBefore, xmlAfter));
+                } else {
+                    itemResult.incrementUnchangedRecords();
+                }
+                itemResult.incrementProcessedRecords();
+            }
+            return itemResult;
+        }, (recordUuid, e) -> {
+            AbstractMetadata record = metadataRepository.findOneByUuid(recordUuid);
+            if (record != null) {
+                report.addMetadataError(record, e);
                 report.incrementProcessedRecords();
+            } else {
+                report.addError(e);
+            }
+        }, results -> {
+            for (BatchEditMetadataItemResult res : results) {
+                res.applyTo(report, appContext);
             }
         });
         report.close();

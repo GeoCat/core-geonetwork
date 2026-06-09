@@ -88,6 +88,7 @@ public class BatchEditsServiceTest extends AbstractServiceIntegrationTest {
     public void cleanup() {
         metadataManager.deleteAll(MetadataSpecs.hasMetadataUuidIn(uuids));
     }
+
     @Before
     public void loadSamples() throws Exception {
         uuids.clear();
@@ -276,6 +277,7 @@ public class BatchEditsServiceTest extends AbstractServiceIntegrationTest {
 
 
     @Test
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void testUpdateRecordDeleteAttribute() throws Exception {
         final String uuid = "db07463b-6769-401e-944b-f22e2e3bcc26";
         BatchEditParameter[] listOfupdates = new BatchEditParameter[]{

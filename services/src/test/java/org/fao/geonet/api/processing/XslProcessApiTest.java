@@ -99,8 +99,7 @@ public class XslProcessApiTest {
         reindexer.process("catalogue");
 
         // Verify that TransactionManager.runInTransaction was effectively called twice
-        // We check this by verifying that transactionManager.getTransaction was called twice
-        // since runInTransaction calls it once per batch.
+        // because batch size is 100 and we have 150 items.
         verify(transactionManager, times(2)).getTransaction(any());
 
         // Verify that findAllIdsBy was called for each record (150 times)
