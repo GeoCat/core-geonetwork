@@ -36,6 +36,7 @@ import jeeves.services.ReadWriteController;
 import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.api.ApiParams;
 import org.fao.geonet.api.ApiUtils;
+import org.fao.geonet.api.processing.report.XslMetadataItemResult;
 import org.fao.geonet.api.processing.report.XsltMetadataProcessingReport;
 import org.fao.geonet.domain.AbstractMetadata;
 import org.fao.geonet.events.history.RecordProcessingChangeEvent;
@@ -383,13 +384,15 @@ public class XslProcessApi {
 
             BatchTransactionalProcessor<String> processor =
                 new BatchTransactionalProcessor<>("BatchXslProcess", appContext);
+            processor.setBatchSize(100);
             processor.process(this.records, uuid -> {
+                XslMetadataItemResult itemResult = new XslMetadataItemResult();
                 List<Integer> idList = metadataUtils.findAllIdsBy(MetadataSpecs.hasMetadataUuid(uuid));
 
                 // Increase the total records counter when processing a metadata with approved and working copies
                 // as the initial counter doesn't take in account this case
                 if (idList.size() > 1) {
-                    xslProcessingReport.setTotalRecords(xslProcessingReport.getNumberOfRecords() + 1);
+                    itemResult.setTotalRecords(2); // +1 because main report already has 1
                 }
 
                 for (Integer id : idList) {
@@ -399,7 +402,7 @@ public class XslProcessApi {
                     Element beforeMetadata = dm.getMetadata(context, String.valueOf(id), false, false, false);
 
                     XslProcessUtils.process(context, String.valueOf(id), process,
-                        true, index, updateDateStamp, xslProcessingReport,
+                        true, index, updateDateStamp, itemResult,
                         siteURL, request.getParameterMap());
 
                     Element afterMetadata = dm.getMetadata(context, String.valueOf(id), false, false, false);
@@ -407,9 +410,15 @@ public class XslProcessApi {
                     XMLOutputter outp = new XMLOutputter();
                     String xmlAfter = outp.outputString(afterMetadata);
                     String xmlBefore = outp.outputString(beforeMetadata);
-                    new RecordProcessingChangeEvent(id, userId, xmlBefore, xmlAfter, process).publish(appContext);
+                    itemResult.addEvent(new RecordProcessingChangeEvent(id, userId, xmlBefore, xmlAfter, process));
                 }
-            });
+                return itemResult;
+            }, (uuid, ex) -> xslProcessingReport.addError(ex),
+                results -> {
+                    for (XslMetadataItemResult res : results) {
+                        res.applyTo(xslProcessingReport, appContext);
+                    }
+                });
         }
     }
 }

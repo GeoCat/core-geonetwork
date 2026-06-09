@@ -26,6 +26,7 @@ package jeeves.transaction;
 import com.google.common.collect.Iterables;
 import org.springframework.context.ApplicationContext;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -69,17 +70,63 @@ public class BatchTransactionalProcessor<T> {
      * @throws Exception If an error occurs during processing.
      */
     public void process(Iterable<T> items, BatchItemProcessor<T> itemProcessor) throws Exception {
+        process(items, itemProcessor, null);
+    }
+
+    /**
+     * Process items in batches.
+     *
+     * @param items         The items to process.
+     * @param itemProcessor The processor for each item.
+     * @param errorHandler  The error handler for each item.
+     * @throws Exception If an error occurs during processing.
+     */
+    public void process(Iterable<T> items, BatchItemProcessor<T> itemProcessor, BatchItemErrorHandler<T> errorHandler) throws Exception {
+        process(items, item -> {
+            itemProcessor.process(item);
+            return null;
+        }, errorHandler, results -> {
+            // Nothing to do
+        });
+    }
+
+    /**
+     * Process items in batches and apply results post-commit.
+     *
+     * @param items            The items to process.
+     * @param itemProcessor    The processor for each item that returns a result.
+     * @param errorHandler     The error handler for each item.
+     * @param postCommitAction The action to perform after the batch has committed.
+     * @param <R>              The type of the result.
+     * @throws Exception If an error occurs during processing.
+     */
+    public <R> void process(Iterable<T> items,
+                            BatchItemResultProcessor<T, R> itemProcessor,
+                            BatchItemErrorHandler<T> errorHandler,
+                            BatchPostCommitAction<R> postCommitAction) throws Exception {
         Iterable<List<T>> batches = Iterables.partition(items, batchSize);
 
         for (final List<T> batch : batches) {
+            List<R> results = new ArrayList<>();
             TransactionManager.runInTransaction(transactionName, applicationContext,
                 TransactionManager.TransactionRequirement.CREATE_NEW,
                 TransactionManager.CommitBehavior.ALWAYS_COMMIT, false, transactionStatus -> {
+                    results.clear();
                     for (T item : batch) {
-                        itemProcessor.process(item);
+                        try {
+                            R result = itemProcessor.process(item);
+                            results.add(result);
+                        } catch (Exception e) {
+                            if (errorHandler != null) {
+                                errorHandler.handleError(item, e);
+                            } else {
+                                throw e;
+                            }
+                        }
                     }
                     return null;
                 });
+            postCommitAction.apply(results);
         }
     }
 }

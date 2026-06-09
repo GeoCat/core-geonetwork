@@ -163,7 +163,8 @@ public class BatchEditsApiTest {
 
         api.batchEdit(uuids, null, false, edits, request);
 
-        // Verify that TransactionManager.runInTransaction was effectively called twice
-        verify(transactionManager, times(2)).getTransaction(any());
+        // Verify that transactionManager.getTransaction was effectively called 150 times
+        // because batch size is now 1 and we have 150 items.
+        verify(transactionManager, times(150)).getTransaction(any());
     }
 }
