@@ -45,10 +45,20 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
+import static org.fao.geonet.kernel.mef.MEFLib.Version.Constants.MEF_V2_ACCEPT_TYPE;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -217,5 +227,91 @@ public class MetadataAssociatedApiTest extends AbstractServiceIntegrationTest {
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.associated", hasSize(1)))
             .andExpect(jsonPath("$.associated[0]._source.uuid").value(SERIE_UUID));
+    }
+
+    @Test
+    public void getFeatureCatalog() throws Exception {
+        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+
+        ServiceManager serviceManager = ApplicationContextHolder.get().getBean(ServiceManager.class);
+        serviceManager.setBaseUrl("/geonetwork");
+
+        // Load sample records including a serie referencing a feature catalogue.
+        final MEFLibIntegrationTest.ImportMetadata importMetadata =
+            new MEFLibIntegrationTest.ImportMetadata(this, context);
+        importMetadata.getMefFilesToLoad().add("/org/fao/geonet/api/records/samples/related-test.zip");
+        importMetadata.invoke();
+
+        // Serie referencing the "Elevation breakdown" feature catalogue (411cd05b...),
+        // which defines a single feature attribute named VALUE.
+        final String SERIE_UUID = "87e54d56-323f-4201-88ac-7ac7f9d8ee25";
+
+        MockHttpSession mockHttpSession = loginAsAdmin();
+        mockMvc.perform(get("/srv/api/records/" + SERIE_UUID + "/featureCatalog")
+                .session(mockHttpSession)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.decodeMap.VALUE").exists())
+            .andExpect(jsonPath("$.decodeMap.VALUE[0]").value("VALUE"));
+    }
+
+    @Test
+    public void exportMef2WithRelatedRecords() throws Exception {
+        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+
+        // Load a set of interrelated records (serie, parent, dataset, sources, ...).
+        final MEFLibIntegrationTest.ImportMetadata importMetadata =
+            new MEFLibIntegrationTest.ImportMetadata(this, context);
+        importMetadata.getMefFilesToLoad().add("/org/fao/geonet/api/records/samples/related-test.zip");
+        importMetadata.invoke();
+
+        // The parent record has the serie as an associated child record.
+        final String PARENT_UUID = "54d0d235-fa85-4b8a-9ce6-8246b430a810";
+        final String CHILD_UUID = "87e54d56-323f-4201-88ac-7ac7f9d8ee25";
+
+        MockHttpSession mockHttpSession = loginAsAdmin();
+
+        // Without related records, only the requested record is bundled.
+        byte[] withoutRelated = mockMvc.perform(get("/srv/api/records/" + PARENT_UUID + "/formatters/zip")
+                .param("withRelated", "false")
+                .session(mockHttpSession)
+                .accept(MEF_V2_ACCEPT_TYPE))
+            .andExpect(status().isOk())
+            .andReturn().getResponse().getContentAsByteArray();
+        Set<String> recordsWithoutRelated = mefRecordFolders(withoutRelated);
+        assertThat(recordsWithoutRelated, hasItem(PARENT_UUID));
+        assertThat(recordsWithoutRelated, not(hasItem(CHILD_UUID)));
+
+        // With related records, the related child record is bundled too. It is
+        // resolved through the permission filtered MetadataUtils.getAssociated
+        // logic (same as the /records/{uuid}/associated endpoint).
+        byte[] withRelated = mockMvc.perform(get("/srv/api/records/" + PARENT_UUID + "/formatters/zip")
+                .param("withRelated", "true")
+                .session(mockHttpSession)
+                .accept(MEF_V2_ACCEPT_TYPE))
+            .andExpect(status().isOk())
+            .andReturn().getResponse().getContentAsByteArray();
+        Set<String> recordsWithRelated = mefRecordFolders(withRelated);
+        assertThat(recordsWithRelated, hasItem(PARENT_UUID));
+        assertThat(recordsWithRelated, hasItem(CHILD_UUID));
+    }
+
+    /**
+     * Collect the record folders (named after the record UUID) contained in a
+     * MEF version 2 package.
+     */
+    private static Set<String> mefRecordFolders(byte[] mefZip) throws IOException {
+        Set<String> folders = new HashSet<>();
+        try (ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(mefZip))) {
+            ZipEntry entry;
+            while ((entry = zis.getNextEntry()) != null) {
+                String name = entry.getName();
+                int slash = name.indexOf('/');
+                if (slash > 0) {
+                    folders.add(name.substring(0, slash));
+                }
+            }
+        }
+        return folders;
     }
 }

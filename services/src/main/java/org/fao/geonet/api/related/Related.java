@@ -65,23 +65,19 @@ import java.util.Map;
     description = "Related records")
 @Controller("related")
 @ReadWriteController
-public class Related implements ApplicationContextAware {
+public class Related {
 
     @Autowired
     LanguageUtils languageUtils;
     @Autowired
     GeonetworkDataDirectory dataDirectory;
-    private ApplicationContext context;
 
-    public synchronized void setApplicationContext(ApplicationContext context) {
-        this.context = context;
-    }
 
     @io.swagger.v3.oas.annotations.Operation(
-        summary = "Get record related resources for all requested metadatas",
-        description = "Retrieve related services, datasets, onlines, thumbnails, sources, ... " +
-            "to all requested records.<br/>" +
-            "<a href='https://geonetwork-opensource.org/manuals/trunk/eng/users/user-guide/associating-resources/index.html'>More info</a>")
+        summary = "Get record related resources for all requested metadata uuid",
+        description = "This method is deprecated. Use <code>/records/{ uuid }/associated</code> instead.<br/>" +
+            "Retrieve related online resources and thumbnails to all requested records.<br/>" +
+            "<a href='https://docs.geonetwork-opensource.org/4.4/user-guide/associating-resources/index.html'>More info</a>")
     @RequestMapping(value = "",
         method = RequestMethod.GET,
         produces = {
@@ -93,6 +89,7 @@ public class Related implements ApplicationContextAware {
         @ApiResponse(responseCode = "200", description = "Return the associated resources."),
         @ApiResponse(responseCode = "403", description = ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_VIEW)
     })
+    @Deprecated
     @ResponseBody
     public Map<String, RelatedResponse> getAssociatedResourcesForRecords(
         @Parameter(description = "Type of related resource. If none, all resources are returned.",
@@ -125,7 +122,7 @@ public class Related implements ApplicationContextAware {
                         new Element("language").setText(language.getISO3Language()),
                         new Element("url").setText(context.getBaseUrl())
                     )),
-                    MetadataUtils.getRelated(context, md.getId(), md.getUuid(), types, 0, 100)
+                    MetadataUtils.getRelated(context, md.getId(), types, 0, 100)
                 ));
                 final Element transform = Xml.transform(raw, relatedXsl);
                 RelatedResponse response = (RelatedResponse) Xml.unmarshall(transform, RelatedResponse.class);

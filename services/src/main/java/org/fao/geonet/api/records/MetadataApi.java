@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2001-2024 Food and Agriculture Organization of the
+ * Copyright (C) 2001-2026 Food and Agriculture Organization of the
  * United Nations (FAO-UN), United Nations World Food Programme (WFP)
  * and United Nations Environment Programme (UNEP)
  *
@@ -23,7 +23,10 @@
 
 package org.fao.geonet.api.records;
 
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -52,7 +55,6 @@ import org.fao.geonet.kernel.GeonetworkDataDirectory;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.kernel.mef.MEFLib;
-import org.fao.geonet.kernel.search.EsSearchManager;
 import org.fao.geonet.lib.Lib;
 import org.fao.geonet.repository.MetadataRepository;
 import org.fao.geonet.util.XslUtil;
@@ -75,11 +77,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.fao.geonet.api.ApiParams.*;
-
 import static org.fao.geonet.kernel.mef.MEFLib.Version.Constants.MEF_V1_ACCEPT_TYPE;
 import static org.fao.geonet.kernel.mef.MEFLib.Version.Constants.MEF_V2_ACCEPT_TYPE;
 
@@ -116,8 +115,7 @@ public class MetadataApi {
 
     private ApplicationContext context;
 
-    @Autowired
-    EsSearchManager esSearchManager;
+
 
     public static RelatedResponse getRelatedResources(
         String language, ServiceContext context,
@@ -129,7 +127,7 @@ public class MetadataApi {
                 new Element("language").setText(language),
                 new Element("url").setText(context.getBaseUrl())
             )),
-            MetadataUtils.getRelated(context, md.getId(), md.getUuid(), type, start, start + rows)
+            MetadataUtils.getRelated(context, md.getId(), type, start, start + rows)
         ));
         Path relatedXsl = ApplicationContextHolder.get()
             .getBean(GeonetworkDataDirectory.class).getWebappDir()
@@ -582,20 +580,16 @@ public class MetadataApi {
                 uuidsToExport.add(metadataUuid);
                 // MEF version 2 support multiple metadata record by file.
                 if (withRelated) {
-                    // Adding children in MEF file
-
-                    RelatedResponse related = getRelatedResources(
-                        metadataUuid, null, approved, 0, 100, request);
-                    uuidsToExport.addAll(getUuidsOfAssociatedRecords(related.getParent()));
-                    uuidsToExport.addAll(getUuidsOfAssociatedRecords(related.getChildren()));
-                    uuidsToExport.addAll(getUuidsOfAssociatedRecords(related.getDatasets()));
-                    uuidsToExport.addAll(getUuidsOfAssociatedRecords(related.getServices()));
-                    uuidsToExport.addAll(getUuidsOfAssociatedRecords(related.getSiblings()));
-                    uuidsToExport.addAll(getUuidsOfAssociatedRecords(related.getRelated()));
-                    uuidsToExport.addAll(getUuidsOfAssociatedRecords(related.getAssociated()));
-                    uuidsToExport.addAll(getUuidsOfAssociatedRecords(related.getFcats()));
-                    uuidsToExport.addAll(getUuidsOfAssociatedRecords(related.getHasfeaturecats()));
-                    uuidsToExport.addAll(getUuidsOfAssociatedRecords(related.getHassources()));
+                    // Add the related records the current user is allowed to see
+                    // to the MEF file. This uses the same permission filtered
+                    // logic as the /api/records/{uuid}/associated endpoint. Remote
+                    // records are skipped as they are not part of this catalogue.
+                    MetadataUtils.getAssociated(serviceContext, metadata, RelatedItemType.values(), 0, 1000)
+                        .values().stream()
+                        .flatMap(List::stream)
+                        .filter(r -> !RelatedItemOrigin.remote.name().equals(r.getOrigin()))
+                        .map(AssociatedRecord::getUuid)
+                        .forEach(uuidsToExport::add);
                 }
                 Log.info(Geonet.MEF, "Building MEF2 file with " + uuidsToExport.size()
                     + " records.");
@@ -615,13 +609,6 @@ public class MetadataApi {
                 FileUtils.deleteQuietly(file.toFile());
             }
         }
-    }
-
-    private List<String> getUuidsOfAssociatedRecords(IListOnlyClassToArray associatedRecords) {
-        return Optional.ofNullable(associatedRecords)
-            .map(r -> ((List<RelatedMetadataItem>) r.getItem()).stream())
-            .orElseGet(Stream::empty)
-            .map(i -> i.getId()).collect(Collectors.toList());
     }
 
     @io.swagger.v3.oas.annotations.Operation(summary = "Get record popularity",
@@ -707,9 +694,9 @@ public class MetadataApi {
 
     @io.swagger.v3.oas.annotations.Operation(
         summary = "Get record related resources",
-        description = "Retrieve related services, datasets, onlines, thumbnails, sources, ... " +
+        description = "Retrieve related online resources and thumbnails. " +
             "to this records.<br/>" +
-            "<a href='https://geonetwork-opensource.org/manuals/trunk/eng/users/user-guide/associating-resources/index.html'>More info</a>")
+            "<a href='https://geonetwork-opensource.org/manuals/4.4/eng/users/user-guide/associating-resources/index.html'>More info</a>")
     @RequestMapping(value = "/{metadataUuid:.+}/related",
         method = RequestMethod.GET,
         produces = {
@@ -721,6 +708,7 @@ public class MetadataApi {
         @ApiResponse(responseCode = "200", description = "Return the associated resources."),
         @ApiResponse(responseCode = "403", description = ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_VIEW)
     })
+    @Deprecated
     @ResponseBody
     public RelatedResponse getRelatedResources(
         @Parameter(
