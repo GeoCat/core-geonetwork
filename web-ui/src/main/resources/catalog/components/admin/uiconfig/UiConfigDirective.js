@@ -211,6 +211,7 @@
 
           scope.sortOrderChoices = ["asc", "desc"];
           scope.searchResultContactChoices = [
+            "OrgHidden", // Useful e.g. if all metadata records belong to the same organization
             "Org",
             "OrgForResource",
             "OrgForDistribution"

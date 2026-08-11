@@ -56,10 +56,11 @@
           </div>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6">
-          <div class="gn-md-abstract text-muted">
-            <p title="{{md.resourceAbstract}}">
-              {{::abstractBriefMaker(md.resourceAbstract) | striptags}}
-            </p>
+          <div
+            class="gn-md-abstract text-muted ellipsis"
+            data-ng-init="briefAbstract = abstractShortener(md.resourceAbstract)"
+          >
+            <p title="{{::briefAbstract | striptags}}">{{::briefAbstract | striptags}}</p>
 
             <div
               class="gn-margin-top"

@@ -217,20 +217,26 @@
             }
           };
 
-          scope.abstractBriefMaker = function (resourceAbstract) {
+          scope.abstractShortener = function (resourceAbstract) {
+            var result = "";
             if (resourceAbstract) {
+              console.log(resourceAbstract);
+              var charCount = 0;
+              var maxCharCount = 150;
               var abstractParagraphs = resourceAbstract.split("\n");
-              var abstractBrief = "";
               for (var index = 0; index < abstractParagraphs.length; index++) {
-                var abstractBrief = abstractBrief + abstractParagraphs[index] + "\n";
-                if (abstractBrief.length > 50) {
+                var line = abstractParagraphs[index].trim() + "\n";
+
+                charCount += line.length;
+                result += line;
+
+                if (charCount >= maxCharCount) {
+                  result = result.trim();
                   break;
                 }
               }
-
-              //remove the last line break character
-              return abstractBrief.substring(0, abstractBrief.length - 1);
             }
+            return result;
           };
 
           /**

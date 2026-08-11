@@ -1550,6 +1550,7 @@
     "confirmUiDelete":  "Are you sure you want to delete this UI configuration?",
     "ui-searchResultContact": "Results /  Default type of contacts to display in the search results",
     "ui-searchResultContact-help": "Select the default type of contacts to display in the search results. If the metadata doesn't have contacts of the selected type, the contact organisation for the resource is displayed (if available).",
+    "OrgHidden": "Do not show contact organisation",
     "Org": "Contact organisation for the metadata",
     "OrgForResource": "Contact organisation for the resource",
     "OrgForDistribution": "Contact organisation for distribution",

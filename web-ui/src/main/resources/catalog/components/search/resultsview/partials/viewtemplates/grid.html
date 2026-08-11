@@ -1,6 +1,7 @@
 <ul class="list-group gn-resultview gn-resultview-sumup">
   <li
     class="list-group-item gn-grid panel panel-default gn-card"
+    data-ng-init="briefAbstract = abstractShortener(md.resourceAbstract)"
     data-ng-repeat="md in searchResults.records"
     data-gn-displayextent-onhover=""
     data-gn-zoomto-onclick=""
@@ -45,7 +46,7 @@
 
     <div class="panel-body gn-card-body">
       <div
-        title="{{(md.resourceAbstract) | striptags}}"
+        title="{{::briefAbstract | striptags}}"
         class="gn-md-contents"
         gn-metadata-open="md"
         gn-records="searchResults.records"
@@ -64,17 +65,21 @@
           />
         </div>
 
-        <div class="gn-md-details">
-          <div class="gn-md-abstract text-muted">
-            <div class="ellipsis">
-              <p>{{::abstractBriefMaker(md.resourceAbstract) | striptags}}</p>
-            </div>
+        <div
+          class="gn-md-details"
+          data-ng-init="briefAbstract = abstractShortener(md.resourceAbstract)"
+        >
+          <div class="gn-md-abstract text-muted ellipsis">
+            <p title="{{::briefAbstract | striptags}}">{{::briefAbstract | striptags}}</p>
           </div>
         </div>
       </div>
-      <div class="gn-md-contact">
+      <div
+        class="gn-md-contact"
+        data-ng-if="searchResultContact && searchResultContact != 'OrgHidden'"
+      >
         <!-- Handle string and array results -->
-        {{[].concat(md[searchResultContact || 'OrgForResource'])[0]}}
+        {{[].concat(md[searchResultContact])[0]}}
       </div>
     </div>
     <!-- /.gn-card-body -->
