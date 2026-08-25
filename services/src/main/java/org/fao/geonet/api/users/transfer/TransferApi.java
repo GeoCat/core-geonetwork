@@ -27,8 +27,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jeeves.server.UserSession;
 import jeeves.server.context.ServiceContext;
-import org.fao.geonet.ApplicationContextHolder;
-import org.fao.geonet.api.API;
 import org.fao.geonet.api.ApiUtils;
 import org.fao.geonet.api.exception.ResourceNotFoundException;
 import org.fao.geonet.api.tools.i18n.LanguageUtils;
@@ -44,7 +42,6 @@ import org.fao.geonet.repository.specification.MetadataSpecs;
 import org.fao.geonet.repository.specification.UserGroupSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -55,7 +52,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -112,7 +108,7 @@ public class TransferApi {
         @Parameter(hidden = true)
             HttpSession httpSession,
         HttpServletRequest request
-    ) throws Exception {
+    ) {
         List<User> users = userRepository.findAll();
 
         List<OwnerResponse> ownerList = new ArrayList<>();
@@ -131,8 +127,7 @@ public class TransferApi {
 
 
     @io.swagger.v3.oas.annotations.Operation(
-        summary = "Retrieve all user groups",
-        description = "")
+        summary = "Retrieve all user groups")
     @RequestMapping(
         value = "/groups",
         produces = MediaType.APPLICATION_JSON_VALUE,
@@ -146,18 +141,18 @@ public class TransferApi {
             List<GroupType> groupTypes,
         @Parameter(hidden = true)
             HttpSession httpSession
-    ) throws Exception {
+    ) {
         UserSession session = ApiUtils.getUserSession(httpSession);
         Profile myProfile = session.getProfile();
 
-        List<UserGroupsResponse> list = new ArrayList<>();
+        List<UserGroupsResponse> userGroupsResponses = new ArrayList<>();
         if (myProfile == Profile.Administrator || myProfile == Profile.UserAdmin) {
             // add all admins first
             List<User> allAdmin = userRepository.findAllByProfile(Profile.Administrator);
             Group adminGroup = new Group();
             adminGroup.setName("allAdmins");
             for (User u : allAdmin) {
-                list.add(
+                userGroupsResponses.add(
                     new UserGroupsResponse(u, adminGroup, Profile.Administrator.name())
                 );
             }
@@ -173,41 +168,22 @@ public class TransferApi {
                 userGroups = userGroupRepository.findAll(UserGroupSpecs.hasGroupIds(myGroups));
             }
 
-            // Apply group type filtering if groupTypes parameter is provided
-            if (groupTypes != null){
-                userGroups = userGroups.stream()
-                    .filter(ug -> groupTypes.contains(ug.getGroup().getType()))
-                    .collect(Collectors.toList());
-            }
+            userGroupsResponses.addAll(getUserGroupsResponse(userGroups, groupTypes));
 
-            for (UserGroup ug : userGroups) {
-                list.add(
-                    new UserGroupsResponse(ug.getUser(), ug.getGroup(), ug.getProfile().name())
-                );
-            }
-            return list;
+            return userGroupsResponses;
         } else if (myProfile == Profile.Reviewer || myProfile == Profile.Editor) {
             List<Integer> myGroups = userGroupRepository.findAll(UserGroupSpecs.hasUserId(session.getUserIdAsInt()))
                 .stream().map(ug -> ug.getGroup().getId()).collect(Collectors.toList());
             List<UserGroup> userGroups = userGroupRepository.findAll(UserGroupSpecs.hasGroupIds(myGroups));
 
-            if (groupTypes != null) {
-                userGroups = userGroups.stream()
-                    .filter(ug -> groupTypes.contains(ug.getGroup().getType()))
-                    .collect(Collectors.toList());
-            }
-            for (UserGroup ug : userGroups) {
-                list.add(new UserGroupsResponse(ug.getUser(), ug.getGroup(), ug.getProfile().name()));
-            }
-            return list;
+            return getUserGroupsResponse(userGroups, groupTypes);
         } else {
             throw new SecurityException("You don't have rights to do get the groups for this user");
         }
     }
 
     @io.swagger.v3.oas.annotations.Operation(
-        summary = "Transfer privileges",
-        description = "")
+        summary = "Transfer privileges")
     @RequestMapping(
         value = "/owners",
         produces = MediaType.APPLICATION_JSON_VALUE,
@@ -222,7 +198,6 @@ public class TransferApi {
             HttpSession httpSession,
         HttpServletRequest request
     ) throws Exception {
-        ApplicationContext applicationContext = ApplicationContextHolder.get();
         ServiceContext context = ApiUtils.createServiceContext(request);
         Locale locale = languageUtils.parseAcceptLanguage(request.getLocales());
 
@@ -243,11 +218,9 @@ public class TransferApi {
         //--- a commit just to release some resources
         dataManager.flush();
 
-        int privCount = 0;
+        Set<Integer> metadata = new HashSet<>();
 
-        Set<Integer> metadata = new HashSet<Integer>();
-
-        if (sourcePriv.size() > 0) {
+        if (!sourcePriv.isEmpty()) {
             for (String priv : sourcePriv) {
                 StringTokenizer st = new StringTokenizer(priv, "|");
 
@@ -275,7 +248,6 @@ public class TransferApi {
 
                 // Collect all metadata ids
                 metadata.add(mdId);
-                privCount++;
             }
         }
         // If no privileges defined for the target group
@@ -297,7 +269,7 @@ public class TransferApi {
         dataManager.flush();
 
         //--- reindex metadata
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         for (int mdId : metadata) {
             list.add(Integer.toString(mdId));
         }
@@ -325,7 +297,7 @@ public class TransferApi {
         }
     }
 
-    private Set<String> retrievePrivileges(ServiceContext context, Integer userId, int groupId) throws SQLException {
+    private Set<String> retrievePrivileges(ServiceContext context, Integer userId, int groupId) {
         final List<OperationAllowed> opsAllowed;
         if (userId == null) {
             opsAllowed = operationAllowedRepository.findAllById_GroupId(groupId);
@@ -333,12 +305,28 @@ public class TransferApi {
             opsAllowed = operationAllowedRepository.findAllWithOwner(userId, com.google.common.base.Optional.of(hasGroupId(groupId)));
         }
 
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
         for (OperationAllowed elem : opsAllowed) {
             int opId = elem.getId().getOperationId();
             int mdId = elem.getId().getMetadataId();
             result.add(opId + "|" + mdId);
         }
         return result;
+    }
+
+    private List<UserGroupsResponse> getUserGroupsResponse(List<UserGroup> userGroups, List<GroupType> groupTypes) {
+        List<UserGroupsResponse> list =  new ArrayList<>();
+
+        if (groupTypes != null) {
+            userGroups = userGroups.stream()
+                .filter(ug -> groupTypes.contains(ug.getGroup().getType()))
+                .collect(Collectors.toList());
+        }
+
+        for (UserGroup ug : userGroups) {
+            list.add(new UserGroupsResponse(ug.getUser(), ug.getGroup(), ug.getProfile().name()));
+        }
+
+        return list;
     }
 }

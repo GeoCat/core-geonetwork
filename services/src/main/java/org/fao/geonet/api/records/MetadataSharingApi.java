@@ -217,8 +217,7 @@ public class MetadataSharingApi {
         @PathVariable
         String metadataUuid,
         @Parameter(
-            description = "Publication type",
-            required = false)
+            description = "Publication type")
         @RequestParam(required = false) String publicationType,
         @Parameter(hidden = true)
         HttpSession session,
@@ -264,8 +263,7 @@ public class MetadataSharingApi {
         @PathVariable
         String metadataUuid,
         @Parameter(
-            description = "Publication type",
-            required = false)
+            description = "Publication type")
         @RequestParam(required = false) String publicationType,
         @Parameter(hidden = true)
         HttpSession session,
@@ -326,9 +324,7 @@ public class MetadataSharingApi {
             description = "Privileges",
             required = true
         )
-        @RequestBody(
-            required = true
-        )
+        @RequestBody
         SharingParameter sharing,
         @Parameter(hidden = true)
         HttpSession session,
@@ -382,15 +378,12 @@ public class MetadataSharingApi {
     public
     @ResponseBody
     MetadataProcessingReport publishMultipleRecords(
-        @Parameter(description = ApiParams.API_PARAM_RECORD_UUIDS_OR_SELECTION,
-            required = false)
+        @Parameter(description = ApiParams.API_PARAM_RECORD_UUIDS_OR_SELECTION)
         @RequestParam(required = false) String[] uuids,
-        @Parameter(description = ApiParams.API_PARAM_BUCKET_NAME,
-            required = false)
+        @Parameter(description = ApiParams.API_PARAM_BUCKET_NAME)
         @RequestParam(required = false) String bucket,
         @Parameter(
-            description = "Publication type",
-            required = false)
+            description = "Publication type")
         @RequestParam(required = false) String publicationType,
         @Parameter(hidden = true)
         HttpSession session,
@@ -432,15 +425,12 @@ public class MetadataSharingApi {
     public
     @ResponseBody
     MetadataProcessingReport unpublishMultipleRecords(
-        @Parameter(description = ApiParams.API_PARAM_RECORD_UUIDS_OR_SELECTION,
-            required = false)
+        @Parameter(description = ApiParams.API_PARAM_RECORD_UUIDS_OR_SELECTION)
         @RequestParam(required = false) String[] uuids,
-        @Parameter(description = ApiParams.API_PARAM_BUCKET_NAME,
-            required = false)
+        @Parameter(description = ApiParams.API_PARAM_BUCKET_NAME)
         @RequestParam(required = false) String bucket,
         @Parameter(
-            description = "Publication type",
-            required = false)
+            description = "Publication type")
         @RequestParam(required = false) String publicationType,
         @Parameter(hidden = true)
         HttpSession session,
@@ -480,19 +470,15 @@ public class MetadataSharingApi {
     public
     @ResponseBody
     MetadataProcessingReport shareMultipleRecords(
-        @Parameter(description = ApiParams.API_PARAM_RECORD_UUIDS_OR_SELECTION,
-            required = false)
+        @Parameter(description = ApiParams.API_PARAM_RECORD_UUIDS_OR_SELECTION)
         @RequestParam(required = false) String[] uuids,
-        @Parameter(description = ApiParams.API_PARAM_BUCKET_NAME,
-            required = false)
+        @Parameter(description = ApiParams.API_PARAM_BUCKET_NAME)
         @RequestParam(required = false) String bucket,
         @Parameter(
             description = "Privileges",
             required = true
         )
-        @RequestBody(
-            required = true
-        )
+        @RequestBody
         SharingParameter sharing,
         @Parameter(hidden = true)
         HttpSession session,
@@ -636,9 +622,7 @@ public class MetadataSharingApi {
             description = "Group identifier",
             required = true
         )
-        @RequestBody(
-            required = true
-        )
+        @RequestBody
         Integer groupIdentifier,
         @Parameter(hidden = true)
         HttpSession session,
@@ -816,8 +800,7 @@ public class MetadataSharingApi {
     }
 
     @io.swagger.v3.oas.annotations.Operation(
-        summary = "Get record sharing settings",
-        description = "")
+        summary = "Get record sharing settings")
     @RequestMapping(
         value = "/sharing",
         method = RequestMethod.GET,
@@ -887,8 +870,7 @@ public class MetadataSharingApi {
     }
 
     @io.swagger.v3.oas.annotations.Operation(
-        summary = "Set group and owner for one or more records",
-        description = "")
+        summary = "Set group and owner for one or more records")
     @RequestMapping(value = "/ownership",
         method = RequestMethod.PUT
     )
@@ -901,21 +883,17 @@ public class MetadataSharingApi {
     public
     @ResponseBody
     MetadataProcessingReport setGroupAndOwner(
-        @Parameter(description = ApiParams.API_PARAM_RECORD_UUIDS_OR_SELECTION,
-            required = false)
+        @Parameter(description = ApiParams.API_PARAM_RECORD_UUIDS_OR_SELECTION)
         @RequestParam(required = false)
         String[] uuids,
         @Parameter(
             description = "Group identifier",
             required = true
         )
-        @RequestParam(
-            required = true
-        )
+        @RequestParam
         Integer groupIdentifier,
         @Parameter(
-            description = ApiParams.API_PARAM_BUCKET_NAME,
-            required = false)
+            description = ApiParams.API_PARAM_BUCKET_NAME)
         @RequestParam(
             required = false
         )
@@ -924,9 +902,7 @@ public class MetadataSharingApi {
             description = "User identifier",
             required = true
         )
-        @RequestParam(
-            required = true
-        )
+        @RequestParam
         Integer userIdentifier,
         @Parameter(description = "Use approved version or not", example = "true")
         @RequestParam(required = false, defaultValue = "false")
@@ -971,8 +947,7 @@ public class MetadataSharingApi {
     }
 
     @io.swagger.v3.oas.annotations.Operation(
-        summary = "Set record group and owner",
-        description = "")
+        summary = "Set record group and owner")
     @RequestMapping(
         value = "/{metadataUuid}/ownership",
         method = RequestMethod.PUT
@@ -995,17 +970,13 @@ public class MetadataSharingApi {
             description = "Group identifier",
             required = true
         )
-        @RequestParam(
-            required = true
-        )
+        @RequestParam
         Integer groupIdentifier,
         @Parameter(
             description = "User identifier",
             required = true
         )
-        @RequestParam(
-            required = true
-        )
+        @RequestParam
         Integer userIdentifier,
         @Parameter(description = "Use approved version or not", example = "true")
         @RequestParam(required = false, defaultValue = "true")
@@ -1064,33 +1035,15 @@ public class MetadataSharingApi {
             UserSession callerSession = ApiUtils.getUserSession(session);
             Profile callerProfile = callerSession.getProfile();
 
-            if (callerProfile == Profile.Editor || callerProfile == Profile.Reviewer) {
-                int callerUserId = callerSession.getUserIdAsInt();
-                Integer sourceUsr = metadata.getSourceInfo().getOwner();
-                Integer sourceGrp = metadata.getSourceInfo().getGroupOwner();
+            if (!isEditableMetadata(metadata, accessMan, callerSession)) {
+                report.addNotEditableMetadataId(metadata.getId());
+                return;
+            }
 
-                if (callerProfile == Profile.Editor) {
-                    if (!Objects.equals(sourceUsr, callerUserId)) {
-                        report.addNotEditableMetadataId(metadata.getId());
-                        return;
-                    }
-                } else {
-                    Set<Integer> reviewerGroups = accessMan.getReviewerGroups(callerSession);
-                    if (sourceGrp == null || !reviewerGroups.contains(sourceGrp)) {
-                        report.addNotEditableMetadataId(metadata.getId());
-                        return;
-                    }
-                }
-
-                if (!ReservedGroup.isReserved(groupIdentifier)) {
-                    List<Integer> myGroups = userGroupRepository.findGroupIds(
-                        UserGroupSpecs.hasUserId(callerUserId));
-                    if (!myGroups.contains(groupIdentifier)) {
-                        report.addMetadataInfos(metadata,
-                            "Transfer to group " + groupIdentifier + " is not allowed for your profile.");
-                        return;
-                    }
-                }
+            if (!isDestinationTransferGroupAllowed(groupIdentifier, callerSession)) {
+                report.addMetadataInfos(metadata,
+                    "Transfer to group " + groupIdentifier + " is not allowed for your profile.");
+                return;
             }
 
             // Retrieve the identifiers associated with the metadata uuid.
@@ -1181,4 +1134,40 @@ public class MetadataSharingApi {
         }
     }
 
+    private boolean isEditableMetadata(AbstractMetadata metadata, AccessManager accessMan, UserSession callerSession) throws Exception {
+        Profile callerProfile = callerSession.getProfile();
+
+        if (callerProfile == Profile.Editor || callerProfile == Profile.Reviewer) {
+            int callerUserId = callerSession.getUserIdAsInt();
+            Integer sourceUsr = metadata.getSourceInfo().getOwner();
+            Integer sourceGrp = metadata.getSourceInfo().getGroupOwner();
+
+            if (callerProfile == Profile.Editor) {
+                return Objects.equals(sourceUsr, callerUserId);
+            } else {
+                Set<Integer> reviewerGroups = accessMan.getReviewerGroups(callerSession);
+                return sourceGrp != null && reviewerGroups.contains(sourceGrp);
+            }
+        } else {
+            return callerProfile == Profile.Administrator;
+        }
+    }
+
+    private boolean isDestinationTransferGroupAllowed(Integer groupIdentifier, UserSession callerSession) {
+        Profile callerProfile = callerSession.getProfile();
+
+        if (callerProfile == Profile.Editor || callerProfile == Profile.Reviewer) {
+            int callerUserId = callerSession.getUserIdAsInt();
+
+            if (!ReservedGroup.isReserved(groupIdentifier)) {
+                List<Integer> myGroups = userGroupRepository.findGroupIds(
+                    UserGroupSpecs.hasUserId(callerUserId));
+                return myGroups.contains(groupIdentifier);
+            }
+
+            return true;
+        } else {
+            return callerProfile == Profile.Administrator;
+        }
+    }
 }
