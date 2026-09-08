@@ -33,7 +33,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SearchApiTest {
@@ -152,13 +154,16 @@ public class SearchApiTest {
     }
 
     @Test
-    public void buildMustClausesSearchesAnyAsMatchWithAndOperator() {
+    public void buildMustClausesSearchesAnyAcrossAnyAndTitleFieldsRegardlessOfLanguage() {
         Map<String, String> criteria = new LinkedHashMap<>();
         criteria.put("any", "coastal basins");
         ArrayNode must = SearchApi.buildMustClauses(criteria, new ObjectMapper());
-        JsonNode any = must.get(0).path("match").path("any.common");
-        Assert.assertEquals("coastal basins", any.path("query").asText());
-        Assert.assertEquals("and", any.path("operator").asText());
+        JsonNode multiMatch = must.get(0).path("multi_match");
+        Assert.assertEquals("coastal basins", multiMatch.path("query").asText());
+        Assert.assertEquals("and", multiMatch.path("operator").asText());
+        List<String> fields = new ArrayList<>();
+        multiMatch.path("fields").forEach(f -> fields.add(f.asText()));
+        Assert.assertEquals(List.of("any.*", "resourceTitleObject.*^2"), fields);
     }
 
     @Test

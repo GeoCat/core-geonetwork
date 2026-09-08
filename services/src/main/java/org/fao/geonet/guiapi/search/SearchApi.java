@@ -290,20 +290,37 @@ public class SearchApi {
 
     /**
      * Builds the query's "must" clauses from search criteria, or match_all when there are none.
-     * "any" (free text) is a match with operator "and", same as the JS app's own search
-     * (CatController.js) - a match_phrase would demand an exact phrase for a multi-word query.
-     * Everything else (codelist/exact filters like topicCat) is a match_phrase term: the value
-     * is one exact token, not free text. Values are JSON leaves either way, not query-string
-     * syntax.
+     * "any" (free text) is a multi_match with operator "and" across "any.*" and
+     * "resourceTitleObject.*" - every language sub-field of both (any.common, any.default,
+     * any.langeng, any.langfre, ..., and the same for resourceTitleObject) in one query,
+     * mirroring the wildcarded field patterns the JS app's own search (CatController.js) uses
+     * in its query_string equivalent. This avoids having to know which language a visitor or a
+     * record is in: the JS app doesn't trust the visitor's browser locale for this either - it
+     * auto-detects the query text's own language - and picking one field by the request's
+     * Accept-Language (an earlier version of this fix) broke as soon as a Spanish-locale
+     * visitor searched English content, since none of any.langspa/resourceTitleObject.langspa
+     * had a thing to match against. any.common alone (the original behaviour here) never
+     * matches a title or abstract search: those copy_to any.&lt;lang&gt;/any.default, not
+     * any.common, which only covers keyword-ish sources (links, resourceIdentifier, feature
+     * type codes). Everything else (codelist/exact filters like topicCat) is a match_phrase
+     * term: the value is one exact token, not free text. Values are JSON leaves either way,
+     * not query-string syntax.
+     *
+     * <p>resourceTitleObject.* is boosted ^2, tracking the app's own preference for title
+     * matches over abstract matches (it uses several boost factors depending on context; ^2 is
+     * the one it uses for this same plain any-with-operator-and shape). The same wildcard also
+     * expands to resourceTitleObject's keyword/sort/trigram/reverse sub-fields - harmless, not
+     * a query-shape error, and the app's own resourceTitleObject.* expands identically; those
+     * sub-fields just don't contribute (.reverse in particular would need a reversed query
+     * token, which this endpoint doesn't build).
      */
     static ArrayNode buildMustClauses(Map<String, String> criteria, ObjectMapper mapper) {
         ArrayNode must = mapper.createArrayNode();
         criteria.forEach((k, v) -> {
-            String field = remapFieldName(k);
             if (Params.FILTER_ANY.equals(k)) {
-                must.addObject().putObject("match").putObject(field).put("query", v).put("operator", "and");
+                must.add(buildAnyClause(v, mapper));
             } else {
-                must.addObject().putObject("match_phrase").put(field, v);
+                must.addObject().putObject("match_phrase").put(remapFieldName(k), v);
             }
         });
         if (must.isEmpty()) {
@@ -312,19 +329,23 @@ public class SearchApi {
         return must;
     }
 
+    private static ObjectNode buildAnyClause(String value, ObjectMapper mapper) {
+        ObjectNode multiMatch = mapper.createObjectNode();
+        multiMatch.put("query", value);
+        multiMatch.putArray("fields").add("any.*").add("resourceTitleObject.*^2");
+        multiMatch.put("operator", "and");
+        ObjectNode wrapper = mapper.createObjectNode();
+        wrapper.set("multi_match", multiMatch);
+        return wrapper;
+    }
+
     /**
-     * "any" -> "any.common" (the free-text field the JS app's own search also uses - unlike
-     * "anytext", a search_as_you_type field with only two copy_to sources, "any.common" covers
-     * every free-text source, including uuid and resourceIdentifier). "topicCat" ->
-     * "cl_topic.key" (the real codelist field). "type" -> "resourceType" (the classic-search
-     * name for the same facet). "_groupPublished" -> "groupPublished" (the classic-search name
-     * has no leading underscore in the index). "_source" -> "sourceCatalogue" (the indexer
-     * renames it; querying "_source" collides with ES's own reserved field).
+     * "topicCat" -> "cl_topic.key" (the real codelist field). "type" -> "resourceType" (the
+     * classic-search name for the same facet). "_groupPublished" -> "groupPublished" (the
+     * classic-search name has no leading underscore in the index). "_source" -> "sourceCatalogue"
+     * (the indexer renames it; querying "_source" collides with ES's own reserved field).
      */
     private static String remapFieldName(String field) {
-        if (Params.FILTER_ANY.equals(field)) {
-            return "any.common";
-        }
         if (Geonet.SearchResult.TOPIC_CAT.equals(field)) {
             return "cl_topic.key";
         }
