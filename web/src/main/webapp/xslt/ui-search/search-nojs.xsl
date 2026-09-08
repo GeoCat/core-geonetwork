@@ -104,7 +104,6 @@
 
   <xsl:template mode="content" match="/">
 
-    <!-- gn-search-page reserves bottom padding for the fixed .gn-bottom-bar footer. -->
     <div class="row gn-search-page"
       id="{/root/gui/systemConfig/system/site/siteId}"
       itemscope="itemscope"
@@ -120,60 +119,9 @@
 
       <div class="col-md-3 gn-facet">
         <div>
-          <xsl:if test="count($parameters) = 1">
-            <div class="clearfix">
-              <xsl:variable name="parameterName"
-                            select="$parameters[1]/name()"/>
-              <xsl:variable name="parameterLabelKey">
-                <xsl:call-template name="param-label-key">
-                  <xsl:with-param name="paramName" select="$parameterName"/>
-                </xsl:call-template>
-              </xsl:variable>
-              <xsl:variable name="parameterLabel"
-                            select="gn-fn-core:translate(string($parameterLabelKey), $t)"/>
-
-              <xsl:variable name="parameterValue"
-                            select="$parameters[1]/text()"/>
-              <div class="gn-margin-bottom">
-                <strong><xsl:value-of select="$parameterLabel"/></strong>
-              </div>
-              <div class="pull-left">
-                <xsl:choose>
-                  <xsl:when test="$parameterName = '_groupPublished'">
-                    <img  class="gn-logo-lg"
-                          alt="{$parameterValue}"
-                          src="{$nodeUrl}../images/harvesting/{$parameterValue}.png"/>
-                  </xsl:when>
-                  <xsl:when test="$parameterName = '_source'">
-                    <img  class="gn-logo-lg"
-                          alt="{$parameterValue}"
-                          src="{$nodeUrl}../images/logos/{$parameterValue}.png"/>
-                  </xsl:when>
-                  <!-- "type" is the classic-search alias for "resourceType" - the page's own
-                  facet link emits the latter, so both need the icon treatment. -->
-                  <xsl:when test="$parameterName = 'topicCat' or $parameterName = 'type'
-                                   or $parameterName = 'resourceType'">
-                    <span class="" aria-hidden="true">
-                      <i class="fa fa-3x gn-icon gn-icon-{$parameterValue}">&#160;</i>
-                    </span>
-                    <h2>
-                      <xsl:value-of select="gn-fn-core:translate($parameterValue, $t)"/>
-                    </h2>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <!-- Not translated: usually "any", a free-text value, not a translation key. -->
-                    <h2>
-                      <xsl:value-of select="$parameterValue"/>
-                    </h2>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </div>
-              <span class="badge">
-                <xsl:value-of select="concat($count, ' ', gn-fn-core:translate('records', $t))"/>
-              </span>
-            </div>
-          </xsl:if>
-          <!-- One removable chip per active filter. -->
+          <!-- One removable chip per active filter - same treatment regardless of how many
+          are active, rather than a one-off icon+heading layout for exactly one filter that
+          just repeated what its own chip already says. -->
           <xsl:if test="count($parameters) > 0">
             <div class="gn-margin-bottom">
               <xsl:for-each select="$parameters">
