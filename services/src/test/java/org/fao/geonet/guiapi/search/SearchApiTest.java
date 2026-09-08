@@ -23,12 +23,14 @@
 
 package org.fao.geonet.guiapi.search;
 
+import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.fao.geonet.constants.Geonet;
 import org.jdom.Element;
+import org.jdom.Verifier;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -37,6 +39,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class SearchApiTest {
 
@@ -101,22 +104,131 @@ public class SearchApiTest {
     }
 
     @Test
+    public void searchCriteriaStripsCharactersXmlCannotCarry() {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("any", "coastal\u0008basins");
+
+        Map<String, String> criteria = SearchApi.searchCriteria(params);
+
+        Assert.assertEquals(Map.of("any", "coastalbasins"), criteria);
+    }
+
+    /**
+     * The invariant behind {@link #searchCriteriaStripsCharactersXmlCannotCarry()}: every value
+     * that survives has to be safe for the {@code <params>} element built from it, or
+     * {@code Element.setText} throws {@code IllegalDataException} and the request 500s.
+     */
+    @Test
+    public void searchCriteriaValuesAreAlwaysUsableAsXmlText() {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("any", "\u0000\u0008rain\u001ffall\ufffe");
+        params.put("topicCat", "farming\u000b");
+        params.put("cat", "maps\ud83d");
+
+        Map<String, String> criteria = SearchApi.searchCriteria(params);
+
+        Assert.assertEquals(3, criteria.size());
+        criteria.forEach((name, value) -> {
+            Assert.assertNull("illegal XML text for " + name, Verifier.checkCharacterData(value));
+            new Element(name).setText(value);
+        });
+    }
+
+    @Test
+    public void searchCriteriaKeepsCharactersOutsideTheBasicMultilingualPlane() {
+        String beyondBmp = new String(Character.toChars(0x1F600)) + new String(Character.toChars(0x2A6B2));
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("any", beyondBmp);
+
+        Assert.assertEquals(Map.of("any", beyondBmp), SearchApi.searchCriteria(params));
+    }
+
+    @Test
+    public void searchCriteriaDropsAValueThatWasNothingButIllegalCharacters() {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("any", "\u0008\u0000");
+        params.put("resourceType", "dataset");
+
+        Assert.assertEquals(Map.of("resourceType", "dataset"), SearchApi.searchCriteria(params));
+    }
+
+    @Test
+    public void everyFacetAggregationAsksForMoreThanElasticsearchsDefaultTenBuckets() {
+        Map<String, Aggregation> aggregations = SearchApi.buildFacetAggregations();
+
+        Assert.assertEquals(Set.of("topicCat", "resourceType"), aggregations.keySet());
+        aggregations.forEach((name, aggregation) -> {
+            Integer size = aggregation.terms().size();
+            Assert.assertNotNull("no explicit terms size for " + name, size);
+            // MD_ScopeCode alone has 20 entries, MD_TopicCategoryCode 19.
+            Assert.assertTrue("terms size too small for " + name + ": " + size, size >= 20);
+        });
+    }
+
+    @Test
+    public void facetAggregationsTargetTheRealIndexFields() {
+        Map<String, Aggregation> aggregations = SearchApi.buildFacetAggregations();
+
+        Assert.assertEquals("cl_topic.key", aggregations.get("topicCat").terms().field());
+        Assert.assertEquals("resourceType", aggregations.get("resourceType").terms().field());
+    }
+
+    /** The default of the es.index.max_result_window.limit build property. */
+    private static final long DEFAULT_RESULT_WINDOW = 15_000;
+
+    @Test
     public void clampDisplayFromDefaultsToOne() {
-        Assert.assertEquals(1, SearchApi.clampDisplayFrom(null));
-        Assert.assertEquals(1, SearchApi.clampDisplayFrom("not-a-number"));
-        Assert.assertEquals(1, SearchApi.clampDisplayFrom("0"));
-        Assert.assertEquals(1, SearchApi.clampDisplayFrom("-5"));
+        Assert.assertEquals(1, SearchApi.clampDisplayFrom(null, DEFAULT_RESULT_WINDOW));
+        Assert.assertEquals(1, SearchApi.clampDisplayFrom("not-a-number", DEFAULT_RESULT_WINDOW));
+        Assert.assertEquals(1, SearchApi.clampDisplayFrom("0", DEFAULT_RESULT_WINDOW));
+        Assert.assertEquals(1, SearchApi.clampDisplayFrom("-5", DEFAULT_RESULT_WINDOW));
     }
 
     @Test
     public void clampDisplayFromKeepsAnOrdinaryValue() {
-        Assert.assertEquals(11, SearchApi.clampDisplayFrom("11"));
+        Assert.assertEquals(11, SearchApi.clampDisplayFrom("11", DEFAULT_RESULT_WINDOW));
     }
 
     @Test
     public void clampDisplayFromNeverLetsFromPlusHitsPerPageExceedMaxResultWindow() {
-        long clamped = SearchApi.clampDisplayFrom("1000000");
+        long clamped = SearchApi.clampDisplayFrom("1000000", DEFAULT_RESULT_WINDOW);
         Assert.assertEquals(14_991, clamped);
+    }
+
+    /**
+     * The point of reading the window from configuration: a deployment that overrides
+     * es.index.max_result_window.limit gets a clamp that matches its own index.
+     */
+    @Test
+    public void clampDisplayFromFollowsAConfiguredResultWindow() {
+        Assert.assertEquals(991, SearchApi.clampDisplayFrom("1000000", 1_000));
+        Assert.assertEquals(99_991, SearchApi.clampDisplayFrom("1000000", 100_000));
+        Assert.assertEquals(491, SearchApi.clampDisplayFrom("500", 500));
+    }
+
+    @Test
+    public void maxDisplayFromIsTheFirstResultOfTheLastReachablePage() {
+        Assert.assertEquals(14_991, SearchApi.maxDisplayFrom(DEFAULT_RESULT_WINDOW));
+        // A window smaller than one page still leaves the first page reachable.
+        Assert.assertEquals(1, SearchApi.maxDisplayFrom(10));
+        Assert.assertEquals(1, SearchApi.maxDisplayFrom(1));
+        Assert.assertEquals(1, SearchApi.maxDisplayFrom(0));
+    }
+
+    /**
+     * maxDisplayFrom is what the page is told to stop paging at, so it has to agree with the
+     * clamp the endpoint actually applies - otherwise a "next" link points at a "from" that
+     * clamps back onto the page the reader is already on.
+     */
+    @Test
+    public void maxDisplayFromIsTheHighestFromTheClampWillHonour() {
+        for (long window : new long[]{1, 10, 11, 500, 1_000, 15_000, 100_000}) {
+            long maxFrom = SearchApi.maxDisplayFrom(window);
+            Assert.assertEquals("window " + window,
+                maxFrom, SearchApi.clampDisplayFrom(String.valueOf(maxFrom), window));
+            Assert.assertEquals("window " + window + ", one page past the end",
+                maxFrom, SearchApi.clampDisplayFrom(String.valueOf(maxFrom + 1), window));
+        }
     }
 
     @Test
