@@ -171,7 +171,8 @@
         <form action="{$nodeUrl}search"
               class="form-horizontal" role="form">
           <div class="row gn-top-search" style="margin:20px">
-            <div class="col-md-offset-3 col-md-1 relative"><b><xsl:value-of select="$t/search"/></b></div>
+            <!-- Hide search label text, only display the search field. -->
+            <div class="col-md-offset-3 col-md-1 relative"><span class="hidden"><xsl:value-of select="$t/search"/></span></div>
             <div class="col-md-5 relative">
               <div class="gn-form-any input-group input-group-lg">
                 <input type="text"

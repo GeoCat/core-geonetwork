@@ -92,8 +92,14 @@
             <xsl:value-of select="gn-fn-core:translate('previous', $t)"/>
           </a>
         </xsl:if>
-        <xsl:if test="number($response/@to) &lt; $count">
-          <a href="{$nodeUrl}search?from={number($response/@to) + 1}{$otherParamsQueryString}"
+        <!-- @maxFrom is where SearchApi stops paging (the index's result window). Without
+        that second test, a search matching more records than the window can reach still
+        offers a "next" on its last page, and following it clamps back to the same page. -->
+        <xsl:variable name="nextFrom"
+                      select="number($response/@to) + 1"/>
+        <xsl:if test="number($response/@to) &lt; $count
+                      and $nextFrom &lt;= number($response/@maxFrom)">
+          <a href="{$nodeUrl}search?from={$nextFrom}{$otherParamsQueryString}"
              class="pull-right">
             <xsl:value-of select="gn-fn-core:translate('next', $t)"/>
           </a>
