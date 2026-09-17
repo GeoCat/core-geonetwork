@@ -41,6 +41,7 @@
       $scope.ruleSelected = null;
       $scope.isUpdate = false;
       $scope.testUrl = "";
+      $scope.testScope = "GLOBAL";
       $scope.testResult = null;
 
       function loadRules() {
@@ -62,7 +63,6 @@
       $scope.selectRule = function (rule) {
         $scope.ruleSelected = angular.copy(rule);
         $scope.isUpdate = true;
-        $scope.testResult = null;
       };
 
       $scope.addRule = function () {
@@ -74,7 +74,6 @@
           enabled: true
         };
         $scope.isUpdate = false;
-        $scope.testResult = null;
       };
 
       $scope.saveRule = function () {
@@ -118,7 +117,7 @@
           .get("../api/urlallowlist/test", {
             params: {
               url: $scope.testUrl,
-              scope: ($scope.ruleSelected && $scope.ruleSelected.scope) || "GLOBAL"
+              scope: $scope.testScope
             }
           })
           .then(
