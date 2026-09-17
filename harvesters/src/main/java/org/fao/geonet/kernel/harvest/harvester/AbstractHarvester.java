@@ -49,6 +49,9 @@ import org.fao.geonet.kernel.security.SecurityProviderUtil;
 import org.fao.geonet.kernel.search.submission.batch.BatchingDeletionSubmitter;
 import org.fao.geonet.kernel.setting.HarvesterSettingsManager;
 import org.fao.geonet.kernel.setting.SettingManager;
+import org.fao.geonet.kernel.security.url.UrlAllowlist;
+import org.fao.geonet.kernel.security.url.UrlScope;
+import org.fao.geonet.kernel.security.url.UrlScopeContext;
 import org.fao.geonet.kernel.setting.Settings;
 import org.fao.geonet.repository.GroupRepository;
 import org.fao.geonet.repository.HarvestHistoryRepository;
@@ -644,6 +647,7 @@ public abstract class AbstractHarvester<T extends HarvestResult, P extends Abstr
     protected OperResult harvest() {
         OperResult operResult = OperResult.OK;
         Boolean releaseLock = false;
+        UrlScopeContext.set(UrlScope.HARVESTER);
         try {
             if (lock.isHeldByCurrentThread() || (releaseLock = lock.tryLock(LONG_WAIT, TimeUnit.SECONDS))) {
                 long startTime = System.currentTimeMillis();
@@ -721,6 +725,8 @@ public abstract class AbstractHarvester<T extends HarvestResult, P extends Abstr
         } catch (InterruptedException e) {
             log.error(e);
         } finally {
+            // the thread goes back to a pool, so this cannot be left set
+            UrlScopeContext.clear();
             if (lock.isHeldByCurrentThread() && releaseLock) {
                 lock.unlock();
             }

@@ -39,6 +39,8 @@ import org.fao.geonet.api.records.attachments.Store;
 import org.fao.geonet.api.tools.i18n.LanguageUtils;
 import org.fao.geonet.domain.MapServer;
 import org.fao.geonet.kernel.setting.SettingManager;
+import org.fao.geonet.kernel.security.url.UrlAllowlist;
+import org.fao.geonet.kernel.security.url.UrlScope;
 import org.fao.geonet.repository.MapServerRepository;
 import org.fao.geonet.utils.GeonetHttpRequestFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -179,6 +181,19 @@ public class MapServersApi {
     })
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
+    /**
+     * A map server is configured once and used for every publication afterwards, so the address is
+     * worth refusing here rather than when something is published to it.
+     */
+    private static void checkUrls(MapServer mapserver) {
+        for (String url : new String[]{mapserver.getConfigurl(), mapserver.getWmsurl(),
+            mapserver.getWfsurl(), mapserver.getWcsurl(), mapserver.getStylerurl()}) {
+            if (url != null && !url.trim().isEmpty()) {
+                UrlAllowlist.assertAllowed(url.trim(), UrlScope.MAPSERVER);
+            }
+        }
+    }
+
     public ResponseEntity<Integer> addMapserver(
         @Parameter(
             description = API_PARAM_MAPSERVER_DETAILS,
@@ -187,6 +202,7 @@ public class MapServersApi {
         @RequestBody
             MapServer mapserver
     ) throws Exception {
+        checkUrls(mapserver);
         MapServer existingMapserver = mapServerRepository.findOneById(mapserver.getId());
         if (existingMapserver != null) {
             throw new IllegalArgumentException(String.format(
@@ -230,6 +246,7 @@ public class MapServersApi {
         @RequestBody
             MapServer mapserver
     ) throws Exception {
+        checkUrls(mapserver);
         MapServer existingMapserver = mapServerRepository.findOneById(mapserverId);
         if (existingMapserver != null) {
             updateMapserver(mapserverId, mapserver, mapServerRepository);

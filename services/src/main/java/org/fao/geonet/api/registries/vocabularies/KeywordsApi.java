@@ -51,6 +51,8 @@ import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.exceptions.BadParameterEx;
 import org.fao.geonet.kernel.*;
 import org.fao.geonet.kernel.search.KeywordsSearcher;
+import org.fao.geonet.kernel.security.url.UrlAllowlist;
+import org.fao.geonet.kernel.security.url.UrlScope;
 import org.fao.geonet.kernel.search.keyword.*;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.languages.IsoLanguagesMapper;
@@ -1411,6 +1413,7 @@ public class KeywordsApi {
      * @throws MalformedURLException the malformed URL exception
      */
     private Path getXMLContentFromUrl(String url, ServiceContext context) throws URISyntaxException, IOException {
+        UrlAllowlist.assertAllowed(url, UrlScope.THESAURUS);
         Path rdfFile;
         URI uri = new URI(url);
         rdfFile = Files.createTempFile("thesaurus", ".rdf");

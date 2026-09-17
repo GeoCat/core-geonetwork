@@ -178,7 +178,7 @@ public class UrlAllowlistConfigLoader {
         } catch (IllegalArgumentException e) {
             resolved = UrlScope.GLOBAL;
         }
-        service.assertAllowed(url, resolved);
+        service.assertAllowed(url, UrlScopeContext.resolve(resolved));
     }
 
     @PostConstruct

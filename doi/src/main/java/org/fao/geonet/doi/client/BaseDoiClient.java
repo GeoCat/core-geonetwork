@@ -35,6 +35,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
+import org.fao.geonet.kernel.security.url.UrlAllowlist;
+import org.fao.geonet.kernel.security.url.UrlScope;
 import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.lib.Lib;
@@ -66,6 +68,7 @@ public class BaseDoiClient {
         HttpPost postMethod = null;
 
         try {
+            UrlAllowlist.assertAllowed(url, UrlScope.DOI);
             Log.debug(LOGGER_NAME, "   -- URL: " + url);
 
             postMethod = new HttpPost(url);
@@ -128,6 +131,7 @@ public class BaseDoiClient {
         HttpGet getMethod = null;
 
         try {
+            UrlAllowlist.assertAllowed(url, UrlScope.DOI);
             Log.debug(LOGGER_NAME, "   -- URL: " + url);
 
             getMethod = new HttpGet(url);

@@ -38,6 +38,8 @@ import org.fao.geonet.exceptions.MissingParameterEx;
 import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.HarvestValidationEnum;
 import org.fao.geonet.kernel.setting.SettingManager;
+import org.fao.geonet.kernel.security.url.UrlAllowlist;
+import org.fao.geonet.kernel.security.url.UrlScope;
 import org.fao.geonet.kernel.setting.Settings;
 import org.fao.geonet.lib.Lib;
 import org.fao.geonet.utils.Log;
@@ -126,12 +128,28 @@ public abstract class AbstractParams implements Cloneable {
      * @param node
      * @throws BadInputEx
      */
+    /**
+     * Refuses a harvester whose address the catalogue is not allowed to reach, when it is
+     * configured rather than when it first runs. Harvesters that read from a local folder or a
+     * database have no address, and are left alone.
+     */
+    private void checkUrl(Element site) {
+        if (site == null) {
+            return;
+        }
+        String url = site.getChildText("url");
+        if (url != null && !url.trim().isEmpty()) {
+            UrlAllowlist.assertAllowed(url.trim(), UrlScope.HARVESTER);
+        }
+    }
+
     public void create(Element node) throws BadInputEx {
         if (Log.isDebugEnabled(Geonet.HARVEST_MAN)) {
             Log.debug(Geonet.HARVEST_MAN, "AbstractParams creating from:\n" + Xml.getString(node));
         }
         Element site = node.getChild("site");
         Assert.isTrue(site != null, "Site cannot be null");
+        checkUrl(site);
         Element opt = node.getChild("options");
         Element content = node.getChild("content");
 
@@ -227,6 +245,7 @@ public abstract class AbstractParams implements Cloneable {
      */
     public void update(Element node) throws BadInputEx {
         Element site = node.getChild("site");
+        checkUrl(site);
         Element opt = node.getChild("options");
         Element content = node.getChild("content");
 

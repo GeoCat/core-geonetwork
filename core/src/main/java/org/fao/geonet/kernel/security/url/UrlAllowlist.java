@@ -45,7 +45,7 @@ public final class UrlAllowlist {
     public static void assertAllowed(String url, UrlScope scope) {
         UrlAllowlistService service = service();
         if (service != null) {
-            service.assertAllowed(url, scope);
+            service.assertAllowed(url, UrlScopeContext.resolve(scope));
         }
     }
 
