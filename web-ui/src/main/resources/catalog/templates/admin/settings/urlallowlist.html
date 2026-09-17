@@ -1,0 +1,159 @@
+<div
+  class="row"
+  data-ng-controller="GnUrlAllowlistController"
+  id="gn-urlallowlist-container"
+>
+  <div class="col-lg-4">
+    <div class="panel panel-default">
+      <div class="panel-heading" data-translate="">urlAllowlistRules</div>
+      <div class="panel-body">
+        <p class="help-block" data-translate="">urlAllowlistRulesHelp</p>
+
+        <input
+          class="form-control"
+          data-ng-model="ruleSearch.$"
+          autofocus=""
+          placeholder="{{'filter' | translate}}"
+        />
+
+        <div class="list-group">
+          <a
+            href=""
+            class="list-group-item"
+            data-ng-repeat="r in rules | filter:ruleSearch"
+            data-ng-click="selectRule(r)"
+            title="{{r.description}}"
+          >
+            <span data-ng-class="{'text-muted': !r.enabled}">{{r.name}}</span>
+            <small class="pull-right">{{r.pattern}}</small>
+          </a>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-block" data-ng-click="addRule()">
+          <i class="fa fa-plus"></i>
+          <span data-translate="">urlAllowlistNewRule</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-8" data-ng-hide="ruleSelected == null">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        {{ruleSelected.name || ('urlAllowlistNewRule' | translate)}}
+      </div>
+      <div class="panel-body">
+        <form class="form-horizontal" name="ruleForm">
+          <div class="form-group">
+            <label class="col-sm-3 control-label" data-translate="">name</label>
+            <div class="col-sm-9">
+              <input class="form-control" required data-ng-model="ruleSelected.name" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label" data-translate=""
+              >urlAllowlistPattern</label
+            >
+            <div class="col-sm-9">
+              <input
+                class="form-control"
+                required
+                placeholder="https://*.example.org/thesauri"
+                data-ng-model="ruleSelected.pattern"
+              />
+              <span class="help-block" data-translate="">urlAllowlistPatternHelp</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label" data-translate="">description</label>
+            <div class="col-sm-9">
+              <input class="form-control" data-ng-model="ruleSelected.description" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label" data-translate=""
+              >urlAllowlistScope</label
+            >
+            <div class="col-sm-9">
+              <input class="form-control" readonly data-ng-model="ruleSelected.scope" />
+              <span class="help-block" data-translate="">urlAllowlistScopeHelp</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" data-ng-model="ruleSelected.enabled" />
+                  <span data-translate="">urlAllowlistRuleEnabled</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-ng-disabled="ruleForm.$invalid"
+                data-ng-click="saveRule()"
+              >
+                <span data-translate="">save</span>
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-ng-show="isUpdate"
+                data-ng-click="deleteRule()"
+              >
+                <span data-translate="">delete</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading" data-translate="">urlAllowlistTest</div>
+      <div class="panel-body">
+        <p class="help-block" data-translate="">urlAllowlistTestHelp</p>
+        <div class="input-group">
+          <input
+            class="form-control"
+            placeholder="https://registry.example.org/thesauri/rdf"
+            data-ng-model="testUrl"
+          />
+          <span class="input-group-btn">
+            <button
+              type="button"
+              class="btn btn-default"
+              data-ng-disabled="!testUrl"
+              data-ng-click="runTest()"
+            >
+              <span data-translate="">urlAllowlistTestRun</span>
+            </button>
+          </span>
+        </div>
+
+        <div
+          class="alert"
+          data-ng-if="testResult != null"
+          data-ng-class="testResult.allowed ? 'alert-success' : 'alert-danger'"
+        >
+          <strong data-ng-if="testResult.allowed" data-translate=""
+            >urlAllowlistAllowed</strong
+          >
+          <strong data-ng-if="!testResult.allowed" data-translate=""
+            >urlAllowlistDenied</strong
+          >
+          {{testResult.reason}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

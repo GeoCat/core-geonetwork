@@ -72,6 +72,7 @@ import org.fao.geonet.kernel.harvest.HarvestManager;
 import org.fao.geonet.kernel.search.EsSearchManager;
 import org.fao.geonet.kernel.search.index.BatchOpsMetadataReindexer;
 import org.fao.geonet.kernel.setting.SettingInfo;
+import org.fao.geonet.kernel.security.url.UrlAllowlistConfigLoader;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.kernel.setting.Settings;
 import org.fao.geonet.lib.Lib;
@@ -495,6 +496,9 @@ public class SiteApi implements ApplicationEventPublisherAware {
         if (!settingManager.setValues(allRequestParams)) {
             throw new OperationAbortedEx("Cannot set all values");
         }
+
+        // the URL allowlist keeps its configuration in memory, so it has to be told
+        applicationContext.getBean(UrlAllowlistConfigLoader.class).reload();
 
         String newSiteName = settingManager.getSiteName();
         // Update site source name/translations if the site name is updated

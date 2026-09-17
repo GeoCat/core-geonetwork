@@ -36,6 +36,7 @@
   goog.require("gn_languages_controller");
   goog.require("gn_static_pages_controller");
   goog.require("gn_doiserver_controller");
+  goog.require("gn_urlallowlist_controller");
 
   var module = angular.module("gn_settings_controller", [
     "gn_system_settings_controller",
@@ -49,7 +50,8 @@
     "gn_cssstyle_settings_controller",
     "gn_scroll_spy",
     "gn_static_pages_controller",
-    "gn_doiserver_controller"
+    "gn_doiserver_controller",
+    "gn_urlallowlist_controller"
   ]);
 
   module.controller("GnSettingsController", [
@@ -133,6 +135,12 @@
             icon: "gn-icon-doi",
             label: "manageDoiServers",
             href: "#/settings/doiservers"
+          },
+          {
+            type: "urlallowlist",
+            icon: "fa-shield",
+            label: "manageUrlAllowlist",
+            href: "#/settings/urlallowlist"
           },
           {
             type: "static-pages",

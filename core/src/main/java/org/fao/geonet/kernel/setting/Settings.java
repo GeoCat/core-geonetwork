@@ -74,6 +74,9 @@ public class Settings {
     public static final String SYSTEM_ENABLE_ALL_THESAURUS = "system/metadata/allThesaurus";
     public static final String SYSTEM_METADATA_THESAURUS_NAMESPACE = "system/metadata/thesaurusNamespace";
     public static final String SYSTEM_METADATA_VALIDATION_REMOVESCHEMALOCATION = "system/metadata/validation/removeSchemaLocation";
+    public static final String SYSTEM_URLALLOWLIST_ENABLED = "system/urlAllowlist/enabled";
+    public static final String SYSTEM_URLALLOWLIST_AUDITMODE = "system/urlAllowlist/auditMode";
+    public static final String SYSTEM_URLALLOWLIST_ALLOWINTERNALADDRESSES = "system/urlAllowlist/allowInternalAddresses";
     public static final GNSetting SYSTEM_SITE_SVNUUID = new GNSetting("system/site/svnUuid", true);
     public static final String SYSTEM_INTRANET_NETWORK = "system/intranet/network";
     public static final String SYSTEM_INTRANET_NETMASK = "system/intranet/netmask";
