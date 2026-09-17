@@ -386,6 +386,7 @@ nav:
     - api/z39-50.md
   - 'Development':
     - devel/index.md
+    - 'URL allowlist architecture': devel/url-allowlist-architecture.md
     - 'Documentation':
       - devel/docs/index.md
       - devel/docs/style/index.md
