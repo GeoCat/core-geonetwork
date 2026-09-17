@@ -31,6 +31,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.LinkStatus;
 import org.fao.geonet.kernel.setting.SettingManager;
+import org.fao.geonet.kernel.security.url.UrlAllowlist;
+import org.fao.geonet.kernel.security.url.UrlScope;
 import org.fao.geonet.lib.Lib;
 import org.fao.geonet.lib.NetLib;
 import org.fao.geonet.utils.GeonetHttpRequestFactory;
@@ -103,6 +105,7 @@ public class UrlChecker {
         LinkStatus linkStatus = new LinkStatus();
         linkStatus.setFailing(false);
         try {
+            UrlAllowlist.assertAllowed(url, UrlScope.ONLINE_RESOURCE);
             URLConnection con = new URL(url).openConnection();
             con.setConnectTimeout(10000);
             con.setReadTimeout(10000);

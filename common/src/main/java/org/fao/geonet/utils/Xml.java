@@ -174,6 +174,11 @@ public final class Xml {
      */
     public static Element loadFile(URL url) throws IOException, JDOMException {
         Path path = pathFromUrl(url);
+        if ("http".equalsIgnoreCase(url.getProtocol()) || "https".equalsIgnoreCase(url.getProtocol())) {
+            // the same method loads local files, and schemas packaged in a jar, which are not URLs
+            // anyone supplied; only what is fetched over the network is checked here
+            UrlAllowlistChecks.get().assertAllowed(url.toString(), UrlAllowlistCheck.SCOPE_GLOBAL);
+        }
         SAXBuilder builder = getSAXBuilderWithPathXMLResolver(false, path);//new SAXBuilder();
         Document jdoc = builder.build(url);
 
@@ -196,6 +201,7 @@ public final class Xml {
      * Loads an xml file from a URL after posting content to the URL.
      */
     public static Element loadFile(URL url, Element xmlQuery) throws IOException, JDOMException {
+        UrlAllowlistChecks.get().assertAllowed(url.toString(), UrlAllowlistCheck.SCOPE_GLOBAL);
         Element result = null;
         try {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();

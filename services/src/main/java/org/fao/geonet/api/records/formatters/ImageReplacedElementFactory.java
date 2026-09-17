@@ -32,6 +32,8 @@ import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.api.ApiUtils;
 import org.fao.geonet.api.records.attachments.Store;
 import org.fao.geonet.api.records.extent.MapRenderer;
+import org.fao.geonet.kernel.security.url.UrlAllowlist;
+import org.fao.geonet.kernel.security.url.UrlScope;
 import org.fao.geonet.api.records.extent.MetadataExtentApi;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.constants.Params;
@@ -314,6 +316,8 @@ public class ImageReplacedElementFactory implements ReplacedElementFactory {
             URI normalizedUrl = new URI(url).normalize();
             Log.debug(Geonet.GEONETWORK, String.format("URL -> %s, normalized URL -> %s",
                 url, normalizedUrl.toString()));
+
+            UrlAllowlist.assertAllowed(normalizedUrl.toString(), UrlScope.FORMATTER);
 
             try (InputStream input = normalizedUrl.toURL().openStream()) {
                 byte[] bytes = IOUtils.toByteArray(input);

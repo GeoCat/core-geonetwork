@@ -35,6 +35,8 @@ import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.kernel.setting.Settings;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.Xml;
+import org.fao.geonet.kernel.security.url.UrlAllowlist;
+import org.fao.geonet.kernel.security.url.UrlScope;
 import org.jdom.Attribute;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -200,6 +202,7 @@ public final class Processor {
                 if (remoteFragment == null) {
                     Log.info(Log.XLINK_PROCESSOR, "cache MISS on " + uri.toLowerCase());
                     URL url = new URL(uri.replaceAll("&amp;", "&"));
+                    UrlAllowlist.assertAllowed(url.toString(), UrlScope.XLINK);
 
                     URLConnection conn = url.openConnection();
                     conn.setConnectTimeout(1000);

@@ -43,6 +43,8 @@ import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.GeonetworkDataDirectory;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.UpdateDatestamp;
+import org.fao.geonet.kernel.security.url.UrlAllowlist;
+import org.fao.geonet.kernel.security.url.UrlScope;
 import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
 import org.fao.geonet.kernel.datamanager.IMetadataManager;
 import org.fao.geonet.kernel.datamanager.IMetadataOperations;
@@ -712,6 +714,7 @@ class Harvester extends BaseAligner<ThreddsParams> implements IHarvester<Harvest
         try {
             //--- get the version from the OPeNDAP server
             URL url = new URL(href);
+            UrlAllowlist.assertAllowed(url.toString(), UrlScope.HARVESTER);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             Object o = conn.getContent();
             if (log.isDebugEnabled())

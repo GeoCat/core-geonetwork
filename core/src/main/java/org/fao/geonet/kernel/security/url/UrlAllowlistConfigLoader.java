@@ -30,8 +30,8 @@ import org.fao.geonet.domain.UrlAllowlistRule;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.kernel.setting.Settings;
 import org.fao.geonet.repository.UrlAllowlistRuleRepository;
-import org.fao.geonet.utils.GeonetHttpRequestFactory;
 import org.fao.geonet.utils.Log;
+import org.fao.geonet.utils.UrlAllowlistChecks;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -60,8 +60,6 @@ public class UrlAllowlistConfigLoader {
     @Autowired
     private UrlAllowlistServiceImpl service;
 
-    @Autowired(required = false)
-    private GeonetHttpRequestFactory requestFactory;
 
     /**
      * Re-reads the configuration. Called after any change to the settings or the rules.
@@ -185,11 +183,9 @@ public class UrlAllowlistConfigLoader {
 
     @PostConstruct
     public void init() {
-        if (requestFactory != null) {
-            // installed before the configuration is read, so a failure below cannot leave the
-            // client unchecked while the settings say otherwise
-            requestFactory.setUrlAllowlistCheck(this::check);
-        }
+        // installed before the configuration is read, so a failure below cannot leave the
+        // catalogue unchecked while the settings say otherwise
+        UrlAllowlistChecks.set(this::check);
         try {
             reload();
         } catch (Exception e) {

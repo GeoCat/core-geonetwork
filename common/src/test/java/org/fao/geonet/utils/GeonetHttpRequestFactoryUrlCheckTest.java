@@ -30,6 +30,7 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
 import org.apache.http.protocol.HttpCoreContext;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -69,6 +70,26 @@ public class GeonetHttpRequestFactoryUrlCheckTest {
                 throw new Refused(url);
             }
         });
+    }
+
+    @After
+    public void resetSharedCheck() {
+        UrlAllowlistChecks.set(UrlAllowlistCheck.ALLOW_ALL);
+    }
+
+    @Test
+    public void theSharedCheckAppliesWithoutBeingSetOnTheInstance() {
+        UrlAllowlistChecks.set((url, scope) -> {
+            throw new Refused(url);
+        });
+        try {
+            new GeonetHttpRequestFactory().execute(new HttpGet("http://evil.org:9/nothing"));
+            fail("expected the request to be refused");
+        } catch (Refused expected) {
+            // the catalogue installs one check for everything that has no bean to inject
+        } catch (IOException e) {
+            fail("the request was attempted instead of being refused: " + e);
+        }
     }
 
     @Test

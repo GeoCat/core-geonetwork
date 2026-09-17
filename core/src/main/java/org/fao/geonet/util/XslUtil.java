@@ -64,6 +64,8 @@ import org.fao.geonet.kernel.search.Translator;
 import org.fao.geonet.kernel.security.SecurityProviderConfiguration;
 import org.fao.geonet.kernel.setting.SettingInfo;
 import org.fao.geonet.kernel.setting.SettingManager;
+import org.fao.geonet.kernel.security.url.UrlAllowlist;
+import org.fao.geonet.kernel.security.url.UrlScope;
 import org.fao.geonet.kernel.url.UrlChecker;
 import org.fao.geonet.languages.IsoLanguagesMapper;
 import org.fao.geonet.lib.Lib;
@@ -1366,6 +1368,7 @@ public final class XslUtil {
                     }
                 } else {
                     URL imageUrl = new URL(url);
+                    UrlAllowlist.assertAllowed(imageUrl.toString(), UrlScope.FORMATTER);
                     URLConnection con = imageUrl.openConnection();
                     con.setConnectTimeout(1000);
                     con.setReadTimeout(10000);
@@ -1441,6 +1444,7 @@ public final class XslUtil {
 
         try {
             URL url = new URL(surl);
+            UrlAllowlist.assertAllowed(url.toString(), UrlScope.FORMATTER);
             URLConnection conn = Lib.net.setupProxy(context, url);
 
             is = conn.getInputStream();

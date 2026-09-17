@@ -72,15 +72,19 @@ public class GeonetHttpRequestFactory {
     private int numberOfConcurrentRequests = 20;
     private PoolingHttpClientConnectionManager connectionManager;
     private volatile HttpClientConnectionManager nonShutdownableConnectionManager;
-    private volatile UrlAllowlistCheck urlAllowlistCheck = UrlAllowlistCheck.ALLOW_ALL;
+    private volatile UrlAllowlistCheck urlAllowlistCheck;
 
     /**
-     * Installs the URL allowlist. Called once at start-up by the core module; until then, and in a
-     * deployment that never calls it, every URL is allowed.
+     * Overrides the allowlist for this instance. The catalogue installs one shared check in
+     * {@link UrlAllowlistChecks}, which is what this falls back to.
      */
     public void setUrlAllowlistCheck(UrlAllowlistCheck urlAllowlistCheck) {
-        this.urlAllowlistCheck = urlAllowlistCheck == null
-            ? UrlAllowlistCheck.ALLOW_ALL : urlAllowlistCheck;
+        this.urlAllowlistCheck = urlAllowlistCheck;
+    }
+
+    private UrlAllowlistCheck urlAllowlistCheck() {
+        final UrlAllowlistCheck own = this.urlAllowlistCheck;
+        return own == null ? UrlAllowlistChecks.get() : own;
     }
 
     @PreDestroy
@@ -218,7 +222,7 @@ public class GeonetHttpRequestFactory {
      */
     private void checkAllowed(HttpUriRequest request) {
         if (request != null && request.getURI() != null) {
-            urlAllowlistCheck.assertAllowed(request.getURI().toString(), UrlAllowlistCheck.SCOPE_GLOBAL);
+            urlAllowlistCheck().assertAllowed(request.getURI().toString(), UrlAllowlistCheck.SCOPE_GLOBAL);
         }
     }
 
@@ -233,7 +237,7 @@ public class GeonetHttpRequestFactory {
             public URI getLocationURI(HttpRequest request, HttpResponse response, HttpContext context)
                 throws ProtocolException {
                 final URI location = super.getLocationURI(request, response, context);
-                urlAllowlistCheck.assertAllowed(location.toString(), UrlAllowlistCheck.SCOPE_GLOBAL);
+                urlAllowlistCheck().assertAllowed(location.toString(), UrlAllowlistCheck.SCOPE_GLOBAL);
                 return location;
             }
         };

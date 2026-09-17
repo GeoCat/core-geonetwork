@@ -34,6 +34,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.fao.geonet.GeonetContext;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.kernel.setting.SettingManager;
+import org.fao.geonet.kernel.security.url.UrlAllowlist;
+import org.fao.geonet.kernel.security.url.UrlScope;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.XmlRequest;
 
@@ -205,6 +207,7 @@ public class NetLib {
      * Setups proxy for java.net.URL.
      */
     public URLConnection setupProxy(ServiceContext context, URL url) throws IOException {
+        UrlAllowlist.assertAllowed(url.toString(), UrlScope.GLOBAL);
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
         SettingManager sm = gc.getBean(SettingManager.class);
 
