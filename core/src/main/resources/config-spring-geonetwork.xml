@@ -235,6 +235,9 @@
     <!--<bean class="org.fao.geonet.kernel.datamanager.base.BaseMetadataIndexer"/>
     <bean class="org.fao.geonet.kernel.datamanager.base.BaseMetadataManager"/>-->
     <bean class="org.fao.geonet.kernel.datamanager.base.BaseMetadataValidator"/>
+
+    <!-- URL allowlist: off by default; configuration is wired in a later increment -->
+    <bean class="org.fao.geonet.kernel.security.url.UrlAllowlistServiceImpl"/>
     <!--<bean class="org.fao.geonet.kernel.datamanager.base.BaseMetadataUtils"/>-->
     <bean class="org.fao.geonet.kernel.datamanager.base.BaseMetadataOperations"/>
     <bean class="org.fao.geonet.kernel.datamanager.base.BaseMetadataStatus"/>
