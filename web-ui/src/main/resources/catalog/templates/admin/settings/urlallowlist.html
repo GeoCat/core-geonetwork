@@ -78,7 +78,11 @@
               >urlAllowlistScope</label
             >
             <div class="col-sm-9">
-              <input class="form-control" readonly data-ng-model="ruleSelected.scope" />
+              <select
+                class="form-control"
+                data-ng-model="ruleSelected.scope"
+                data-ng-options="s as s for s in ruleScopes"
+              ></select>
               <span class="help-block" data-translate="">urlAllowlistScopeHelp</span>
             </div>
           </div>
@@ -119,9 +123,69 @@
     </div>
 
     <div class="panel panel-default">
+      <div class="panel-heading" data-translate="">urlAllowlistScopes</div>
+      <div class="panel-body">
+        <p class="help-block" data-translate="">urlAllowlistScopesHelp</p>
+
+        <table class="table table-condensed">
+          <tbody>
+            <tr data-ng-repeat="s in scopeNames">
+              <td class="col-sm-6">{{s}}</td>
+              <td class="col-sm-6">
+                <select
+                  class="form-control input-sm"
+                  data-ng-model="scopes[s]"
+                  data-ng-options="m as ('urlAllowlistMode' + m | translate) for m in modes"
+                ></select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button type="button" class="btn btn-primary" data-ng-click="saveScopes()">
+          <span data-translate="">save</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading" data-translate="">urlAllowlistEffective</div>
+      <div class="panel-body">
+        <p class="help-block" data-translate="">urlAllowlistEffectiveHelp</p>
+
+        <select
+          class="form-control"
+          data-ng-model="effectiveScope"
+          data-ng-change="loadEffectiveRules()"
+          data-ng-options="s as s for s in ruleScopes"
+        ></select>
+
+        <table class="table table-condensed" data-ng-if="effectiveRules.length">
+          <tbody>
+            <tr data-ng-repeat="r in effectiveRules">
+              <td data-ng-class="{'text-muted': !r.enabled}">{{r.name}}</td>
+              <td><code>{{r.pattern}}</code></td>
+              <td>{{r.scope}}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="text-muted" data-ng-if="!effectiveRules.length" data-translate="">
+          urlAllowlistEffectiveNone
+        </p>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
       <div class="panel-heading" data-translate="">urlAllowlistTest</div>
       <div class="panel-body">
         <p class="help-block" data-translate="">urlAllowlistTestHelp</p>
+        <select
+          class="form-control"
+          data-ng-model="testScope"
+          data-ng-options="s as s for s in ruleScopes"
+        ></select>
+
         <div class="input-group">
           <input
             class="form-control"

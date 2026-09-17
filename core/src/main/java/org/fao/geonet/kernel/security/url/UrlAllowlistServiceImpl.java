@@ -32,11 +32,14 @@ import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -73,6 +76,14 @@ public class UrlAllowlistServiceImpl implements UrlAllowlistService {
     private volatile boolean allowInternalAddresses = false;
     private volatile Set<String> allowedSchemes = DEFAULT_SCHEMES;
     private volatile List<UrlRule> rules = Collections.emptyList();
+    private volatile List<UrlRule> implicitRules = Collections.emptyList();
+    private volatile Map<UrlScope, UrlScopeMode> modes = Collections.emptyMap();
+
+    /**
+     * What every scope ends up evaluating, worked out whenever the configuration changes rather
+     * than on each check.
+     */
+    private volatile Map<UrlScope, List<UrlRule>> resolvedRules = emptyResolution();
 
     @Override
     public boolean isAllowed(String url, UrlScope scope) {
@@ -101,6 +112,9 @@ public class UrlAllowlistServiceImpl implements UrlAllowlistService {
     public UrlCheckResult test(String url, UrlScope scope) {
         if (!enabled) {
             return UrlCheckResult.allowed("URL checks are disabled");
+        }
+        if (getMode(scope) == UrlScopeMode.DISABLED) {
+            return UrlCheckResult.allowed("URL checks are disabled for " + scope);
         }
         if (url == null || url.trim().isEmpty()) {
             return UrlCheckResult.denied("empty URL");
@@ -158,12 +172,71 @@ public class UrlAllowlistServiceImpl implements UrlAllowlistService {
     }
 
     /**
-     * Every scope resolves to the global list for now. Per-scope modes are added later; callers
-     * already pass their scope so that change stays inside this class.
+     * The rules a scope evaluates, in order: the implicit ones first, then whatever its mode
+     * resolves to.
      */
     @Override
     public List<UrlRule> getRules(UrlScope scope) {
-        return rules;
+        return resolvedRules.getOrDefault(scope, Collections.emptyList());
+    }
+
+    /**
+     * @return the configured mode, or {@link UrlScopeMode#INHERIT}. The global scope has no mode of
+     * its own: it is what the others inherit.
+     */
+    @Override
+    public UrlScopeMode getMode(UrlScope scope) {
+        if (scope == null || scope == UrlScope.GLOBAL) {
+            return UrlScopeMode.INHERIT;
+        }
+        return modes.getOrDefault(scope, UrlScopeMode.INHERIT);
+    }
+
+    private static Map<UrlScope, List<UrlRule>> emptyResolution() {
+        Map<UrlScope, List<UrlRule>> resolution = new EnumMap<>(UrlScope.class);
+        for (UrlScope scope : UrlScope.values()) {
+            resolution.put(scope, Collections.emptyList());
+        }
+        return Collections.unmodifiableMap(resolution);
+    }
+
+    private List<UrlRule> rulesOf(UrlScope scope) {
+        List<UrlRule> owned = new ArrayList<>();
+        for (UrlRule rule : rules) {
+            if (rule.getScope() == scope) {
+                owned.add(rule);
+            }
+        }
+        return owned;
+    }
+
+    /**
+     * Applies the modes once, so a check is a lookup and a match.
+     */
+    private synchronized void resolve() {
+        Map<UrlScope, List<UrlRule>> resolution = new EnumMap<>(UrlScope.class);
+        List<UrlRule> global = rulesOf(UrlScope.GLOBAL);
+        for (UrlScope scope : UrlScope.values()) {
+            List<UrlRule> applicable = new ArrayList<>(implicitRules);
+            switch (getMode(scope)) {
+                case EXTEND:
+                    applicable.addAll(global);
+                    applicable.addAll(rulesOf(scope));
+                    break;
+                case OVERRIDE:
+                    applicable.addAll(rulesOf(scope));
+                    break;
+                case DISABLED:
+                    // nothing is evaluated; test() returns before it gets here
+                    break;
+                case INHERIT:
+                default:
+                    applicable.addAll(global);
+                    break;
+            }
+            resolution.put(scope, Collections.unmodifiableList(applicable));
+        }
+        this.resolvedRules = Collections.unmodifiableMap(resolution);
     }
 
     private static URI parseOrNull(String url) {
@@ -288,5 +361,26 @@ public class UrlAllowlistServiceImpl implements UrlAllowlistService {
      */
     public void setRules(List<UrlRule> rules) {
         this.rules = rules == null ? Collections.emptyList() : Collections.unmodifiableList(rules);
+        resolve();
+    }
+
+    /**
+     * Rules every scope evaluates whatever its mode, such as the catalogue's own address. A scope
+     * on OVERRIDE still has to be able to reach the catalogue itself.
+     */
+    public void setImplicitRules(List<UrlRule> implicitRules) {
+        this.implicitRules = implicitRules == null
+            ? Collections.emptyList() : Collections.unmodifiableList(implicitRules);
+        resolve();
+    }
+
+    public void setModes(Map<UrlScope, UrlScopeMode> modes) {
+        this.modes = modes == null || modes.isEmpty()
+            ? Collections.emptyMap() : Collections.unmodifiableMap(new EnumMap<>(modes));
+        resolve();
+    }
+
+    public Map<UrlScope, UrlScopeMode> getModes() {
+        return modes;
     }
 }

@@ -23,6 +23,8 @@
 
 package org.fao.geonet.kernel.security.url;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.UrlAllowlistRule;
 import org.fao.geonet.kernel.setting.SettingManager;
@@ -36,7 +38,9 @@ import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Feeds {@link UrlAllowlistServiceImpl} from the settings and the rule table.
@@ -68,12 +72,17 @@ public class UrlAllowlistConfigLoader {
         service.setAllowInternalAddresses(
             settingManager.getValueAsBool(Settings.SYSTEM_URLALLOWLIST_ALLOWINTERNALADDRESSES, false));
 
+        service.setModes(readModes());
+
+        List<UrlRule> implicitRules = new ArrayList<>();
+        addCatalogueRule(implicitRules);
+        service.setImplicitRules(implicitRules);
+
         List<UrlRule> rules = new ArrayList<>();
-        addCatalogueRule(rules);
         for (UrlAllowlistRule stored : ruleRepository.findAllByOrderByNameAsc()) {
             try {
                 rules.add(new UrlRule(stored.getName(), stored.getDescription(),
-                    stored.getPattern(), stored.isEnabled()));
+                    stored.getPattern(), stored.isEnabled(), scopeOf(stored)));
             } catch (IllegalArgumentException e) {
                 // one unusable pattern must not take the rest of the list with it; dropping the
                 // rule is the safe direction, it can only refuse URLs it would have allowed
@@ -82,6 +91,54 @@ public class UrlAllowlistConfigLoader {
             }
         }
         service.setRules(rules);
+    }
+
+    /**
+     * A rule stored with a scope this version does not know falls back to the global list rather
+     * than being dropped, which can only make it apply more widely, never less.
+     */
+    private UrlScope scopeOf(UrlAllowlistRule stored) {
+        if (stored.getScope() == null || stored.getScope().trim().isEmpty()) {
+            return UrlScope.GLOBAL;
+        }
+        try {
+            return UrlScope.valueOf(stored.getScope().trim().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            Log.warning(Geonet.SECURITY, String.format(
+                "URL allowlist: rule '%s' has an unknown scope '%s', treating it as %s",
+                stored.getName(), stored.getScope(), UrlScope.GLOBAL));
+            return UrlScope.GLOBAL;
+        }
+    }
+
+    /**
+     * The per-feature modes, kept as one JSON setting because only the scopes an administrator has
+     * actually changed are worth storing; everything else inherits.
+     */
+    private Map<UrlScope, UrlScopeMode> readModes() {
+        Map<UrlScope, UrlScopeMode> modes = new EnumMap<>(UrlScope.class);
+        String value = settingManager.getValue(Settings.SYSTEM_URLALLOWLIST_SCOPEMODES);
+        if (value == null || value.trim().isEmpty()) {
+            return modes;
+        }
+        try {
+            Map<String, String> stored = new ObjectMapper()
+                .readValue(value, new TypeReference<Map<String, String>>() {
+                });
+            stored.forEach((scope, mode) -> {
+                try {
+                    modes.put(UrlScope.valueOf(scope.trim().toUpperCase()),
+                        UrlScopeMode.valueOf(mode.trim().toUpperCase()));
+                } catch (IllegalArgumentException e) {
+                    Log.warning(Geonet.SECURITY, String.format(
+                        "URL allowlist: ignoring unknown scope or mode '%s: %s'", scope, mode));
+                }
+            });
+        } catch (Exception e) {
+            Log.error(Geonet.SECURITY, "URL allowlist: scope modes cannot be read, every feature "
+                + "falls back to the global rules", e);
+        }
+        return modes;
     }
 
     /**

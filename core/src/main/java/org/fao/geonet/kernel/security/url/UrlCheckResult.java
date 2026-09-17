@@ -47,7 +47,8 @@ public class UrlCheckResult {
     }
 
     public static UrlCheckResult allowedBy(UrlRule rule) {
-        return new UrlCheckResult(true, "matched rule '" + rule.getName() + "'", rule.getName());
+        return new UrlCheckResult(true,
+            "matched rule '" + rule.getName() + "' of " + rule.getScope(), rule.getName());
     }
 
     public static UrlCheckResult denied(String reason) {

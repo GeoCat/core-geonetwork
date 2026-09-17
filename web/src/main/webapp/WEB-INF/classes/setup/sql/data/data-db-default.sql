@@ -660,6 +660,7 @@ INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/urlAllowlist/enabled', 'false', 2, 9200, 'n');
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/urlAllowlist/auditMode', 'false', 2, 9201, 'n');
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/urlAllowlist/allowInternalAddresses', 'false', 2, 9202, 'n');
+INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/urlAllowlist/scopeModes', '{}', 3, 9203, 'y');
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('metadata/history/enabled', 'false', 2, 9171, 'n');
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/metadatacreate/generateUuid', 'true', 2, 9100, 'n');
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/metadatacreate/publishForGroupEditors', 'false', 2, 9101, 'n');

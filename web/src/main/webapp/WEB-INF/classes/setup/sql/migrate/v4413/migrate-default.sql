@@ -50,6 +50,7 @@ INSERT INTO StatusValuesDes  (iddes, langid, label) VALUES (101,'wel','Scheduled
 INSERT INTO Settings (name, value, datatype, position, internal) SELECT distinct 'system/urlAllowlist/enabled', 'false', 2, 9200, 'n' from settings WHERE NOT EXISTS (SELECT name FROM Settings WHERE name = 'system/urlAllowlist/enabled');
 INSERT INTO Settings (name, value, datatype, position, internal) SELECT distinct 'system/urlAllowlist/auditMode', 'false', 2, 9201, 'n' from settings WHERE NOT EXISTS (SELECT name FROM Settings WHERE name = 'system/urlAllowlist/auditMode');
 INSERT INTO Settings (name, value, datatype, position, internal) SELECT distinct 'system/urlAllowlist/allowInternalAddresses', 'false', 2, 9202, 'n' from settings WHERE NOT EXISTS (SELECT name FROM Settings WHERE name = 'system/urlAllowlist/allowInternalAddresses');
+INSERT INTO Settings (name, value, datatype, position, internal) SELECT distinct 'system/urlAllowlist/scopeModes', '{}', 3, 9203, 'y' from settings WHERE NOT EXISTS (SELECT name FROM Settings WHERE name = 'system/urlAllowlist/scopeModes');
 
 UPDATE Settings SET value='4.4.13' WHERE name='system/platform/version';
 UPDATE Settings SET value='SNAPSHOT' WHERE name='system/platform/subVersion';

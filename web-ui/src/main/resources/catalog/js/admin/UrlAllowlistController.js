@@ -43,12 +43,53 @@
       $scope.testUrl = "";
       $scope.testScope = "GLOBAL";
       $scope.testResult = null;
+      $scope.modes = [];
+      $scope.scopes = {};
+      $scope.scopeNames = [];
+      $scope.ruleScopes = [];
+      $scope.effectiveScope = "GLOBAL";
+      $scope.effectiveRules = [];
 
       function loadRules() {
         $http.get("../api/urlallowlist/rules").then(function (response) {
           $scope.rules = response.data;
         });
       }
+
+      function loadScopes() {
+        $http.get("../api/urlallowlist/scopes").then(function (response) {
+          $scope.modes = response.data.modes;
+          $scope.scopes = response.data.scopes;
+          $scope.scopeNames = Object.keys(response.data.scopes);
+          // a rule can be written for the catalogue as a whole, or for one feature
+          $scope.ruleScopes = ["GLOBAL"].concat($scope.scopeNames);
+          loadEffectiveRules();
+        });
+      }
+
+      function loadEffectiveRules() {
+        $http
+          .get("../api/urlallowlist/effectiverules", {
+            params: { scope: $scope.effectiveScope }
+          })
+          .then(function (response) {
+            $scope.effectiveRules = response.data;
+          });
+      }
+
+      $scope.loadEffectiveRules = loadEffectiveRules;
+
+      $scope.saveScopes = function () {
+        $http.put("../api/urlallowlist/scopes", $scope.scopes).then(
+          function () {
+            loadScopes();
+            report("urlAllowlistScopesUpdated");
+          },
+          function (response) {
+            report("urlAllowlistScopesUpdateError", response, true);
+          }
+        );
+      };
 
       function report(key, response, isError) {
         $rootScope.$broadcast("StatusUpdated", {
@@ -87,6 +128,7 @@
         request.then(
           function () {
             loadRules();
+            loadEffectiveRules();
             report("urlAllowlistRuleUpdated");
           },
           function (response) {
@@ -100,6 +142,7 @@
           function () {
             $scope.ruleSelected = null;
             loadRules();
+            loadEffectiveRules();
             report("urlAllowlistRuleRemoved");
           },
           function (response) {
@@ -131,6 +174,7 @@
       };
 
       loadRules();
+      loadScopes();
     }
   ]);
 })();

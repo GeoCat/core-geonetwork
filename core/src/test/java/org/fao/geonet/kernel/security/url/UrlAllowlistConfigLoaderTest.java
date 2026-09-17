@@ -52,6 +52,7 @@ public class UrlAllowlistConfigLoaderTest {
      */
     private static class StubSettingManager extends SettingManager {
         private final Map<String, Boolean> values = new HashMap<>();
+        private final Map<String, String> strings = new HashMap<>();
         private String baseUrl = "";
 
         @Override
@@ -62,6 +63,11 @@ public class UrlAllowlistConfigLoaderTest {
         @Override
         public String getBaseURL() {
             return baseUrl;
+        }
+
+        @Override
+        public String getValue(String path) {
+            return strings.get(path);
         }
     }
 
@@ -143,6 +149,50 @@ public class UrlAllowlistConfigLoaderTest {
         loader.reload();
 
         assertTrue(service.getRules(UrlScope.GLOBAL).isEmpty());
+    }
+
+    @Test
+    public void scopeModesAreReadFromTheSetting() {
+        settingManager.strings.put(Settings.SYSTEM_URLALLOWLIST_SCOPEMODES,
+            "{\"HARVESTER\":\"OVERRIDE\",\"DOI\":\"DISABLED\"}");
+        Mockito.when(repository.findAllByOrderByNameAsc()).thenReturn(Collections.singletonList(
+            rule("registry", "https://registry.example.org", true)));
+
+        loader.reload();
+
+        assertEquals(UrlScopeMode.OVERRIDE, service.getMode(UrlScope.HARVESTER));
+        assertEquals(UrlScopeMode.DISABLED, service.getMode(UrlScope.DOI));
+        assertEquals(UrlScopeMode.INHERIT, service.getMode(UrlScope.THESAURUS));
+        // OVERRIDE with no rule of its own refuses everything, DISABLED refuses nothing
+        assertFalse(service.isAllowed("https://registry.example.org/", UrlScope.HARVESTER));
+        assertTrue(service.isAllowed("https://anywhere.example.org/", UrlScope.DOI));
+        assertTrue(service.isAllowed("https://registry.example.org/", UrlScope.THESAURUS));
+    }
+
+    @Test
+    public void unusableScopeModesLeaveEveryFeatureInheriting() {
+        settingManager.strings.put(Settings.SYSTEM_URLALLOWLIST_SCOPEMODES, "not json");
+        Mockito.when(repository.findAllByOrderByNameAsc()).thenReturn(Collections.singletonList(
+            rule("registry", "https://registry.example.org", true)));
+
+        loader.reload();
+
+        assertEquals(UrlScopeMode.INHERIT, service.getMode(UrlScope.HARVESTER));
+        assertTrue(service.isAllowed("https://registry.example.org/", UrlScope.HARVESTER));
+    }
+
+    @Test
+    public void aRuleStoredForAFeatureIsLoadedWithThatScope() {
+        settingManager.strings.put(Settings.SYSTEM_URLALLOWLIST_SCOPEMODES,
+            "{\"HARVESTER\":\"EXTEND\"}");
+        UrlAllowlistRule stored = rule("harvest", "https://harvest.example.org", true)
+            .setScope("HARVESTER");
+        Mockito.when(repository.findAllByOrderByNameAsc()).thenReturn(Collections.singletonList(stored));
+
+        loader.reload();
+
+        assertTrue(service.isAllowed("https://harvest.example.org/", UrlScope.HARVESTER));
+        assertFalse(service.isAllowed("https://harvest.example.org/", UrlScope.THESAURUS));
     }
 
     @Test

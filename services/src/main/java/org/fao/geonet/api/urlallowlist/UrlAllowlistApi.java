@@ -23,6 +23,7 @@
 
 package org.fao.geonet.api.urlallowlist;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -36,6 +37,9 @@ import org.fao.geonet.kernel.security.url.UrlAllowlistService;
 import org.fao.geonet.kernel.security.url.UrlCheckResult;
 import org.fao.geonet.kernel.security.url.UrlRule;
 import org.fao.geonet.kernel.security.url.UrlScope;
+import org.fao.geonet.kernel.security.url.UrlScopeMode;
+import org.fao.geonet.kernel.setting.SettingManager;
+import org.fao.geonet.kernel.setting.Settings;
 import org.fao.geonet.repository.UrlAllowlistRuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,7 +54,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Administration of the URL allowlist: the rules, and a way to try a URL against them.
@@ -73,6 +80,9 @@ public class UrlAllowlistApi {
 
     @Autowired
     UrlAllowlistConfigLoader configLoader;
+
+    @Autowired
+    SettingManager settingManager;
 
     @io.swagger.v3.oas.annotations.Operation(
         summary = "Get the URL allowlist rules",
@@ -151,6 +161,106 @@ public class UrlAllowlistApi {
         throws ResourceNotFoundException {
         ruleRepository.delete(requireExisting(id));
         configLoader.reload();
+    }
+
+    @io.swagger.v3.oas.annotations.Operation(
+        summary = "Get the per-feature modes",
+        description = "Every feature either inherits the global rules, extends them with its own, "
+            + "overrides them, or is not checked at all. A feature nobody has configured inherits.")
+    @RequestMapping(
+        value = "/scopes",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('Administrator')")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "The modes, and the modes to choose from."),
+        @ApiResponse(responseCode = "403", description = ApiParams.API_RESPONSE_NOT_ALLOWED_ONLY_ADMIN)
+    })
+    public Map<String, Object> getScopes() {
+        List<String> modes = new ArrayList<>();
+        for (UrlScopeMode mode : UrlScopeMode.values()) {
+            modes.add(mode.name());
+        }
+        Map<String, String> scopes = new LinkedHashMap<>();
+        for (UrlScope scope : UrlScope.values()) {
+            if (scope != UrlScope.GLOBAL) {
+                scopes.put(scope.name(), urlAllowlistService.getMode(scope).name());
+            }
+        }
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("modes", modes);
+        response.put("scopes", scopes);
+        return response;
+    }
+
+    @io.swagger.v3.oas.annotations.Operation(
+        summary = "Set the per-feature modes",
+        description = "Only the features given are changed; the rest keep what they had.")
+    @RequestMapping(
+        value = "/scopes",
+        method = RequestMethod.PUT,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('Administrator')")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Modes saved."),
+        @ApiResponse(responseCode = "400", description = "Unknown feature or mode."),
+        @ApiResponse(responseCode = "403", description = ApiParams.API_RESPONSE_NOT_ALLOWED_ONLY_ADMIN)
+    })
+    public void setScopes(@RequestBody Map<String, String> modes) throws Exception {
+        Map<String, String> toStore = new LinkedHashMap<>();
+        for (Map.Entry<String, String> entry : modes.entrySet()) {
+            UrlScope scope = toScope(entry.getKey());
+            if (scope == UrlScope.GLOBAL) {
+                throw new IllegalArgumentException(
+                    "The global scope has no mode of its own; it is what the others inherit");
+            }
+            UrlScopeMode mode;
+            try {
+                mode = UrlScopeMode.valueOf(entry.getValue().toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Unknown mode '" + entry.getValue() + "'");
+            }
+            // only what differs from the default is worth storing
+            if (mode != UrlScopeMode.INHERIT) {
+                toStore.put(scope.name(), mode.name());
+            }
+        }
+        settingManager.setValue(Settings.SYSTEM_URLALLOWLIST_SCOPEMODES,
+            new ObjectMapper().writeValueAsString(toStore));
+        configLoader.reload();
+    }
+
+    @io.swagger.v3.oas.annotations.Operation(
+        summary = "Get the rules a feature actually evaluates",
+        description = "The result of applying the feature's mode: what a check for that feature "
+            + "is matched against, including the rules that apply whatever the mode.")
+    @RequestMapping(
+        value = "/effectiverules",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('Administrator')")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "The rules in evaluation order."),
+        @ApiResponse(responseCode = "403", description = ApiParams.API_RESPONSE_NOT_ALLOWED_ONLY_ADMIN)
+    })
+    public List<Map<String, Object>> getEffectiveRules(
+        @Parameter(description = "The feature") @RequestParam(required = false, defaultValue = "GLOBAL")
+            String scope) {
+        List<Map<String, Object>> effective = new ArrayList<>();
+        for (UrlRule rule : urlAllowlistService.getRules(toScope(scope))) {
+            Map<String, Object> described = new LinkedHashMap<>();
+            described.put("name", rule.getName());
+            described.put("pattern", rule.getPattern());
+            described.put("scope", rule.getScope().name());
+            described.put("enabled", rule.isEnabled());
+            effective.add(described);
+        }
+        return effective;
     }
 
     @io.swagger.v3.oas.annotations.Operation(

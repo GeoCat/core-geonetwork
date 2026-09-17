@@ -68,6 +68,7 @@ public class UrlRule {
     private final String description;
     private final String pattern;
     private final boolean enabled;
+    private final UrlScope scope;
 
     private final String scheme;
     private final Pattern host;
@@ -75,14 +76,19 @@ public class UrlRule {
     private final Pattern path;
 
     public UrlRule(String name, String pattern) {
-        this(name, null, pattern, true);
+        this(name, null, pattern, true, UrlScope.GLOBAL);
     }
 
     public UrlRule(String name, String description, String pattern, boolean enabled) {
+        this(name, description, pattern, enabled, UrlScope.GLOBAL);
+    }
+
+    public UrlRule(String name, String description, String pattern, boolean enabled, UrlScope scope) {
         this.name = name;
         this.description = description;
         this.pattern = pattern;
         this.enabled = enabled;
+        this.scope = scope == null ? UrlScope.GLOBAL : scope;
 
         Matcher matcher = SYNTAX.matcher(pattern == null ? "" : pattern.trim());
         if (!matcher.matches()) {
@@ -172,8 +178,15 @@ public class UrlRule {
         return enabled;
     }
 
+    /**
+     * The feature this rule was written for. Which scopes actually see it depends on their mode.
+     */
+    public UrlScope getScope() {
+        return scope;
+    }
+
     @Override
     public String toString() {
-        return name + " (" + pattern + ")";
+        return name + " (" + pattern + ", " + scope + ")";
     }
 }

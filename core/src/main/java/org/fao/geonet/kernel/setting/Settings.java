@@ -77,6 +77,7 @@ public class Settings {
     public static final String SYSTEM_URLALLOWLIST_ENABLED = "system/urlAllowlist/enabled";
     public static final String SYSTEM_URLALLOWLIST_AUDITMODE = "system/urlAllowlist/auditMode";
     public static final String SYSTEM_URLALLOWLIST_ALLOWINTERNALADDRESSES = "system/urlAllowlist/allowInternalAddresses";
+    public static final String SYSTEM_URLALLOWLIST_SCOPEMODES = "system/urlAllowlist/scopeModes";
     public static final GNSetting SYSTEM_SITE_SVNUUID = new GNSetting("system/site/svnUuid", true);
     public static final String SYSTEM_INTRANET_NETWORK = "system/intranet/network";
     public static final String SYSTEM_INTRANET_NETMASK = "system/intranet/netmask";

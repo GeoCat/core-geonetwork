@@ -60,4 +60,9 @@ public interface UrlAllowlistService {
      * The rules that apply to a scope, in evaluation order.
      */
     List<UrlRule> getRules(UrlScope scope);
+
+    /**
+     * How a feature's rules relate to the global ones.
+     */
+    UrlScopeMode getMode(UrlScope scope);
 }
