@@ -52,10 +52,16 @@ public class UrlAllowlistConfigLoaderTest {
      */
     private static class StubSettingManager extends SettingManager {
         private final Map<String, Boolean> values = new HashMap<>();
+        private String baseUrl = "";
 
         @Override
         public boolean getValueAsBool(String key, boolean defaultValue) {
             return values.getOrDefault(key, defaultValue);
+        }
+
+        @Override
+        public String getBaseURL() {
+            return baseUrl;
         }
     }
 
@@ -117,6 +123,26 @@ public class UrlAllowlistConfigLoaderTest {
 
         assertEquals(1, service.getRules(UrlScope.GLOBAL).size());
         assertTrue(service.isAllowed("https://registry.example.org/", UrlScope.THESAURUS));
+    }
+
+    @Test
+    public void theCatalogueIsAllowedToReachItself() {
+        settingManager.baseUrl = "http://localhost:8080/geonetwork/";
+
+        loader.reload();
+
+        assertTrue(service.isAllowed("http://localhost:8080/geonetwork/srv/api/site", UrlScope.GLOBAL));
+        assertFalse(service.isAllowed("http://localhost:9090/geonetwork/", UrlScope.GLOBAL));
+        assertEquals("catalogue", service.test("http://localhost:8080/", UrlScope.GLOBAL).getMatchedRule());
+    }
+
+    @Test
+    public void anUnparseableBaseUrlIsSurvivable() {
+        settingManager.baseUrl = ":::not a url";
+
+        loader.reload();
+
+        assertTrue(service.getRules(UrlScope.GLOBAL).isEmpty());
     }
 
     @Test

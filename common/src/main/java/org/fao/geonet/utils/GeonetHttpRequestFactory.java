@@ -29,6 +29,9 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpClientConnection;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.ProtocolException;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -51,6 +54,7 @@ import org.springframework.http.client.ClientHttpResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
@@ -68,6 +72,16 @@ public class GeonetHttpRequestFactory {
     private int numberOfConcurrentRequests = 20;
     private PoolingHttpClientConnectionManager connectionManager;
     private volatile HttpClientConnectionManager nonShutdownableConnectionManager;
+    private volatile UrlAllowlistCheck urlAllowlistCheck = UrlAllowlistCheck.ALLOW_ALL;
+
+    /**
+     * Installs the URL allowlist. Called once at start-up by the core module; until then, and in a
+     * deployment that never calls it, every URL is allowed.
+     */
+    public void setUrlAllowlistCheck(UrlAllowlistCheck urlAllowlistCheck) {
+        this.urlAllowlistCheck = urlAllowlistCheck == null
+            ? UrlAllowlistCheck.ALLOW_ALL : urlAllowlistCheck;
+    }
 
     @PreDestroy
     public synchronized void shutdown() {
@@ -164,6 +178,7 @@ public class GeonetHttpRequestFactory {
 
     public ClientHttpResponse execute(HttpUriRequest request,
                                       Function<HttpClientBuilder, Void> configurator) throws IOException {
+        checkAllowed(request);
         final HttpClientBuilder clientBuilder = getDefaultHttpClientBuilder();
         configurator.apply(clientBuilder);
         CloseableHttpClient httpClient = clientBuilder.build();
@@ -174,6 +189,7 @@ public class GeonetHttpRequestFactory {
     public ClientHttpResponse execute(HttpUriRequest request,
                                       Function<HttpClientBuilder, Void> configurator,
                                       AbstractHttpRequest r) throws IOException {
+        checkAllowed(request);
         final HttpClientBuilder clientBuilder = getDefaultHttpClientBuilder();
         configurator.apply(clientBuilder);
         CloseableHttpClient httpClient = clientBuilder.build();
@@ -189,6 +205,7 @@ public class GeonetHttpRequestFactory {
     public ClientHttpResponse execute(HttpUriRequest request,
                                       Function<HttpClientBuilder, Void> configurator,
                                       HttpClientContext context) throws IOException {
+        checkAllowed(request);
         final HttpClientBuilder clientBuilder = getDefaultHttpClientBuilder();
         configurator.apply(clientBuilder);
         CloseableHttpClient httpClient = clientBuilder.build();
@@ -196,9 +213,35 @@ public class GeonetHttpRequestFactory {
         return new AdaptingResponse(httpClient, httpClient.execute(request, context));
     }
 
+    /**
+     * The URL a request is about to be sent to, checked before anything is opened.
+     */
+    private void checkAllowed(HttpUriRequest request) {
+        if (request != null && request.getURI() != null) {
+            urlAllowlistCheck.assertAllowed(request.getURI().toString(), UrlAllowlistCheck.SCOPE_GLOBAL);
+        }
+    }
+
+    /**
+     * Re-checks every hop of a redirect. An allowed host that answers with a redirect to a refused
+     * one is the ordinary way past a check made only on the URL a caller supplied, and this is the
+     * only place that sees those hops.
+     */
+    LaxRedirectStrategy createRedirectStrategy() {
+        return new LaxRedirectStrategy() {
+            @Override
+            public URI getLocationURI(HttpRequest request, HttpResponse response, HttpContext context)
+                throws ProtocolException {
+                final URI location = super.getLocationURI(request, response, context);
+                urlAllowlistCheck.assertAllowed(location.toString(), UrlAllowlistCheck.SCOPE_GLOBAL);
+                return location;
+            }
+        };
+    }
+
     public HttpClientBuilder getDefaultHttpClientBuilder() {
         final HttpClientBuilder builder = HttpClientBuilder.create();
-        builder.setRedirectStrategy(new LaxRedirectStrategy());
+        builder.setRedirectStrategy(createRedirectStrategy());
         builder.disableContentCompression();
         builder.useSystemProperties();
 

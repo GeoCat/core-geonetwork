@@ -28,10 +28,13 @@ import org.fao.geonet.domain.UrlAllowlistRule;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.kernel.setting.Settings;
 import org.fao.geonet.repository.UrlAllowlistRuleRepository;
+import org.fao.geonet.utils.GeonetHttpRequestFactory;
 import org.fao.geonet.utils.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +56,9 @@ public class UrlAllowlistConfigLoader {
     @Autowired
     private UrlAllowlistServiceImpl service;
 
+    @Autowired(required = false)
+    private GeonetHttpRequestFactory requestFactory;
+
     /**
      * Re-reads the configuration. Called after any change to the settings or the rules.
      */
@@ -63,6 +69,7 @@ public class UrlAllowlistConfigLoader {
             settingManager.getValueAsBool(Settings.SYSTEM_URLALLOWLIST_ALLOWINTERNALADDRESSES, false));
 
         List<UrlRule> rules = new ArrayList<>();
+        addCatalogueRule(rules);
         for (UrlAllowlistRule stored : ruleRepository.findAllByOrderByNameAsc()) {
             try {
                 rules.add(new UrlRule(stored.getName(), stored.getDescription(),
@@ -77,8 +84,55 @@ public class UrlAllowlistConfigLoader {
         service.setRules(rules);
     }
 
+    /**
+     * The catalogue is always allowed to reach itself, otherwise enabling the checks breaks the
+     * health check and everything else that calls the local instance, and the first thing an
+     * administrator does is switch the feature off again.
+     *
+     * <p>The rule is derived from the base URL rather than stored, so it follows the catalogue when
+     * it moves. A base URL on a literal internal address is still subject to the internal address
+     * gate, which sits above the rules.</p>
+     */
+    private void addCatalogueRule(List<UrlRule> rules) {
+        String baseUrl = settingManager.getBaseURL();
+        if (baseUrl == null || baseUrl.trim().isEmpty()) {
+            return;
+        }
+        try {
+            URI uri = new URI(baseUrl.trim());
+            if (uri.getScheme() == null || uri.getHost() == null) {
+                return;
+            }
+            String pattern = uri.getScheme() + "://" + uri.getHost()
+                + (uri.getPort() == -1 ? "" : ":" + uri.getPort());
+            rules.add(new UrlRule("catalogue", "This catalogue, always allowed", pattern, true));
+        } catch (URISyntaxException e) {
+            Log.warning(Geonet.SECURITY,
+                "URL allowlist: base URL '" + baseUrl + "' cannot be parsed, the catalogue itself "
+                    + "is not implicitly allowed");
+        }
+    }
+
+    /**
+     * Adapts the allowlist to the seam the shared HTTP client holds, which cannot see this module.
+     */
+    private void check(String url, String scope) {
+        UrlScope resolved;
+        try {
+            resolved = UrlScope.valueOf(scope);
+        } catch (IllegalArgumentException e) {
+            resolved = UrlScope.GLOBAL;
+        }
+        service.assertAllowed(url, resolved);
+    }
+
     @PostConstruct
     public void init() {
+        if (requestFactory != null) {
+            // installed before the configuration is read, so a failure below cannot leave the
+            // client unchecked while the settings say otherwise
+            requestFactory.setUrlAllowlistCheck(this::check);
+        }
         try {
             reload();
         } catch (Exception e) {
