@@ -86,4 +86,8 @@ Addresses that come from deployment configuration rather than from anything a us
 
 The check is made on the host name in the URL. A name that resolves to an internal address only at the moment the connection is made is not caught.
 
-The `proxy.excludeHosts` and `proxy.securityMode` settings of the client-side proxy are separate, and still apply as before.
+## The client-side proxy
+
+The catalogue proxies requests the map viewer makes to remote services, at `/proxy?url=...`. Those requests are checked as the *PROXY* feature, so a catalogue with the checks on restricts what the viewer can reach through it. If your viewer needs services you would rather not list, set that feature to *Not checked*.
+
+The proxy also has two older settings in `config.properties`, `proxy.excludeHosts` and `proxy.securityMode`. They are a denylist — the opposite of an allowlist — so they cannot be converted into rules. They still apply, and a URL refused by either mechanism is refused; a warning is logged at start-up when they are set. They are deprecated and will be removed in a later major release, so move what they express into rules when you can.

@@ -41,6 +41,9 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicHttpEntityEnclosingRequest;
 import org.fao.geonet.ApplicationContextHolder;
+import org.fao.geonet.kernel.security.url.UrlAllowlist;
+import org.fao.geonet.kernel.security.url.UrlNotAllowedException;
+import org.fao.geonet.kernel.security.url.UrlScope;
 import org.fao.geonet.Logger;
 import org.fao.geonet.api.ApiUtils;
 import org.fao.geonet.domain.mapservices.MapService;
@@ -238,6 +241,15 @@ public class URITemplateProxyServlet extends ProxyServlet {
                 .filter(StringUtils::isNumeric).map(Integer::valueOf).collect(Collectors.toSet());
             this.allowPorts.addAll(validPorts);
         }
+
+        if (this.excludeHostsPattern != null || this.securityMode != SECURITY_MODE.NONE) {
+            LOGGER.warning(String.format(
+                "%s and %s are deprecated in favour of the URL allowlist, which is configured in "
+                    + "the administration interface and covers the rest of the catalogue as well. "
+                    + "They still apply: a URL refused by either is refused. They will be removed "
+                    + "in a later major release.",
+                P_EXCLUDE_HOSTS, P_SECURITY_MODE));
+        }
     }
 
     private String getConfigValue(String suffix) {
@@ -423,6 +435,19 @@ public class URITemplateProxyServlet extends ProxyServlet {
             String message = "The proxy does not allow to access to the provided URL.";
             servletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, message);
             return;
+        }
+
+        // The proxy fetches on its own rather than through the shared HTTP client, so it is the
+        // one place the URL allowlist has to be applied by hand. The deprecated settings above are
+        // a denylist and are evaluated as well: a URL refused by either is refused.
+        String requestedUrl = servletRequest.getParameter("url");
+        if (StringUtils.isNotBlank(requestedUrl)) {
+            try {
+                UrlAllowlist.assertAllowed(requestedUrl, UrlScope.PROXY);
+            } catch (UrlNotAllowedException e) {
+                servletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
+                return;
+            }
         }
 
         switch (securityMode) {
