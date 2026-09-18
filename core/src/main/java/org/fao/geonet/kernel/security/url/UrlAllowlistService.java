@@ -57,6 +57,12 @@ public interface UrlAllowlistService {
     UrlCheckResult test(String url, UrlScope scope);
 
     /**
+     * What the rules say, ignoring whether the checks are switched on. This is how an
+     * administrator finds out what enabling them would refuse.
+     */
+    UrlCheckResult testRules(String url, UrlScope scope);
+
+    /**
      * The rules that apply to a scope, in evaluation order.
      */
     List<UrlRule> getRules(UrlScope scope);

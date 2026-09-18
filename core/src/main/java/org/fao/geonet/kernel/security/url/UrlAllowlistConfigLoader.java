@@ -26,6 +26,7 @@ package org.fao.geonet.kernel.security.url;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.fao.geonet.constants.Geonet;
+import org.fao.geonet.domain.Setting;
 import org.fao.geonet.domain.UrlAllowlistRule;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.kernel.setting.Settings;
@@ -181,12 +182,87 @@ public class UrlAllowlistConfigLoader {
         service.assertAllowed(url, UrlScopeContext.resolve(resolved));
     }
 
+    /**
+     * Carries over the thesaurus allowlist of 4.4.x, which was a single setting holding wildcard
+     * patterns.
+     *
+     * <p>The patterns become rules of the thesaurus feature, that feature is held to those rules
+     * alone, and the checks are switched on: an upgrade must not quietly drop a protection the
+     * catalogue already had. The old setting is emptied once it has been read, so this runs once.
+     * </p>
+     *
+     * <p>The setting is found by name rather than by a constant, because the name differed between
+     * the versions that shipped it.</p>
+     */
+    void migrateLegacyAllowlist() {
+        Setting legacy = null;
+        for (Setting setting : settingManager.getAll()) {
+            String name = setting.getName() == null ? "" : setting.getName().toLowerCase();
+            if (name.contains("allowlist") && !name.startsWith("system/urlallowlist")
+                && setting.getValue() != null && !setting.getValue().trim().isEmpty()) {
+                legacy = setting;
+                break;
+            }
+        }
+        if (legacy == null) {
+            return;
+        }
+
+        int created = 0;
+        for (String pattern : legacy.getValue().split("[\\s,;|]+")) {
+            if (pattern.trim().isEmpty()) {
+                continue;
+            }
+            try {
+                // compiled here so that an unusable pattern is reported rather than stored
+                new UrlRule("thesaurus", null, pattern.trim(), true, UrlScope.THESAURUS);
+                ruleRepository.save(new UrlAllowlistRule()
+                    .setName("thesaurus-" + (created + 1))
+                    .setDescription("Migrated from " + legacy.getName())
+                    .setPattern(pattern.trim())
+                    .setScope(UrlScope.THESAURUS.name())
+                    .setEnabled(true));
+                created++;
+            } catch (IllegalArgumentException e) {
+                Log.error(Geonet.SECURITY, String.format(
+                    "URL allowlist: pattern '%s' of %s cannot be migrated, %s",
+                    pattern, legacy.getName(), e.getMessage()));
+            }
+        }
+
+        if (created > 0) {
+            // 4.4.x restricted thesaurus downloads and nothing else, so everything else is left
+            // unrestricted: a rule that allows any host, which an administrator can narrow, and
+            // the link checker exempted because it follows whatever records point at, over ftp as
+            // well as http.
+            ruleRepository.save(new UrlAllowlistRule()
+                .setName("everything")
+                .setDescription("Migrated: the catalogue reached any host except for thesaurus "
+                    + "downloads. Narrow or remove this rule to restrict it.")
+                .setPattern("*")
+                .setScope(UrlScope.GLOBAL.name())
+                .setEnabled(true));
+            settingManager.setValue(Settings.SYSTEM_URLALLOWLIST_SCOPEMODES,
+                "{\"" + UrlScope.THESAURUS.name() + "\":\"" + UrlScopeMode.OVERRIDE.name() + "\","
+                    + "\"" + UrlScope.ONLINE_RESOURCE.name() + "\":\"" + UrlScopeMode.DISABLED.name() + "\"}");
+            settingManager.setValue(Settings.SYSTEM_URLALLOWLIST_ENABLED, true);
+            Log.warning(Geonet.SECURITY, String.format(
+                "URL allowlist: %d rule(s) migrated from %s. The thesaurus feature is held to "
+                    + "those rules, and every other feature keeps reaching any host through the "
+                    + "rule named 'everything', which reproduces what this catalogue did before. "
+                    + "Narrow that rule to restrict the rest of the catalogue.",
+                created, legacy.getName()));
+        }
+        settingManager.setValue(legacy.getName(), "");
+    }
+
     @PostConstruct
     public void init() {
         // installed before the configuration is read, so a failure below cannot leave the
         // catalogue unchecked while the settings say otherwise
         UrlAllowlistChecks.set(this::check);
         try {
+            migrateLegacyAllowlist();
             reload();
         } catch (Exception e) {
             // the catalogue has to start; the feature is off by default, and an administrator can

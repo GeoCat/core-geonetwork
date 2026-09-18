@@ -113,6 +113,11 @@ public class UrlAllowlistServiceImpl implements UrlAllowlistService {
         if (!enabled) {
             return UrlCheckResult.allowed("URL checks are disabled");
         }
+        return testRules(url, scope);
+    }
+
+    @Override
+    public UrlCheckResult testRules(String url, UrlScope scope) {
         if (getMode(scope) == UrlScopeMode.DISABLED) {
             return UrlCheckResult.allowed("URL checks are disabled for " + scope);
         }

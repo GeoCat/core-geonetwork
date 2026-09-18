@@ -331,6 +331,7 @@ nav:
         - administrator-guide/configuring-the-catalog/portal-configuration.md
         - administrator-guide/configuring-the-catalog/inspire-configuration.md
         - administrator-guide/configuring-the-catalog/map-server-configuration.md
+        - administrator-guide/configuring-the-catalog/url-allowlist.md
       - 'Users and Groups':
         - administrator-guide/managing-users-and-groups/index.md
         - administrator-guide/managing-users-and-groups/authentication-mode.md

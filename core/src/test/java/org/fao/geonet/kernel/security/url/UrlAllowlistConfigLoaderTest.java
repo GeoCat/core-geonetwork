@@ -23,6 +23,7 @@
 
 package org.fao.geonet.kernel.security.url;
 
+import org.fao.geonet.domain.Setting;
 import org.fao.geonet.domain.UrlAllowlistRule;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.kernel.setting.Settings;
@@ -32,8 +33,10 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,7 +56,26 @@ public class UrlAllowlistConfigLoaderTest {
     private static class StubSettingManager extends SettingManager {
         private final Map<String, Boolean> values = new HashMap<>();
         private final Map<String, String> strings = new HashMap<>();
+        private final List<Setting> all = new ArrayList<>();
         private String baseUrl = "";
+
+        @Override
+        public List<Setting> getAll() {
+            return all;
+        }
+
+        @Override
+        public boolean setValue(String key, String value) {
+            strings.put(key, value);
+            return true;
+        }
+
+        @Override
+        public boolean setValue(String key, boolean value) {
+            values.put(key, value);
+            strings.put(key, String.valueOf(value));
+            return true;
+        }
 
         @Override
         public boolean getValueAsBool(String key, boolean defaultValue) {
@@ -193,6 +215,49 @@ public class UrlAllowlistConfigLoaderTest {
 
         assertTrue(service.isAllowed("https://harvest.example.org/", UrlScope.HARVESTER));
         assertFalse(service.isAllowed("https://harvest.example.org/", UrlScope.THESAURUS));
+    }
+
+    @Test
+    public void theThesaurusAllowlistOf44xIsCarriedOver() {
+        settingManager.all.add(new Setting().setName("system/metadata/thesaurusUrlAllowlist")
+            .setValue("https://registry.example.org https://*.thesauri.example.org"));
+        List<UrlAllowlistRule> saved = new ArrayList<>();
+        Mockito.when(repository.save(Mockito.any(UrlAllowlistRule.class)))
+            .thenAnswer(call -> {
+                saved.add(call.getArgument(0));
+                return call.getArgument(0);
+            });
+
+        loader.migrateLegacyAllowlist();
+
+        // the two patterns, plus the rule that keeps the rest of the catalogue working
+        assertEquals(3, saved.size());
+        assertEquals("THESAURUS", saved.get(0).getScope());
+        assertEquals("https://registry.example.org", saved.get(0).getPattern());
+        assertEquals("https://*.thesauri.example.org", saved.get(1).getPattern());
+        assertEquals("everything", saved.get(2).getName());
+        assertEquals("*", saved.get(2).getPattern());
+        assertEquals("GLOBAL", saved.get(2).getScope());
+
+        // the protection is kept, and nothing else becomes restricted
+        assertEquals("true", settingManager.strings.get(Settings.SYSTEM_URLALLOWLIST_ENABLED));
+        String modes = settingManager.strings.get(Settings.SYSTEM_URLALLOWLIST_SCOPEMODES);
+        assertTrue(modes, modes.contains("\"THESAURUS\":\"OVERRIDE\""));
+        assertTrue(modes, modes.contains("\"ONLINE_RESOURCE\":\"DISABLED\""));
+
+        // and it does not run twice
+        assertEquals("", settingManager.strings.get("system/metadata/thesaurusUrlAllowlist"));
+    }
+
+    @Test
+    public void withoutALegacyAllowlistNothingIsTouched() {
+        settingManager.all.add(new Setting().setName("system/metadata/thesaurusNamespace")
+            .setValue("https://example.org/{{type}}"));
+
+        loader.migrateLegacyAllowlist();
+
+        Mockito.verify(repository, Mockito.never()).save(Mockito.any(UrlAllowlistRule.class));
+        assertEquals(null, settingManager.strings.get(Settings.SYSTEM_URLALLOWLIST_ENABLED));
     }
 
     @Test

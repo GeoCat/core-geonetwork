@@ -49,6 +49,7 @@
       $scope.ruleScopes = [];
       $scope.effectiveScope = "GLOBAL";
       $scope.effectiveRules = [];
+      $scope.report = null;
 
       function loadRules() {
         $http.get("../api/urlallowlist/rules").then(function (response) {
@@ -78,6 +79,18 @@
       }
 
       $scope.loadEffectiveRules = loadEffectiveRules;
+
+      /**
+       * What the rules would refuse among the addresses already configured. Worth looking at
+       * before switching the checks on, and it does not depend on them being on.
+       */
+      function loadReport() {
+        $http.get("../api/urlallowlist/report").then(function (response) {
+          $scope.report = response.data;
+        });
+      }
+
+      $scope.loadReport = loadReport;
 
       $scope.saveScopes = function () {
         $http.put("../api/urlallowlist/scopes", $scope.scopes).then(
@@ -129,6 +142,7 @@
           function () {
             loadRules();
             loadEffectiveRules();
+            loadReport();
             report("urlAllowlistRuleUpdated");
           },
           function (response) {
@@ -175,6 +189,7 @@
 
       loadRules();
       loadScopes();
+      loadReport();
     }
   ]);
 })();

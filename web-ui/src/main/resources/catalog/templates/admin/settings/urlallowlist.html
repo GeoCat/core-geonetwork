@@ -122,6 +122,38 @@
       </div>
     </div>
 
+    <div class="panel panel-default" data-ng-if="report !== null">
+      <div
+        class="panel-heading"
+        data-ng-class="report.length ? 'text-danger' : ''"
+        data-translate=""
+      >
+        urlAllowlistReport
+      </div>
+      <div class="panel-body">
+        <p class="help-block" data-translate="">urlAllowlistReportHelp</p>
+
+        <p class="text-success" data-ng-if="!report.length" data-translate="">
+          urlAllowlistReportNone
+        </p>
+
+        <table class="table table-condensed" data-ng-if="report.length">
+          <tbody>
+            <tr data-ng-repeat="r in report">
+              <td>{{r.source}}</td>
+              <td>{{r.name}}</td>
+              <td><code>{{r.url}}</code></td>
+              <td>{{r.scope}}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button type="button" class="btn btn-default" data-ng-click="loadReport()">
+          <span data-translate="">urlAllowlistReportRefresh</span>
+        </button>
+      </div>
+    </div>
+
     <div class="panel panel-default">
       <div class="panel-heading" data-translate="">urlAllowlistScopes</div>
       <div class="panel-body">

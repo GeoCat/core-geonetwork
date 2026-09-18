@@ -31,6 +31,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.api.ApiParams;
 import org.fao.geonet.api.exception.ResourceNotFoundException;
+import org.fao.geonet.domain.DoiServer;
+import org.fao.geonet.domain.HarvesterSetting;
+import org.fao.geonet.domain.MapServer;
 import org.fao.geonet.domain.UrlAllowlistRule;
 import org.fao.geonet.kernel.security.url.UrlAllowlistConfigLoader;
 import org.fao.geonet.kernel.security.url.UrlAllowlistService;
@@ -40,6 +43,9 @@ import org.fao.geonet.kernel.security.url.UrlScope;
 import org.fao.geonet.kernel.security.url.UrlScopeMode;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.kernel.setting.Settings;
+import org.fao.geonet.repository.DoiServerRepository;
+import org.fao.geonet.repository.HarvesterSettingRepository;
+import org.fao.geonet.repository.MapServerRepository;
 import org.fao.geonet.repository.UrlAllowlistRuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -83,6 +89,15 @@ public class UrlAllowlistApi {
 
     @Autowired
     SettingManager settingManager;
+
+    @Autowired
+    HarvesterSettingRepository harvesterSettingRepository;
+
+    @Autowired
+    MapServerRepository mapServerRepository;
+
+    @Autowired
+    DoiServerRepository doiServerRepository;
 
     @io.swagger.v3.oas.annotations.Operation(
         summary = "Get the URL allowlist rules",
@@ -261,6 +276,65 @@ public class UrlAllowlistApi {
             effective.add(described);
         }
         return effective;
+    }
+
+    @io.swagger.v3.oas.annotations.Operation(
+        summary = "Report the configured addresses the rules would refuse",
+        description = "Walks the addresses already configured in this catalogue — harvesters, map "
+            + "servers and DOI servers — and reports those the current rules would refuse. The "
+            + "answer does not depend on whether the checks are switched on, so it can be used "
+            + "before enabling them.")
+    @RequestMapping(
+        value = "/report",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('Administrator')")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "The addresses that would be refused."),
+        @ApiResponse(responseCode = "403", description = ApiParams.API_RESPONSE_NOT_ALLOWED_ONLY_ADMIN)
+    })
+    public List<Map<String, Object>> getReport() {
+        List<Map<String, Object>> refused = new ArrayList<>();
+
+        for (HarvesterSetting site : harvesterSettingRepository.findAllByName("site")) {
+            String name = firstValue(site.getId(), "name");
+            String url = firstValue(site.getId(), "url");
+            report(refused, "harvester", name, url, UrlScope.HARVESTER);
+        }
+        for (MapServer mapServer : mapServerRepository.findAll()) {
+            for (String url : new String[]{mapServer.getConfigurl(), mapServer.getWmsurl(),
+                mapServer.getWfsurl(), mapServer.getWcsurl(), mapServer.getStylerurl()}) {
+                report(refused, "mapserver", mapServer.getName(), url, UrlScope.MAPSERVER);
+            }
+        }
+        for (DoiServer doiServer : doiServerRepository.findAll()) {
+            report(refused, "doiserver", doiServer.getName(), doiServer.getUrl(), UrlScope.DOI);
+        }
+        return refused;
+    }
+
+    private String firstValue(int parentId, String name) {
+        List<HarvesterSetting> children = harvesterSettingRepository.findChildrenByName(parentId, name);
+        return children.isEmpty() ? null : children.get(0).getValue();
+    }
+
+    private void report(List<Map<String, Object>> refused, String source, String name, String url,
+                        UrlScope scope) {
+        if (url == null || url.trim().isEmpty()) {
+            return;
+        }
+        UrlCheckResult result = urlAllowlistService.testRules(url.trim(), scope);
+        if (!result.isAllowed()) {
+            Map<String, Object> entry = new LinkedHashMap<>();
+            entry.put("source", source);
+            entry.put("name", name);
+            entry.put("url", url.trim());
+            entry.put("scope", scope.name());
+            entry.put("reason", result.getReason());
+            refused.add(entry);
+        }
     }
 
     @io.swagger.v3.oas.annotations.Operation(
