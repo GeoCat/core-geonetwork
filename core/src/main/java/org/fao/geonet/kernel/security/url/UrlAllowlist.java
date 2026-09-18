@@ -49,6 +49,21 @@ public final class UrlAllowlist {
         }
     }
 
+    /**
+     * Whether the catalogue may use this URL, for callers that report rather than refuse. Never
+     * throws, and answers true when there is nothing to check against or the checks are off.
+     */
+    public static boolean isAllowed(String url, UrlScope scope) {
+        if (url == null || url.trim().isEmpty()) {
+            return true;
+        }
+        UrlAllowlistService service = service();
+        if (service == null) {
+            return true;
+        }
+        return service.test(url.trim(), UrlScopeContext.resolve(scope)).isAllowed();
+    }
+
     private static UrlAllowlistService service() {
         try {
             ApplicationContext context = ApplicationContextHolder.get();

@@ -105,7 +105,7 @@ public class UrlChecker {
         LinkStatus linkStatus = new LinkStatus();
         linkStatus.setFailing(false);
         try {
-            UrlAllowlist.assertAllowed(url, UrlScope.ONLINE_RESOURCE);
+            UrlAllowlist.assertAllowed(url, UrlScope.LINK_CHECKER);
             URLConnection con = new URL(url).openConnection();
             con.setConnectTimeout(10000);
             con.setReadTimeout(10000);

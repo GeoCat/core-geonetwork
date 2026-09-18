@@ -52,6 +52,10 @@ public enum UrlScope {
      * Online resource URLs stored in a record. Checked by validation only, never blocking a save.
      */
     ONLINE_RESOURCE,
+    /**
+     * The link checker, which fetches whatever records point at to see whether it answers.
+     */
+    LINK_CHECKER,
     XLINK,
     /**
      * The client-side proxy servlet.

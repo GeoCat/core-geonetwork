@@ -72,7 +72,13 @@ Together with audit mode, that is the whole procedure:
 
 A catalogue that used the thesaurus URL allowlist of 4.4.x has its patterns carried over on the first start: they become rules of the thesaurus feature, that feature is held to those rules alone, and the checks are switched on so the protection is not lost.
 
-Everything else keeps working exactly as before, through a migrated rule named `everything` that allows any host, and the link checker is left unchecked because it used to follow whatever records point at, over ftp as well as http. **Narrow or remove the `everything` rule** to restrict the rest of the catalogue. What was migrated is written to the log at start-up.
+Everything else keeps working exactly as before, through a migrated rule named `everything` that allows any host, and the link checker feature is left unchecked because it used to follow whatever records point at, over ftp as well as http. **Narrow or remove the `everything` rule** to restrict the rest of the catalogue. What was migrated is written to the log at start-up.
+
+## Reporting stored online resources
+
+Online resource URLs stored in records are reported rather than refused: the *URL allowlist* validation rule flags an address the catalogue is not allowed to use, and the record still saves. Records arrive by harvesting, import and API as well as from the editor, and refusing them on the way in would turn one unlisted partner host into failed harvests.
+
+The rule is a warning by default. An administrator who wants publication gated on it can raise it to an error in *Admin console > Metadata and templates > Validation*, where a record failing it becomes invalid. Nothing is reported while the URL checks are switched off.
 
 ## What is not checked
 

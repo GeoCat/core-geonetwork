@@ -1,0 +1,6 @@
+<strings>
+  <schematron.title>URL allowlist</schematron.title>
+  <urlAllowlistCheck>Online resources the catalogue is not allowed to use</urlAllowlistCheck>
+  <alert.urlNotAllowed><div>This address is not on the catalogue's URL allowlist: </div></alert.urlNotAllowed>
+  <alert.urlAllowed><div>Address allowed: </div></alert.urlAllowed>
+</strings>

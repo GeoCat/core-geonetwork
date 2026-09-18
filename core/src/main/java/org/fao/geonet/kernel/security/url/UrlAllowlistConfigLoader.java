@@ -244,7 +244,7 @@ public class UrlAllowlistConfigLoader {
                 .setEnabled(true));
             settingManager.setValue(Settings.SYSTEM_URLALLOWLIST_SCOPEMODES,
                 "{\"" + UrlScope.THESAURUS.name() + "\":\"" + UrlScopeMode.OVERRIDE.name() + "\","
-                    + "\"" + UrlScope.ONLINE_RESOURCE.name() + "\":\"" + UrlScopeMode.DISABLED.name() + "\"}");
+                    + "\"" + UrlScope.LINK_CHECKER.name() + "\":\"" + UrlScopeMode.DISABLED.name() + "\"}");
             settingManager.setValue(Settings.SYSTEM_URLALLOWLIST_ENABLED, true);
             Log.warning(Geonet.SECURITY, String.format(
                 "URL allowlist: %d rule(s) migrated from %s. The thesaurus feature is held to "

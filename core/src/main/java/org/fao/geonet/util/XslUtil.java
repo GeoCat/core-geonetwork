@@ -1515,6 +1515,28 @@ public final class XslUtil {
         });
     }
 
+    /**
+     * Whether the catalogue is allowed to use this URL, for validation rules.
+     *
+     * <p>Reports rather than refuses: an online resource nobody is allowed to reach is worth
+     * flagging on a record, not worth stopping the record from being saved. It answers true when
+     * the checks are switched off, so a catalogue that does not use them sees no warnings.</p>
+     *
+     * @param scope the feature name, as in {@link org.fao.geonet.kernel.security.url.UrlScope}
+     */
+    public static boolean isUrlAllowed(final String urlString, final String scope) {
+        UrlScope resolved = UrlScope.ONLINE_RESOURCE;
+        if (scope != null && !scope.trim().isEmpty()) {
+            try {
+                resolved = UrlScope.valueOf(scope.trim().toUpperCase());
+            } catch (IllegalArgumentException e) {
+                Log.warning(Geonet.SECURITY, "isUrlAllowed called with unknown scope '" + scope
+                    + "', checking as " + resolved);
+            }
+        }
+        return UrlAllowlist.isAllowed(urlString, resolved);
+    }
+
     public static String getURLStatusAsString(final String urlString) throws ExecutionException {
         Integer status = getURLStatus(urlString);
         return status == -1 ? "UNKNOWN" :

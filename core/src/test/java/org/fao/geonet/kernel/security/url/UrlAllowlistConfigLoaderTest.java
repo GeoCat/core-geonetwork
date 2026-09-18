@@ -243,7 +243,7 @@ public class UrlAllowlistConfigLoaderTest {
         assertEquals("true", settingManager.strings.get(Settings.SYSTEM_URLALLOWLIST_ENABLED));
         String modes = settingManager.strings.get(Settings.SYSTEM_URLALLOWLIST_SCOPEMODES);
         assertTrue(modes, modes.contains("\"THESAURUS\":\"OVERRIDE\""));
-        assertTrue(modes, modes.contains("\"ONLINE_RESOURCE\":\"DISABLED\""));
+        assertTrue(modes, modes.contains("\"LINK_CHECKER\":\"DISABLED\""));
 
         // and it does not run twice
         assertEquals("", settingManager.strings.get("system/metadata/thesaurusUrlAllowlist"));
