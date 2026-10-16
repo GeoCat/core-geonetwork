@@ -348,7 +348,7 @@ public class UsersApi {
             Optional<User> userToCheck = userRepository.findById(userIdentifier);
             if (userToCheck.isPresent() && Profile.Administrator.equals(userToCheck.get().getProfile())) {
                 throw new IllegalArgumentException(
-                    "You don't have rights to delete this user because the user is not part of your group");
+                    "You don't have rights to delete this user");
             }
 
             final int iMyUserId = Integer.parseInt(myUserId);
@@ -530,6 +530,11 @@ public class UsersApi {
         List<GroupElem> groups = collectRequestedGroups(userDto);
 
         if (!Profile.Administrator.equals(myProfile)) {
+            // A user outside the caller's groups could not be managed by them afterwards
+            if (groups.isEmpty()) {
+                throw new IllegalArgumentException(
+                    "The user must be assigned to at least one of the groups you administer");
+            }
             checkGroupsAreAdministeredBy(groups,
                 getGroupIdsWhereUserIsUserAdmin(Integer.parseInt(session.getUserId())));
         }
@@ -784,6 +789,16 @@ public class UsersApi {
         Optional<User> user = userRepository.findById(userIdentifier);
         if (user.isEmpty()) {
             throw new UserNotFoundEx(Integer.toString(userIdentifier));
+        }
+
+        if (Profile.UserAdmin.equals(myProfile) && !myUserId.equals(Integer.toString(userIdentifier))) {
+            // Same rule as updateUser and deleteUser: never an administrator, and only users
+            // in a group the caller administers
+            if (Profile.Administrator.equals(user.get().getProfile())
+                || CollectionUtils.intersection(getGroupIdsWhereUserIsUserAdmin(Integer.parseInt(myUserId)),
+                    getGroupIds(userIdentifier)).isEmpty()) {
+                throw new IllegalArgumentException("You don't have rights to do this");
+            }
         }
 
         PasswordEncoder encoder = PasswordUtil.encoder(ApplicationContextHolder.get());

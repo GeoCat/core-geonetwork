@@ -563,6 +563,79 @@ public class UsersApiTest extends AbstractServiceIntegrationTest {
     }
 
     @Test
+    public void resetPasswordOfAdministratorByUserAdminNotAllowed() throws Exception {
+        // Shares the sample group with the caller, but is an administrator
+        User administrator = createAdministratorInGroup("sample");
+
+        User userAdmin = _userRepo.findOneByUsername("testuser-useradmin");
+        Assert.assertNotNull(userAdmin);
+
+        assertResetPasswordRefused(userAdmin, administrator);
+    }
+
+    @Test
+    public void resetPasswordOfUserInGroupNotAdministeredByTheCaller() throws Exception {
+        User userAdmin = _userRepo.findOneByUsername("testuser-useradmin");
+        Assert.assertNotNull(userAdmin);
+
+        // Not part of any group administered by testuser-useradmin
+        User userToReset = _userRepo.findOneByUsername("testuser-reviewer");
+        Assert.assertNotNull(userToReset);
+
+        assertResetPasswordRefused(userAdmin, userToReset);
+    }
+
+    @Test
+    public void resetPasswordOfUserInGroupAdministeredByTheCaller() throws Exception {
+        User userAdmin = _userRepo.findOneByUsername("testuser-useradmin");
+        Assert.assertNotNull(userAdmin);
+
+        // Member of the sample group, which the caller administers
+        User userToReset = _userRepo.findOneByUsername("testuser-editor");
+        Assert.assertNotNull(userToReset);
+
+        PasswordResetDto passwordReset = new PasswordResetDto();
+        passwordReset.setPasswordOld("testuser-editor-password");
+        passwordReset.setPassword("NewPassword1$");
+        passwordReset.setPassword2("NewPassword1$");
+
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+
+        this.mockHttpSession = loginAs(userAdmin);
+
+        this.mockMvc.perform(post("/srv/api/users/" + userToReset.getId() + "/actions/forget-password")
+                .content(new Gson().toJson(passwordReset))
+                .contentType(API_JSON_EXPECTED_ENCODING)
+                .session(this.mockHttpSession)
+                .accept(MediaType.parseMediaType("application/json")))
+            .andExpect(status().is(204));
+    }
+
+    private void assertResetPasswordRefused(User caller, User target) throws Exception {
+        String passwordBefore = target.getPassword();
+
+        PasswordResetDto passwordReset = new PasswordResetDto();
+        passwordReset.setPasswordOld("whatever");
+        passwordReset.setPassword("NewPassword1$");
+        passwordReset.setPassword2("NewPassword1$");
+
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+
+        this.mockHttpSession = loginAs(caller);
+
+        // Refused on rights, before the old password is even looked at
+        this.mockMvc.perform(post("/srv/api/users/" + target.getId() + "/actions/forget-password")
+                .content(new Gson().toJson(passwordReset))
+                .contentType(API_JSON_EXPECTED_ENCODING)
+                .session(this.mockHttpSession)
+                .accept(MediaType.parseMediaType("application/json")))
+            .andExpect(status().is(400))
+            .andExpect(jsonPath("$.message", is("You don't have rights to do this")));
+
+        Assert.assertEquals(passwordBefore, _userRepo.findById(target.getId()).get().getPassword());
+    }
+
+    @Test
     public void resetPasswordNotEqual() throws Exception {
         User user = _userRepo.findOneByUsername("testuser-editor");
         Assert.assertNotNull(user);
@@ -999,7 +1072,7 @@ public class UsersApiTest extends AbstractServiceIntegrationTest {
             if (u.isEnabled()) {
                 enabledAdministrators++;
                 administrator = u;
-            }
+        }
         }
         Assert.assertEquals("the test data is expected to hold a single enabled administrator",
             1, enabledAdministrators);
@@ -1085,7 +1158,7 @@ public class UsersApiTest extends AbstractServiceIntegrationTest {
                 .accept(MediaType.parseMediaType("application/json")))
             .andExpect(status().is(400))
             .andExpect(jsonPath("$.message", is(
-                "You don't have rights to delete this user because the user is not part of your group")));
+                "You don't have rights to delete this user")));
 
         Assert.assertTrue(_userRepo.findById(administrator.getId()).isPresent());
     }
@@ -1308,6 +1381,38 @@ public class UsersApiTest extends AbstractServiceIntegrationTest {
                 "You don't have rights to assign a user to the group " + testGroup.getId())));
 
         Assert.assertNull(_userRepo.findOneByUsername("newuser-othergroup"));
+    }
+
+    @Test
+    public void createUserWithoutGroupByUserAdminNotAllowed() throws Exception {
+        User userAdmin = _userRepo.findOneByUsername("testuser-useradmin");
+        Assert.assertNotNull(userAdmin);
+
+        UserDto user = new UserDto();
+        user.setUsername("newuser-nogroup");
+        user.setName("new");
+        user.setProfile(Profile.RegisteredUser.name());
+        user.setEmail(Collections.singletonList("mail@test.com"));
+        user.setPassword("Password7$");
+        user.setEnabled(true);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+
+        this.mockHttpSession = loginAs(userAdmin);
+
+        this.mockMvc.perform(put("/srv/api/users")
+                .content(json)
+                .contentType(API_JSON_EXPECTED_ENCODING)
+                .session(this.mockHttpSession)
+                .accept(MediaType.parseMediaType("application/json")))
+            .andExpect(status().is(400))
+            .andExpect(jsonPath("$.message", is(
+                "The user must be assigned to at least one of the groups you administer")));
+
+        Assert.assertNull(_userRepo.findOneByUsername("newuser-nogroup"));
     }
 
     @Test
