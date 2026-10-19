@@ -65,6 +65,8 @@
     <jsSource webappPath="/catalog/lib/franc-min/franc-min.js"/>
     <jsSource webappPath="/catalog/lib/bootstrap.js" minimize="true"/>
     <jsSource webappPath="/catalog/lib/proj4js-compressed.js" minimize="false"/>
+    <!-- geotiff.js must be loaded before ol.js: ol.source.GeoTIFF uses the global GeoTIFF -->
+    <jsSource webappPath="/catalog/lib/geotiff/geotiff.js" minimize="false"/>
     <jsSource webappPath="/catalog/lib/openlayers/ol.js" minimize="false"/>
     <jsSource webappPath="/catalog/lib/d3.v3.min.js" minimize="false"/>
     <jsSource webappPath="/catalog/lib/nv.d3.min.js" minimize="false"/>
@@ -156,6 +158,8 @@
     <jsSource webappPath="/catalog/lib/franc-min/franc-min.js"/>
     <jsSource webappPath="/catalog/lib/bootstrap.js" minimize="true"/>
     <jsSource webappPath="/catalog/lib/proj4js-compressed.js" minimize="false"/>
+    <!-- geotiff.js must be loaded before ol.js: ol.source.GeoTIFF uses the global GeoTIFF -->
+    <jsSource webappPath="/catalog/lib/geotiff/geotiff.js" minimize="false"/>
     <!-- FIXME in non debug mode, 3D mode does not work when WMS layer is displayed.
          No errors, only block tile loading-->
     <jsSource webappPath="/catalog/lib/openlayers/ol.js" minimize="false"/>

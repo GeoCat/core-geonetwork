@@ -148,6 +148,7 @@
         <script src="{$uiResourcesPath}lib/bootstrap.js?v={$buildNumber}"></script>
         <script src="{$uiResourcesPath}lib/jquery.ext/jquery-ui-slider-1.13.2.min.js?v={$buildNumber}"></script>
         <script src="{$uiResourcesPath}lib/proj4js-compressed.js?v={$buildNumber}"></script>
+        <script src="{$uiResourcesPath}lib/geotiff/geotiff.js?v={$buildNumber}"></script>
 
         <xsl:choose>
           <xsl:when test="$is3DModeAllowed">

@@ -266,6 +266,44 @@
   ]);
 
   /**
+   * @ngdoc service
+   * @name gn_wmsimport.service:gnAddImportedLayer
+   *
+   * @description
+   * Add a layer loaded from a file to the map: show it in the layer manager,
+   * zoom to it and confirm with an alert.
+   */
+  module.factory("gnAddImportedLayer", [
+    "olDecorateLayer",
+    "gnAlertService",
+    "$translate",
+    function (olDecorateLayer, gnAlertService, $translate) {
+      /**
+       * @param {ol.layer.Base} layer
+       * @param {ol.map} map
+       * @param {ol.Extent=} extent in map projection, defaults to the source extent
+       */
+      return function (layer, map, extent) {
+        extent = extent || layer.getSource().getExtent();
+        olDecorateLayer(layer);
+        layer.displayInLayerManager = true;
+        // Used by the layer manager "Zoom to layer extent"
+        layer.set("cextent", extent);
+        map.getLayers().push(layer);
+        map.getView().fit(extent, map.getSize());
+
+        gnAlertService.addAlert({
+          msg: $translate.instant("layerAdded", {
+            layer: layer.get("label"),
+            extent: extent.toString()
+          }),
+          type: "success"
+        });
+      };
+    }
+  ]);
+
+  /**
    * @ngdoc directive
    * @name gn_viewer.directive:gnKmlImport
    *
@@ -275,10 +313,10 @@
    */
 
   module.directive("gnKmlImport", [
-    "olDecorateLayer",
     "gnAlertService",
     "$translate",
-    function (olDecorateLayer, gnAlertService, $translate) {
+    "gnAddImportedLayer",
+    function (gnAlertService, $translate, gnAddImportedLayer) {
       return {
         restrict: "A",
         replace: true,
@@ -291,7 +329,8 @@
         controller: [
           "$scope",
           "$http",
-          function ($scope, $http) {
+          "gnGlobalSettings",
+          function ($scope, $http, gnGlobalSettings) {
             /**
              * Create new vector Kml file from url and add it to
              * the Map.
@@ -300,46 +339,39 @@
              * @param {ol.map} map
              */
             this.addKml = function (url, map) {
-              if (url == "") {
-                $scope.validUrl = true;
-                return;
-              }
-
-              $http.get(gnGlobalSettings.proxyUrl + encodeURIComponent(url)).then(
-                function (response) {
-                  var kmlSource = new ol.source.Vector();
-                  kmlSource.addFeatures(
-                    new ol.format.KML().readFeatures(response.data, {
-                      featureProjection: $scope.map.getView().getProjection(),
-                      dataProjection: "EPSG:4326"
-                    })
-                  );
-                  var vector = new ol.layer.Vector({
-                    source: kmlSource,
-                    getinfo: true,
-                    label: $translate.instant("kmlFile", { layer: url.split("/").pop() })
-                  });
-                  $scope.addToMap(vector, map);
-                  $scope.url = "";
-                  $scope.validUrl = true;
-                },
-                function () {
-                  $scope.validUrl = false;
-                }
-              );
+              $scope.kmlLoading = true;
+              $http
+                .get(gnGlobalSettings.proxyUrl + encodeURIComponent(url))
+                .then(
+                  function (response) {
+                    var kmlSource = new ol.source.Vector();
+                    kmlSource.addFeatures(
+                      new ol.format.KML().readFeatures(response.data, {
+                        featureProjection: $scope.map.getView().getProjection(),
+                        dataProjection: "EPSG:4326"
+                      })
+                    );
+                    var vector = new ol.layer.Vector({
+                      source: kmlSource,
+                      getinfo: true,
+                      label: $translate.instant("kmlFile", {
+                        layer: url.split("/").pop()
+                      })
+                    });
+                    $scope.addToMap(vector, map);
+                    $scope.url = "";
+                    $scope.validUrl = true;
+                  },
+                  function () {
+                    $scope.validUrl = false;
+                  }
+                )
+                .finally(function () {
+                  $scope.kmlLoading = false;
+                });
             };
 
-            $scope.addToMap = function (layer, map) {
-              olDecorateLayer(layer);
-              layer.displayInLayerManager = true;
-              map.getLayers().push(layer);
-              map.getView().fit(layer.getSource().getExtent(), map.getSize());
-
-              gnAlertService.addAlert({
-                msg: $translate.instant("layerAdded", { layer: layer.get("label") }),
-                type: "success"
-              });
-            };
+            $scope.addToMap = gnAddImportedLayer;
           }
         ],
         link: function (scope, element, attrs) {
@@ -473,6 +505,245 @@
             $("#kmz-file-input")[0].value = "";
           });
         }
+      };
+    }
+  ]);
+
+  /**
+   * @ngdoc directive
+   * @name gn_viewer.directive:gnCogImport
+   *
+   * @description
+   * Panel to load a Cloud Optimized GeoTIFF (COG) file from a URL.
+   */
+  module.directive("gnCogImport", [
+    "$http",
+    "$q",
+    "$translate",
+    "gnGlobalSettings",
+    "gnAddImportedLayer",
+    function ($http, $q, $translate, gnGlobalSettings, gnAddImportedLayer) {
+      return {
+        restrict: "A",
+        replace: true,
+        templateUrl:
+          "../../catalog/components/viewer/wmsimport/" + "partials/cogimport.html",
+        scope: {
+          map: "=gnCogImportMap"
+        },
+        controllerAs: "cogCtrl",
+        controller: [
+          "$scope",
+          function ($scope) {
+            /**
+             * OpenLayers normalizes a band without statistics against its
+             * data type range (eg. 0-65535), which draws 16-bit or float files
+             * black. Compute the min/max of single band files from the
+             * smallest overview.
+             *
+             * @param {string} url
+             * @return {Promise} resolved with {min, max}, or null when the file
+             *  has several bands, statistics or no overview.
+             */
+            var readMinMax = function (url) {
+              var tiff, image;
+              return $q
+                .when(GeoTIFF.fromUrl(url))
+                .then(function (t) {
+                  tiff = t;
+                  return tiff.getImage(0);
+                })
+                .then(function (i) {
+                  image = i;
+                  return $q.all([image.getGDALMetadata(0), tiff.getImageCount()]);
+                })
+                .then(function (result) {
+                  var metadata = result[0] || {};
+                  var width = image.getWidth();
+                  var height = image.getHeight();
+                  // ponytail: a large file without overviews would be read in
+                  // full, skip it.
+                  if (
+                    image.getSamplesPerPixel() !== 1 ||
+                    metadata.STATISTICS_MAXIMUM !== undefined ||
+                    (result[1] === 1 && width * height > 4e6)
+                  ) {
+                    return null;
+                  }
+                  // geotiff.js reads the smallest overview matching this size.
+                  return $q
+                    .when(
+                      tiff.readRasters({
+                        samples: [0],
+                        width: 256,
+                        height: Math.max(1, Math.round((256 * height) / width))
+                      })
+                    )
+                    .then(function (rasters) {
+                      var noData = image.getGDALNoData();
+                      var data = rasters[0];
+                      var min = Infinity;
+                      var max = -Infinity;
+                      for (var i = 0; i < data.length; i++) {
+                        var value = data[i];
+                        if (value !== noData && !isNaN(value)) {
+                          min = Math.min(min, value);
+                          max = Math.max(max, value);
+                        }
+                      }
+                      return min < max ? { min: min, max: max } : null;
+                    });
+                });
+            };
+
+            /**
+             * Read the header of a Cloud Optimized GeoTIFF.
+             *
+             * @param {string} url
+             * @param {ol.map} map
+             * @return {Promise} resolved with the source and its extent in the
+             *  map projection. Rejected with an object whose `key` is the error
+             *  message key when the file is not usable, or null for fetch errors;
+             *  `answered` is true when the server replied with an HTTP error.
+             */
+            var readCog = function (url, map) {
+              var source = new ol.source.GeoTIFF({
+                sources: [{ url: url }],
+                convertToRGB: "auto"
+              });
+              // getView() never rejects when the file cannot be fetched: the source state does.
+              return $q(function (resolve, reject) {
+                source.getView().then(resolve, reject);
+                source.once("change", function () {
+                  if (source.getState() === "error") {
+                    reject(source.getError());
+                  }
+                });
+              }).then(
+                function (view) {
+                  var mapProjection = map.getView().getProjection();
+                  if (!ol.proj.getTransform(view.projection, mapProjection)) {
+                    source.dispose();
+                    return $q.reject({
+                      key: "cogUnknownProjection",
+                      code: view.projection.getCode()
+                    });
+                  }
+                  var extent = ol.proj.transformExtent(
+                    view.extent,
+                    view.projection,
+                    mapProjection
+                  );
+                  return readMinMax(url)
+                    .then(function (minMax) {
+                      if (!minMax) {
+                        return source;
+                      }
+                      source.dispose();
+                      return new ol.source.GeoTIFF({
+                        sources: [angular.extend({ url: url }, minMax)],
+                        convertToRGB: "auto"
+                      });
+                    })
+                    .catch(function () {
+                      return source;
+                    })
+                    .then(function (cogSource) {
+                      return { source: cogSource, extent: extent };
+                    });
+                },
+                function (error) {
+                  source.dispose();
+                  var message = (error && error.message) || "";
+                  return $q.reject({
+                    key: /byte order|magic number/i.test(message)
+                      ? "cogNotTiff"
+                      : /full file/i.test(message)
+                      ? "cogNoRangeRequests"
+                      : null,
+                    answered: /error fetching data/i.test(message)
+                  });
+                }
+              );
+            };
+
+            /**
+             * Fetch errors carry no HTTP status: ask for one byte to know why.
+             *
+             * @param {string} url
+             * @param {Object} keyByStatus error message key by HTTP status
+             * @return {Promise} always rejected with the error message key
+             */
+            var rejectWithStatus = function (url, keyByStatus) {
+              return $http.get(url, { headers: { Range: "bytes=0-0" } }).then(
+                function () {
+                  return $q.reject({ key: "cogLoadError" });
+                },
+                function (response) {
+                  return $q.reject({
+                    key: keyByStatus[response.status] || "cogLoadError"
+                  });
+                }
+              );
+            };
+
+            /**
+             * Create a raster layer from a Cloud Optimized GeoTIFF url
+             * and add it to the Map. The file is read with HTTP range
+             * requests: directly if the server allows CORS, otherwise
+             * through the proxy.
+             *
+             * @param {string} url remote url of the COG file
+             * @param {ol.map} map
+             */
+            this.addCog = function (url, map) {
+              var proxyUrl = gnGlobalSettings.proxyUrl + encodeURIComponent(url);
+              $scope.cogLoading = true;
+              $scope.cogError = null;
+              readCog(url, map)
+                .catch(function (error) {
+                  // A file that is not usable, or a server that answered with an
+                  // HTTP error, stays so through the proxy: only retry when the
+                  // request itself failed (eg. no CORS headers).
+                  if (error.key) {
+                    return $q.reject(error);
+                  }
+                  return error.answered
+                    ? rejectWithStatus(url, { 404: "cogNotFound" })
+                    : readCog(proxyUrl, map);
+                })
+                .catch(function (error) {
+                  return error.key
+                    ? $q.reject(error)
+                    : rejectWithStatus(proxyUrl, {
+                        403: "cogProxyRefused",
+                        404: "cogNotFound"
+                      });
+                })
+                .then(
+                  function (cog) {
+                    var layer = new ol.layer.WebGLTile({
+                      source: cog.source,
+                      // Tiles are padded with 0 past the image edges, which
+                      // draws black when the file has no nodata value.
+                      extent: cog.extent,
+                      label: $translate.instant("cogFile", {
+                        layer: url.split("?")[0].split("/").pop()
+                      })
+                    });
+                    gnAddImportedLayer(layer, map, cog.extent);
+                    $scope.cogUrl = "";
+                  },
+                  function (error) {
+                    $scope.cogError = $translate.instant(error.key, error);
+                  }
+                )
+                .finally(function () {
+                  $scope.cogLoading = false;
+                });
+            };
+          }
+        ]
       };
     }
   ]);
