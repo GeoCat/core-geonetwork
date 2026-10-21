@@ -220,6 +220,16 @@ public class URITemplateProxyServletTest {
     }
 
     @Test
+    public void anExcludedHostIsRecognisedWithATrailingDot() throws Exception {
+        // URI.getHost() keeps the dot of a fully qualified name, which still resolves to the same host.
+        assertEquals("localhost.", hostOf("http://localhost./"));
+        assertExcluded("http://localhost./");
+        assertExcluded("http://x.localhost./");
+        assertExcluded("http://myhost.local./");
+        assertNotExcluded("http://example.com./");
+    }
+
+    @Test
     public void anEntryWrittenInUpperCaseAlsoMatches() {
         servlet.setExcludeHosts("^(INTERNAL\\.EXAMPLE\\.ORG)$");
         assertTrue(servlet.isExcludedHost("internal.example.org"));

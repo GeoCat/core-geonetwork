@@ -452,11 +452,13 @@ public class URITemplateProxyServlet extends ProxyServlet {
                 // Check if the link requested is in database link list
                 if (!proxyCallAllowed) {
                     try {
-                        URI uri = new URI(servletRequest.getParameter("url"));
-                        String host = uri.getHost();
+                        // Check the same value the target is built from, see getRequestedUrl.
+                        String url = getRequestedUrl(servletRequest.getQueryString());
+                        String host = isBlank(url) ? null : new URI(url).getHost();
                         LinkRepository linkRepository =
                             ApplicationContextHolder.get().getBean(LinkRepository.class);
-                        long linksFound = linkRepository.count(
+                        // Without a host the filter has nothing to match on and would count every link.
+                        long linksFound = isBlank(host) ? 0 : linkRepository.count(
                             LinkSpecs.filter(host, null, null,
                                 null, null, null, false,null));
                         if (linksFound == 0) {
@@ -605,11 +607,18 @@ public class URITemplateProxyServlet extends ProxyServlet {
      * Build the forms of a host that the exclusion pattern is matched against.
      *
      * @param host host part of the requested URL, as returned by {@link URI#getHost()}
-     * @return the host as provided, plus the unbracketed and canonical forms of an IPv6 literal
+     * @return the host as provided, without the trailing dot of a fully qualified name, plus the
+     * unbracketed and canonical forms of an IPv6 literal
      */
     Set<String> getHostVariants(String host) {
         Set<String> variants = new LinkedHashSet<>();
         variants.add(host);
+
+        // A name may end with the dot of the root, so localhost. is the host localhost and has to
+        // match an entry written without that dot.
+        if (host.endsWith(".")) {
+            variants.add(host.substring(0, host.length() - 1));
+        }
 
         if (host.startsWith("[") && host.endsWith("]")) {
             variants.add(host.substring(1, host.length() - 1));
