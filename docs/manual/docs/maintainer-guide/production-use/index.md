@@ -105,7 +105,7 @@ Independently of the security mode, the proxy refuses a request whose host match
 -   the IPv6 unique local, link-local and site-local ranges, ``fc00::/7``, ``fe80::/10`` and ``fec0::/10``
 -   the IPv6 ranges that carry an IPv4 address, ``::/96`` and the NAT64 prefix ``64:ff9b::/96``
 
-An address can be written in more than one way, so the host is compared in several forms: as it appears in the URL, without the brackets that surround an IPv6 literal, and in the canonical form of the address it denotes. An entry therefore applies whichever way a caller spells an address, and a single entry covers every spelling of it.
+An address can be written in more than one way, so the host is compared in several forms: as it appears in the URL, without a trailing dot, without the brackets that surround an IPv6 literal, and in the canonical form of the address it denotes. An entry therefore applies whichever way a caller spells an address, and a single entry covers every spelling of it.
 
 #### Adding an IPv6 address
 
@@ -148,7 +148,7 @@ A value given this way replaces the default list rather than adding to it. Copy 
 
 If the catalogue is deployed under a context path other than ``/geonetwork``, that path is also accepted in place of the ``geonetwork`` prefix, so a catalogue served from ``/catalogue`` reads ``catalogue.HttpProxy.excludeHosts`` first and falls back to the ``geonetwork`` name.
 
-Keep those defaults and add your own entries for any other host the catalogue should not be asked to fetch. Entries are matched against the host as it appears in the request. Where the catalogue is published in front of a private network, restricting the outbound traffic of the server at the network level is worthwhile too, and use ``allowPorts`` sparingly, since every port added there is opened towards every host the proxy accepts.
+Keep those defaults and add your own entries for any other host the catalogue should not be asked to fetch. Where the catalogue is published in front of a private network, restricting the outbound traffic of the server at the network level is worthwhile too, and use ``allowPorts`` sparingly, since every port added there is opened towards every host the proxy accepts.
 
 ## WEB
 
