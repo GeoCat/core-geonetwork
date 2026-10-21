@@ -31,10 +31,31 @@ import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class LinkSpecs {
     private LinkSpecs() {
+    }
+
+    /**
+     * Links attached to a record whose URL starts with the given host, over http or https, in any case.
+     *
+     * <p>A prefix is not an exact match: http://example.com.evil.org/ starts with http://example.com,
+     * so the caller compares the host of each URL returned.</p>
+     *
+     * @param host host to look for, as returned by {@link java.net.URI#getHost()}
+     */
+    public static Specification<Link> urlStartsWithHost(String host) {
+        return (root, query, cb) -> {
+            Expression<String> url = cb.lower(root.get(Link_.url));
+            String prefix = host.toLowerCase(Locale.ROOT);
+            return cb.and(
+                cb.isNotEmpty(root.get(Link_.records)),
+                cb.or(
+                    cb.like(url, "http://" + prefix + "%"),
+                    cb.like(url, "https://" + prefix + "%")));
+        };
     }
 
     public static Specification<Link> filter(String urlPartToContain,
