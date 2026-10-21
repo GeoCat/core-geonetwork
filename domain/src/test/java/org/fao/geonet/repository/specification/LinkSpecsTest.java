@@ -321,4 +321,16 @@ public class LinkSpecsTest extends AbstractSpringDataTest {
         List<Link> linkList2 = linkRepository.findAll(LinkSpecs.filter(null, null, null, null, groupOwnerIds, httpStatusValueFilter, false, null));
         Assert.assertEquals(2, linkList2.size());
     }
+
+    @Test
+    public void testLinkSpecsUrlStartsWithHost() {
+        // Both links are https://test.com/..., matched in any case.
+        Assert.assertEquals(2, linkRepository.findAll(LinkSpecs.urlStartsWithHost("test.com")).size());
+        Assert.assertEquals(2, linkRepository.findAll(LinkSpecs.urlStartsWithHost("TEST.COM")).size());
+
+        // Only the start of the URL is compared, not any part of it.
+        Assert.assertEquals(0, linkRepository.findAll(LinkSpecs.urlStartsWithHost("est.com")).size());
+        Assert.assertEquals(0, linkRepository.findAll(LinkSpecs.urlStartsWithHost("link")).size());
+        Assert.assertEquals(0, linkRepository.findAll(LinkSpecs.urlStartsWithHost("test2.com")).size());
+    }
 }

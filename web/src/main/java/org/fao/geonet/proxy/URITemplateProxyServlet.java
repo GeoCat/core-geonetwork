@@ -43,6 +43,7 @@ import org.apache.http.message.BasicHttpEntityEnclosingRequest;
 import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.Logger;
 import org.fao.geonet.api.ApiUtils;
+import org.fao.geonet.domain.Link;
 import org.fao.geonet.domain.mapservices.MapService;
 import org.fao.geonet.kernel.security.SecurityProviderConfiguration;
 import org.fao.geonet.kernel.security.SecurityProviderUtil;
@@ -63,8 +64,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
@@ -452,14 +455,14 @@ public class URITemplateProxyServlet extends ProxyServlet {
                 // Check if the link requested is in database link list
                 if (!proxyCallAllowed) {
                     try {
-                        URI uri = new URI(servletRequest.getParameter("url"));
-                        String host = uri.getHost();
+                        // Check the same value the target is built from, see getRequestedUrl.
+                        String url = getRequestedUrl(servletRequest.getQueryString());
+                        String host = isBlank(url) ? null : new URI(url).getHost();
                         LinkRepository linkRepository =
                             ApplicationContextHolder.get().getBean(LinkRepository.class);
-                        long linksFound = linkRepository.count(
-                            LinkSpecs.filter(host, null, null,
-                                null, null, null, false,null));
-                        if (linksFound == 0) {
+                        boolean linkFound = !isBlank(host)
+                            && hasLinkToHost(linkRepository.findAll(LinkSpecs.urlStartsWithHost(host)), host);
+                        if (!linkFound) {
                             String message = "The proxy does not allow to access the requested URI " +
                                 "because the URL host was not registered in any metadata records.";
                             if (linkRepository.count() == 0) {
@@ -471,7 +474,7 @@ public class URITemplateProxyServlet extends ProxyServlet {
                             servletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, message);
                             return;
                         }
-                        proxyCallAllowed = linksFound > 0;
+                        proxyCallAllowed = true;
                     } catch (URISyntaxException e) {
                         throw new IllegalArgumentException(String.format(
                             "The provided URL is invalid. Error is: '%s'",
@@ -517,6 +520,30 @@ public class URITemplateProxyServlet extends ProxyServlet {
                 e.getMessage()
             ));
         }
+    }
+
+    /**
+     * Check whether one of the links is to exactly the given host.
+     *
+     * <p>Links are read with URL rather than URI: they come from metadata as written, often with
+     * unencoded spaces in the query, which URI rejects outright while the host is still plain to
+     * read.</p>
+     *
+     * @param links links to look through, typically those whose URL starts with the host
+     * @param host host of the requested URL, as returned by {@link URI#getHost()}
+     * @return {@code true} if the host of one of the links is the given host, in any case
+     */
+    static boolean hasLinkToHost(Collection<Link> links, String host) {
+        for (Link link : links) {
+            try {
+                if (host.equalsIgnoreCase(new URL(link.getUrl()).getHost())) {
+                    return true;
+                }
+            } catch (MalformedURLException e) {
+                // A link the analysis could not read cannot vouch for any host.
+            }
+        }
+        return false;
     }
 
     /**
@@ -605,11 +632,18 @@ public class URITemplateProxyServlet extends ProxyServlet {
      * Build the forms of a host that the exclusion pattern is matched against.
      *
      * @param host host part of the requested URL, as returned by {@link URI#getHost()}
-     * @return the host as provided, plus the unbracketed and canonical forms of an IPv6 literal
+     * @return the host as provided, without the trailing dot of a fully qualified name, plus the
+     * unbracketed and canonical forms of an IPv6 literal
      */
     Set<String> getHostVariants(String host) {
         Set<String> variants = new LinkedHashSet<>();
         variants.add(host);
+
+        // A name may end with the dot of the root, so localhost. is the host localhost and has to
+        // match an entry written without that dot.
+        if (host.endsWith(".")) {
+            variants.add(host.substring(0, host.length() - 1));
+        }
 
         if (host.startsWith("[") && host.endsWith("]")) {
             variants.add(host.substring(1, host.length() - 1));

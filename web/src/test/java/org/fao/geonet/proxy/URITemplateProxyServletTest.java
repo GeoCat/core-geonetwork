@@ -22,10 +22,13 @@
  */
 package org.fao.geonet.proxy;
 
+import org.fao.geonet.domain.Link;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -220,6 +223,16 @@ public class URITemplateProxyServletTest {
     }
 
     @Test
+    public void anExcludedHostIsRecognisedWithATrailingDot() throws Exception {
+        // URI.getHost() keeps the dot of a fully qualified name, which still resolves to the same host.
+        assertEquals("localhost.", hostOf("http://localhost./"));
+        assertExcluded("http://localhost./");
+        assertExcluded("http://x.localhost./");
+        assertExcluded("http://myhost.local./");
+        assertNotExcluded("http://example.com./");
+    }
+
+    @Test
     public void anEntryWrittenInUpperCaseAlsoMatches() {
         servlet.setExcludeHosts("^(INTERNAL\\.EXAMPLE\\.ORG)$");
         assertTrue(servlet.isExcludedHost("internal.example.org"));
@@ -337,5 +350,25 @@ public class URITemplateProxyServletTest {
     public void anExclusionEntryWrittenWithBracketsStillWorks() {
         servlet.setExcludeHosts("^(\\[::1\\])$");
         assertTrue(servlet.isExcludedHost("[::1]"));
+    }
+
+    private static List<Link> links(String... urls) {
+        Link[] links = new Link[urls.length];
+        for (int i = 0; i < urls.length; i++) {
+            links[i] = new Link();
+            links[i].setUrl(urls[i]);
+        }
+        return Arrays.asList(links);
+    }
+
+    @Test
+    public void aLinkVouchesOnlyForItsOwnHost() {
+        List<Link> links = links("https://Example.com:8443/wms?SERVICE=WMS&x=a b");
+
+        assertTrue(URITemplateProxyServlet.hasLinkToHost(links, "example.com"));
+        // The prefix query also returns these, the host comparison has to turn them away.
+        assertFalse(URITemplateProxyServlet.hasLinkToHost(links, "example.co"));
+        assertFalse(URITemplateProxyServlet.hasLinkToHost(links("http://example.com.evil.org/"), "example.com"));
+        assertFalse(URITemplateProxyServlet.hasLinkToHost(links("not a url"), "example.com"));
     }
 }
