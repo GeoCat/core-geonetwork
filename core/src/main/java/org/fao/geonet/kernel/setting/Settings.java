@@ -74,6 +74,7 @@ public class Settings {
     public static final String SYSTEM_ENABLE_ALL_THESAURUS = "system/metadata/allThesaurus";
     public static final String SYSTEM_METADATA_THESAURUS_NAMESPACE = "system/metadata/thesaurusNamespace";
     public static final String SYSTEM_METADATA_VALIDATION_REMOVESCHEMALOCATION = "system/metadata/validation/removeSchemaLocation";
+    public static final String SYSTEM_METADATA_RECORD_CREATION_DATE_FROM_XML = "system/metadata/recordCreationDateFromXml";
     public static final String SYSTEM_URLALLOWLIST_ENABLED = "system/urlAllowlist/enabled";
     public static final String SYSTEM_URLALLOWLIST_AUDITMODE = "system/urlAllowlist/auditMode";
     public static final String SYSTEM_URLALLOWLIST_ALLOWINTERNALADDRESSES = "system/urlAllowlist/allowInternalAddresses";

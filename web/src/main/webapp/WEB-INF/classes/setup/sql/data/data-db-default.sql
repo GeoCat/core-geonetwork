@@ -657,6 +657,7 @@ INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('metadata/vcs/enable', 'false', 2, 9161, 'n');
 
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/metadata/validation/removeSchemaLocation', 'false', 2, 9170, 'n');
+INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/metadata/recordCreationDateFromXml', 'false', 2, 9190, 'n');
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/urlAllowlist/enabled', 'false', 2, 9200, 'n');
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/urlAllowlist/auditMode', 'false', 2, 9201, 'n');
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/urlAllowlist/allowInternalAddresses', 'false', 2, 9202, 'n');
