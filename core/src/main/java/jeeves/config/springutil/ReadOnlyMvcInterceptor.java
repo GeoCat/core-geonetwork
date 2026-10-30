@@ -25,38 +25,31 @@ package jeeves.config.springutil;
 
 import jeeves.services.ReadWriteController;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.fao.geonet.NodeInfo;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import static jeeves.config.springutil.JeevesDelegatingFilterProxy.getServletContext;
+import java.util.Set;
 
 /**
- * This class intercepts MVC requests and verifies that: <ol> <li>The system is no in readonly
- * mode</li> <li>If the system is readonly then only allow tests <em>without</em> the {@link
- * jeeves.services.ReadWriteController} annotation</li> </ol>
+ * This class intercepts MVC requests and, when the system is in readonly mode, rejects requests
+ * other than GET, HEAD and OPTIONS to controllers with the {@link
+ * jeeves.services.ReadWriteController} annotation.
  *
  * @author Jesse on 6/4/2014.
  */
 public class ReadOnlyMvcInterceptor extends HandlerInterceptorAdapter {
-    public static final String SERVLET_CONTEXT_ATTR_KEY = "readOnlyMode";
-
-    @Autowired
-    ServletContext context;
+    private static final Set<String> READ_METHODS = Set.of("GET", "HEAD", "OPTIONS");
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
-            Boolean isReadOnly = (Boolean) getServletContext(context).getAttribute(SERVLET_CONTEXT_ATTR_KEY);
-            if (isReadOnly == null) {
-                isReadOnly = false;
-            }
-            if (isReadOnly &&
+            // Controllers mix read and write operations, only block requests that may write.
+            if (NodeInfo.isReadOnly() &&
+                !READ_METHODS.contains(request.getMethod()) &&
                 handlerMethod.getBean() != null &&
                 handlerMethod.getBean().getClass().getAnnotation(ReadWriteController.class) != null) {
                 throw new InReadOnlyModeException(request.getPathInfo());
@@ -66,7 +59,7 @@ public class ReadOnlyMvcInterceptor extends HandlerInterceptorAdapter {
         return super.preHandle(request, response, handler);
     }
 
-    private static class InReadOnlyModeException extends RuntimeException {
+    public static class InReadOnlyModeException extends RuntimeException {
         InReadOnlyModeException(String req) {
             super("Server is in Readonly mode, requested service is not allowed when in read only mode: " + req);
         }
