@@ -232,12 +232,10 @@
         // Get Top Concept from thesaurus
         var getTopConcept = function (thesaurus) {
           var defer = $q.defer();
-          var url = gnUrlUtils.append(
-            "thesaurus.topconcept?_content_type=json",
-            gnUrlUtils.toKeyValue({
-              thesaurus: thesaurus
-            })
-          );
+          var url =
+            "../api/registries/vocabularies/" +
+            encodeURIComponent(thesaurus) +
+            "/concepts/top";
           $http.get(url, { cache: true }).then(
             function (response) {
               var data = response.data;
@@ -261,9 +259,8 @@
         function getConcept(thesaurus, keywordUris) {
           var defer = $q.defer();
           var url = gnUrlUtils.append(
-            "thesaurus.concept?_content_type=json",
+            "../api/registries/vocabularies/" + encodeURIComponent(thesaurus) + "/concept",
             gnUrlUtils.toKeyValue({
-              thesaurus: thesaurus,
               id: keywordUris instanceof Array ? keywordUris.join(",") : keywordUris || ""
             })
           );
@@ -395,19 +392,14 @@
           getAll: function (schema) {
             var defer = $q.defer();
             $http
-              .get(
-                "thesaurus?_content_type=json&" +
-                  "element=gmd:descriptiveKeywords&schema=" +
-                  (schema || "iso19139"),
-                { cache: true }
-              )
+              .get("../api/registries/vocabularies", { cache: true })
               .then(
                 function (response) {
                   var listOfThesaurus = [];
                   //converted and non-converted value
                   // i.e. fra and fre
                   var uiLangs = getUILangs();
-                  angular.forEach(response.data[0], function (k) {
+                  angular.forEach(response.data, function (k) {
                     listOfThesaurus.push(new Thesaurus(k, uiLangs));
                   });
                   defer.resolve(listOfThesaurus);
