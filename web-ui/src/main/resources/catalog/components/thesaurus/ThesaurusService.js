@@ -259,7 +259,9 @@
         function getConcept(thesaurus, keywordUris) {
           var defer = $q.defer();
           var url = gnUrlUtils.append(
-            "../api/registries/vocabularies/" + encodeURIComponent(thesaurus) + "/concept",
+            "../api/registries/vocabularies/" +
+              encodeURIComponent(thesaurus) +
+              "/concept",
             gnUrlUtils.toKeyValue({
               id: keywordUris instanceof Array ? keywordUris.join(",") : keywordUris || ""
             })
@@ -391,24 +393,22 @@
            */
           getAll: function (schema) {
             var defer = $q.defer();
-            $http
-              .get("../api/registries/vocabularies", { cache: true })
-              .then(
-                function (response) {
-                  var listOfThesaurus = [];
-                  //converted and non-converted value
-                  // i.e. fra and fre
-                  var uiLangs = getUILangs();
-                  angular.forEach(response.data, function (k) {
-                    listOfThesaurus.push(new Thesaurus(k, uiLangs));
-                  });
-                  defer.resolve(listOfThesaurus);
-                },
-                function (response) {
-                  //                TODO handle error
-                  //                defer.reject(error);
-                }
-              );
+            $http.get("../api/registries/vocabularies", { cache: true }).then(
+              function (response) {
+                var listOfThesaurus = [];
+                //converted and non-converted value
+                // i.e. fra and fre
+                var uiLangs = getUILangs();
+                angular.forEach(response.data, function (k) {
+                  listOfThesaurus.push(new Thesaurus(k, uiLangs));
+                });
+                defer.resolve(listOfThesaurus);
+              },
+              function (response) {
+                //                TODO handle error
+                //                defer.reject(error);
+              }
+            );
             return defer.promise;
           },
           getKeywordsSearchUrl: getKeywordsSearchUrl,

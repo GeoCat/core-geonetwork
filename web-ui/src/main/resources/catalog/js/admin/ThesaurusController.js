@@ -667,7 +667,11 @@
       };
 
       var keywordApiUrl = function (thesaurusKey) {
-        return "../api/registries/vocabularies/" + encodeURIComponent(thesaurusKey) + "/keyword";
+        return (
+          "../api/registries/vocabularies/" +
+          encodeURIComponent(thesaurusKey) +
+          "/keyword"
+        );
       };
 
       /**
